@@ -38,6 +38,7 @@ namespace DevExpressUI
             this.aceKlineParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
+            this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
@@ -57,7 +58,8 @@ namespace DevExpressUI
             this.accordionControl1.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
             this.aceTradeMonitor,
             this.aceTradeParameters,
-            this.aceKlineParameters});
+            this.aceKlineParameters,
+            this.accordionControlElement1});
             this.accordionControl1.Location = new System.Drawing.Point(0, 20);
             this.accordionControl1.Name = "accordionControl1";
             this.accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Hidden;
@@ -81,7 +83,7 @@ namespace DevExpressUI
             // 
             // aceKlineParameters
             // 
-            this.aceKlineParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceParameters.ImageOptions.Image")));
+            this.aceKlineParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceKlineParameters.ImageOptions.Image")));
             this.aceKlineParameters.Name = "aceKlineParameters";
             this.aceKlineParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.aceKlineParameters.Text = "Kline Parameters";
@@ -101,6 +103,17 @@ namespace DevExpressUI
             // 
             this.fluentFormDefaultManager1.DockingEnabled = false;
             this.fluentFormDefaultManager1.Form = this;
+            // 
+            // accordionControlElement1
+            // 
+            this.accordionControlElement1.HeaderTemplate.AddRange(new DevExpress.XtraBars.Navigation.HeaderElementInfo[] {
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.Text),
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.Image),
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.HeaderControl),
+            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.ContextButtons)});
+            this.accordionControlElement1.Name = "accordionControlElement1";
+            this.accordionControlElement1.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accordionControlElement1.Text = "Element1";
             // 
             // MainFrom
             // 
@@ -131,6 +144,7 @@ namespace DevExpressUI
         private DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager fluentFormDefaultManager1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceTradeMonitor;
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceTradeParameters;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement1;
     }
 }
 

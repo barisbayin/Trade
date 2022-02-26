@@ -13,5 +13,8 @@ namespace Business.Abstract
         Task<IDataResult<int>> GetFuturesUsdtDayParameterForTheIntervalAsync(string interval);
         Task<IDataResult<List<BinanceIntervalParameterEntity>>> GetAllBinanceIntervalParametersAsync();
         Task<IResult> UpdateDayParameterByIntervalAndMarketplace(string interval, string marketplace, int dayParameter);
+        Task<IResult> DeleteDayParameterById(int id);
+        Task<IResult> AddDayParameterAsync(BinanceIntervalParameterEntity binanceIntervalParameterEntity);
+        Task<IResult> UpdateDayParameterAsync(BinanceIntervalParameterEntity binanceIntervalParameterEntity);
     }
 }

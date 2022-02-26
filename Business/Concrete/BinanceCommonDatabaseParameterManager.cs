@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Costants.Messages;
 using Entity.Concrete.Entities;
 
 namespace Business.Concrete
@@ -41,6 +42,46 @@ namespace Business.Concrete
 
             return new SuccessResult();
 
+        }
+
+        public async Task<IResult> DeleteDayParameterById(int id)
+        {
+            await _binanceCommonDatabaseParameterDal.DeleteAsync(await _binanceCommonDatabaseParameterDal.GetAsync(x => x.Id == id));
+            return new SuccessResult(CommonMessages.Deleted);
+        }
+
+        public async Task<IResult> AddDayParameterAsync(BinanceIntervalParameterEntity binanceIntervalParameterEntity)
+        {
+            Calculators calculators = new Calculators();
+            binanceIntervalParameterEntity.KlineCount = (calculators.CalculateKlineAmountByInterval(binanceIntervalParameterEntity.Interval,
+                    binanceIntervalParameterEntity.DayParameter)).Result.Data;
+            try
+            {
+                await _binanceCommonDatabaseParameterDal.AddAsync(binanceIntervalParameterEntity);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.InnerException.Message);
+            }
+            
+            return new SuccessResult(CommonMessages.Added);
+        }
+
+        public async Task<IResult> UpdateDayParameterAsync(BinanceIntervalParameterEntity binanceIntervalParameterEntity)
+        {
+            Calculators calculators = new Calculators();
+            binanceIntervalParameterEntity.KlineCount = (calculators.CalculateKlineAmountByInterval(binanceIntervalParameterEntity.Interval,
+                binanceIntervalParameterEntity.DayParameter)).Result.Data;
+            try
+            {
+                await _binanceCommonDatabaseParameterDal.UpdateAsync(binanceIntervalParameterEntity);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
+            
+            return new SuccessResult(CommonMessages.Updated);
         }
     }
 }

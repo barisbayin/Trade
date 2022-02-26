@@ -1,10 +1,4 @@
-﻿using RemoteData.Binance.WebSocket.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Channels;
-using Binance.Net;
+﻿using Binance.Net;
 using Binance.Net.Enums;
 using Binance.Net.Objects;
 using Business.Abstract;
@@ -12,10 +6,11 @@ using Business.Concrete;
 using CryptoExchange.Net.Authentication;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
-using Entity.Concrete.Entities;
-using Microsoft.EntityFrameworkCore.Internal;
 using RemoteData.Binance.GeneralApi.Concrete;
-using RemoteData.Binance.WebSocket.Concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using BinanceWsManager = RemoteData.Binance.WebSocket.Concrete.BinanceWsManager;
 using IBinanceWsService = RemoteData.Binance.WebSocket.Abstract.IBinanceWsService;
 

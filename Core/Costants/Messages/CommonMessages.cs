@@ -14,5 +14,9 @@ namespace Core.Costants.Messages
         public static string FuturesUsdtSymbolInformationsAddedToDatabase="Futuresusdt symbol informations added to database!";
         public static string KlinesDeleted ="Klines deleted!";
         public static string AllKlinesDeleted = "All Klines deleted!";
+        public static string Deleted = "Deleted!";
+        public static string Error = "An error occurred!";
+        public static string Added = "Added!";
+        public static string Updated="Updated!";
     }
 }
