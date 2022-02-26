@@ -1,0 +1,53 @@
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
+using Entity.Concrete.DTOs;
+using Entity.Concrete.Entities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace DataAccess.Concrete
+{
+    public class EfBinanceFuturesUsdtKlineDal : EfEntityRepositoryBase<BinanceFuturesUsdtKlineEntity, TradeContext>, IBinanceFuturesUsdtKlineDal
+    {
+        public IEnumerable<CurrencyKlineToCalculateIndicatorDto> GetCurrencyKlinesToCalculateIndicator(string symbolPair, string interval)
+        {
+            using (TradeContext context = new TradeContext())
+            {
+
+                var result = from c in context.BinanceFuturesUsdtKlinesEntity
+                    where c.SymbolPair == symbolPair && c.KlineInterval == interval
+                    select new CurrencyKlineToCalculateIndicatorDto
+                    {
+                        Date = c.OpenTime,
+                        Open = c.Open,
+                        High = c.High,
+                        Low = c.Low,
+                        Close = c.Close,
+                        Volume = c.BaseVolume
+                    };
+                return result.OrderBy(c => c.Open).ToList();
+
+            }
+        }
+
+        public async Task<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval)
+        {
+
+            TradeContext context = new TradeContext();
+            var result = from c in context.BinanceFuturesUsdtKlinesEntity
+                where c.SymbolPair == symbolPair && c.KlineInterval == interval
+                select new CurrencyKlineToCalculateIndicatorDto
+                {
+                    Date = c.OpenTime,
+                    Open = c.Open,
+                    High = c.High,
+                    Low = c.Low,
+                    Close = c.Close,
+                    Volume = c.BaseVolume
+                };
+
+            return result.OrderBy(c => c.Date).ToList();
+        }
+    }
+}

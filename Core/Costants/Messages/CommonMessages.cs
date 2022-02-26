@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Core.Costants.Messages
+{
+    public static class CommonMessages
+    {
+        public static string KlinesAlreadyAdded = "Klines already added!";
+        public static string FuturesUsdtKlinesAddedToDatabase = "FuturesUsdt klines added to database!";
+        public static string FuturesUsdtKlineDataExistsInDatabase = "FuturesUsdt kline data exists in database?";
+        public static string NoFuturesUsdtDataInDatabaseFor="No futuresusdt kline data in database for:";
+        public static string CanNotInsertKlines;
+        public static string FuturesUsdtSymbolInformationsAddedToDatabase="Futuresusdt symbol informations added to database!";
+        public static string KlinesDeleted ="Klines deleted!";
+        public static string AllKlinesDeleted = "All Klines deleted!";
+    }
+}
