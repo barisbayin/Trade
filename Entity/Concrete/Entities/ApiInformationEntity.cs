@@ -13,6 +13,8 @@ namespace Entity.Concrete.Entities
         public string ApiKey { get; set; }
         public string SecretKey { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
+        public  bool InUse { get; set; }
         public bool IsRemoved { get; set; }
         public DateTime? RemovedDate { get; set; }
     }

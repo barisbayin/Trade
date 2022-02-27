@@ -198,6 +198,12 @@
     <Compile Include="ApiManagementUC.Designer.cs">
       <DependentUpon>ApiManagementUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="IndicatorParametersUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IndicatorParametersUC.Designer.cs">
+      <DependentUpon>IndicatorParametersUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFrom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,6 +220,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ApiManagementUC.resx">
       <DependentUpon>ApiManagementUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IndicatorParametersUC.resx">
+      <DependentUpon>IndicatorParametersUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrom.resx">
       <DependentUpon>MainFrom.cs</DependentUpon>

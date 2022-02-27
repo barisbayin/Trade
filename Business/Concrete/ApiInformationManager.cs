@@ -26,6 +26,7 @@ namespace Business.Concrete
             apiInformationEntity.ApiKey = encryptedApiKey;
             apiInformationEntity.SecretKey = encryptedSecretKey;
             apiInformationEntity.CreationDate = DateTime.Now;
+            apiInformationEntity.InUse = false;
             apiInformationEntity.IsRemoved = false;
             apiInformationEntity.RemovedDate = null;
             try
@@ -47,9 +48,8 @@ namespace Business.Concrete
 
             apiInformationEntity.ApiKey = encryptedApiKey;
             apiInformationEntity.SecretKey = encryptedSecretKey;
-            apiInformationEntity.CreationDate = DateTime.Now;
-            apiInformationEntity.IsRemoved = false;
-            apiInformationEntity.RemovedDate = null;
+            apiInformationEntity.ModifiedDate = DateTime.Now;
+
             try
             {
                 await _apiInformationDal.UpdateAsync(apiInformationEntity);
