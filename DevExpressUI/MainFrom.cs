@@ -21,6 +21,7 @@ namespace DevExpressUI
 
         private async void aceParameters_Click(object sender, EventArgs e)
         {
+            
             await Task.Run((() =>
             {
                 if (!mainFormContainer.Controls.Contains(KlineParametersUC.Instance))
@@ -35,6 +36,25 @@ namespace DevExpressUI
                 }
 
                 KlineParametersUC.Instance.BringToFront();
+            }));
+        }
+
+        private async void aceApiManagement_Click(object sender, EventArgs e)
+        {
+            await Task.Run((() =>
+            {
+                if (!mainFormContainer.Controls.Contains(ApiManagementUC.Instance))
+                {
+                    mainFormContainer.BeginInvoke(new Action(delegate ()
+                    {
+                        mainFormContainer.Controls.Add(ApiManagementUC.Instance);
+
+                        ApiManagementUC.Instance.Dock = DockStyle.Fill;
+                        ApiManagementUC.Instance.BringToFront();
+                    }));
+                }
+
+                ApiManagementUC.Instance.BringToFront();
             }));
         }
     }

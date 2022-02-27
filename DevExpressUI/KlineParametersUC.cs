@@ -25,14 +25,12 @@ namespace DevExpressUI
             InitializeComponent();
 
             _binanceCommonDatabaseParameterService = AutofacInstanceFactory.GetInstance<IBinanceCommonDatabaseParameterService>();
-            _binanceCommonDatabaseParameterDal = AutofacInstanceFactory.GetInstance<IBinanceCommonDatabaseParameterDal>();
 
         }
 
 
 
         private readonly IBinanceCommonDatabaseParameterService _binanceCommonDatabaseParameterService;
-        private IBinanceCommonDatabaseParameterDal _binanceCommonDatabaseParameterDal;
 
 
         private static KlineParametersUC _parametersUc;
@@ -63,11 +61,19 @@ namespace DevExpressUI
 
         private void gvDayParameters_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
-            lblIdNo.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[0]).ToString();
-            cbxInterval.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[1]).ToString();
-            cbxMarket.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[2]).ToString();
-            tbxDayCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[3]).ToString();
-            lblKlineCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[4]).ToString();
+            if (gvDayParameters.RowCount > 0)
+            {
+                lblIdNo.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[0]).ToString();
+                cbxInterval.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[1]).ToString();
+                cbxMarket.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[2]).ToString();
+                tbxDayCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[3]).ToString();
+                lblKlineCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[4]).ToString();
+            }
+            else
+            {
+                ClearAll();
+            }
+
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -106,15 +112,13 @@ namespace DevExpressUI
         private async void btnAdd_Click(object sender, EventArgs e)
         {
             BinanceIntervalParameterEntity binanceIntervalParameterEntity = new BinanceIntervalParameterEntity();
-
-            if (lblIdNo.Text == "")
+            if (tbxDayCount.Text == "" || cbxInterval.Text == "" || cbxMarket.Text == "")
             {
-
-                if (tbxDayCount.Text=="")
-                {
-                    lblResult.Text = "Enter day parameter!";
-                }
-                else
+                lblResult.Text = CommonMessages.EnterAllRequiredParameters;
+            }
+            else
+            {
+                if (lblIdNo.Text == "")
                 {
                     binanceIntervalParameterEntity.Interval = cbxInterval.Text;
                     binanceIntervalParameterEntity.Market = cbxMarket.Text;
@@ -123,6 +127,7 @@ namespace DevExpressUI
                     if (result.Success)
                     {
                         lblResult.Text = "New Parameter " + result.Message;
+                        LoadDayParameters();
                     }
                     else
                     {
@@ -130,16 +135,7 @@ namespace DevExpressUI
                     }
                 }
 
-
-            }
-
-            if (lblIdNo.Text != "")
-            {
-                if (tbxDayCount.Text == "")
-                {
-                    lblResult.Text = "Enter day parameter!";
-                }
-                else
+                if (lblIdNo.Text != "")
                 {
                     binanceIntervalParameterEntity.Id = Convert.ToInt32(lblIdNo.Text);
                     binanceIntervalParameterEntity.Interval = cbxInterval.Text;
@@ -148,17 +144,17 @@ namespace DevExpressUI
                     var result = await _binanceCommonDatabaseParameterService.UpdateDayParameterAsync(binanceIntervalParameterEntity);
                     if (result.Success)
                     {
-
                         lblResult.Text = "Id:" + lblIdNo.Text + " " + result.Message;
+                        LoadDayParameters();
                     }
                     else
                     {
                         lblResult.Text = result.Message;
                     }
                 }
-
             }
-            LoadDayParameters();
+
+
         }
     }
 }

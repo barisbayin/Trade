@@ -30,63 +30,47 @@ namespace DevExpressUI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KlineParametersUC));
-            this.tabPaneParameters = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavDayParameters = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
-            this.gcDayParameterList = new DevExpress.XtraEditors.GroupControl();
-            this.gridDayParameters = new DevExpress.XtraGrid.GridControl();
-            this.gvDayParameters = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.tabNavSymbolParameters = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.lblKlineCount = new DevExpress.XtraEditors.LabelControl();
-            this.tbxDayCount = new DevExpress.XtraEditors.TextEdit();
-            this.cbxInterval = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.cbxMarket = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
-            this.lblKlineCountLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblDayCountLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblMarket = new DevExpress.XtraEditors.LabelControl();
-            this.lblIntervalLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.lblResult = new DevExpress.XtraEditors.LabelControl();
-            ((System.ComponentModel.ISupportInitialize)(this.tabPaneParameters)).BeginInit();
-            this.tabPaneParameters.SuspendLayout();
+            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIntervalLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblMarket = new DevExpress.XtraEditors.LabelControl();
+            this.lblDayCountLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblKlineCountLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
+            this.cbxMarket = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.cbxInterval = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.tbxDayCount = new DevExpress.XtraEditors.TextEdit();
+            this.lblKlineCount = new DevExpress.XtraEditors.LabelControl();
+            this.gcDayParameterList = new DevExpress.XtraEditors.GroupControl();
+            this.gridDayParameters = new DevExpress.XtraGrid.GridControl();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gvDayParameters = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.tabPaneParameters = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavDayParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).BeginInit();
             this.splitContainerControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gcDayParameterList)).BeginInit();
-            this.gcDayParameterList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvDayParameters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxDayCount.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbxInterval.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxMarket.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxInterval.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxDayCount.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcDayParameterList)).BeginInit();
+            this.gcDayParameterList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDayParameters)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabPaneParameters)).BeginInit();
+            this.tabPaneParameters.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tabPaneParameters
-            // 
-            this.tabPaneParameters.Controls.Add(this.tabNavDayParameters);
-            this.tabPaneParameters.Controls.Add(this.tabNavSymbolParameters);
-            this.tabPaneParameters.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabPaneParameters.Location = new System.Drawing.Point(0, 0);
-            this.tabPaneParameters.Name = "tabPaneParameters";
-            this.tabPaneParameters.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
-            this.tabPaneParameters.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
-            this.tabNavDayParameters,
-            this.tabNavSymbolParameters});
-            this.tabPaneParameters.RegularSize = new System.Drawing.Size(797, 665);
-            this.tabPaneParameters.SelectedPage = this.tabNavDayParameters;
-            this.tabPaneParameters.Size = new System.Drawing.Size(797, 665);
-            this.tabPaneParameters.TabIndex = 0;
-            this.tabPaneParameters.Text = "tabPane1";
             // 
             // tabNavDayParameters
             // 
@@ -114,45 +98,6 @@ namespace DevExpressUI
             this.splitContainerControl1.SplitterPosition = 300;
             this.splitContainerControl1.TabIndex = 0;
             // 
-            // gcDayParameterList
-            // 
-            this.gcDayParameterList.Appearance.Options.UseTextOptions = true;
-            this.gcDayParameterList.AppearanceCaption.Options.UseTextOptions = true;
-            this.gcDayParameterList.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gcDayParameterList.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("gcDayParameterList.CaptionImageOptions.Image")));
-            this.gcDayParameterList.Controls.Add(this.gridDayParameters);
-            this.gcDayParameterList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gcDayParameterList.Location = new System.Drawing.Point(0, 0);
-            this.gcDayParameterList.Name = "gcDayParameterList";
-            this.gcDayParameterList.Size = new System.Drawing.Size(487, 639);
-            this.gcDayParameterList.TabIndex = 0;
-            this.gcDayParameterList.Text = "Day Parameter List";
-            // 
-            // gridDayParameters
-            // 
-            this.gridDayParameters.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridDayParameters.Location = new System.Drawing.Point(2, 21);
-            this.gridDayParameters.MainView = this.gvDayParameters;
-            this.gridDayParameters.Name = "gridDayParameters";
-            this.gridDayParameters.Size = new System.Drawing.Size(483, 616);
-            this.gridDayParameters.TabIndex = 0;
-            this.gridDayParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gvDayParameters});
-            // 
-            // gvDayParameters
-            // 
-            this.gvDayParameters.GridControl = this.gridDayParameters;
-            this.gvDayParameters.Name = "gvDayParameters";
-            this.gvDayParameters.OptionsView.ShowGroupPanel = false;
-            this.gvDayParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvDayParameters_FocusedRowChanged);
-            // 
-            // tabNavSymbolParameters
-            // 
-            this.tabNavSymbolParameters.Caption = "Symbol Parameters";
-            this.tabNavSymbolParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavSymbolParameters.ImageOptions.Image")));
-            this.tabNavSymbolParameters.Name = "tabNavSymbolParameters";
-            this.tabNavSymbolParameters.Size = new System.Drawing.Size(797, 639);
-            // 
             // groupControl1
             // 
             this.groupControl1.Controls.Add(this.lblResult);
@@ -167,161 +112,6 @@ namespace DevExpressUI
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
-            // tablePanel1
-            // 
-            this.tablePanel1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
-            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 13.1F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 49.61F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 82.57F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 14.72F)});
-            this.tablePanel1.Controls.Add(this.lblKlineCount);
-            this.tablePanel1.Controls.Add(this.tbxDayCount);
-            this.tablePanel1.Controls.Add(this.cbxInterval);
-            this.tablePanel1.Controls.Add(this.cbxMarket);
-            this.tablePanel1.Controls.Add(this.lblIdNo);
-            this.tablePanel1.Controls.Add(this.lblKlineCountLabel);
-            this.tablePanel1.Controls.Add(this.lblDayCountLabel);
-            this.tablePanel1.Controls.Add(this.lblMarket);
-            this.tablePanel1.Controls.Add(this.lblIntervalLabel);
-            this.tablePanel1.Controls.Add(this.lblIdLabel);
-            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
-            this.tablePanel1.Name = "tablePanel1";
-            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(300, 528);
-            this.tablePanel1.TabIndex = 2;
-            // 
-            // lblKlineCount
-            // 
-            this.tablePanel1.SetColumn(this.lblKlineCount, 2);
-            this.lblKlineCount.Location = new System.Drawing.Point(121, 177);
-            this.lblKlineCount.Name = "lblKlineCount";
-            this.tablePanel1.SetRow(this.lblKlineCount, 5);
-            this.lblKlineCount.Size = new System.Drawing.Size(0, 18);
-            this.lblKlineCount.TabIndex = 9;
-            this.lblKlineCount.UseMnemonic = false;
-            // 
-            // tbxDayCount
-            // 
-            this.tablePanel1.SetColumn(this.tbxDayCount, 2);
-            this.tbxDayCount.Location = new System.Drawing.Point(121, 141);
-            this.tbxDayCount.Name = "tbxDayCount";
-            this.tablePanel1.SetRow(this.tbxDayCount, 4);
-            this.tbxDayCount.Size = new System.Drawing.Size(149, 24);
-            this.tbxDayCount.TabIndex = 8;
-            // 
-            // cbxInterval
-            // 
-            this.tablePanel1.SetColumn(this.cbxInterval, 2);
-            this.cbxInterval.EditValue = "";
-            this.cbxInterval.Location = new System.Drawing.Point(121, 80);
-            this.cbxInterval.Name = "cbxInterval";
-            this.cbxInterval.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbxInterval.Properties.Items.AddRange(new object[] {
-            "OneMonth",
-            "OneWeek",
-            "ThreeDay",
-            "OneDay",
-            "TwelveHour",
-            "EightHour",
-            "SixHour",
-            "FourHour",
-            "TwoHour",
-            "OneHour",
-            "ThirtyMinutes",
-            "FifteenMinutes",
-            "FiveMinutes",
-            "ThreeMinutes",
-            "OneMinute"});
-            this.tablePanel1.SetRow(this.cbxInterval, 2);
-            this.cbxInterval.Size = new System.Drawing.Size(149, 24);
-            this.cbxInterval.TabIndex = 7;
-            // 
-            // cbxMarket
-            // 
-            this.tablePanel1.SetColumn(this.cbxMarket, 2);
-            this.cbxMarket.EditValue = "";
-            this.cbxMarket.Location = new System.Drawing.Point(121, 110);
-            this.cbxMarket.Name = "cbxMarket";
-            this.cbxMarket.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbxMarket.Properties.Items.AddRange(new object[] {
-            "FuturesUsdt",
-            "Spot"});
-            this.tablePanel1.SetRow(this.cbxMarket, 3);
-            this.cbxMarket.Size = new System.Drawing.Size(149, 24);
-            this.cbxMarket.TabIndex = 6;
-            // 
-            // lblIdNo
-            // 
-            this.tablePanel1.SetColumn(this.lblIdNo, 2);
-            this.lblIdNo.Location = new System.Drawing.Point(121, 51);
-            this.lblIdNo.Name = "lblIdNo";
-            this.tablePanel1.SetRow(this.lblIdNo, 1);
-            this.lblIdNo.Size = new System.Drawing.Size(0, 18);
-            this.lblIdNo.TabIndex = 5;
-            this.lblIdNo.UseMnemonic = false;
-            // 
-            // lblKlineCountLabel
-            // 
-            this.tablePanel1.SetColumn(this.lblKlineCountLabel, 1);
-            this.lblKlineCountLabel.Location = new System.Drawing.Point(28, 177);
-            this.lblKlineCountLabel.Name = "lblKlineCountLabel";
-            this.tablePanel1.SetRow(this.lblKlineCountLabel, 5);
-            this.lblKlineCountLabel.Size = new System.Drawing.Size(77, 18);
-            this.lblKlineCountLabel.TabIndex = 4;
-            this.lblKlineCountLabel.Text = "Kline Count:";
-            // 
-            // lblDayCountLabel
-            // 
-            this.tablePanel1.SetColumn(this.lblDayCountLabel, 1);
-            this.lblDayCountLabel.Location = new System.Drawing.Point(28, 144);
-            this.lblDayCountLabel.Name = "lblDayCountLabel";
-            this.tablePanel1.SetRow(this.lblDayCountLabel, 4);
-            this.lblDayCountLabel.Size = new System.Drawing.Size(74, 18);
-            this.lblDayCountLabel.TabIndex = 3;
-            this.lblDayCountLabel.Text = "Day Count:";
-            // 
-            // lblMarket
-            // 
-            this.tablePanel1.SetColumn(this.lblMarket, 1);
-            this.lblMarket.Location = new System.Drawing.Point(28, 113);
-            this.lblMarket.Name = "lblMarket";
-            this.tablePanel1.SetRow(this.lblMarket, 3);
-            this.lblMarket.Size = new System.Drawing.Size(50, 18);
-            this.lblMarket.TabIndex = 2;
-            this.lblMarket.Text = "Market:";
-            // 
-            // lblIntervalLabel
-            // 
-            this.tablePanel1.SetColumn(this.lblIntervalLabel, 1);
-            this.lblIntervalLabel.Location = new System.Drawing.Point(28, 83);
-            this.lblIntervalLabel.Name = "lblIntervalLabel";
-            this.tablePanel1.SetRow(this.lblIntervalLabel, 2);
-            this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
-            this.lblIntervalLabel.TabIndex = 1;
-            this.lblIntervalLabel.Text = "Interval:";
-            // 
-            // lblIdLabel
-            // 
-            this.tablePanel1.SetColumn(this.lblIdLabel, 1);
-            this.lblIdLabel.Location = new System.Drawing.Point(28, 51);
-            this.lblIdLabel.Name = "lblIdLabel";
-            this.tablePanel1.SetRow(this.lblIdLabel, 1);
-            this.lblIdLabel.Size = new System.Drawing.Size(19, 18);
-            this.lblIdLabel.TabIndex = 0;
-            this.lblIdLabel.Text = "Id:";
-            this.lblIdLabel.UseMnemonic = false;
-            // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -333,7 +123,7 @@ namespace DevExpressUI
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(84, 34);
             this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Add";
+            this.btnAdd.Text = "Save";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnDelete
@@ -372,6 +162,213 @@ namespace DevExpressUI
             this.lblResult.TabIndex = 3;
             this.lblResult.UseMnemonic = false;
             // 
+            // tablePanel1
+            // 
+            this.tablePanel1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 13.1F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 49.61F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 82.57F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 14.72F)});
+            this.tablePanel1.Controls.Add(this.lblKlineCount);
+            this.tablePanel1.Controls.Add(this.tbxDayCount);
+            this.tablePanel1.Controls.Add(this.cbxInterval);
+            this.tablePanel1.Controls.Add(this.cbxMarket);
+            this.tablePanel1.Controls.Add(this.lblIdNo);
+            this.tablePanel1.Controls.Add(this.lblKlineCountLabel);
+            this.tablePanel1.Controls.Add(this.lblDayCountLabel);
+            this.tablePanel1.Controls.Add(this.lblMarket);
+            this.tablePanel1.Controls.Add(this.lblIntervalLabel);
+            this.tablePanel1.Controls.Add(this.lblIdLabel);
+            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
+            this.tablePanel1.Name = "tablePanel1";
+            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel1.Size = new System.Drawing.Size(300, 528);
+            this.tablePanel1.TabIndex = 2;
+            // 
+            // lblIdLabel
+            // 
+            this.tablePanel1.SetColumn(this.lblIdLabel, 1);
+            this.lblIdLabel.Location = new System.Drawing.Point(28, 51);
+            this.lblIdLabel.Name = "lblIdLabel";
+            this.tablePanel1.SetRow(this.lblIdLabel, 1);
+            this.lblIdLabel.Size = new System.Drawing.Size(19, 18);
+            this.lblIdLabel.TabIndex = 0;
+            this.lblIdLabel.Text = "Id:";
+            this.lblIdLabel.UseMnemonic = false;
+            // 
+            // lblIntervalLabel
+            // 
+            this.tablePanel1.SetColumn(this.lblIntervalLabel, 1);
+            this.lblIntervalLabel.Location = new System.Drawing.Point(28, 83);
+            this.lblIntervalLabel.Name = "lblIntervalLabel";
+            this.tablePanel1.SetRow(this.lblIntervalLabel, 2);
+            this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
+            this.lblIntervalLabel.TabIndex = 1;
+            this.lblIntervalLabel.Text = "Interval:";
+            // 
+            // lblMarket
+            // 
+            this.tablePanel1.SetColumn(this.lblMarket, 1);
+            this.lblMarket.Location = new System.Drawing.Point(28, 113);
+            this.lblMarket.Name = "lblMarket";
+            this.tablePanel1.SetRow(this.lblMarket, 3);
+            this.lblMarket.Size = new System.Drawing.Size(50, 18);
+            this.lblMarket.TabIndex = 2;
+            this.lblMarket.Text = "Market:";
+            // 
+            // lblDayCountLabel
+            // 
+            this.tablePanel1.SetColumn(this.lblDayCountLabel, 1);
+            this.lblDayCountLabel.Location = new System.Drawing.Point(28, 144);
+            this.lblDayCountLabel.Name = "lblDayCountLabel";
+            this.tablePanel1.SetRow(this.lblDayCountLabel, 4);
+            this.lblDayCountLabel.Size = new System.Drawing.Size(74, 18);
+            this.lblDayCountLabel.TabIndex = 3;
+            this.lblDayCountLabel.Text = "Day Count:";
+            // 
+            // lblKlineCountLabel
+            // 
+            this.tablePanel1.SetColumn(this.lblKlineCountLabel, 1);
+            this.lblKlineCountLabel.Location = new System.Drawing.Point(28, 177);
+            this.lblKlineCountLabel.Name = "lblKlineCountLabel";
+            this.tablePanel1.SetRow(this.lblKlineCountLabel, 5);
+            this.lblKlineCountLabel.Size = new System.Drawing.Size(77, 18);
+            this.lblKlineCountLabel.TabIndex = 4;
+            this.lblKlineCountLabel.Text = "Kline Count:";
+            // 
+            // lblIdNo
+            // 
+            this.tablePanel1.SetColumn(this.lblIdNo, 2);
+            this.lblIdNo.Location = new System.Drawing.Point(121, 51);
+            this.lblIdNo.Name = "lblIdNo";
+            this.tablePanel1.SetRow(this.lblIdNo, 1);
+            this.lblIdNo.Size = new System.Drawing.Size(0, 18);
+            this.lblIdNo.TabIndex = 5;
+            this.lblIdNo.UseMnemonic = false;
+            // 
+            // cbxMarket
+            // 
+            this.tablePanel1.SetColumn(this.cbxMarket, 2);
+            this.cbxMarket.EditValue = "";
+            this.cbxMarket.Location = new System.Drawing.Point(121, 110);
+            this.cbxMarket.Name = "cbxMarket";
+            this.cbxMarket.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbxMarket.Properties.Items.AddRange(new object[] {
+            "FuturesUsdt",
+            "Spot"});
+            this.tablePanel1.SetRow(this.cbxMarket, 3);
+            this.cbxMarket.Size = new System.Drawing.Size(149, 24);
+            this.cbxMarket.TabIndex = 6;
+            // 
+            // cbxInterval
+            // 
+            this.tablePanel1.SetColumn(this.cbxInterval, 2);
+            this.cbxInterval.EditValue = "";
+            this.cbxInterval.Location = new System.Drawing.Point(121, 80);
+            this.cbxInterval.Name = "cbxInterval";
+            this.cbxInterval.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbxInterval.Properties.Items.AddRange(new object[] {
+            "OneMonth",
+            "OneWeek",
+            "ThreeDay",
+            "OneDay",
+            "TwelveHour",
+            "EightHour",
+            "SixHour",
+            "FourHour",
+            "TwoHour",
+            "OneHour",
+            "ThirtyMinutes",
+            "FifteenMinutes",
+            "FiveMinutes",
+            "ThreeMinutes",
+            "OneMinute"});
+            this.tablePanel1.SetRow(this.cbxInterval, 2);
+            this.cbxInterval.Size = new System.Drawing.Size(149, 24);
+            this.cbxInterval.TabIndex = 7;
+            // 
+            // tbxDayCount
+            // 
+            this.tablePanel1.SetColumn(this.tbxDayCount, 2);
+            this.tbxDayCount.Location = new System.Drawing.Point(121, 141);
+            this.tbxDayCount.Name = "tbxDayCount";
+            this.tablePanel1.SetRow(this.tbxDayCount, 4);
+            this.tbxDayCount.Size = new System.Drawing.Size(149, 24);
+            this.tbxDayCount.TabIndex = 8;
+            // 
+            // lblKlineCount
+            // 
+            this.tablePanel1.SetColumn(this.lblKlineCount, 2);
+            this.lblKlineCount.Location = new System.Drawing.Point(121, 177);
+            this.lblKlineCount.Name = "lblKlineCount";
+            this.tablePanel1.SetRow(this.lblKlineCount, 5);
+            this.lblKlineCount.Size = new System.Drawing.Size(0, 18);
+            this.lblKlineCount.TabIndex = 9;
+            this.lblKlineCount.UseMnemonic = false;
+            // 
+            // gcDayParameterList
+            // 
+            this.gcDayParameterList.Appearance.Options.UseTextOptions = true;
+            this.gcDayParameterList.AppearanceCaption.Options.UseTextOptions = true;
+            this.gcDayParameterList.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcDayParameterList.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("gcDayParameterList.CaptionImageOptions.Image")));
+            this.gcDayParameterList.Controls.Add(this.gridDayParameters);
+            this.gcDayParameterList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gcDayParameterList.Location = new System.Drawing.Point(0, 0);
+            this.gcDayParameterList.Name = "gcDayParameterList";
+            this.gcDayParameterList.Size = new System.Drawing.Size(487, 639);
+            this.gcDayParameterList.TabIndex = 0;
+            this.gcDayParameterList.Text = "Day Parameter List";
+            // 
+            // gridDayParameters
+            // 
+            this.gridDayParameters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridDayParameters.Location = new System.Drawing.Point(2, 21);
+            this.gridDayParameters.MainView = this.gvDayParameters;
+            this.gridDayParameters.Name = "gridDayParameters";
+            this.gridDayParameters.Size = new System.Drawing.Size(483, 616);
+            this.gridDayParameters.TabIndex = 0;
+            this.gridDayParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gvDayParameters});
+            // 
+            // gridView1
+            // 
+            this.gridView1.GridControl = this.gridDayParameters;
+            this.gridView1.Name = "gridView1";
+            // 
+            // gvDayParameters
+            // 
+            this.gvDayParameters.GridControl = this.gridDayParameters;
+            this.gvDayParameters.Name = "gvDayParameters";
+            this.gvDayParameters.OptionsView.ShowGroupPanel = false;
+            this.gvDayParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvDayParameters_FocusedRowChanged);
+            // 
+            // tabPaneParameters
+            // 
+            this.tabPaneParameters.Controls.Add(this.tabNavDayParameters);
+            this.tabPaneParameters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabPaneParameters.Location = new System.Drawing.Point(0, 0);
+            this.tabPaneParameters.Name = "tabPaneParameters";
+            this.tabPaneParameters.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabPaneParameters.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
+            this.tabNavDayParameters});
+            this.tabPaneParameters.RegularSize = new System.Drawing.Size(797, 665);
+            this.tabPaneParameters.SelectedPage = this.tabNavDayParameters;
+            this.tabPaneParameters.Size = new System.Drawing.Size(797, 665);
+            this.tabPaneParameters.TabIndex = 0;
+            this.tabPaneParameters.Text = "tabPane1";
+            // 
             // KlineParametersUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -380,33 +377,32 @@ namespace DevExpressUI
             this.Name = "KlineParametersUC";
             this.Size = new System.Drawing.Size(797, 665);
             this.Load += new System.EventHandler(this.ParametersUC_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.tabPaneParameters)).EndInit();
-            this.tabPaneParameters.ResumeLayout(false);
             this.tabNavDayParameters.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).EndInit();
             this.splitContainerControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gcDayParameterList)).EndInit();
-            this.gcDayParameterList.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvDayParameters)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxDayCount.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbxInterval.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxMarket.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxInterval.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxDayCount.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcDayParameterList)).EndInit();
+            this.gcDayParameterList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDayParameters)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabPaneParameters)).EndInit();
+            this.tabPaneParameters.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private DevExpress.XtraBars.Navigation.TabPane tabPaneParameters;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavDayParameters;
-        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavSymbolParameters;
         private DevExpress.XtraEditors.SplitContainerControl splitContainerControl1;
         private DevExpress.XtraEditors.GroupControl gcDayParameterList;
         private DevExpress.XtraGrid.GridControl gridDayParameters;
@@ -423,9 +419,11 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.LabelControl lblIntervalLabel;
         private DevExpress.XtraEditors.LabelControl lblIdLabel;
         private DevExpress.XtraEditors.GroupControl groupControl1;
+        private DevExpress.XtraEditors.LabelControl lblResult;
         private DevExpress.XtraEditors.SimpleButton btnNew;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
         private DevExpress.XtraEditors.SimpleButton btnAdd;
-        private DevExpress.XtraEditors.LabelControl lblResult;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraBars.Navigation.TabPane tabPaneParameters;
     }
 }

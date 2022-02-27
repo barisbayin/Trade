@@ -20,8 +20,11 @@ namespace Business.DependencyResolvers
             builder.RegisterType<BinanceSocketClient>().As<IBinanceSocketClient>().SingleInstance();
             builder.RegisterType<EfBinanceFuturesUsdtKlineDal>().As<IBinanceFuturesUsdtKlineDal>().SingleInstance();
             builder.RegisterType<BinanceCommonDatabaseParameterManager>().As<IBinanceCommonDatabaseParameterService>().SingleInstance();
-
             builder.RegisterType<EfBinanceCommonDatabaseParameterDal>().As<IBinanceCommonDatabaseParameterDal>().SingleInstance();
+            builder.RegisterType<ApiInformationManager>().As<IApiInformationService>().SingleInstance();
+            builder.RegisterType<EfApiInformationDal>().As<IApiInformationDal>().SingleInstance();
+
+            
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

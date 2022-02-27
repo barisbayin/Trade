@@ -18,5 +18,8 @@ namespace Core.Costants.Messages
         public static string Error = "An error occurred!";
         public static string Added = "Added!";
         public static string Updated="Updated!";
+        public static string EnterAllRequiredParameters= "Enter all required parameters!";
+        public static string NoData="There is no data!";
+        public static string IsAlreadyRemoved = "Is already Removed!";
     }
 }

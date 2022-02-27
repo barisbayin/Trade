@@ -36,9 +36,11 @@ namespace DevExpressUI
             this.aceTradeMonitor = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceTradeParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceKlineParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.aceApiManagement = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.aceIndicatorParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.aceKilnes = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
-            this.accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
@@ -59,7 +61,9 @@ namespace DevExpressUI
             this.aceTradeMonitor,
             this.aceTradeParameters,
             this.aceKlineParameters,
-            this.accordionControlElement1});
+            this.aceApiManagement,
+            this.aceIndicatorParameters,
+            this.aceKilnes});
             this.accordionControl1.Location = new System.Drawing.Point(0, 20);
             this.accordionControl1.Name = "accordionControl1";
             this.accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Hidden;
@@ -89,6 +93,27 @@ namespace DevExpressUI
             this.aceKlineParameters.Text = "Kline Parameters";
             this.aceKlineParameters.Click += new System.EventHandler(this.aceParameters_Click);
             // 
+            // aceApiManagement
+            // 
+            this.aceApiManagement.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceApiManagement.ImageOptions.Image")));
+            this.aceApiManagement.Name = "aceApiManagement";
+            this.aceApiManagement.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.aceApiManagement.Text = "Api Management";
+            this.aceApiManagement.Click += new System.EventHandler(this.aceApiManagement_Click);
+            // 
+            // aceIndicatorParameters
+            // 
+            this.aceIndicatorParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceIndicatorParameters.ImageOptions.Image")));
+            this.aceIndicatorParameters.Name = "aceIndicatorParameters";
+            this.aceIndicatorParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.aceIndicatorParameters.Text = "Indicator Parameters";
+            // 
+            // aceKilnes
+            // 
+            this.aceKilnes.Name = "aceKilnes";
+            this.aceKilnes.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.aceKilnes.Text = "Element2";
+            // 
             // fluentDesignFormControl1
             // 
             this.fluentDesignFormControl1.FluentDesignForm = this;
@@ -103,17 +128,6 @@ namespace DevExpressUI
             // 
             this.fluentFormDefaultManager1.DockingEnabled = false;
             this.fluentFormDefaultManager1.Form = this;
-            // 
-            // accordionControlElement1
-            // 
-            this.accordionControlElement1.HeaderTemplate.AddRange(new DevExpress.XtraBars.Navigation.HeaderElementInfo[] {
-            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.Text),
-            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.Image),
-            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.HeaderControl),
-            new DevExpress.XtraBars.Navigation.HeaderElementInfo(DevExpress.XtraBars.Navigation.HeaderElementType.ContextButtons)});
-            this.accordionControlElement1.Name = "accordionControlElement1";
-            this.accordionControlElement1.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accordionControlElement1.Text = "Element1";
             // 
             // MainFrom
             // 
@@ -144,7 +158,9 @@ namespace DevExpressUI
         private DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager fluentFormDefaultManager1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceTradeMonitor;
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceTradeParameters;
-        private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement1;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement aceApiManagement;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement aceIndicatorParameters;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement aceKilnes;
     }
 }
 

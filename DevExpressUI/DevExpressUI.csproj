@@ -192,6 +192,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiManagementUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ApiManagementUC.Designer.cs">
+      <DependentUpon>ApiManagementUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFrom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,6 +212,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ApiManagementUC.resx">
+      <DependentUpon>ApiManagementUC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainFrom.resx">
       <DependentUpon>MainFrom.cs</DependentUpon>
     </EmbeddedResource>
