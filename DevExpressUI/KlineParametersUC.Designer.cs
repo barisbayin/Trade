@@ -140,10 +140,10 @@ namespace DevExpressUI
             // 
             this.tablePanel1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 13.1F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 49.61F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 82.57F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 14.72F)});
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.86F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 53.85F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 87.34F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.95F)});
             this.tablePanel1.Controls.Add(this.lblKlineCount);
             this.tablePanel1.Controls.Add(this.tbxDayCount);
             this.tablePanel1.Controls.Add(this.cbxInterval);
@@ -184,7 +184,7 @@ namespace DevExpressUI
             this.tbxDayCount.Location = new System.Drawing.Point(121, 141);
             this.tbxDayCount.Name = "tbxDayCount";
             this.tablePanel1.SetRow(this.tbxDayCount, 4);
-            this.tbxDayCount.Size = new System.Drawing.Size(149, 24);
+            this.tbxDayCount.Size = new System.Drawing.Size(158, 24);
             this.tbxDayCount.TabIndex = 8;
             // 
             // cbxInterval
@@ -212,7 +212,7 @@ namespace DevExpressUI
             "ThreeMinutes",
             "OneMinute"});
             this.tablePanel1.SetRow(this.cbxInterval, 2);
-            this.cbxInterval.Size = new System.Drawing.Size(149, 24);
+            this.cbxInterval.Size = new System.Drawing.Size(158, 24);
             this.cbxInterval.TabIndex = 7;
             // 
             // cbxMarket
@@ -227,7 +227,7 @@ namespace DevExpressUI
             "FuturesUsdt",
             "Spot"});
             this.tablePanel1.SetRow(this.cbxMarket, 3);
-            this.cbxMarket.Size = new System.Drawing.Size(149, 24);
+            this.cbxMarket.Size = new System.Drawing.Size(158, 24);
             this.cbxMarket.TabIndex = 6;
             // 
             // lblIdNo
@@ -243,7 +243,7 @@ namespace DevExpressUI
             // lblKlineCountLabel
             // 
             this.tablePanel1.SetColumn(this.lblKlineCountLabel, 1);
-            this.lblKlineCountLabel.Location = new System.Drawing.Point(28, 177);
+            this.lblKlineCountLabel.Location = new System.Drawing.Point(20, 177);
             this.lblKlineCountLabel.Name = "lblKlineCountLabel";
             this.tablePanel1.SetRow(this.lblKlineCountLabel, 5);
             this.lblKlineCountLabel.Size = new System.Drawing.Size(77, 18);
@@ -253,7 +253,7 @@ namespace DevExpressUI
             // lblDayCountLabel
             // 
             this.tablePanel1.SetColumn(this.lblDayCountLabel, 1);
-            this.lblDayCountLabel.Location = new System.Drawing.Point(28, 144);
+            this.lblDayCountLabel.Location = new System.Drawing.Point(20, 144);
             this.lblDayCountLabel.Name = "lblDayCountLabel";
             this.tablePanel1.SetRow(this.lblDayCountLabel, 4);
             this.lblDayCountLabel.Size = new System.Drawing.Size(74, 18);
@@ -263,7 +263,7 @@ namespace DevExpressUI
             // lblMarket
             // 
             this.tablePanel1.SetColumn(this.lblMarket, 1);
-            this.lblMarket.Location = new System.Drawing.Point(28, 113);
+            this.lblMarket.Location = new System.Drawing.Point(20, 113);
             this.lblMarket.Name = "lblMarket";
             this.tablePanel1.SetRow(this.lblMarket, 3);
             this.lblMarket.Size = new System.Drawing.Size(50, 18);
@@ -273,7 +273,7 @@ namespace DevExpressUI
             // lblIntervalLabel
             // 
             this.tablePanel1.SetColumn(this.lblIntervalLabel, 1);
-            this.lblIntervalLabel.Location = new System.Drawing.Point(28, 83);
+            this.lblIntervalLabel.Location = new System.Drawing.Point(20, 83);
             this.lblIntervalLabel.Name = "lblIntervalLabel";
             this.tablePanel1.SetRow(this.lblIntervalLabel, 2);
             this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
@@ -283,7 +283,7 @@ namespace DevExpressUI
             // lblIdLabel
             // 
             this.tablePanel1.SetColumn(this.lblIdLabel, 1);
-            this.lblIdLabel.Location = new System.Drawing.Point(28, 51);
+            this.lblIdLabel.Location = new System.Drawing.Point(20, 51);
             this.lblIdLabel.Name = "lblIdLabel";
             this.tablePanel1.SetRow(this.lblIdLabel, 1);
             this.lblIdLabel.Size = new System.Drawing.Size(19, 18);

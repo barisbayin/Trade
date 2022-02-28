@@ -51,7 +51,7 @@ namespace DevExpressUI
             this.mainFormContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainFormContainer.Location = new System.Drawing.Point(231, 20);
             this.mainFormContainer.Name = "mainFormContainer";
-            this.mainFormContainer.Size = new System.Drawing.Size(861, 600);
+            this.mainFormContainer.Size = new System.Drawing.Size(861, 748);
             this.mainFormContainer.TabIndex = 0;
             // 
             // accordionControl1
@@ -67,7 +67,7 @@ namespace DevExpressUI
             this.accordionControl1.Location = new System.Drawing.Point(0, 20);
             this.accordionControl1.Name = "accordionControl1";
             this.accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Hidden;
-            this.accordionControl1.Size = new System.Drawing.Size(231, 600);
+            this.accordionControl1.Size = new System.Drawing.Size(231, 748);
             this.accordionControl1.TabIndex = 1;
             this.accordionControl1.ViewType = DevExpress.XtraBars.Navigation.AccordionControlViewType.HamburgerMenu;
             // 
@@ -134,7 +134,7 @@ namespace DevExpressUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1092, 620);
+            this.ClientSize = new System.Drawing.Size(1092, 768);
             this.ControlContainer = this.mainFormContainer;
             this.Controls.Add(this.mainFormContainer);
             this.Controls.Add(this.accordionControl1);
@@ -143,7 +143,7 @@ namespace DevExpressUI
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("MainFrom.IconOptions.SvgImage")));
             this.Name = "MainFrom";
             this.NavigationControl = this.accordionControl1;
-            this.Text = "Control Panel";
+            this.Text = "Algo Trade Master";
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).EndInit();
