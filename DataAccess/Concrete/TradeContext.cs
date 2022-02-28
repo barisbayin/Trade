@@ -16,7 +16,7 @@ namespace DataAccess.Concrete
         public DbSet<BinanceFuturesUsdtSymbolEntity> BinanceFuturesUsdtSymbolsEntity { get; set; }
         public DbSet<IndicatorEntity> Indicators { get; set; }
         public DbSet<IndicatorParameterEntity> IndicatorParameters { get; set; }
-        public DbSet<TradeFlowParameterEntity> IndicatorParametersEntity { get; set; }
+        public DbSet<TradeFlowParameterEntity> TradeFlowParametersEntity { get; set; }
         public DbSet<ApiInformationEntity> ApiInformations { get; set; }
     }
 }
