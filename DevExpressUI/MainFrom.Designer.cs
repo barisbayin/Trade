@@ -107,6 +107,7 @@ namespace DevExpressUI
             this.aceIndicatorParameters.Name = "aceIndicatorParameters";
             this.aceIndicatorParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.aceIndicatorParameters.Text = "Indicator Parameters";
+            this.aceIndicatorParameters.Click += new System.EventHandler(this.aceIndicatorParameters_Click);
             // 
             // aceKilnes
             // 

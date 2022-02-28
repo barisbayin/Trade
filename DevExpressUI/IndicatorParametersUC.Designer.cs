@@ -84,9 +84,9 @@ namespace DevExpressUI
             this.tabPaneIndicatorParameters.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabPaneIndicatorParameters.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabNavInicatorParameters});
-            this.tabPaneIndicatorParameters.RegularSize = new System.Drawing.Size(860, 818);
+            this.tabPaneIndicatorParameters.RegularSize = new System.Drawing.Size(1011, 761);
             this.tabPaneIndicatorParameters.SelectedPage = this.tabNavInicatorParameters;
-            this.tabPaneIndicatorParameters.Size = new System.Drawing.Size(860, 818);
+            this.tabPaneIndicatorParameters.Size = new System.Drawing.Size(1011, 761);
             this.tabPaneIndicatorParameters.TabIndex = 2;
             this.tabPaneIndicatorParameters.Text = "tpaneApiManagement";
             // 
@@ -94,11 +94,11 @@ namespace DevExpressUI
             // 
             this.tabNavInicatorParameters.Caption = "Indicator Parameters";
             this.tabNavInicatorParameters.Controls.Add(this.splitContainerControl1);
-            this.tabNavInicatorParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavApiManagement.ImageOptions.Image")));
+            this.tabNavInicatorParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavInicatorParameters.ImageOptions.Image")));
             this.tabNavInicatorParameters.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavInicatorParameters.Name = "tabNavInicatorParameters";
             this.tabNavInicatorParameters.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
-            this.tabNavInicatorParameters.Size = new System.Drawing.Size(860, 792);
+            this.tabNavInicatorParameters.Size = new System.Drawing.Size(1011, 735);
             // 
             // splitContainerControl1
             // 
@@ -112,7 +112,7 @@ namespace DevExpressUI
             this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
             this.splitContainerControl1.Panel2.MinSize = 300;
             this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(688, 634);
+            this.splitContainerControl1.Size = new System.Drawing.Size(1011, 735);
             this.splitContainerControl1.SplitterPosition = 300;
             this.splitContainerControl1.TabIndex = 0;
             // 
@@ -121,12 +121,12 @@ namespace DevExpressUI
             this.gcIndicatorParamaters.Appearance.Options.UseTextOptions = true;
             this.gcIndicatorParamaters.AppearanceCaption.Options.UseTextOptions = true;
             this.gcIndicatorParamaters.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gcIndicatorParamaters.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("gcApiManagment.CaptionImageOptions.Image")));
+            this.gcIndicatorParamaters.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("gcIndicatorParamaters.CaptionImageOptions.Image")));
             this.gcIndicatorParamaters.Controls.Add(this.gridIndicatorParameters);
             this.gcIndicatorParamaters.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcIndicatorParamaters.Location = new System.Drawing.Point(0, 0);
             this.gcIndicatorParamaters.Name = "gcIndicatorParamaters";
-            this.gcIndicatorParamaters.Size = new System.Drawing.Size(378, 634);
+            this.gcIndicatorParamaters.Size = new System.Drawing.Size(701, 735);
             this.gcIndicatorParamaters.TabIndex = 0;
             this.gcIndicatorParamaters.Text = "Indicator Parameter List";
             // 
@@ -136,7 +136,7 @@ namespace DevExpressUI
             this.gridIndicatorParameters.Location = new System.Drawing.Point(2, 21);
             this.gridIndicatorParameters.MainView = this.gvIndicatorParameters;
             this.gridIndicatorParameters.Name = "gridIndicatorParameters";
-            this.gridIndicatorParameters.Size = new System.Drawing.Size(374, 611);
+            this.gridIndicatorParameters.Size = new System.Drawing.Size(697, 712);
             this.gridIndicatorParameters.TabIndex = 0;
             this.gridIndicatorParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvIndicatorParameters});
@@ -181,7 +181,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tpEntries.Size = new System.Drawing.Size(300, 545);
+            this.tpEntries.Size = new System.Drawing.Size(300, 624);
             this.tpEntries.TabIndex = 2;
             // 
             // chckShowDeleted
@@ -328,10 +328,10 @@ namespace DevExpressUI
             this.groupControl1.Controls.Add(this.btnDelete);
             this.groupControl1.Controls.Add(this.btnAdd);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl1.Location = new System.Drawing.Point(0, 545);
+            this.groupControl1.Location = new System.Drawing.Point(0, 624);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(300, 89);
+            this.groupControl1.Size = new System.Drawing.Size(300, 111);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
@@ -388,7 +388,7 @@ namespace DevExpressUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabPaneIndicatorParameters);
             this.Name = "IndicatorParametersUC";
-            this.Size = new System.Drawing.Size(860, 818);
+            this.Size = new System.Drawing.Size(1011, 761);
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneIndicatorParameters)).EndInit();
             this.tabPaneIndicatorParameters.ResumeLayout(false);
             this.tabNavInicatorParameters.ResumeLayout(false);

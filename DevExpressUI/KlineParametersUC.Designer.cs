@@ -35,6 +35,7 @@ namespace DevExpressUI
             this.gcDayParameterList = new DevExpress.XtraEditors.GroupControl();
             this.gridDayParameters = new DevExpress.XtraGrid.GridControl();
             this.gvDayParameters = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.lblKlineCount = new DevExpress.XtraEditors.LabelControl();
             this.tbxDayCount = new DevExpress.XtraEditors.TextEdit();
@@ -51,7 +52,6 @@ namespace DevExpressUI
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tabPaneParameters = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavDayParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).BeginInit();
@@ -60,6 +60,7 @@ namespace DevExpressUI
             this.gcDayParameterList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDayParameters)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbxDayCount.Properties)).BeginInit();
@@ -67,7 +68,6 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.cbxMarket.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneParameters)).BeginInit();
             this.tabPaneParameters.SuspendLayout();
             this.SuspendLayout();
@@ -80,7 +80,7 @@ namespace DevExpressUI
             this.tabNavDayParameters.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavDayParameters.Name = "tabNavDayParameters";
             this.tabNavDayParameters.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
-            this.tabNavDayParameters.Size = new System.Drawing.Size(797, 639);
+            this.tabNavDayParameters.Size = new System.Drawing.Size(1011, 735);
             // 
             // splitContainerControl1
             // 
@@ -94,7 +94,7 @@ namespace DevExpressUI
             this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
             this.splitContainerControl1.Panel2.MinSize = 300;
             this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(638, 511);
+            this.splitContainerControl1.Size = new System.Drawing.Size(1011, 735);
             this.splitContainerControl1.SplitterPosition = 300;
             this.splitContainerControl1.TabIndex = 0;
             // 
@@ -108,7 +108,7 @@ namespace DevExpressUI
             this.gcDayParameterList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcDayParameterList.Location = new System.Drawing.Point(0, 0);
             this.gcDayParameterList.Name = "gcDayParameterList";
-            this.gcDayParameterList.Size = new System.Drawing.Size(328, 511);
+            this.gcDayParameterList.Size = new System.Drawing.Size(701, 735);
             this.gcDayParameterList.TabIndex = 0;
             this.gcDayParameterList.Text = "Day Parameter List";
             // 
@@ -118,7 +118,7 @@ namespace DevExpressUI
             this.gridDayParameters.Location = new System.Drawing.Point(2, 21);
             this.gridDayParameters.MainView = this.gvDayParameters;
             this.gridDayParameters.Name = "gridDayParameters";
-            this.gridDayParameters.Size = new System.Drawing.Size(324, 488);
+            this.gridDayParameters.Size = new System.Drawing.Size(697, 712);
             this.gridDayParameters.TabIndex = 0;
             this.gridDayParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDayParameters,
@@ -130,6 +130,11 @@ namespace DevExpressUI
             this.gvDayParameters.Name = "gvDayParameters";
             this.gvDayParameters.OptionsView.ShowGroupPanel = false;
             this.gvDayParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvDayParameters_FocusedRowChanged);
+            // 
+            // gridView1
+            // 
+            this.gridView1.GridControl = this.gridDayParameters;
+            this.gridView1.Name = "gridView1";
             // 
             // tablePanel1
             // 
@@ -160,7 +165,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(300, 422);
+            this.tablePanel1.Size = new System.Drawing.Size(300, 624);
             this.tablePanel1.TabIndex = 2;
             // 
             // lblKlineCount
@@ -293,16 +298,16 @@ namespace DevExpressUI
             this.groupControl1.Controls.Add(this.btnDelete);
             this.groupControl1.Controls.Add(this.btnAdd);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl1.Location = new System.Drawing.Point(0, 422);
+            this.groupControl1.Location = new System.Drawing.Point(0, 624);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(300, 89);
+            this.groupControl1.Size = new System.Drawing.Size(300, 111);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
             // lblResult
             // 
-            this.lblResult.Location = new System.Drawing.Point(18, 72);
+            this.lblResult.Location = new System.Drawing.Point(29, 66);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(0, 18);
             this.lblResult.TabIndex = 3;
@@ -350,11 +355,6 @@ namespace DevExpressUI
             this.btnAdd.Text = "Save";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // gridView1
-            // 
-            this.gridView1.GridControl = this.gridDayParameters;
-            this.gridView1.Name = "gridView1";
-            // 
             // tabPaneParameters
             // 
             this.tabPaneParameters.Controls.Add(this.tabNavDayParameters);
@@ -364,9 +364,9 @@ namespace DevExpressUI
             this.tabPaneParameters.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabPaneParameters.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabNavDayParameters});
-            this.tabPaneParameters.RegularSize = new System.Drawing.Size(797, 665);
+            this.tabPaneParameters.RegularSize = new System.Drawing.Size(1011, 761);
             this.tabPaneParameters.SelectedPage = this.tabNavDayParameters;
-            this.tabPaneParameters.Size = new System.Drawing.Size(797, 665);
+            this.tabPaneParameters.Size = new System.Drawing.Size(1011, 761);
             this.tabPaneParameters.TabIndex = 0;
             this.tabPaneParameters.Text = "tabPane1";
             // 
@@ -376,7 +376,7 @@ namespace DevExpressUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabPaneParameters);
             this.Name = "KlineParametersUC";
-            this.Size = new System.Drawing.Size(797, 665);
+            this.Size = new System.Drawing.Size(1011, 761);
             this.Load += new System.EventHandler(this.ParametersUC_Load);
             this.tabNavDayParameters.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).EndInit();
@@ -385,6 +385,7 @@ namespace DevExpressUI
             this.gcDayParameterList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDayParameters)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
@@ -394,7 +395,6 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneParameters)).EndInit();
             this.tabPaneParameters.ResumeLayout(false);
             this.ResumeLayout(false);

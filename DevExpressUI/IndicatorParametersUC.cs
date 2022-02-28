@@ -17,7 +17,17 @@ namespace DevExpressUI
         {
             InitializeComponent();
         }
+        private static IndicatorParametersUC _indicatorParametersUC;
+        public static IndicatorParametersUC Instance
+        {
 
+            get
+            {
+                if (_indicatorParametersUC == null)
+                    _indicatorParametersUC = new IndicatorParametersUC();
+                return _indicatorParametersUC;
+            }
+        }
         private void chckShowDeleted_Properties_CheckStateChanged(object sender, EventArgs e)
         {
 

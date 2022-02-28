@@ -139,7 +139,7 @@ namespace DevExpressUI
             this.gridApiList.Location = new System.Drawing.Point(2, 21);
             this.gridApiList.MainView = this.gvApiList;
             this.gridApiList.Name = "gridApiList";
-            this.gridApiList.Size = new System.Drawing.Size(513, 695);
+            this.gridApiList.Size = new System.Drawing.Size(697, 712);
             this.gridApiList.TabIndex = 0;
             this.gridApiList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvApiList});
@@ -154,7 +154,7 @@ namespace DevExpressUI
             this.gcApiManagment.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcApiManagment.Location = new System.Drawing.Point(0, 0);
             this.gcApiManagment.Name = "gcApiManagment";
-            this.gcApiManagment.Size = new System.Drawing.Size(517, 718);
+            this.gcApiManagment.Size = new System.Drawing.Size(701, 735);
             this.gcApiManagment.TabIndex = 0;
             this.gcApiManagment.Text = "Api List";
             // 
@@ -170,7 +170,7 @@ namespace DevExpressUI
             this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
             this.splitContainerControl1.Panel2.MinSize = 300;
             this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(827, 718);
+            this.splitContainerControl1.Size = new System.Drawing.Size(1011, 735);
             this.splitContainerControl1.SplitterPosition = 300;
             this.splitContainerControl1.TabIndex = 0;
             // 
@@ -208,7 +208,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tpEntries.Size = new System.Drawing.Size(300, 607);
+            this.tpEntries.Size = new System.Drawing.Size(300, 624);
             this.tpEntries.TabIndex = 2;
             // 
             // chckShowDeleted
@@ -221,7 +221,7 @@ namespace DevExpressUI
             this.chckShowDeleted.Properties.Caption = "Show Deleted Api\'s";
             this.chckShowDeleted.Properties.CheckStateChanged += new System.EventHandler(this.chckShowDeleted_Properties_CheckStateChanged);
             this.tpEntries.SetRow(this.chckShowDeleted, 7);
-            this.chckShowDeleted.Size = new System.Drawing.Size(206, 16);
+            this.chckShowDeleted.Size = new System.Drawing.Size(258, 20);
             this.chckShowDeleted.TabIndex = 17;
             // 
             // lblCreationDate
@@ -355,7 +355,7 @@ namespace DevExpressUI
             this.groupControl1.Controls.Add(this.btnDelete);
             this.groupControl1.Controls.Add(this.btnAdd);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl1.Location = new System.Drawing.Point(0, 607);
+            this.groupControl1.Location = new System.Drawing.Point(0, 624);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
             this.groupControl1.Size = new System.Drawing.Size(300, 111);
@@ -370,7 +370,7 @@ namespace DevExpressUI
             this.tabNavApiManagement.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavApiManagement.Name = "tabNavApiManagement";
             this.tabNavApiManagement.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
-            this.tabNavApiManagement.Size = new System.Drawing.Size(827, 718);
+            this.tabNavApiManagement.Size = new System.Drawing.Size(1011, 735);
             // 
             // tabPaneParameters
             // 
@@ -381,9 +381,9 @@ namespace DevExpressUI
             this.tabPaneParameters.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabPaneParameters.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabNavApiManagement});
-            this.tabPaneParameters.RegularSize = new System.Drawing.Size(827, 744);
+            this.tabPaneParameters.RegularSize = new System.Drawing.Size(1011, 761);
             this.tabPaneParameters.SelectedPage = this.tabNavApiManagement;
-            this.tabPaneParameters.Size = new System.Drawing.Size(827, 744);
+            this.tabPaneParameters.Size = new System.Drawing.Size(1011, 761);
             this.tabPaneParameters.TabIndex = 1;
             this.tabPaneParameters.Text = "tpaneApiManagement";
             // 
@@ -393,7 +393,7 @@ namespace DevExpressUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabPaneParameters);
             this.Name = "ApiManagementUC";
-            this.Size = new System.Drawing.Size(827, 744);
+            this.Size = new System.Drawing.Size(1011, 761);
             this.Load += new System.EventHandler(this.ApiManagementUC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvApiList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridApiList)).EndInit();

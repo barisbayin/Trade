@@ -57,5 +57,24 @@ namespace DevExpressUI
                 ApiManagementUC.Instance.BringToFront();
             }));
         }
+
+        private async void aceIndicatorParameters_Click(object sender, EventArgs e)
+        {
+            await Task.Run((() =>
+            {
+                if (!mainFormContainer.Controls.Contains(IndicatorParametersUC.Instance))
+                {
+                    mainFormContainer.BeginInvoke(new Action(delegate ()
+                    {
+                        mainFormContainer.Controls.Add(IndicatorParametersUC.Instance);
+
+                        IndicatorParametersUC.Instance.Dock = DockStyle.Fill;
+                        IndicatorParametersUC.Instance.BringToFront();
+                    }));
+                }
+
+                IndicatorParametersUC.Instance.BringToFront();
+            }));
+        }
     }
 }
