@@ -35,9 +35,10 @@ namespace Business.Concrete
             return new SuccessDataResult<IndicatorParameterEntity>(await _indicatorParameterDal.GetAsync(x => x.Id == parameterId));
         }
 
-        public IDataResult<IndicatorParameterDto> GetIndicatorParametersDetails()
+        public IDataResult<List<IndicatorParameterDto>> GetIndicatorParameterDetails()
         {
             var result = _indicatorParameterDal.GetIndicatorParameterDetails();
+            return new SuccessDataResult<List<IndicatorParameterDto>>(result);
         }
     }
 }

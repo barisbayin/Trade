@@ -192,7 +192,6 @@ namespace DevExpressUI
             this.chckShowDeleted.Location = new System.Drawing.Point(21, 233);
             this.chckShowDeleted.Name = "chckShowDeleted";
             this.chckShowDeleted.Properties.Caption = "Show Deleted Api\'s";
-            this.chckShowDeleted.Properties.CheckStateChanged += new System.EventHandler(this.chckShowDeleted_Properties_CheckStateChanged);
             this.tpEntries.SetRow(this.chckShowDeleted, 7);
             this.chckShowDeleted.Size = new System.Drawing.Size(258, 20);
             this.chckShowDeleted.TabIndex = 17;
@@ -389,6 +388,7 @@ namespace DevExpressUI
             this.Controls.Add(this.tabPaneIndicatorParameters);
             this.Name = "IndicatorParametersUC";
             this.Size = new System.Drawing.Size(1011, 761);
+            this.Load += new System.EventHandler(this.IndicatorParametersUC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneIndicatorParameters)).EndInit();
             this.tabPaneIndicatorParameters.ResumeLayout(false);
             this.tabNavInicatorParameters.ResumeLayout(false);

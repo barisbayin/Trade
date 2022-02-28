@@ -17,7 +17,7 @@ namespace Entity.Concrete.Entities
         public decimal? Parameter3 { get; set; } = null;
         public decimal? Parameter4 { get; set; } = null;
         public decimal? Parameter5 { get; set; } = null;
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; } = null;
         public bool InUse { get; set; }
         public bool? Removed { get; set; } = null;
 

@@ -15,16 +15,16 @@ namespace DataAccess.Concrete
     {
         public List<IndicatorParameterDto> GetIndicatorParameterDetails()
         {
-
             using (TradeContext context = new TradeContext())
             {
                 var result = from ip in context.IndicatorParameters
                              join i in context.Indicators
-                                 on ip.IndicatorId equals i.Id where ip.Removed == null
+                                 on ip.IndicatorId equals i.Id
                              select new IndicatorParameterDto
                              {
                                  Id = ip.IndicatorId,
                                  IndicatorName = i.IndicatorName,
+                                 ParameterTitle = ip.ParameterTitle,
                                  Interval = ip.Interval,
                                  Period = ip.Period,
                                  Multiplier = ip.Multiplier,

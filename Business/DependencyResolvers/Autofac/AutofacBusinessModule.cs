@@ -23,8 +23,10 @@ namespace Business.DependencyResolvers
             builder.RegisterType<EfBinanceCommonDatabaseParameterDal>().As<IBinanceCommonDatabaseParameterDal>().SingleInstance();
             builder.RegisterType<ApiInformationManager>().As<IApiInformationService>().SingleInstance();
             builder.RegisterType<EfApiInformationDal>().As<IApiInformationDal>().SingleInstance();
+            builder.RegisterType<EfIndicatorParameterDal>().As<IIndicatorParameterDal>().SingleInstance();
+            builder.RegisterType<IndicatorParameterManager>().As<IIndicatorParameterService>().SingleInstance();
 
-            
+
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

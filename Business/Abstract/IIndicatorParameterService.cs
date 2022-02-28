@@ -15,6 +15,6 @@ namespace Business.Abstract
 
         IDataResult<IndicatorParameterEntity> GetIndicatorParameterDataById(string name);
         Task<IDataResult<IndicatorParameterEntity>> GetIndicatorParameterDataByIdAsync(int parameterId);
-        IDataResult<IndicatorParameterDto> GetIndicatorParametersDetails();
+        IDataResult<List<IndicatorParameterDto>> GetIndicatorParameterDetails();
     }
 }

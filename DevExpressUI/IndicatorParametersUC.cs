@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Business.Abstract;
+using Business.DependencyResolvers;
 
 namespace DevExpressUI
 {
@@ -16,7 +18,11 @@ namespace DevExpressUI
         public IndicatorParametersUC()
         {
             InitializeComponent();
+            _indicatorParameterService = AutofacInstanceFactory.GetInstance<IIndicatorParameterService>();
         }
+
+        private readonly IIndicatorParameterService _indicatorParameterService;
+
         private static IndicatorParametersUC _indicatorParametersUC;
         public static IndicatorParametersUC Instance
         {
@@ -28,9 +34,18 @@ namespace DevExpressUI
                 return _indicatorParametersUC;
             }
         }
-        private void chckShowDeleted_Properties_CheckStateChanged(object sender, EventArgs e)
-        {
 
+        private void IndicatorParametersUC_Load(object sender, EventArgs e)
+        {
+            LoadIndicatorParameterList();
         }
+
+        private void LoadIndicatorParameterList()
+        {
+            var result = _indicatorParameterService.GetIndicatorParameterDetails();
+            gridIndicatorParameters.DataSource = result.Data;
+        }
+
+
     }
 }

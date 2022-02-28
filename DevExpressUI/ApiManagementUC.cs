@@ -39,6 +39,16 @@ namespace DevExpressUI
         }
 
 
+        private void ApiManagementUC_Load(object sender, EventArgs e)
+        {
+            LoadApiList();
+            lblResult.ForeColor = Color.DarkRed;
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            ClearAll();
+        }
 
         private async void LoadApiList()
         {
@@ -53,17 +63,6 @@ namespace DevExpressUI
                 var result = (await _apiInformationService.GetAllApiInformation()).Data;
                 gridApiList.DataSource = result;
             }
-        }
-
-        private void ApiManagementUC_Load(object sender, EventArgs e)
-        {
-            LoadApiList();
-            lblResult.ForeColor = Color.DarkRed;
-        }
-
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            ClearAll();
         }
 
         private void ClearAll()
