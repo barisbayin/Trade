@@ -221,7 +221,7 @@ namespace DevExpressUI
             this.chckShowDeleted.Properties.Caption = "Show Deleted Api\'s";
             this.chckShowDeleted.Properties.CheckStateChanged += new System.EventHandler(this.chckShowDeleted_Properties_CheckStateChanged);
             this.tpEntries.SetRow(this.chckShowDeleted, 7);
-            this.chckShowDeleted.Size = new System.Drawing.Size(258, 20);
+            this.chckShowDeleted.Size = new System.Drawing.Size(206, 16);
             this.chckShowDeleted.TabIndex = 17;
             // 
             // lblCreationDate

@@ -112,7 +112,7 @@ namespace DevExpressUI
             this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
             this.splitContainerControl1.Panel2.MinSize = 300;
             this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(860, 792);
+            this.splitContainerControl1.Size = new System.Drawing.Size(688, 634);
             this.splitContainerControl1.SplitterPosition = 300;
             this.splitContainerControl1.TabIndex = 0;
             // 
@@ -126,7 +126,7 @@ namespace DevExpressUI
             this.gcIndicatorParamaters.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcIndicatorParamaters.Location = new System.Drawing.Point(0, 0);
             this.gcIndicatorParamaters.Name = "gcIndicatorParamaters";
-            this.gcIndicatorParamaters.Size = new System.Drawing.Size(550, 792);
+            this.gcIndicatorParamaters.Size = new System.Drawing.Size(378, 634);
             this.gcIndicatorParamaters.TabIndex = 0;
             this.gcIndicatorParamaters.Text = "Indicator Parameter List";
             // 
@@ -136,7 +136,7 @@ namespace DevExpressUI
             this.gridIndicatorParameters.Location = new System.Drawing.Point(2, 21);
             this.gridIndicatorParameters.MainView = this.gvIndicatorParameters;
             this.gridIndicatorParameters.Name = "gridIndicatorParameters";
-            this.gridIndicatorParameters.Size = new System.Drawing.Size(546, 769);
+            this.gridIndicatorParameters.Size = new System.Drawing.Size(374, 611);
             this.gridIndicatorParameters.TabIndex = 0;
             this.gridIndicatorParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvIndicatorParameters});
@@ -181,7 +181,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tpEntries.Size = new System.Drawing.Size(300, 681);
+            this.tpEntries.Size = new System.Drawing.Size(300, 545);
             this.tpEntries.TabIndex = 2;
             // 
             // chckShowDeleted
@@ -328,10 +328,10 @@ namespace DevExpressUI
             this.groupControl1.Controls.Add(this.btnDelete);
             this.groupControl1.Controls.Add(this.btnAdd);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl1.Location = new System.Drawing.Point(0, 681);
+            this.groupControl1.Location = new System.Drawing.Point(0, 545);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(300, 111);
+            this.groupControl1.Size = new System.Drawing.Size(300, 89);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
