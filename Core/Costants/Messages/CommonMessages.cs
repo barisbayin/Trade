@@ -21,5 +21,6 @@ namespace Core.Costants.Messages
         public static string EnterAllRequiredParameters= "Enter all required parameters!";
         public static string NoData="There is no data!";
         public static string IsAlreadyRemoved = "Is already Removed!";
+        public static string ChooseItem="Please choose an item!";
     }
 }

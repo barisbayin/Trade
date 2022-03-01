@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Business.Abstract;
 using Business.DependencyResolvers;
 using Castle.Core.Internal;
+using Core.Costants.Messages;
 using CryptoExchange.Net;
 using DevExpress.Utils.Extensions;
 
@@ -96,6 +97,32 @@ namespace DevExpressUI
             {
                 ClearAll();
             }
+        }
+
+        private async void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var id = Convert.ToInt32(lblIdNo.Text);
+                var result = await _indicatorParameterService.DeleteIndicatorParameterById(id);
+
+                if (result.Success)
+                {
+                    ClearAll();
+                    LoadIndicatorParameterList();
+                    lblResult.Text = "Id:" + id + " " + result.Message;
+                }
+                else
+                {
+                    lblResult.Text = CommonMessages.Error;
+                }
+            }
+            catch (Exception exception)
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+
+
         }
     }
 }

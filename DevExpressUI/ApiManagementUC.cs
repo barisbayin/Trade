@@ -94,30 +94,38 @@ namespace DevExpressUI
 
         private async void btnDelete_Click(object sender, EventArgs e)
         {
-            var id = Convert.ToInt32(lblIdNo.Text);
-            var isAlreadyRemoved = (await _apiInformationService.GetApiInformationById(id)).Data.IsRemoved;
-
-            if (isAlreadyRemoved)
+            try
             {
-                ClearAll();
-                LoadApiList();
-                lblResult.Text = "Id:" + id.ToString() + " " + CommonMessages.IsAlreadyRemoved;
-            }
-            else
-            {
-                var result = await _apiInformationService.DeleteApiInformationById(id);
+                var id = Convert.ToInt32(lblIdNo.Text);
+                var isAlreadyRemoved = (await _apiInformationService.GetApiInformationById(id)).Data.IsRemoved;
 
-                if (result.Success)
+                if (isAlreadyRemoved)
                 {
                     ClearAll();
                     LoadApiList();
-                    lblResult.Text = "Id:" + id.ToString() + " " + result.Message;
+                    lblResult.Text = "Id:" + id.ToString() + " " + CommonMessages.IsAlreadyRemoved;
                 }
                 else
                 {
-                    lblResult.Text = CommonMessages.Error;
+                    var result = await _apiInformationService.DeleteApiInformationById(id);
+
+                    if (result.Success)
+                    {
+                        ClearAll();
+                        LoadApiList();
+                        lblResult.Text = "Id:" + id.ToString() + " " + result.Message;
+                    }
+                    else
+                    {
+                        lblResult.Text = CommonMessages.Error;
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            
 
         }
 

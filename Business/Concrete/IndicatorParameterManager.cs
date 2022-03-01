@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Costants.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -39,6 +41,21 @@ namespace Business.Concrete
         {
             var result = _indicatorParameterDal.GetIndicatorParameterDetails();
             return new SuccessDataResult<List<IndicatorParameterDto>>(result);
+        }
+
+        public async Task<IResult> DeleteIndicatorParameterById(int id)
+        {
+            var willDeletedIndicatorParameter = await _indicatorParameterDal.GetAsync(x => x.Id == id);
+            
+            try
+            {
+                await _indicatorParameterDal.DeleteAsync(willDeletedIndicatorParameter);
+                return new SuccessResult(CommonMessages.Deleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
+            }
         }
     }
 }

@@ -83,19 +83,27 @@ namespace DevExpressUI
 
         private async void btnDelete_Click(object sender, EventArgs e)
         {
-            var id = Convert.ToInt32(lblIdNo.Text);
-            var result = await _binanceCommonDatabaseParameterService.DeleteDayParameterById(id);
+            try
+            {
+                var id = Convert.ToInt32(lblIdNo.Text);
+                var result = await _binanceCommonDatabaseParameterService.DeleteDayParameterById(id);
 
-            if (result.Success)
-            {
-                ClearAll();
-                LoadDayParameters();
-                lblResult.Text = "Id:" + id.ToString() + " " + result.Message;
+                if (result.Success)
+                {
+                    ClearAll();
+                    LoadDayParameters();
+                    lblResult.Text = "Id:" + id.ToString() + " " + result.Message;
+                }
+                else
+                {
+                    lblResult.Text = CommonMessages.Error;
+                }
             }
-            else
+            catch (Exception exception)
             {
-                lblResult.Text = CommonMessages.Error;
+                lblResult.Text = CommonMessages.ChooseItem;
             }
+            
 
         }
 
