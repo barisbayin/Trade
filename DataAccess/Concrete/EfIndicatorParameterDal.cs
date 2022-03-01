@@ -22,7 +22,7 @@ namespace DataAccess.Concrete
                                  on ip.IndicatorId equals i.Id
                              select new IndicatorParameterDto
                              {
-                                 Id = ip.IndicatorId,
+                                 Id = ip.Id,
                                  IndicatorName = i.IndicatorName,
                                  ParameterTitle = ip.ParameterTitle,
                                  Interval = ip.Interval,

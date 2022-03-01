@@ -37,7 +37,7 @@ namespace DevExpressUI
             this.gvApiList = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridApiList = new DevExpress.XtraGrid.GridControl();
             this.gcApiManagment = new DevExpress.XtraEditors.GroupControl();
-            this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
+            this.splitApiManagement = new DevExpress.XtraEditors.SplitContainerControl();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
             this.chckShowDeleted = new DevExpress.XtraEditors.CheckEdit();
             this.lblCreationDate = new DevExpress.XtraEditors.LabelControl();
@@ -59,8 +59,8 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.gridApiList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcApiManagment)).BeginInit();
             this.gcApiManagment.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).BeginInit();
-            this.splitContainerControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitApiManagement)).BeginInit();
+            this.splitApiManagement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).BeginInit();
             this.tpEntries.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chckShowDeleted.Properties)).BeginInit();
@@ -77,7 +77,7 @@ namespace DevExpressUI
             // 
             // lblResult
             // 
-            this.lblResult.Location = new System.Drawing.Point(18, 72);
+            this.lblResult.Location = new System.Drawing.Point(41, 72);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(0, 18);
             this.lblResult.TabIndex = 3;
@@ -90,7 +90,7 @@ namespace DevExpressUI
             this.btnNew.Appearance.Options.UseFont = true;
             this.btnNew.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.ImageOptions.Image")));
             this.btnNew.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnNew.Location = new System.Drawing.Point(18, 20);
+            this.btnNew.Location = new System.Drawing.Point(44, 20);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(84, 34);
             this.btnNew.TabIndex = 2;
@@ -104,7 +104,7 @@ namespace DevExpressUI
             this.btnDelete.Appearance.Options.UseFont = true;
             this.btnDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.ImageOptions.Image")));
             this.btnDelete.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnDelete.Location = new System.Drawing.Point(108, 20);
+            this.btnDelete.Location = new System.Drawing.Point(134, 20);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(84, 34);
             this.btnDelete.TabIndex = 1;
@@ -118,7 +118,7 @@ namespace DevExpressUI
             this.btnAdd.Appearance.Options.UseFont = true;
             this.btnAdd.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.ImageOptions.Image")));
             this.btnAdd.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnAdd.Location = new System.Drawing.Point(198, 20);
+            this.btnAdd.Location = new System.Drawing.Point(224, 20);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(84, 34);
             this.btnAdd.TabIndex = 0;
@@ -139,7 +139,7 @@ namespace DevExpressUI
             this.gridApiList.Location = new System.Drawing.Point(2, 21);
             this.gridApiList.MainView = this.gvApiList;
             this.gridApiList.Name = "gridApiList";
-            this.gridApiList.Size = new System.Drawing.Size(697, 712);
+            this.gridApiList.Size = new System.Drawing.Size(647, 712);
             this.gridApiList.TabIndex = 0;
             this.gridApiList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvApiList});
@@ -154,34 +154,34 @@ namespace DevExpressUI
             this.gcApiManagment.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcApiManagment.Location = new System.Drawing.Point(0, 0);
             this.gcApiManagment.Name = "gcApiManagment";
-            this.gcApiManagment.Size = new System.Drawing.Size(701, 735);
+            this.gcApiManagment.Size = new System.Drawing.Size(651, 735);
             this.gcApiManagment.TabIndex = 0;
             this.gcApiManagment.Text = "Api List";
             // 
-            // splitContainerControl1
+            // splitApiManagement
             // 
-            this.splitContainerControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerControl1.FixedPanel = DevExpress.XtraEditors.SplitFixedPanel.Panel2;
-            this.splitContainerControl1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerControl1.Name = "splitContainerControl1";
-            this.splitContainerControl1.Panel1.Controls.Add(this.gcApiManagment);
-            this.splitContainerControl1.Panel1.Text = "Panel1";
-            this.splitContainerControl1.Panel2.Controls.Add(this.tpEntries);
-            this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
-            this.splitContainerControl1.Panel2.MinSize = 300;
-            this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(1011, 735);
-            this.splitContainerControl1.SplitterPosition = 300;
-            this.splitContainerControl1.TabIndex = 0;
+            this.splitApiManagement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitApiManagement.FixedPanel = DevExpress.XtraEditors.SplitFixedPanel.Panel2;
+            this.splitApiManagement.Location = new System.Drawing.Point(0, 0);
+            this.splitApiManagement.Name = "splitApiManagement";
+            this.splitApiManagement.Panel1.Controls.Add(this.gcApiManagment);
+            this.splitApiManagement.Panel1.Text = "Panel1";
+            this.splitApiManagement.Panel2.Controls.Add(this.tpEntries);
+            this.splitApiManagement.Panel2.Controls.Add(this.groupControl1);
+            this.splitApiManagement.Panel2.MinSize = 350;
+            this.splitApiManagement.Panel2.Text = "Panel2";
+            this.splitApiManagement.Size = new System.Drawing.Size(1011, 735);
+            this.splitApiManagement.SplitterPosition = 300;
+            this.splitApiManagement.TabIndex = 0;
             // 
             // tpEntries
             // 
             this.tpEntries.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.tpEntries.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.39F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 53.32F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 87.34F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.95F)});
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.01F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 54.7F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 88.72F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.57F)});
             this.tpEntries.Controls.Add(this.chckShowDeleted);
             this.tpEntries.Controls.Add(this.lblCreationDate);
             this.tpEntries.Controls.Add(this.tbxSecretKey);
@@ -208,7 +208,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tpEntries.Size = new System.Drawing.Size(300, 624);
+            this.tpEntries.Size = new System.Drawing.Size(350, 624);
             this.tpEntries.TabIndex = 2;
             // 
             // chckShowDeleted
@@ -221,25 +221,26 @@ namespace DevExpressUI
             this.chckShowDeleted.Properties.Caption = "Show Deleted Api\'s";
             this.chckShowDeleted.Properties.CheckStateChanged += new System.EventHandler(this.chckShowDeleted_Properties_CheckStateChanged);
             this.tpEntries.SetRow(this.chckShowDeleted, 7);
-            this.chckShowDeleted.Size = new System.Drawing.Size(258, 20);
+            this.chckShowDeleted.Size = new System.Drawing.Size(307, 20);
             this.chckShowDeleted.TabIndex = 17;
             // 
             // lblCreationDate
             // 
             this.tpEntries.SetColumn(this.lblCreationDate, 2);
-            this.lblCreationDate.Location = new System.Drawing.Point(121, 206);
+            this.lblCreationDate.Location = new System.Drawing.Point(140, 206);
             this.lblCreationDate.Name = "lblCreationDate";
             this.tpEntries.SetRow(this.lblCreationDate, 6);
-            this.lblCreationDate.Size = new System.Drawing.Size(0, 18);
+            this.lblCreationDate.Size = new System.Drawing.Size(10, 18);
             this.lblCreationDate.TabIndex = 16;
+            this.lblCreationDate.Text = "..";
             // 
             // tbxSecretKey
             // 
             this.tpEntries.SetColumn(this.tbxSecretKey, 2);
-            this.tbxSecretKey.Location = new System.Drawing.Point(121, 173);
+            this.tbxSecretKey.Location = new System.Drawing.Point(140, 173);
             this.tbxSecretKey.Name = "tbxSecretKey";
             this.tpEntries.SetRow(this.tbxSecretKey, 5);
-            this.tbxSecretKey.Size = new System.Drawing.Size(158, 24);
+            this.tbxSecretKey.Size = new System.Drawing.Size(188, 24);
             this.tbxSecretKey.TabIndex = 15;
             // 
             // lblSecretKey
@@ -265,26 +266,26 @@ namespace DevExpressUI
             // tbxApiTitle
             // 
             this.tpEntries.SetColumn(this.tbxApiTitle, 2);
-            this.tbxApiTitle.Location = new System.Drawing.Point(121, 110);
+            this.tbxApiTitle.Location = new System.Drawing.Point(140, 110);
             this.tbxApiTitle.Name = "tbxApiTitle";
             this.tpEntries.SetRow(this.tbxApiTitle, 3);
-            this.tbxApiTitle.Size = new System.Drawing.Size(158, 24);
+            this.tbxApiTitle.Size = new System.Drawing.Size(188, 24);
             this.tbxApiTitle.TabIndex = 10;
             // 
             // tbxApiKey
             // 
             this.tpEntries.SetColumn(this.tbxApiKey, 2);
-            this.tbxApiKey.Location = new System.Drawing.Point(121, 141);
+            this.tbxApiKey.Location = new System.Drawing.Point(140, 141);
             this.tbxApiKey.Name = "tbxApiKey";
             this.tpEntries.SetRow(this.tbxApiKey, 4);
-            this.tbxApiKey.Size = new System.Drawing.Size(158, 24);
+            this.tbxApiKey.Size = new System.Drawing.Size(188, 24);
             this.tbxApiKey.TabIndex = 8;
             // 
             // cbxExchange
             // 
             this.tpEntries.SetColumn(this.cbxExchange, 2);
             this.cbxExchange.EditValue = "";
-            this.cbxExchange.Location = new System.Drawing.Point(121, 80);
+            this.cbxExchange.Location = new System.Drawing.Point(140, 80);
             this.cbxExchange.Name = "cbxExchange";
             this.cbxExchange.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -294,13 +295,13 @@ namespace DevExpressUI
             "Okex",
             "Bittrex"});
             this.tpEntries.SetRow(this.cbxExchange, 2);
-            this.cbxExchange.Size = new System.Drawing.Size(158, 24);
+            this.cbxExchange.Size = new System.Drawing.Size(188, 24);
             this.cbxExchange.TabIndex = 7;
             // 
             // lblIdNo
             // 
             this.tpEntries.SetColumn(this.lblIdNo, 2);
-            this.lblIdNo.Location = new System.Drawing.Point(121, 51);
+            this.lblIdNo.Location = new System.Drawing.Point(140, 51);
             this.lblIdNo.Name = "lblIdNo";
             this.tpEntries.SetRow(this.lblIdNo, 1);
             this.lblIdNo.Size = new System.Drawing.Size(0, 18);
@@ -358,14 +359,14 @@ namespace DevExpressUI
             this.groupControl1.Location = new System.Drawing.Point(0, 624);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(300, 111);
+            this.groupControl1.Size = new System.Drawing.Size(350, 111);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
             // tabNavApiManagement
             // 
             this.tabNavApiManagement.Caption = "Api Management";
-            this.tabNavApiManagement.Controls.Add(this.splitContainerControl1);
+            this.tabNavApiManagement.Controls.Add(this.splitApiManagement);
             this.tabNavApiManagement.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavApiManagement.ImageOptions.Image")));
             this.tabNavApiManagement.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavApiManagement.Name = "tabNavApiManagement";
@@ -399,8 +400,8 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.gridApiList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcApiManagment)).EndInit();
             this.gcApiManagment.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).EndInit();
-            this.splitContainerControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitApiManagement)).EndInit();
+            this.splitApiManagement.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).EndInit();
             this.tpEntries.ResumeLayout(false);
             this.tpEntries.PerformLayout();
@@ -428,7 +429,7 @@ namespace DevExpressUI
         private DevExpress.XtraGrid.Views.Grid.GridView gvApiList;
         private DevExpress.XtraGrid.GridControl gridApiList;
         private DevExpress.XtraEditors.GroupControl gcApiManagment;
-        private DevExpress.XtraEditors.SplitContainerControl splitContainerControl1;
+        private DevExpress.XtraEditors.SplitContainerControl splitApiManagement;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavApiManagement;
         private DevExpress.XtraBars.Navigation.TabPane tabPaneParameters;

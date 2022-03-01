@@ -37,19 +37,34 @@ namespace DevExpressUI
             this.gridIndicatorParameters = new DevExpress.XtraGrid.GridControl();
             this.gvIndicatorParameters = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
-            this.chckShowDeleted = new DevExpress.XtraEditors.CheckEdit();
-            this.lblCreationDate = new DevExpress.XtraEditors.LabelControl();
-            this.tbxSecretKey = new DevExpress.XtraEditors.TextEdit();
-            this.lblSecretKey = new DevExpress.XtraEditors.LabelControl();
-            this.lblCreationDateLabel = new DevExpress.XtraEditors.LabelControl();
-            this.tbxApiTitle = new DevExpress.XtraEditors.TextEdit();
-            this.tbxApiKey = new DevExpress.XtraEditors.TextEdit();
-            this.cbxExchange = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
-            this.lblApiKeyLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblApiTitleLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblExchangeLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIndicatorNameLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblParameterTitleLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIntervalLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
+            this.cbxIndicatorName = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.tbxMultiplier = new DevExpress.XtraEditors.TextEdit();
+            this.tbxParameterTitle = new DevExpress.XtraEditors.TextEdit();
+            this.lblMultiplierLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblPeriodLabel = new DevExpress.XtraEditors.LabelControl();
+            this.tbxPeriod = new DevExpress.XtraEditors.TextEdit();
+            this.lblKlineEndTypeLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblParameter1Label = new DevExpress.XtraEditors.LabelControl();
+            this.lblParameter2Label = new DevExpress.XtraEditors.LabelControl();
+            this.lblParameter3Label = new DevExpress.XtraEditors.LabelControl();
+            this.lblParameter4Label = new DevExpress.XtraEditors.LabelControl();
+            this.lblParameter5Label = new DevExpress.XtraEditors.LabelControl();
+            this.lblInUseLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblCreationDateLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblCreationDate = new DevExpress.XtraEditors.LabelControl();
+            this.tbxParameter1 = new DevExpress.XtraEditors.TextEdit();
+            this.tbxParameter2 = new DevExpress.XtraEditors.TextEdit();
+            this.tbxParameter3 = new DevExpress.XtraEditors.TextEdit();
+            this.tbxParameter4 = new DevExpress.XtraEditors.TextEdit();
+            this.tbxParameter5 = new DevExpress.XtraEditors.TextEdit();
+            this.cbxKlineEndType = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.cbxInterval = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.lblInUse = new DevExpress.XtraEditors.LabelControl();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.lblResult = new DevExpress.XtraEditors.LabelControl();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
@@ -66,11 +81,17 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.gvIndicatorParameters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).BeginInit();
             this.tpEntries.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chckShowDeleted.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxSecretKey.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxApiTitle.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxApiKey.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbxExchange.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxIndicatorName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxMultiplier.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameterTitle.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxPeriod.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter3.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter5.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxKlineEndType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxInterval.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             this.SuspendLayout();
@@ -110,7 +131,7 @@ namespace DevExpressUI
             this.splitContainerControl1.Panel1.Text = "Panel1";
             this.splitContainerControl1.Panel2.Controls.Add(this.tpEntries);
             this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
-            this.splitContainerControl1.Panel2.MinSize = 300;
+            this.splitContainerControl1.Panel2.MinSize = 350;
             this.splitContainerControl1.Panel2.Text = "Panel2";
             this.splitContainerControl1.Size = new System.Drawing.Size(1011, 735);
             this.splitContainerControl1.SplitterPosition = 300;
@@ -126,7 +147,7 @@ namespace DevExpressUI
             this.gcIndicatorParamaters.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcIndicatorParamaters.Location = new System.Drawing.Point(0, 0);
             this.gcIndicatorParamaters.Name = "gcIndicatorParamaters";
-            this.gcIndicatorParamaters.Size = new System.Drawing.Size(701, 735);
+            this.gcIndicatorParamaters.Size = new System.Drawing.Size(651, 735);
             this.gcIndicatorParamaters.TabIndex = 0;
             this.gcIndicatorParamaters.Text = "Indicator Parameter List";
             // 
@@ -136,7 +157,7 @@ namespace DevExpressUI
             this.gridIndicatorParameters.Location = new System.Drawing.Point(2, 21);
             this.gridIndicatorParameters.MainView = this.gvIndicatorParameters;
             this.gridIndicatorParameters.Name = "gridIndicatorParameters";
-            this.gridIndicatorParameters.Size = new System.Drawing.Size(697, 712);
+            this.gridIndicatorParameters.Size = new System.Drawing.Size(647, 712);
             this.gridIndicatorParameters.TabIndex = 0;
             this.gridIndicatorParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvIndicatorParameters});
@@ -146,179 +167,371 @@ namespace DevExpressUI
             this.gvIndicatorParameters.GridControl = this.gridIndicatorParameters;
             this.gvIndicatorParameters.Name = "gvIndicatorParameters";
             this.gvIndicatorParameters.OptionsView.ShowGroupPanel = false;
+            this.gvIndicatorParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvIndicatorParameters_FocusedRowChanged);
             // 
             // tpEntries
             // 
+            this.tpEntries.AutoScroll = true;
             this.tpEntries.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.tpEntries.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.39F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 53.32F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 87.34F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.95F)});
-            this.tpEntries.Controls.Add(this.chckShowDeleted);
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.01F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 54.7F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 88.72F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.57F)});
+            this.tpEntries.Controls.Add(this.tbxParameter1);
+            this.tpEntries.Controls.Add(this.tbxParameter2);
+            this.tpEntries.Controls.Add(this.tbxParameter3);
+            this.tpEntries.Controls.Add(this.tbxParameter4);
+            this.tpEntries.Controls.Add(this.tbxParameter5);
+            this.tpEntries.Controls.Add(this.cbxKlineEndType);
+            this.tpEntries.Controls.Add(this.cbxInterval);
+            this.tpEntries.Controls.Add(this.lblInUse);
             this.tpEntries.Controls.Add(this.lblCreationDate);
-            this.tpEntries.Controls.Add(this.tbxSecretKey);
-            this.tpEntries.Controls.Add(this.lblSecretKey);
             this.tpEntries.Controls.Add(this.lblCreationDateLabel);
-            this.tpEntries.Controls.Add(this.tbxApiTitle);
-            this.tpEntries.Controls.Add(this.tbxApiKey);
-            this.tpEntries.Controls.Add(this.cbxExchange);
+            this.tpEntries.Controls.Add(this.lblInUseLabel);
+            this.tpEntries.Controls.Add(this.lblParameter5Label);
+            this.tpEntries.Controls.Add(this.lblParameter4Label);
+            this.tpEntries.Controls.Add(this.lblParameter3Label);
+            this.tpEntries.Controls.Add(this.lblParameter2Label);
+            this.tpEntries.Controls.Add(this.lblParameter1Label);
+            this.tpEntries.Controls.Add(this.lblKlineEndTypeLabel);
+            this.tpEntries.Controls.Add(this.tbxPeriod);
+            this.tpEntries.Controls.Add(this.lblPeriodLabel);
+            this.tpEntries.Controls.Add(this.lblMultiplierLabel);
+            this.tpEntries.Controls.Add(this.tbxParameterTitle);
+            this.tpEntries.Controls.Add(this.tbxMultiplier);
+            this.tpEntries.Controls.Add(this.cbxIndicatorName);
             this.tpEntries.Controls.Add(this.lblIdNo);
-            this.tpEntries.Controls.Add(this.lblApiKeyLabel);
-            this.tpEntries.Controls.Add(this.lblApiTitleLabel);
-            this.tpEntries.Controls.Add(this.lblExchangeLabel);
+            this.tpEntries.Controls.Add(this.lblIntervalLabel);
+            this.tpEntries.Controls.Add(this.lblParameterTitleLabel);
+            this.tpEntries.Controls.Add(this.lblIndicatorNameLabel);
             this.tpEntries.Controls.Add(this.lblIdLabel);
             this.tpEntries.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tpEntries.Location = new System.Drawing.Point(0, 0);
             this.tpEntries.Name = "tpEntries";
             this.tpEntries.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tpEntries.Size = new System.Drawing.Size(300, 624);
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F)});
+            this.tpEntries.Size = new System.Drawing.Size(350, 624);
             this.tpEntries.TabIndex = 2;
-            // 
-            // chckShowDeleted
-            // 
-            this.tpEntries.SetColumn(this.chckShowDeleted, 1);
-            this.tpEntries.SetColumnSpan(this.chckShowDeleted, 2);
-            this.chckShowDeleted.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chckShowDeleted.Location = new System.Drawing.Point(21, 233);
-            this.chckShowDeleted.Name = "chckShowDeleted";
-            this.chckShowDeleted.Properties.Caption = "Show Deleted Api\'s";
-            this.tpEntries.SetRow(this.chckShowDeleted, 7);
-            this.chckShowDeleted.Size = new System.Drawing.Size(258, 20);
-            this.chckShowDeleted.TabIndex = 17;
-            // 
-            // lblCreationDate
-            // 
-            this.tpEntries.SetColumn(this.lblCreationDate, 2);
-            this.lblCreationDate.Location = new System.Drawing.Point(121, 206);
-            this.lblCreationDate.Name = "lblCreationDate";
-            this.tpEntries.SetRow(this.lblCreationDate, 6);
-            this.lblCreationDate.Size = new System.Drawing.Size(0, 18);
-            this.lblCreationDate.TabIndex = 16;
-            // 
-            // tbxSecretKey
-            // 
-            this.tpEntries.SetColumn(this.tbxSecretKey, 2);
-            this.tbxSecretKey.Location = new System.Drawing.Point(121, 173);
-            this.tbxSecretKey.Name = "tbxSecretKey";
-            this.tpEntries.SetRow(this.tbxSecretKey, 5);
-            this.tbxSecretKey.Size = new System.Drawing.Size(158, 24);
-            this.tbxSecretKey.TabIndex = 15;
-            // 
-            // lblSecretKey
-            // 
-            this.tpEntries.SetColumn(this.lblSecretKey, 1);
-            this.lblSecretKey.Location = new System.Drawing.Point(21, 176);
-            this.lblSecretKey.Name = "lblSecretKey";
-            this.tpEntries.SetRow(this.lblSecretKey, 5);
-            this.lblSecretKey.Size = new System.Drawing.Size(76, 18);
-            this.lblSecretKey.TabIndex = 14;
-            this.lblSecretKey.Text = "Secret Key:";
-            // 
-            // lblCreationDateLabel
-            // 
-            this.tpEntries.SetColumn(this.lblCreationDateLabel, 1);
-            this.lblCreationDateLabel.Location = new System.Drawing.Point(21, 206);
-            this.lblCreationDateLabel.Name = "lblCreationDateLabel";
-            this.tpEntries.SetRow(this.lblCreationDateLabel, 6);
-            this.lblCreationDateLabel.Size = new System.Drawing.Size(94, 18);
-            this.lblCreationDateLabel.TabIndex = 12;
-            this.lblCreationDateLabel.Text = "Creation Date:";
-            // 
-            // tbxApiTitle
-            // 
-            this.tpEntries.SetColumn(this.tbxApiTitle, 2);
-            this.tbxApiTitle.Location = new System.Drawing.Point(121, 110);
-            this.tbxApiTitle.Name = "tbxApiTitle";
-            this.tpEntries.SetRow(this.tbxApiTitle, 3);
-            this.tbxApiTitle.Size = new System.Drawing.Size(158, 24);
-            this.tbxApiTitle.TabIndex = 10;
-            // 
-            // tbxApiKey
-            // 
-            this.tpEntries.SetColumn(this.tbxApiKey, 2);
-            this.tbxApiKey.Location = new System.Drawing.Point(121, 141);
-            this.tbxApiKey.Name = "tbxApiKey";
-            this.tpEntries.SetRow(this.tbxApiKey, 4);
-            this.tbxApiKey.Size = new System.Drawing.Size(158, 24);
-            this.tbxApiKey.TabIndex = 8;
-            // 
-            // cbxExchange
-            // 
-            this.tpEntries.SetColumn(this.cbxExchange, 2);
-            this.cbxExchange.EditValue = "";
-            this.cbxExchange.Location = new System.Drawing.Point(121, 80);
-            this.cbxExchange.Name = "cbxExchange";
-            this.cbxExchange.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbxExchange.Properties.Items.AddRange(new object[] {
-            "Binance",
-            "FTX",
-            "Okex",
-            "Bittrex"});
-            this.tpEntries.SetRow(this.cbxExchange, 2);
-            this.cbxExchange.Size = new System.Drawing.Size(158, 24);
-            this.cbxExchange.TabIndex = 7;
-            // 
-            // lblIdNo
-            // 
-            this.tpEntries.SetColumn(this.lblIdNo, 2);
-            this.lblIdNo.Location = new System.Drawing.Point(121, 51);
-            this.lblIdNo.Name = "lblIdNo";
-            this.tpEntries.SetRow(this.lblIdNo, 1);
-            this.lblIdNo.Size = new System.Drawing.Size(0, 18);
-            this.lblIdNo.TabIndex = 5;
-            this.lblIdNo.UseMnemonic = false;
-            // 
-            // lblApiKeyLabel
-            // 
-            this.tpEntries.SetColumn(this.lblApiKeyLabel, 1);
-            this.lblApiKeyLabel.Location = new System.Drawing.Point(21, 144);
-            this.lblApiKeyLabel.Name = "lblApiKeyLabel";
-            this.tpEntries.SetRow(this.lblApiKeyLabel, 4);
-            this.lblApiKeyLabel.Size = new System.Drawing.Size(54, 18);
-            this.lblApiKeyLabel.TabIndex = 3;
-            this.lblApiKeyLabel.Text = "Api Key:";
-            // 
-            // lblApiTitleLabel
-            // 
-            this.tpEntries.SetColumn(this.lblApiTitleLabel, 1);
-            this.lblApiTitleLabel.Location = new System.Drawing.Point(21, 113);
-            this.lblApiTitleLabel.Name = "lblApiTitleLabel";
-            this.tpEntries.SetRow(this.lblApiTitleLabel, 3);
-            this.lblApiTitleLabel.Size = new System.Drawing.Size(56, 18);
-            this.lblApiTitleLabel.TabIndex = 2;
-            this.lblApiTitleLabel.Text = "Api Title:";
-            // 
-            // lblExchangeLabel
-            // 
-            this.tpEntries.SetColumn(this.lblExchangeLabel, 1);
-            this.lblExchangeLabel.Location = new System.Drawing.Point(21, 83);
-            this.lblExchangeLabel.Name = "lblExchangeLabel";
-            this.tpEntries.SetRow(this.lblExchangeLabel, 2);
-            this.lblExchangeLabel.Size = new System.Drawing.Size(68, 18);
-            this.lblExchangeLabel.TabIndex = 1;
-            this.lblExchangeLabel.Text = "Exchange:";
             // 
             // lblIdLabel
             // 
             this.tpEntries.SetColumn(this.lblIdLabel, 1);
-            this.lblIdLabel.Location = new System.Drawing.Point(21, 51);
+            this.lblIdLabel.Location = new System.Drawing.Point(21, 50);
             this.lblIdLabel.Name = "lblIdLabel";
             this.tpEntries.SetRow(this.lblIdLabel, 1);
             this.lblIdLabel.Size = new System.Drawing.Size(19, 18);
             this.lblIdLabel.TabIndex = 0;
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
+            // 
+            // lblIndicatorNameLabel
+            // 
+            this.tpEntries.SetColumn(this.lblIndicatorNameLabel, 1);
+            this.lblIndicatorNameLabel.Location = new System.Drawing.Point(21, 80);
+            this.lblIndicatorNameLabel.Name = "lblIndicatorNameLabel";
+            this.tpEntries.SetRow(this.lblIndicatorNameLabel, 2);
+            this.lblIndicatorNameLabel.Size = new System.Drawing.Size(106, 18);
+            this.lblIndicatorNameLabel.TabIndex = 1;
+            this.lblIndicatorNameLabel.Text = "Indicator Name:";
+            // 
+            // lblParameterTitleLabel
+            // 
+            this.tpEntries.SetColumn(this.lblParameterTitleLabel, 1);
+            this.lblParameterTitleLabel.Location = new System.Drawing.Point(21, 110);
+            this.lblParameterTitleLabel.Name = "lblParameterTitleLabel";
+            this.tpEntries.SetRow(this.lblParameterTitleLabel, 3);
+            this.lblParameterTitleLabel.Size = new System.Drawing.Size(105, 18);
+            this.lblParameterTitleLabel.TabIndex = 2;
+            this.lblParameterTitleLabel.Text = "Parameter Title:";
+            // 
+            // lblIntervalLabel
+            // 
+            this.tpEntries.SetColumn(this.lblIntervalLabel, 1);
+            this.lblIntervalLabel.Location = new System.Drawing.Point(21, 140);
+            this.lblIntervalLabel.Name = "lblIntervalLabel";
+            this.tpEntries.SetRow(this.lblIntervalLabel, 4);
+            this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
+            this.lblIntervalLabel.TabIndex = 3;
+            this.lblIntervalLabel.Text = "Interval:";
+            // 
+            // lblIdNo
+            // 
+            this.tpEntries.SetColumn(this.lblIdNo, 2);
+            this.lblIdNo.Location = new System.Drawing.Point(140, 50);
+            this.lblIdNo.Name = "lblIdNo";
+            this.tpEntries.SetRow(this.lblIdNo, 1);
+            this.lblIdNo.Size = new System.Drawing.Size(0, 18);
+            this.lblIdNo.TabIndex = 5;
+            this.lblIdNo.UseMnemonic = false;
+            // 
+            // cbxIndicatorName
+            // 
+            this.tpEntries.SetColumn(this.cbxIndicatorName, 2);
+            this.cbxIndicatorName.EditValue = "";
+            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 77);
+            this.cbxIndicatorName.Name = "cbxIndicatorName";
+            this.cbxIndicatorName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbxIndicatorName.Properties.Items.AddRange(new object[] {
+            "Renko",
+            "SuperTrend",
+            "RenkoSuperTrend"});
+            this.tpEntries.SetRow(this.cbxIndicatorName, 2);
+            this.cbxIndicatorName.Size = new System.Drawing.Size(188, 24);
+            this.cbxIndicatorName.TabIndex = 7;
+            // 
+            // tbxMultiplier
+            // 
+            this.tpEntries.SetColumn(this.tbxMultiplier, 2);
+            this.tbxMultiplier.Location = new System.Drawing.Point(140, 197);
+            this.tbxMultiplier.Name = "tbxMultiplier";
+            this.tpEntries.SetRow(this.tbxMultiplier, 6);
+            this.tbxMultiplier.Size = new System.Drawing.Size(188, 24);
+            this.tbxMultiplier.TabIndex = 8;
+            // 
+            // tbxParameterTitle
+            // 
+            this.tpEntries.SetColumn(this.tbxParameterTitle, 2);
+            this.tbxParameterTitle.Location = new System.Drawing.Point(140, 107);
+            this.tbxParameterTitle.Name = "tbxParameterTitle";
+            this.tpEntries.SetRow(this.tbxParameterTitle, 3);
+            this.tbxParameterTitle.Size = new System.Drawing.Size(188, 24);
+            this.tbxParameterTitle.TabIndex = 10;
+            // 
+            // lblMultiplierLabel
+            // 
+            this.tpEntries.SetColumn(this.lblMultiplierLabel, 1);
+            this.lblMultiplierLabel.Location = new System.Drawing.Point(21, 200);
+            this.lblMultiplierLabel.Name = "lblMultiplierLabel";
+            this.tpEntries.SetRow(this.lblMultiplierLabel, 6);
+            this.lblMultiplierLabel.Size = new System.Drawing.Size(59, 18);
+            this.lblMultiplierLabel.TabIndex = 12;
+            this.lblMultiplierLabel.Text = "Multiplier:";
+            // 
+            // lblPeriodLabel
+            // 
+            this.tpEntries.SetColumn(this.lblPeriodLabel, 1);
+            this.lblPeriodLabel.Location = new System.Drawing.Point(21, 170);
+            this.lblPeriodLabel.Name = "lblPeriodLabel";
+            this.tpEntries.SetRow(this.lblPeriodLabel, 5);
+            this.lblPeriodLabel.Size = new System.Drawing.Size(44, 18);
+            this.lblPeriodLabel.TabIndex = 14;
+            this.lblPeriodLabel.Text = "Period:";
+            // 
+            // tbxPeriod
+            // 
+            this.tpEntries.SetColumn(this.tbxPeriod, 2);
+            this.tbxPeriod.Location = new System.Drawing.Point(140, 167);
+            this.tbxPeriod.Name = "tbxPeriod";
+            this.tpEntries.SetRow(this.tbxPeriod, 5);
+            this.tbxPeriod.Size = new System.Drawing.Size(188, 24);
+            this.tbxPeriod.TabIndex = 15;
+            // 
+            // lblKlineEndTypeLabel
+            // 
+            this.tpEntries.SetColumn(this.lblKlineEndTypeLabel, 1);
+            this.lblKlineEndTypeLabel.Location = new System.Drawing.Point(21, 230);
+            this.lblKlineEndTypeLabel.Name = "lblKlineEndTypeLabel";
+            this.tpEntries.SetRow(this.lblKlineEndTypeLabel, 7);
+            this.lblKlineEndTypeLabel.Size = new System.Drawing.Size(102, 18);
+            this.lblKlineEndTypeLabel.TabIndex = 17;
+            this.lblKlineEndTypeLabel.Text = "Kline End Type:";
+            // 
+            // lblParameter1Label
+            // 
+            this.tpEntries.SetColumn(this.lblParameter1Label, 1);
+            this.lblParameter1Label.Location = new System.Drawing.Point(21, 260);
+            this.lblParameter1Label.Name = "lblParameter1Label";
+            this.tpEntries.SetRow(this.lblParameter1Label, 8);
+            this.lblParameter1Label.Size = new System.Drawing.Size(81, 18);
+            this.lblParameter1Label.TabIndex = 18;
+            this.lblParameter1Label.Text = "Parameter1:";
+            // 
+            // lblParameter2Label
+            // 
+            this.tpEntries.SetColumn(this.lblParameter2Label, 1);
+            this.lblParameter2Label.Location = new System.Drawing.Point(21, 290);
+            this.lblParameter2Label.Name = "lblParameter2Label";
+            this.tpEntries.SetRow(this.lblParameter2Label, 9);
+            this.lblParameter2Label.Size = new System.Drawing.Size(81, 18);
+            this.lblParameter2Label.TabIndex = 19;
+            this.lblParameter2Label.Text = "Parameter2:";
+            // 
+            // lblParameter3Label
+            // 
+            this.tpEntries.SetColumn(this.lblParameter3Label, 1);
+            this.lblParameter3Label.Location = new System.Drawing.Point(21, 320);
+            this.lblParameter3Label.Name = "lblParameter3Label";
+            this.tpEntries.SetRow(this.lblParameter3Label, 10);
+            this.lblParameter3Label.Size = new System.Drawing.Size(81, 18);
+            this.lblParameter3Label.TabIndex = 20;
+            this.lblParameter3Label.Text = "Parameter3:";
+            // 
+            // lblParameter4Label
+            // 
+            this.tpEntries.SetColumn(this.lblParameter4Label, 1);
+            this.lblParameter4Label.Location = new System.Drawing.Point(21, 350);
+            this.lblParameter4Label.Name = "lblParameter4Label";
+            this.tpEntries.SetRow(this.lblParameter4Label, 11);
+            this.lblParameter4Label.Size = new System.Drawing.Size(81, 18);
+            this.lblParameter4Label.TabIndex = 21;
+            this.lblParameter4Label.Text = "Parameter4:";
+            // 
+            // lblParameter5Label
+            // 
+            this.tpEntries.SetColumn(this.lblParameter5Label, 1);
+            this.lblParameter5Label.Location = new System.Drawing.Point(21, 380);
+            this.lblParameter5Label.Name = "lblParameter5Label";
+            this.tpEntries.SetRow(this.lblParameter5Label, 12);
+            this.lblParameter5Label.Size = new System.Drawing.Size(81, 18);
+            this.lblParameter5Label.TabIndex = 22;
+            this.lblParameter5Label.Text = "Parameter5:";
+            // 
+            // lblInUseLabel
+            // 
+            this.tpEntries.SetColumn(this.lblInUseLabel, 1);
+            this.lblInUseLabel.Location = new System.Drawing.Point(21, 410);
+            this.lblInUseLabel.Name = "lblInUseLabel";
+            this.tpEntries.SetRow(this.lblInUseLabel, 13);
+            this.lblInUseLabel.Size = new System.Drawing.Size(49, 18);
+            this.lblInUseLabel.TabIndex = 23;
+            this.lblInUseLabel.Text = "In Use:";
+            // 
+            // lblCreationDateLabel
+            // 
+            this.tpEntries.SetColumn(this.lblCreationDateLabel, 1);
+            this.lblCreationDateLabel.Location = new System.Drawing.Point(21, 440);
+            this.lblCreationDateLabel.Name = "lblCreationDateLabel";
+            this.tpEntries.SetRow(this.lblCreationDateLabel, 14);
+            this.lblCreationDateLabel.Size = new System.Drawing.Size(89, 18);
+            this.lblCreationDateLabel.TabIndex = 24;
+            this.lblCreationDateLabel.Text = "CreationDate:";
+            // 
+            // lblCreationDate
+            // 
+            this.tpEntries.SetColumn(this.lblCreationDate, 2);
+            this.lblCreationDate.Location = new System.Drawing.Point(140, 440);
+            this.lblCreationDate.Name = "lblCreationDate";
+            this.tpEntries.SetRow(this.lblCreationDate, 14);
+            this.lblCreationDate.Size = new System.Drawing.Size(10, 18);
+            this.lblCreationDate.TabIndex = 25;
+            this.lblCreationDate.Text = "..";
+            // 
+            // tbxParameter1
+            // 
+            this.tpEntries.SetColumn(this.tbxParameter1, 2);
+            this.tbxParameter1.Location = new System.Drawing.Point(140, 257);
+            this.tbxParameter1.Name = "tbxParameter1";
+            this.tpEntries.SetRow(this.tbxParameter1, 8);
+            this.tbxParameter1.Size = new System.Drawing.Size(188, 24);
+            this.tbxParameter1.TabIndex = 33;
+            // 
+            // tbxParameter2
+            // 
+            this.tpEntries.SetColumn(this.tbxParameter2, 2);
+            this.tbxParameter2.Location = new System.Drawing.Point(140, 287);
+            this.tbxParameter2.Name = "tbxParameter2";
+            this.tpEntries.SetRow(this.tbxParameter2, 9);
+            this.tbxParameter2.Size = new System.Drawing.Size(188, 24);
+            this.tbxParameter2.TabIndex = 32;
+            // 
+            // tbxParameter3
+            // 
+            this.tpEntries.SetColumn(this.tbxParameter3, 2);
+            this.tbxParameter3.Location = new System.Drawing.Point(140, 317);
+            this.tbxParameter3.Name = "tbxParameter3";
+            this.tpEntries.SetRow(this.tbxParameter3, 10);
+            this.tbxParameter3.Size = new System.Drawing.Size(188, 24);
+            this.tbxParameter3.TabIndex = 31;
+            // 
+            // tbxParameter4
+            // 
+            this.tpEntries.SetColumn(this.tbxParameter4, 2);
+            this.tbxParameter4.Location = new System.Drawing.Point(140, 347);
+            this.tbxParameter4.Name = "tbxParameter4";
+            this.tpEntries.SetRow(this.tbxParameter4, 11);
+            this.tbxParameter4.Size = new System.Drawing.Size(188, 24);
+            this.tbxParameter4.TabIndex = 30;
+            // 
+            // tbxParameter5
+            // 
+            this.tpEntries.SetColumn(this.tbxParameter5, 2);
+            this.tbxParameter5.Location = new System.Drawing.Point(140, 377);
+            this.tbxParameter5.Name = "tbxParameter5";
+            this.tpEntries.SetRow(this.tbxParameter5, 12);
+            this.tbxParameter5.Size = new System.Drawing.Size(188, 24);
+            this.tbxParameter5.TabIndex = 29;
+            // 
+            // cbxKlineEndType
+            // 
+            this.tpEntries.SetColumn(this.cbxKlineEndType, 2);
+            this.cbxKlineEndType.EditValue = "";
+            this.cbxKlineEndType.Location = new System.Drawing.Point(140, 227);
+            this.cbxKlineEndType.Name = "cbxKlineEndType";
+            this.cbxKlineEndType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbxKlineEndType.Properties.Items.AddRange(new object[] {
+            "Open",
+            "High",
+            "Low",
+            "Close"});
+            this.tpEntries.SetRow(this.cbxKlineEndType, 7);
+            this.cbxKlineEndType.Size = new System.Drawing.Size(188, 24);
+            this.cbxKlineEndType.TabIndex = 28;
+            // 
+            // cbxInterval
+            // 
+            this.tpEntries.SetColumn(this.cbxInterval, 2);
+            this.cbxInterval.EditValue = "";
+            this.cbxInterval.Location = new System.Drawing.Point(140, 137);
+            this.cbxInterval.Name = "cbxInterval";
+            this.cbxInterval.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbxInterval.Properties.Items.AddRange(new object[] {
+            "OneMonth",
+            "OneWeek",
+            "ThreeDay",
+            "OneDay",
+            "TwelveHour",
+            "EightHour",
+            "SixHour",
+            "FourHour",
+            "TwoHour",
+            "OneHour",
+            "ThirtyMinutes",
+            "FifteenMinutes",
+            "FiveMinutes",
+            "ThreeMinutes",
+            "OneMinute"});
+            this.tpEntries.SetRow(this.cbxInterval, 4);
+            this.cbxInterval.Size = new System.Drawing.Size(188, 24);
+            this.cbxInterval.TabIndex = 27;
+            // 
+            // lblInUse
+            // 
+            this.tpEntries.SetColumn(this.lblInUse, 2);
+            this.lblInUse.Location = new System.Drawing.Point(140, 410);
+            this.lblInUse.Name = "lblInUse";
+            this.tpEntries.SetRow(this.lblInUse, 13);
+            this.lblInUse.Size = new System.Drawing.Size(10, 18);
+            this.lblInUse.TabIndex = 26;
+            this.lblInUse.Text = "..";
             // 
             // groupControl1
             // 
@@ -330,13 +543,13 @@ namespace DevExpressUI
             this.groupControl1.Location = new System.Drawing.Point(0, 624);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(300, 111);
+            this.groupControl1.Size = new System.Drawing.Size(350, 111);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
             // lblResult
             // 
-            this.lblResult.Location = new System.Drawing.Point(18, 72);
+            this.lblResult.Location = new System.Drawing.Point(41, 71);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(0, 18);
             this.lblResult.TabIndex = 3;
@@ -349,11 +562,12 @@ namespace DevExpressUI
             this.btnNew.Appearance.Options.UseFont = true;
             this.btnNew.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.ImageOptions.Image")));
             this.btnNew.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnNew.Location = new System.Drawing.Point(18, 20);
+            this.btnNew.Location = new System.Drawing.Point(42, 20);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(84, 34);
             this.btnNew.TabIndex = 2;
             this.btnNew.Text = "New";
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnDelete
             // 
@@ -362,7 +576,7 @@ namespace DevExpressUI
             this.btnDelete.Appearance.Options.UseFont = true;
             this.btnDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.ImageOptions.Image")));
             this.btnDelete.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnDelete.Location = new System.Drawing.Point(108, 20);
+            this.btnDelete.Location = new System.Drawing.Point(132, 20);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(84, 34);
             this.btnDelete.TabIndex = 1;
@@ -375,7 +589,7 @@ namespace DevExpressUI
             this.btnAdd.Appearance.Options.UseFont = true;
             this.btnAdd.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.ImageOptions.Image")));
             this.btnAdd.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnAdd.Location = new System.Drawing.Point(198, 20);
+            this.btnAdd.Location = new System.Drawing.Point(222, 20);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(84, 34);
             this.btnAdd.TabIndex = 0;
@@ -401,11 +615,17 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).EndInit();
             this.tpEntries.ResumeLayout(false);
             this.tpEntries.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chckShowDeleted.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxSecretKey.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxApiTitle.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxApiKey.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbxExchange.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxIndicatorName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxMultiplier.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameterTitle.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxPeriod.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter3.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxParameter5.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxKlineEndType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxInterval.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
@@ -421,24 +641,39 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.GroupControl gcIndicatorParamaters;
         private DevExpress.XtraGrid.GridControl gridIndicatorParameters;
         private DevExpress.XtraGrid.Views.Grid.GridView gvIndicatorParameters;
-        private DevExpress.Utils.Layout.TablePanel tpEntries;
-        private DevExpress.XtraEditors.CheckEdit chckShowDeleted;
-        private DevExpress.XtraEditors.LabelControl lblCreationDate;
-        private DevExpress.XtraEditors.TextEdit tbxSecretKey;
-        private DevExpress.XtraEditors.LabelControl lblSecretKey;
-        private DevExpress.XtraEditors.LabelControl lblCreationDateLabel;
-        private DevExpress.XtraEditors.TextEdit tbxApiTitle;
-        private DevExpress.XtraEditors.TextEdit tbxApiKey;
-        private DevExpress.XtraEditors.ComboBoxEdit cbxExchange;
-        private DevExpress.XtraEditors.LabelControl lblIdNo;
-        private DevExpress.XtraEditors.LabelControl lblApiKeyLabel;
-        private DevExpress.XtraEditors.LabelControl lblApiTitleLabel;
-        private DevExpress.XtraEditors.LabelControl lblExchangeLabel;
-        private DevExpress.XtraEditors.LabelControl lblIdLabel;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraEditors.LabelControl lblResult;
         private DevExpress.XtraEditors.SimpleButton btnNew;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
         private DevExpress.XtraEditors.SimpleButton btnAdd;
+        private DevExpress.Utils.Layout.TablePanel tpEntries;
+        private DevExpress.XtraEditors.LabelControl lblInUse;
+        private DevExpress.XtraEditors.LabelControl lblCreationDate;
+        private DevExpress.XtraEditors.LabelControl lblCreationDateLabel;
+        private DevExpress.XtraEditors.LabelControl lblInUseLabel;
+        private DevExpress.XtraEditors.LabelControl lblParameter5Label;
+        private DevExpress.XtraEditors.LabelControl lblParameter4Label;
+        private DevExpress.XtraEditors.LabelControl lblParameter3Label;
+        private DevExpress.XtraEditors.LabelControl lblParameter2Label;
+        private DevExpress.XtraEditors.LabelControl lblParameter1Label;
+        private DevExpress.XtraEditors.LabelControl lblKlineEndTypeLabel;
+        private DevExpress.XtraEditors.TextEdit tbxPeriod;
+        private DevExpress.XtraEditors.LabelControl lblPeriodLabel;
+        private DevExpress.XtraEditors.LabelControl lblMultiplierLabel;
+        private DevExpress.XtraEditors.TextEdit tbxParameterTitle;
+        private DevExpress.XtraEditors.TextEdit tbxMultiplier;
+        private DevExpress.XtraEditors.ComboBoxEdit cbxIndicatorName;
+        private DevExpress.XtraEditors.LabelControl lblIdNo;
+        private DevExpress.XtraEditors.LabelControl lblIntervalLabel;
+        private DevExpress.XtraEditors.LabelControl lblParameterTitleLabel;
+        private DevExpress.XtraEditors.LabelControl lblIndicatorNameLabel;
+        private DevExpress.XtraEditors.LabelControl lblIdLabel;
+        private DevExpress.XtraEditors.ComboBoxEdit cbxInterval;
+        private DevExpress.XtraEditors.TextEdit tbxParameter1;
+        private DevExpress.XtraEditors.TextEdit tbxParameter2;
+        private DevExpress.XtraEditors.TextEdit tbxParameter3;
+        private DevExpress.XtraEditors.TextEdit tbxParameter4;
+        private DevExpress.XtraEditors.TextEdit tbxParameter5;
+        private DevExpress.XtraEditors.ComboBoxEdit cbxKlineEndType;
     }
 }

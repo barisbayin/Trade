@@ -31,7 +31,7 @@ namespace DevExpressUI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KlineParametersUC));
             this.tabNavDayParameters = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
+            this.splitKlineParameters = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcDayParameterList = new DevExpress.XtraEditors.GroupControl();
             this.gridDayParameters = new DevExpress.XtraGrid.GridControl();
             this.gvDayParameters = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -54,8 +54,8 @@ namespace DevExpressUI
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.tabPaneParameters = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavDayParameters.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).BeginInit();
-            this.splitContainerControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitKlineParameters)).BeginInit();
+            this.splitKlineParameters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcDayParameterList)).BeginInit();
             this.gcDayParameterList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).BeginInit();
@@ -75,28 +75,28 @@ namespace DevExpressUI
             // tabNavDayParameters
             // 
             this.tabNavDayParameters.Caption = "Day Parameters";
-            this.tabNavDayParameters.Controls.Add(this.splitContainerControl1);
+            this.tabNavDayParameters.Controls.Add(this.splitKlineParameters);
             this.tabNavDayParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavDayParameters.ImageOptions.Image")));
             this.tabNavDayParameters.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavDayParameters.Name = "tabNavDayParameters";
             this.tabNavDayParameters.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavDayParameters.Size = new System.Drawing.Size(1011, 735);
             // 
-            // splitContainerControl1
+            // splitKlineParameters
             // 
-            this.splitContainerControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerControl1.FixedPanel = DevExpress.XtraEditors.SplitFixedPanel.Panel2;
-            this.splitContainerControl1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerControl1.Name = "splitContainerControl1";
-            this.splitContainerControl1.Panel1.Controls.Add(this.gcDayParameterList);
-            this.splitContainerControl1.Panel1.Text = "Panel1";
-            this.splitContainerControl1.Panel2.Controls.Add(this.tablePanel1);
-            this.splitContainerControl1.Panel2.Controls.Add(this.groupControl1);
-            this.splitContainerControl1.Panel2.MinSize = 300;
-            this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(1011, 735);
-            this.splitContainerControl1.SplitterPosition = 300;
-            this.splitContainerControl1.TabIndex = 0;
+            this.splitKlineParameters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitKlineParameters.FixedPanel = DevExpress.XtraEditors.SplitFixedPanel.Panel2;
+            this.splitKlineParameters.Location = new System.Drawing.Point(0, 0);
+            this.splitKlineParameters.Name = "splitKlineParameters";
+            this.splitKlineParameters.Panel1.Controls.Add(this.gcDayParameterList);
+            this.splitKlineParameters.Panel1.Text = "Panel1";
+            this.splitKlineParameters.Panel2.Controls.Add(this.tablePanel1);
+            this.splitKlineParameters.Panel2.Controls.Add(this.groupControl1);
+            this.splitKlineParameters.Panel2.MinSize = 350;
+            this.splitKlineParameters.Panel2.Text = "Panel2";
+            this.splitKlineParameters.Size = new System.Drawing.Size(1011, 735);
+            this.splitKlineParameters.SplitterPosition = 300;
+            this.splitKlineParameters.TabIndex = 0;
             // 
             // gcDayParameterList
             // 
@@ -108,7 +108,7 @@ namespace DevExpressUI
             this.gcDayParameterList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcDayParameterList.Location = new System.Drawing.Point(0, 0);
             this.gcDayParameterList.Name = "gcDayParameterList";
-            this.gcDayParameterList.Size = new System.Drawing.Size(701, 735);
+            this.gcDayParameterList.Size = new System.Drawing.Size(651, 735);
             this.gcDayParameterList.TabIndex = 0;
             this.gcDayParameterList.Text = "Day Parameter List";
             // 
@@ -118,7 +118,7 @@ namespace DevExpressUI
             this.gridDayParameters.Location = new System.Drawing.Point(2, 21);
             this.gridDayParameters.MainView = this.gvDayParameters;
             this.gridDayParameters.Name = "gridDayParameters";
-            this.gridDayParameters.Size = new System.Drawing.Size(697, 712);
+            this.gridDayParameters.Size = new System.Drawing.Size(647, 712);
             this.gridDayParameters.TabIndex = 0;
             this.gridDayParameters.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDayParameters,
@@ -142,8 +142,8 @@ namespace DevExpressUI
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.86F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 53.85F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 87.34F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.95F)});
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 88.26F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 9.03F)});
             this.tablePanel1.Controls.Add(this.lblKlineCount);
             this.tablePanel1.Controls.Add(this.tbxDayCount);
             this.tablePanel1.Controls.Add(this.cbxInterval);
@@ -165,33 +165,34 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 33F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(300, 624);
+            this.tablePanel1.Size = new System.Drawing.Size(350, 624);
             this.tablePanel1.TabIndex = 2;
             // 
             // lblKlineCount
             // 
             this.tablePanel1.SetColumn(this.lblKlineCount, 2);
-            this.lblKlineCount.Location = new System.Drawing.Point(121, 177);
+            this.lblKlineCount.Location = new System.Drawing.Point(140, 177);
             this.lblKlineCount.Name = "lblKlineCount";
             this.tablePanel1.SetRow(this.lblKlineCount, 5);
-            this.lblKlineCount.Size = new System.Drawing.Size(0, 18);
+            this.lblKlineCount.Size = new System.Drawing.Size(10, 18);
             this.lblKlineCount.TabIndex = 9;
+            this.lblKlineCount.Text = "..";
             this.lblKlineCount.UseMnemonic = false;
             // 
             // tbxDayCount
             // 
             this.tablePanel1.SetColumn(this.tbxDayCount, 2);
-            this.tbxDayCount.Location = new System.Drawing.Point(121, 141);
+            this.tbxDayCount.Location = new System.Drawing.Point(140, 141);
             this.tbxDayCount.Name = "tbxDayCount";
             this.tablePanel1.SetRow(this.tbxDayCount, 4);
-            this.tbxDayCount.Size = new System.Drawing.Size(158, 24);
+            this.tbxDayCount.Size = new System.Drawing.Size(187, 24);
             this.tbxDayCount.TabIndex = 8;
             // 
             // cbxInterval
             // 
             this.tablePanel1.SetColumn(this.cbxInterval, 2);
             this.cbxInterval.EditValue = "";
-            this.cbxInterval.Location = new System.Drawing.Point(121, 80);
+            this.cbxInterval.Location = new System.Drawing.Point(140, 80);
             this.cbxInterval.Name = "cbxInterval";
             this.cbxInterval.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -212,14 +213,14 @@ namespace DevExpressUI
             "ThreeMinutes",
             "OneMinute"});
             this.tablePanel1.SetRow(this.cbxInterval, 2);
-            this.cbxInterval.Size = new System.Drawing.Size(158, 24);
+            this.cbxInterval.Size = new System.Drawing.Size(187, 24);
             this.cbxInterval.TabIndex = 7;
             // 
             // cbxMarket
             // 
             this.tablePanel1.SetColumn(this.cbxMarket, 2);
             this.cbxMarket.EditValue = "";
-            this.cbxMarket.Location = new System.Drawing.Point(121, 110);
+            this.cbxMarket.Location = new System.Drawing.Point(140, 110);
             this.cbxMarket.Name = "cbxMarket";
             this.cbxMarket.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -227,13 +228,13 @@ namespace DevExpressUI
             "FuturesUsdt",
             "Spot"});
             this.tablePanel1.SetRow(this.cbxMarket, 3);
-            this.cbxMarket.Size = new System.Drawing.Size(158, 24);
+            this.cbxMarket.Size = new System.Drawing.Size(187, 24);
             this.cbxMarket.TabIndex = 6;
             // 
             // lblIdNo
             // 
             this.tablePanel1.SetColumn(this.lblIdNo, 2);
-            this.lblIdNo.Location = new System.Drawing.Point(121, 51);
+            this.lblIdNo.Location = new System.Drawing.Point(140, 51);
             this.lblIdNo.Name = "lblIdNo";
             this.tablePanel1.SetRow(this.lblIdNo, 1);
             this.lblIdNo.Size = new System.Drawing.Size(0, 18);
@@ -243,7 +244,7 @@ namespace DevExpressUI
             // lblKlineCountLabel
             // 
             this.tablePanel1.SetColumn(this.lblKlineCountLabel, 1);
-            this.lblKlineCountLabel.Location = new System.Drawing.Point(20, 177);
+            this.lblKlineCountLabel.Location = new System.Drawing.Point(22, 177);
             this.lblKlineCountLabel.Name = "lblKlineCountLabel";
             this.tablePanel1.SetRow(this.lblKlineCountLabel, 5);
             this.lblKlineCountLabel.Size = new System.Drawing.Size(77, 18);
@@ -253,7 +254,7 @@ namespace DevExpressUI
             // lblDayCountLabel
             // 
             this.tablePanel1.SetColumn(this.lblDayCountLabel, 1);
-            this.lblDayCountLabel.Location = new System.Drawing.Point(20, 144);
+            this.lblDayCountLabel.Location = new System.Drawing.Point(22, 144);
             this.lblDayCountLabel.Name = "lblDayCountLabel";
             this.tablePanel1.SetRow(this.lblDayCountLabel, 4);
             this.lblDayCountLabel.Size = new System.Drawing.Size(74, 18);
@@ -263,7 +264,7 @@ namespace DevExpressUI
             // lblMarket
             // 
             this.tablePanel1.SetColumn(this.lblMarket, 1);
-            this.lblMarket.Location = new System.Drawing.Point(20, 113);
+            this.lblMarket.Location = new System.Drawing.Point(22, 113);
             this.lblMarket.Name = "lblMarket";
             this.tablePanel1.SetRow(this.lblMarket, 3);
             this.lblMarket.Size = new System.Drawing.Size(50, 18);
@@ -273,7 +274,7 @@ namespace DevExpressUI
             // lblIntervalLabel
             // 
             this.tablePanel1.SetColumn(this.lblIntervalLabel, 1);
-            this.lblIntervalLabel.Location = new System.Drawing.Point(20, 83);
+            this.lblIntervalLabel.Location = new System.Drawing.Point(22, 83);
             this.lblIntervalLabel.Name = "lblIntervalLabel";
             this.tablePanel1.SetRow(this.lblIntervalLabel, 2);
             this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
@@ -283,7 +284,7 @@ namespace DevExpressUI
             // lblIdLabel
             // 
             this.tablePanel1.SetColumn(this.lblIdLabel, 1);
-            this.lblIdLabel.Location = new System.Drawing.Point(20, 51);
+            this.lblIdLabel.Location = new System.Drawing.Point(22, 51);
             this.lblIdLabel.Name = "lblIdLabel";
             this.tablePanel1.SetRow(this.lblIdLabel, 1);
             this.lblIdLabel.Size = new System.Drawing.Size(19, 18);
@@ -301,13 +302,13 @@ namespace DevExpressUI
             this.groupControl1.Location = new System.Drawing.Point(0, 624);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.ShowCaption = false;
-            this.groupControl1.Size = new System.Drawing.Size(300, 111);
+            this.groupControl1.Size = new System.Drawing.Size(350, 111);
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
             // lblResult
             // 
-            this.lblResult.Location = new System.Drawing.Point(29, 66);
+            this.lblResult.Location = new System.Drawing.Point(38, 72);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(0, 18);
             this.lblResult.TabIndex = 3;
@@ -320,7 +321,7 @@ namespace DevExpressUI
             this.btnNew.Appearance.Options.UseFont = true;
             this.btnNew.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.ImageOptions.Image")));
             this.btnNew.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnNew.Location = new System.Drawing.Point(18, 20);
+            this.btnNew.Location = new System.Drawing.Point(43, 20);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(84, 34);
             this.btnNew.TabIndex = 2;
@@ -334,7 +335,7 @@ namespace DevExpressUI
             this.btnDelete.Appearance.Options.UseFont = true;
             this.btnDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.ImageOptions.Image")));
             this.btnDelete.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnDelete.Location = new System.Drawing.Point(108, 20);
+            this.btnDelete.Location = new System.Drawing.Point(133, 20);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(84, 34);
             this.btnDelete.TabIndex = 1;
@@ -348,7 +349,7 @@ namespace DevExpressUI
             this.btnAdd.Appearance.Options.UseFont = true;
             this.btnAdd.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.ImageOptions.Image")));
             this.btnAdd.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnAdd.Location = new System.Drawing.Point(198, 20);
+            this.btnAdd.Location = new System.Drawing.Point(223, 20);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(84, 34);
             this.btnAdd.TabIndex = 0;
@@ -379,8 +380,8 @@ namespace DevExpressUI
             this.Size = new System.Drawing.Size(1011, 761);
             this.Load += new System.EventHandler(this.ParametersUC_Load);
             this.tabNavDayParameters.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).EndInit();
-            this.splitContainerControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitKlineParameters)).EndInit();
+            this.splitKlineParameters.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gcDayParameterList)).EndInit();
             this.gcDayParameterList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridDayParameters)).EndInit();
@@ -404,7 +405,7 @@ namespace DevExpressUI
         #endregion
 
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavDayParameters;
-        private DevExpress.XtraEditors.SplitContainerControl splitContainerControl1;
+        private DevExpress.XtraEditors.SplitContainerControl splitKlineParameters;
         private DevExpress.XtraEditors.GroupControl gcDayParameterList;
         private DevExpress.XtraGrid.GridControl gridDayParameters;
         private DevExpress.XtraGrid.Views.Grid.GridView gvDayParameters;

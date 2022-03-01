@@ -7,7 +7,7 @@ namespace Entity.Concrete.DTOs
 {
     public class IndicatorParameterDto : IDto
     {
-        public int Id { get; set; }
+        public int? Id { get; set; } = null;
         public string IndicatorName { get; set; }
         public string ParameterTitle { get; set; }
         public string Interval { get; set; }
