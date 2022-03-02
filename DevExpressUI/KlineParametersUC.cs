@@ -1,20 +1,8 @@
 ﻿using Business.Abstract;
-using Business.Concrete;
 using Business.DependencyResolvers;
-using DataAccess.Abstract;
-using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Core.Costants.Messages;
 using Entity.Concrete.Entities;
+using System;
 
 namespace DevExpressUI
 {
