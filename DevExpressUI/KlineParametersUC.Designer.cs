@@ -1,7 +1,7 @@
 ﻿
 namespace DevExpressUI
 {
-    partial class KlineParametersUC
+    partial class KlineParametersUc
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace DevExpressUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KlineParametersUC));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KlineParametersUc));
             this.tabNavDayParameters = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.splitKlineParameters = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcDayParameterList = new DevExpress.XtraEditors.GroupControl();
@@ -376,7 +376,7 @@ namespace DevExpressUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabPaneParameters);
-            this.Name = "KlineParametersUC";
+            this.Name = "KlineParametersUc";
             this.Size = new System.Drawing.Size(1011, 761);
             this.Load += new System.EventHandler(this.ParametersUC_Load);
             this.tabNavDayParameters.ResumeLayout(false);

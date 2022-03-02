@@ -6,9 +6,9 @@ using System;
 
 namespace DevExpressUI
 {
-    public partial class KlineParametersUC : DevExpress.XtraEditors.XtraUserControl
+    public partial class KlineParametersUc : DevExpress.XtraEditors.XtraUserControl
     {
-        public KlineParametersUC()
+        public KlineParametersUc()
         {
             InitializeComponent();
 
@@ -21,14 +21,14 @@ namespace DevExpressUI
         private readonly IBinanceCommonDatabaseParameterService _binanceCommonDatabaseParameterService;
 
 
-        private static KlineParametersUC _parametersUc;
-        public static KlineParametersUC Instance
+        private static KlineParametersUc _parametersUc;
+        public static KlineParametersUc Instance
         {
 
             get
             {
                 if (_parametersUc == null)
-                    _parametersUc = new KlineParametersUC();
+                    _parametersUc = new KlineParametersUc();
                 return _parametersUc;
             }
         }

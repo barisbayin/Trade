@@ -24,18 +24,18 @@ namespace DevExpressUI
             
             await Task.Run((() =>
             {
-                if (!mainFormContainer.Controls.Contains(KlineParametersUC.Instance))
+                if (!mainFormContainer.Controls.Contains(KlineParametersUc.Instance))
                 {
                     mainFormContainer.BeginInvoke(new Action(delegate ()
                     {
-                        mainFormContainer.Controls.Add(KlineParametersUC.Instance);
+                        mainFormContainer.Controls.Add(KlineParametersUc.Instance);
 
-                        KlineParametersUC.Instance.Dock = DockStyle.Fill;
-                        KlineParametersUC.Instance.BringToFront();
+                        KlineParametersUc.Instance.Dock = DockStyle.Fill;
+                        KlineParametersUc.Instance.BringToFront();
                     }));
                 }
 
-                KlineParametersUC.Instance.BringToFront();
+                KlineParametersUc.Instance.BringToFront();
             }));
         }
 
