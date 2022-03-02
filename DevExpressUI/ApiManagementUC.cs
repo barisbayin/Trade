@@ -42,6 +42,7 @@ namespace DevExpressUI
         private void ApiManagementUC_Load(object sender, EventArgs e)
         {
             LoadApiList();
+            ClearAll();
             lblResult.ForeColor = Color.DarkRed;
         }
 
@@ -73,18 +74,19 @@ namespace DevExpressUI
             tbxApiKey.Text = "";
             tbxSecretKey.Text = "";
             lblCreationDate.Text = "";
+
         }
 
         private void gvApiList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             if (gvApiList.RowCount > 0)
             {
-                lblIdNo.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[0]).ToString();
-                cbxExchange.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[1]).ToString();
-                tbxApiTitle.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[2]).ToString();
-                tbxApiKey.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[3]).ToString();
-                tbxSecretKey.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[4]).ToString();
-                lblCreationDate.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[5]).ToString();
+                lblIdNo.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[0]) == null ? "" : gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[0]).ToString();
+                cbxExchange.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[1]) == null ? "" : gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[1]).ToString();
+                tbxApiTitle.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[2]) == null ? "" : gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[2]).ToString();
+                tbxApiKey.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[3]) == null ? "" : gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[3]).ToString();
+                tbxSecretKey.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[4]) == null ? "" : gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[4]).ToString();
+                lblCreationDate.Text = gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[5]) == null ? "" : gvApiList.GetRowCellValue(gvApiList.FocusedRowHandle, gvApiList.Columns[5]).ToString();
             }
             else
             {

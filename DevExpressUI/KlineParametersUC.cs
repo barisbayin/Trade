@@ -3,6 +3,7 @@ using Business.DependencyResolvers;
 using Core.Costants.Messages;
 using Entity.Concrete.Entities;
 using System;
+using System.Drawing;
 
 namespace DevExpressUI
 {
@@ -37,6 +38,7 @@ namespace DevExpressUI
         {
             LoadDayParameters();
             ClearAll();
+            lblResult.ForeColor = Color.DarkRed;
         }
 
         private async void LoadDayParameters()
@@ -51,11 +53,11 @@ namespace DevExpressUI
         {
             if (gvDayParameters.RowCount > 0)
             {
-                lblIdNo.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[0]).ToString();
-                cbxInterval.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[1]).ToString();
-                cbxMarket.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[2]).ToString();
-                tbxDayCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[3]).ToString();
-                lblKlineCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[4]).ToString();
+                lblIdNo.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[0]) == null ? "" : gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[0]).ToString();
+                cbxInterval.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[1]) == null ? "" : gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[1]).ToString();
+                cbxMarket.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[2]) == null ? "" : gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[2]).ToString();
+                tbxDayCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[3]) == null ? "" : gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[3]).ToString();
+                lblKlineCount.Text = gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[4]) == null ? "" : gvDayParameters.GetRowCellValue(gvDayParameters.FocusedRowHandle, gvDayParameters.Columns[4]).ToString();
             }
             else
             {

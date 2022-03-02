@@ -42,6 +42,7 @@ namespace DevExpressUI
         private void IndicatorParametersUC_Load(object sender, EventArgs e)
         {
             LoadIndicatorParameterList();
+            ClearAll();
             lblResult.ForeColor = Color.DarkRed;
         }
 
