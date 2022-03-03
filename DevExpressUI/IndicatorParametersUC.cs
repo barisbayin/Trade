@@ -145,11 +145,11 @@ namespace DevExpressUI
             }
             else
             {
-
-                if (lblIdNo.Text == "")
+                try
                 {
-                    try
+                    if (lblIdNo.Text == "")
                     {
+
                         IndicatorParameterEntity indicatorParameterEntity = new IndicatorParameterEntity();
 
                         indicatorParameterEntity.IndicatorId = Convert.ToInt32(cbxIndicatorName.SelectedValue);
@@ -174,18 +174,13 @@ namespace DevExpressUI
                         {
                             lblResult.Text = result.Message;
                         }
-                    }
-                    catch (Exception exception)
-                    {
-                        lblResult.Text = CommonMessages.Error;
-                    }
-                    
-                }
 
-                if (lblIdNo.Text != "")
-                {
-                    try
+
+                    }
+
+                    if (lblIdNo.Text != "")
                     {
+
                         var indicatorParameterEntity = (await _indicatorParameterService.GetIndicatorParameterEntityByIdAsync(Convert.ToInt32(lblIdNo.Text))).Data;
                         indicatorParameterEntity.IndicatorId = Convert.ToInt32(cbxIndicatorName.SelectedValue);
                         indicatorParameterEntity.ParameterTitle = tbxParameterTitle.Text;
@@ -210,13 +205,23 @@ namespace DevExpressUI
                             lblResult.Text = result.Message;
                         }
                     }
-                    catch (Exception exception)
-                    {
-                        lblResult.Text = CommonMessages.Error;
-                    }
-                    
+                }
+                catch (Exception exception)
+                {
+                    lblResult.Text = CommonMessages.Error;
                 }
                 LoadIndicatorParameterList();
+            }
+        }
+
+        private void gvIndicatorParameters_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            bool inUse = Convert.ToBoolean(gvIndicatorParameters.GetRowCellValue(e.RowHandle, "InUse"));
+
+            if (inUse == true)
+            {
+                e.Appearance.BackColor = Color.Green;
+                e.Appearance.ForeColor = Color.White;
             }
         }
     }

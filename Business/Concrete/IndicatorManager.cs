@@ -120,13 +120,13 @@ namespace Business.Concrete
 
             var indicatorParameter = _indicatorParameterService.GetIndicatorParameterEntityById(indicatorParameterId).Data;
 
-            Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", indicatorParameter.Multiplier, indicatorParameter.KlineEndType);
+            Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", indicatorParameter.Parameter1, indicatorParameter.KlineEndType);
 
             var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 
-            IEnumerable<RenkoResult> renkoResults = Indicator.GetRenko(dataList, indicatorParameter.Multiplier.Value, (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
+            IEnumerable<RenkoResult> renkoResults = Indicator.GetRenko(dataList, indicatorParameter.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
 
             int i = 0;
             foreach (var renkoBrick in renkoResults)

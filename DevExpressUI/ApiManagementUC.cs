@@ -156,43 +156,50 @@ namespace DevExpressUI
             }
             else
             {
-                if (lblIdNo.Text == "")
+                try
                 {
-                    apiInformationEntity.Exchange = cbxExchange.Text;
-                    apiInformationEntity.ApiTitle = tbxApiTitle.Text;
-                    apiInformationEntity.ApiKey = tbxApiKey.Text;
-                    apiInformationEntity.SecretKey = tbxSecretKey.Text;
-                    var result = await _apiInformationService.AddApiInformation(apiInformationEntity);
-                    if (result.Success)
+                    if (lblIdNo.Text == "")
                     {
-                        lblResult.Text = "New Api " + result.Message;
-                        LoadApiList();
+                        apiInformationEntity.Exchange = cbxExchange.Text;
+                        apiInformationEntity.ApiTitle = tbxApiTitle.Text;
+                        apiInformationEntity.ApiKey = tbxApiKey.Text;
+                        apiInformationEntity.SecretKey = tbxSecretKey.Text;
+                        var result = await _apiInformationService.AddApiInformation(apiInformationEntity);
+                        if (result.Success)
+                        {
+                            lblResult.Text = "New Api " + result.Message;
+                            
+                        }
+                        else
+                        {
+                            lblResult.Text = result.Message;
+                        }
                     }
-                    else
-                    {
-                        lblResult.Text = result.Message;
-                    }
-                }
 
-                if (lblIdNo.Text != "")
-                {
-                    apiInformationEntity.Id = Convert.ToInt32(lblIdNo.Text);
-                    apiInformationEntity.Exchange = cbxExchange.Text;
-                    apiInformationEntity.ApiTitle = tbxApiTitle.Text;
-                    apiInformationEntity.ApiKey = tbxApiKey.Text;
-                    apiInformationEntity.SecretKey = tbxSecretKey.Text;
-                    var result = await _apiInformationService.UpdateApiInformationById(apiInformationEntity);
-                    
-                    if (result.Success)
+                    if (lblIdNo.Text != "")
                     {
-                        lblResult.Text = "Id:" + lblIdNo.Text + " " + result.Message;
-                        LoadApiList();
-                    }
-                    else
-                    {
-                        lblResult.Text = result.Message;
+                        apiInformationEntity.Id = Convert.ToInt32(lblIdNo.Text);
+                        apiInformationEntity.Exchange = cbxExchange.Text;
+                        apiInformationEntity.ApiTitle = tbxApiTitle.Text;
+                        apiInformationEntity.ApiKey = tbxApiKey.Text;
+                        apiInformationEntity.SecretKey = tbxSecretKey.Text;
+                        var result = await _apiInformationService.UpdateApiInformationById(apiInformationEntity);
+
+                        if (result.Success)
+                        {
+                            lblResult.Text = "Id:" + lblIdNo.Text + " " + result.Message;
+                        }
+                        else
+                        {
+                            lblResult.Text = result.Message;
+                        }
                     }
                 }
+                catch (Exception exception)
+                {
+                    lblResult.Text = CommonMessages.Error;
+                }
+                LoadApiList();
             }
         }
     }

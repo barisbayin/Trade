@@ -46,8 +46,16 @@ namespace Business.Concrete
 
         public async Task<IResult> DeleteDayParameterById(int id)
         {
-            await _binanceCommonDatabaseParameterDal.DeleteAsync(await _binanceCommonDatabaseParameterDal.GetAsync(x => x.Id == id));
-            return new SuccessResult(CommonMessages.Deleted);
+            try
+            {
+                await _binanceCommonDatabaseParameterDal.DeleteAsync(await _binanceCommonDatabaseParameterDal.GetAsync(x => x.Id == id));
+                return new SuccessResult(CommonMessages.Deleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
+            }
+
         }
 
         public async Task<IResult> AddDayParameterAsync(BinanceIntervalParameterEntity binanceIntervalParameterEntity)
@@ -58,13 +66,12 @@ namespace Business.Concrete
             try
             {
                 await _binanceCommonDatabaseParameterDal.AddAsync(binanceIntervalParameterEntity);
+                return new SuccessResult(CommonMessages.Added);
             }
             catch (Exception e)
             {
-                return new ErrorResult(e.InnerException.Message);
+                return new ErrorResult(CommonMessages.Error);
             }
-            
-            return new SuccessResult(CommonMessages.Added);
         }
 
         public async Task<IResult> UpdateDayParameterAsync(BinanceIntervalParameterEntity binanceIntervalParameterEntity)
@@ -75,13 +82,12 @@ namespace Business.Concrete
             try
             {
                 await _binanceCommonDatabaseParameterDal.UpdateAsync(binanceIntervalParameterEntity);
+                return new SuccessResult(CommonMessages.Updated);
             }
             catch (Exception e)
             {
-                return new ErrorResult(e.Message);
+                return new ErrorResult(CommonMessages.Error);
             }
-            
-            return new SuccessResult(CommonMessages.Updated);
         }
     }
 }

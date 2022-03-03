@@ -37,6 +37,8 @@ namespace DevExpressUI
             this.gridIndicatorParameters = new DevExpress.XtraGrid.GridControl();
             this.gvIndicatorParameters = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.lblModifiedDate = new DevExpress.XtraEditors.LabelControl();
+            this.lblModifiedDateLabel = new DevExpress.XtraEditors.LabelControl();
             this.cbxIndicatorName = new System.Windows.Forms.ComboBox();
             this.tbxParameter1 = new DevExpress.XtraEditors.TextEdit();
             this.tbxParameter2 = new DevExpress.XtraEditors.TextEdit();
@@ -70,8 +72,6 @@ namespace DevExpressUI
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
-            this.lblModifiedDateLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblModifiedDate = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneIndicatorParameters)).BeginInit();
             this.tabPaneIndicatorParameters.SuspendLayout();
             this.tabNavInicatorParameters.SuspendLayout();
@@ -168,6 +168,7 @@ namespace DevExpressUI
             this.gvIndicatorParameters.GridControl = this.gridIndicatorParameters;
             this.gvIndicatorParameters.Name = "gvIndicatorParameters";
             this.gvIndicatorParameters.OptionsView.ShowGroupPanel = false;
+            this.gvIndicatorParameters.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvIndicatorParameters_RowStyle);
             this.gvIndicatorParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvIndicatorParameters_FocusedRowChanged);
             // 
             // tpEntries
@@ -233,11 +234,31 @@ namespace DevExpressUI
             this.tpEntries.Size = new System.Drawing.Size(350, 624);
             this.tpEntries.TabIndex = 2;
             // 
+            // lblModifiedDate
+            // 
+            this.tpEntries.SetColumn(this.lblModifiedDate, 2);
+            this.lblModifiedDate.Location = new System.Drawing.Point(140, 470);
+            this.lblModifiedDate.Name = "lblModifiedDate";
+            this.tpEntries.SetRow(this.lblModifiedDate, 15);
+            this.lblModifiedDate.Size = new System.Drawing.Size(10, 18);
+            this.lblModifiedDate.TabIndex = 37;
+            this.lblModifiedDate.Text = "..";
+            // 
+            // lblModifiedDateLabel
+            // 
+            this.tpEntries.SetColumn(this.lblModifiedDateLabel, 1);
+            this.lblModifiedDateLabel.Location = new System.Drawing.Point(21, 470);
+            this.lblModifiedDateLabel.Name = "lblModifiedDateLabel";
+            this.tpEntries.SetRow(this.lblModifiedDateLabel, 15);
+            this.lblModifiedDateLabel.Size = new System.Drawing.Size(94, 18);
+            this.lblModifiedDateLabel.TabIndex = 36;
+            this.lblModifiedDateLabel.Text = "Modified Date:";
+            // 
             // cbxIndicatorName
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorName, 2);
             this.cbxIndicatorName.FormattingEnabled = true;
-            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 78);
+            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 77);
             this.cbxIndicatorName.Name = "cbxIndicatorName";
             this.tpEntries.SetRow(this.cbxIndicatorName, 2);
             this.cbxIndicatorName.Size = new System.Drawing.Size(188, 26);
@@ -594,26 +615,6 @@ namespace DevExpressUI
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Save";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // lblModifiedDateLabel
-            // 
-            this.tpEntries.SetColumn(this.lblModifiedDateLabel, 1);
-            this.lblModifiedDateLabel.Location = new System.Drawing.Point(21, 470);
-            this.lblModifiedDateLabel.Name = "lblModifiedDateLabel";
-            this.tpEntries.SetRow(this.lblModifiedDateLabel, 15);
-            this.lblModifiedDateLabel.Size = new System.Drawing.Size(94, 18);
-            this.lblModifiedDateLabel.TabIndex = 36;
-            this.lblModifiedDateLabel.Text = "Modified Date:";
-            // 
-            // lblModifiedDate
-            // 
-            this.tpEntries.SetColumn(this.lblModifiedDate, 2);
-            this.lblModifiedDate.Location = new System.Drawing.Point(140, 470);
-            this.lblModifiedDate.Name = "lblModifiedDate";
-            this.tpEntries.SetRow(this.lblModifiedDate, 15);
-            this.lblModifiedDate.Size = new System.Drawing.Size(10, 18);
-            this.lblModifiedDate.TabIndex = 37;
-            this.lblModifiedDate.Text = "..";
             // 
             // IndicatorParametersUC
             // 

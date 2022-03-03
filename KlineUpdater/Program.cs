@@ -35,9 +35,9 @@ namespace KlineUpdater
 
 
 
-            string symbolPair = "ETHUSDT";
+            string symbolPair = "BTCUSDT";
             string interval = "FourHour";
-            int indicatorParameterId = 4;
+            int indicatorParameterId = 12;
 
             IBinanceWsService binanceKlineWsService = new BinanceWsManager(new BinanceSocketClient());
             IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal = new EfBinanceFuturesUsdtKlineDal();
