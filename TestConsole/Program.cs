@@ -112,9 +112,15 @@ namespace TestConsole
 
 
             IIndicatorService indicatorService = new IndicatorManager(
-                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),
+                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),new EfIndicatorDal(),
                 new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
+            var result5 = indicatorService.GetAllIndicators().Result.Data;
+
+            foreach (var item in result5)
+            {
+                Console.WriteLine(item.IndicatorName);
+            }
 
             //var result = indicatorService.GetSuperTrendResultAsync("SOLUSDT", "FourHour", 1).Data;
             //foreach (var data in result)
@@ -165,10 +171,10 @@ namespace TestConsole
             apiInformationService.AddApiInformation(apiInformationEntity);
             */
 
-            
+            /*
             IBinanceApiService binanceAccountInformationApiService =
                 new BinanceApiManager(new BinanceClient(), "xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy", "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM");
-
+            */
             BinanceClient binanceClient = new BinanceClient();
             binanceClient.SetApiCredentials("xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy", "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM");
             /*
@@ -178,7 +184,7 @@ namespace TestConsole
 
             Console.WriteLine(result3.Result.Success);
             */
-            
+            /*
             var result2 =  binanceClient.Spot.Order.CancelAllOpenOrdersAsync("BTCUSDT");
             result2.Wait();
             Console.WriteLine(result2.Result.ResponseHeaders);
@@ -194,7 +200,7 @@ namespace TestConsole
                 Console.WriteLine(item.OrderId + " | " + item.Symbol + " | " + item.Price + " | " + item.Quantity);
             }
 
-
+            */
             Console.ReadLine();
         }
     }

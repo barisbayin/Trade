@@ -35,7 +35,8 @@ namespace DataAccess.Concrete
                                  Parameter4 = ip.Parameter4,
                                  Parameter5 = ip.Parameter5,
                                  InUse = ip.InUse,
-                                 CreationDate = ip.CreationDate
+                                 CreationDate = ip.CreationDate,
+                                 ModifiedDate = ip.ModifiedDate
                              };
                 return result.ToList();
             }

@@ -10,11 +10,11 @@ namespace Business.Tasks.Jobs
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            IIndicatorService indicatorService = new IndicatorManager(
-                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),
-                new IndicatorParameterManager(new EfIndicatorParameterDal()));
+            //IIndicatorService indicatorService = new IndicatorManager(
+            //    new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),
+            //    new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
-            var result = indicatorService.GetFuturesUsdtRenkoBricks("BTCUSDT", "FourHour", 3).Data;
+            //var result = indicatorService.GetFuturesUsdtRenkoBricks("BTCUSDT", "FourHour", 3).Data;
             
         }
     }

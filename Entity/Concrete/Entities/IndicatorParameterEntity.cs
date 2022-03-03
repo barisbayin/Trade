@@ -10,16 +10,17 @@ namespace Entity.Concrete.Entities
         public string ParameterTitle { get; set; }
         public string Interval { get; set; }
         public int Period { get; set; }
-        public decimal? Multiplier { get; set; } = null;
+        public decimal? Multiplier { get; set; } = 0;
         public string KlineEndType { get; set; }
-        public decimal? Parameter1 { get; set; } = null;
-        public decimal? Parameter2 { get; set; } = null;
-        public decimal? Parameter3 { get; set; } = null;
-        public decimal? Parameter4 { get; set; } = null;
-        public decimal? Parameter5 { get; set; } = null;
+        public decimal? Parameter1 { get; set; } = 0;
+        public decimal? Parameter2 { get; set; } = 0;
+        public decimal? Parameter3 { get; set; } = 0;
+        public decimal? Parameter4 { get; set; } = 0;
+        public decimal? Parameter5 { get; set; } = 0;
         public DateTime? CreationDate { get; set; } = null;
         public bool InUse { get; set; }
         public bool? Removed { get; set; } = null;
+        public DateTime? ModifiedDate { get; set; } = null;
 
     }
 }

@@ -22,5 +22,6 @@ namespace Core.Costants.Messages
         public static string NoData="There is no data!";
         public static string IsAlreadyRemoved = "Is already Removed!";
         public static string ChooseItem="Please choose an item!";
+        public static string AlreadyInUse="Can not delete, already in use!";
     }
 }

@@ -25,6 +25,9 @@ namespace Business.DependencyResolvers
             builder.RegisterType<EfApiInformationDal>().As<IApiInformationDal>().SingleInstance();
             builder.RegisterType<EfIndicatorParameterDal>().As<IIndicatorParameterDal>().SingleInstance();
             builder.RegisterType<IndicatorParameterManager>().As<IIndicatorParameterService>().SingleInstance();
+            builder.RegisterType<EfIndicatorDal>().As<IIndicatorDal>().SingleInstance();
+            builder.RegisterType<IndicatorManager>().As<IIndicatorService>().SingleInstance();
+            builder.RegisterType<BinanceKlineManager>().As<IBinanceKlineService>().SingleInstance();
 
 
 

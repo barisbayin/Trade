@@ -22,19 +22,52 @@ namespace Business.Concrete
             _indicatorParameterDal = indicatorParameterDal;
         }
 
+        public async Task<IResult> AddIndicatorParameter(IndicatorParameterEntity indicatorParameterEntity)
+        {
+            indicatorParameterEntity.InUse = false;
+            indicatorParameterEntity.CreationDate = DateTime.Now;
+
+            try
+            {
+                await _indicatorParameterDal.AddAsync(indicatorParameterEntity);
+                return new SuccessResult(CommonMessages.Added);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
+            }
+        }
+
+        public async Task<IResult> UpdateIndicatorParameter(IndicatorParameterEntity indicatorParameterEntity)
+        {
+
+            indicatorParameterEntity.ModifiedDate = DateTime.Now;
+
+            try
+            {
+                await _indicatorParameterDal.UpdateAsync(indicatorParameterEntity);
+                return new SuccessResult(CommonMessages.Updated);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
+            }
+        }
+
         public IDataResult<List<IndicatorParameterEntity>> GetAll()
         {
             return new SuccessDataResult<List<IndicatorParameterEntity>>(_indicatorParameterDal.GetAll());
         }
 
-        public IDataResult<IndicatorParameterEntity> GetIndicatorParameterDataById(string name)
+        public IDataResult<IndicatorParameterEntity> GetIndicatorParameterEntityById(int id)
         {
-            return new SuccessDataResult<IndicatorParameterEntity>(_indicatorParameterDal.Get(x => x.ParameterTitle == name));
+            return new SuccessDataResult<IndicatorParameterEntity> (_indicatorParameterDal.Get(x => x.Id == id));
         }
 
-        public async Task<IDataResult<IndicatorParameterEntity>> GetIndicatorParameterDataByIdAsync(int parameterId)
+
+        public async Task<IDataResult<IndicatorParameterEntity>> GetIndicatorParameterEntityByIdAsync(int id)
         {
-            return new SuccessDataResult<IndicatorParameterEntity>(await _indicatorParameterDal.GetAsync(x => x.Id == parameterId));
+            return new SuccessDataResult<IndicatorParameterEntity>(await _indicatorParameterDal.GetAsync(x => x.Id == id));
         }
 
         public IDataResult<List<IndicatorParameterDto>> GetIndicatorParameterDetails()
@@ -46,16 +79,26 @@ namespace Business.Concrete
         public async Task<IResult> DeleteIndicatorParameterById(int id)
         {
             var willDeletedIndicatorParameter = await _indicatorParameterDal.GetAsync(x => x.Id == id);
-            
-            try
+
+            if (willDeletedIndicatorParameter.InUse=true)
             {
-                await _indicatorParameterDal.DeleteAsync(willDeletedIndicatorParameter);
-                return new SuccessResult(CommonMessages.Deleted);
+                return new ErrorResult(CommonMessages.AlreadyInUse);
             }
-            catch (Exception e)
+            else
             {
-                return new ErrorResult(CommonMessages.Error);
+                try
+                {
+                    await _indicatorParameterDal.DeleteAsync(willDeletedIndicatorParameter);
+                    return new SuccessResult(CommonMessages.Deleted);
+                }
+                catch (Exception e)
+                {
+                    return new ErrorResult(CommonMessages.Error);
+                }
+
             }
+
+
         }
     }
 }

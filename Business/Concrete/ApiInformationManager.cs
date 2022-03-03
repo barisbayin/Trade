@@ -95,11 +95,12 @@ namespace Business.Concrete
 
         public async Task<IResult> DeleteApiInformationById(int id)
         {
-            var willUpdateApi = await _apiInformationDal.GetAsync(x => x.Id == id);
-            willUpdateApi.IsRemoved = true;
+            var willDeleteApi = await _apiInformationDal.GetAsync(x => x.Id == id);
+            willDeleteApi.IsRemoved = true;
+            willDeleteApi.RemovedDate=DateTime.Now;
             try
             {
-                await _apiInformationDal.UpdateAsync(willUpdateApi);
+                await _apiInformationDal.UpdateAsync(willDeleteApi);
                 return new SuccessResult(CommonMessages.Deleted);
             }
             catch (Exception e)

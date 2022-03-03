@@ -21,6 +21,7 @@ namespace Entity.Concrete.DTOs
         public decimal? Parameter5 { get; set; } = null;
         public bool InUse { get; set; }
         public DateTime? CreationDate { get; set; } = null;
+        public DateTime? ModifiedDate { get; set; } = null;
 
 
     }

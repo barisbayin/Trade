@@ -59,7 +59,7 @@ namespace KlineUpdater
 
 
             IIndicatorService indicatorService = new IndicatorManager(
-                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),
+                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),new EfIndicatorDal(),
                 new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
 

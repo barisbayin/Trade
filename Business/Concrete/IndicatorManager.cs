@@ -6,6 +6,8 @@ using Skender.Stock.Indicators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Core.Costants.Messages;
 using DataAccess.Abstract;
 using Entity.Concrete.DTOs;
 
@@ -17,20 +19,13 @@ namespace Business.Concrete
         private readonly IIndicatorParameterService _indicatorParameterService;
         private readonly IIndicatorDal _indicatorDal;
 
-        public IndicatorManager()
-        {
 
-        }
 
-        public IndicatorManager(IIndicatorDal indicatorDal)
-        {
-            _indicatorDal = indicatorDal;
-        }
-
-        public IndicatorManager(IBinanceKlineService binanceKlineService, IIndicatorParameterService indicatorParameterService)
+        public IndicatorManager(IBinanceKlineService binanceKlineService, IIndicatorDal indicatorDal, IIndicatorParameterService indicatorParameterService)
         {
             _binanceKlineService = binanceKlineService;
             _indicatorParameterService = indicatorParameterService;
+            _indicatorDal = indicatorDal;
         }
 
         public IDataResult<IndicatorEntity> GetIndicatorById(int indicatorId)
@@ -38,11 +33,24 @@ namespace Business.Concrete
             return new SuccessDataResult<IndicatorEntity>(_indicatorDal.Get(x => x.Id == indicatorId));
         }
 
+        public async Task<IDataResult<List<IndicatorEntity>>> GetAllIndicators()
+        {
+            try
+            {
+                return new SuccessDataResult<List<IndicatorEntity>>(await _indicatorDal.GetAllAsync());
+            }
+            catch (Exception e)
+            {
+                return new ErrorDataResult<List<IndicatorEntity>>(message: CommonMessages.Error);
+            }
+            
+        }
+
         public IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResultAsync(string symbolPair, string interval, int indicatorParameterId)
         {
             List<BinanceFuturesUsdtKlineWithSuperTrend> binanceFuturesUsdtKlineWithSuperTrendList = new List<BinanceFuturesUsdtKlineWithSuperTrend>();
 
-            var indicatorParameter = _indicatorParameterService.GetIndicatorParameterDataByIdAsync(indicatorParameterId).Result.Data;
+            var indicatorParameter = _indicatorParameterService.GetIndicatorParameterEntityById(indicatorParameterId).Data;
 
             Console.WriteLine("SuperTrend Parameters => ATR Period: {0}, Multiplier: {1}", indicatorParameter.Period, indicatorParameter.Multiplier);
 
@@ -110,7 +118,7 @@ namespace Business.Concrete
         {
             List<FuturesUsdtRenkoBrick> futuresUsdtRenkoBrickList = new List<FuturesUsdtRenkoBrick>();
 
-            var indicatorParameter = _indicatorParameterService.GetIndicatorParameterDataByIdAsync(indicatorParameterId).Result.Data;
+            var indicatorParameter = _indicatorParameterService.GetIndicatorParameterEntityById(indicatorParameterId).Data;
 
             Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", indicatorParameter.Multiplier, indicatorParameter.KlineEndType);
 
@@ -150,7 +158,7 @@ namespace Business.Concrete
         {
             List<CurrencyKlineToCalculateIndicatorDto> currencyKlineToCalculateIndicatorDtoList = new List<CurrencyKlineToCalculateIndicatorDto>();
 
-            var renkoBrickParameters = _indicatorParameterService.GetIndicatorParameterDataByIdAsync(renkoBrickParameterId).Result.Data;
+            var renkoBrickParameters = _indicatorParameterService.GetIndicatorParameterEntityById(renkoBrickParameterId).Data;
 
             Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", renkoBrickParameters.Multiplier, renkoBrickParameters.KlineEndType);
 
@@ -181,7 +189,7 @@ namespace Business.Concrete
 
             List<FuturesUsdtRenkoBricksWithSuperTrend> futuresUsdtRenkoBricksWithSuperTrends = new List<FuturesUsdtRenkoBricksWithSuperTrend>();
 
-            var superTrendParameters = _indicatorParameterService.GetIndicatorParameterDataByIdAsync(superTrendParameterId).Result.Data;
+            var superTrendParameters = _indicatorParameterService.GetIndicatorParameterEntityById(superTrendParameterId).Data;
 
             Console.WriteLine("SuperTrend Parameters => ATR Period: {0}, Multiplier: {1}", superTrendParameters.Period, superTrendParameters.Multiplier);
 
