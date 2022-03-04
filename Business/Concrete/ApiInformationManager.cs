@@ -96,18 +96,24 @@ namespace Business.Concrete
         public async Task<IResult> DeleteApiInformationById(int id)
         {
             var willDeleteApi = await _apiInformationDal.GetAsync(x => x.Id == id);
-            willDeleteApi.IsRemoved = true;
-            willDeleteApi.RemovedDate=DateTime.Now;
-            try
+            if (willDeleteApi.InUse==true)
             {
-                await _apiInformationDal.UpdateAsync(willDeleteApi);
-                return new SuccessResult(CommonMessages.Deleted);
+                return new ErrorResult(CommonMessages.AlreadyInUse);
             }
-            catch (Exception e)
+            else
             {
-                return new ErrorResult(CommonMessages.Error);
+                willDeleteApi.IsRemoved = true;
+                willDeleteApi.RemovedDate = DateTime.Now;
+                try
+                {
+                    await _apiInformationDal.UpdateAsync(willDeleteApi);
+                    return new SuccessResult(CommonMessages.Deleted);
+                }
+                catch (Exception e)
+                {
+                    return new ErrorResult(CommonMessages.Error);
+                }
             }
-
         }
     }
 }

@@ -38,9 +38,9 @@ namespace DevExpressUI
             this.aceKlineParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceApiManagement = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceIndicatorParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.aceKilnes = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
+            this.accLogs = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
@@ -63,7 +63,7 @@ namespace DevExpressUI
             this.aceKlineParameters,
             this.aceApiManagement,
             this.aceIndicatorParameters,
-            this.aceKilnes});
+            this.accLogs});
             this.accordionControl1.Location = new System.Drawing.Point(0, 20);
             this.accordionControl1.Name = "accordionControl1";
             this.accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Hidden;
@@ -109,12 +109,6 @@ namespace DevExpressUI
             this.aceIndicatorParameters.Text = "Indicator Parameters";
             this.aceIndicatorParameters.Click += new System.EventHandler(this.aceIndicatorParameters_Click);
             // 
-            // aceKilnes
-            // 
-            this.aceKilnes.Name = "aceKilnes";
-            this.aceKilnes.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.aceKilnes.Text = "Element2";
-            // 
             // fluentDesignFormControl1
             // 
             this.fluentDesignFormControl1.FluentDesignForm = this;
@@ -129,6 +123,13 @@ namespace DevExpressUI
             // 
             this.fluentFormDefaultManager1.DockingEnabled = false;
             this.fluentFormDefaultManager1.Form = this;
+            // 
+            // accLogs
+            // 
+            this.accLogs.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("accLogs.ImageOptions.Image")));
+            this.accLogs.Name = "accLogs";
+            this.accLogs.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accLogs.Text = "Logs";
             // 
             // MainFrom
             // 
@@ -161,7 +162,7 @@ namespace DevExpressUI
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceTradeParameters;
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceApiManagement;
         private DevExpress.XtraBars.Navigation.AccordionControlElement aceIndicatorParameters;
-        private DevExpress.XtraBars.Navigation.AccordionControlElement aceKilnes;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement accLogs;
     }
 }
 

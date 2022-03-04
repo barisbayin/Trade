@@ -17,13 +17,13 @@ namespace Business.Concrete
         {
              _tradeFlowParameterDal= tradeFlowParameterDal;
         }
-        public async Task<IDataResult<TradeFlowParameterEntity>> GetTradeFlowParameter()
+        public async Task<IDataResult<TradeFlowEntity>> GetTradeFlowParameter()
         {
             var tradeFlowParameter =(await _tradeFlowParameterDal.GetAllAsync(x => x.IsSelected == true)).LastOrDefault();
-            return new SuccessDataResult<TradeFlowParameterEntity>(tradeFlowParameter);
+            return new SuccessDataResult<TradeFlowEntity>(tradeFlowParameter);
         }
 
-        public async Task<IResult> UpdateTradeFlowParameter(TradeFlowParameterEntity tradeFlowParameter)
+        public async Task<IResult> UpdateTradeFlowParameter(TradeFlowEntity tradeFlowParameter)
         {
             await _tradeFlowParameterDal.UpdateAsync(tradeFlowParameter);
             return new SuccessResult();

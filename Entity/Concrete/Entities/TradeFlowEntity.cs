@@ -3,15 +3,9 @@ using Core.Entities;
 
 namespace Entity.Concrete.Entities
 {
-    public class TradeFlowParameterEntity : IEntity
+    public class TradeFlowEntity : IEntity
     {
         public int Id { get; set; }
-        public int IndicatorParameterId { get; set; }
-        public int ApiInformationId { get; set; }
-        public string SymbolPair { get; set; }
-        public string Interval { get; set; }
-        public string MarginType { get; set; }
-        public int Leverage { get; set; }
         public bool TradeStarted { get; set; }
         public DateTime TradeStartTime { get; set; }
         public bool TradeEnded { get; set; }

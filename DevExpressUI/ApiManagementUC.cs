@@ -119,7 +119,7 @@ namespace DevExpressUI
                     }
                     else
                     {
-                        lblResult.Text = CommonMessages.Error;
+                        lblResult.Text = result.Message;
                     }
                 }
             }
@@ -139,12 +139,19 @@ namespace DevExpressUI
         private void gvApiList_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
         {
             bool isRemoved = Convert.ToBoolean(gvApiList.GetRowCellValue(e.RowHandle, "IsRemoved"));
-
+            bool inUse = Convert.ToBoolean(gvApiList.GetRowCellValue(e.RowHandle, "InUse"));
             if (isRemoved == true)
             {
                 e.Appearance.BackColor = Color.DarkRed;
                 e.Appearance.ForeColor = Color.White;
             }
+
+            if (inUse==true)
+            {
+                e.Appearance.BackColor = Color.Green;
+                e.Appearance.ForeColor = Color.White;
+            }
+
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)

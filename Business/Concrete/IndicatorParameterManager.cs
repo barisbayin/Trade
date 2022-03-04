@@ -80,7 +80,7 @@ namespace Business.Concrete
         {
             var willDeletedIndicatorParameter = await _indicatorParameterDal.GetAsync(x => x.Id == id);
 
-            if (willDeletedIndicatorParameter.InUse=true)
+            if (willDeletedIndicatorParameter.InUse == true)
             {
                 return new ErrorResult(CommonMessages.AlreadyInUse);
             }

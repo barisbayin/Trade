@@ -9,7 +9,7 @@ namespace Business.Abstract
 {
     public interface ITradeFlowParameterService
     {
-        Task<IDataResult<TradeFlowParameterEntity>> GetTradeFlowParameter();
-        Task<IResult> UpdateTradeFlowParameter(TradeFlowParameterEntity tradeFlowParameter);
+        Task<IDataResult<TradeFlowEntity>> GetTradeFlowParameter();
+        Task<IResult> UpdateTradeFlowParameter(TradeFlowEntity tradeFlowParameter);
     }
 }

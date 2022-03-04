@@ -67,7 +67,7 @@ namespace KlineUpdater
 
 
 
-            while (true)
+            while (indicatorParameterId==12)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
