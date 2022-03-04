@@ -9,15 +9,15 @@ using Entity.Concrete.Entities;
 
 namespace DataAccess.Concrete
 {
-    public class EfTradeFlowParameterDal : EfEntityRepositoryBase<TradeFlowEntity, TradeContext>, ITradeFlowParameterDal
+    public class EfTradeFlowDal : EfEntityRepositoryBase<TradeFlowEntity, TradeContext>, ITradeFlowDal
     {
         public List<TradeParameterDto> GetTradeParameterDetails()
         {
             using (TradeContext context = new TradeContext())
             {
                 var result = from tp in context.TradeFlowParametersEntity
-                    join ip in context.IndicatorParameters on tp.IndicatorParameterId equals ip.Id
-                    join a in context.ApiInformations on tp.ApiInformationId equals a.Id 
+                    //join ip in context.IndicatorParameters on tp.IndicatorParameterId equals ip.Id
+                    //join a in context.ApiInformations on tp.ApiInformationId equals a.Id 
 
                     select new TradeParameterDto
                     {

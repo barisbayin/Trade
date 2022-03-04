@@ -7,9 +7,9 @@ using Entity.Concrete.Entities;
 
 namespace Business.Abstract
 {
-    public interface ITradeFlowParameterService
+    public interface ITradeFlowService
     {
-        Task<IDataResult<TradeFlowEntity>> GetTradeFlowParameter();
-        Task<IResult> UpdateTradeFlowParameter(TradeFlowEntity tradeFlowParameter);
+        Task<IDataResult<TradeFlowEntity>> GetTradeFlow();
+        Task<IResult> UpdateTradeFlow(TradeFlowEntity tradeFlowEntity);
     }
 }
