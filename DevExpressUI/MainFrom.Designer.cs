@@ -38,9 +38,9 @@ namespace DevExpressUI
             this.aceKlineParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceApiManagement = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceIndicatorParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.accLogs = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
-            this.accLogs = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
@@ -84,6 +84,7 @@ namespace DevExpressUI
             this.aceTradeParameters.Name = "aceTradeParameters";
             this.aceTradeParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.aceTradeParameters.Text = "Trade Parameters";
+            this.aceTradeParameters.Click += new System.EventHandler(this.aceTradeParameters_Click);
             // 
             // aceKlineParameters
             // 
@@ -109,6 +110,13 @@ namespace DevExpressUI
             this.aceIndicatorParameters.Text = "Indicator Parameters";
             this.aceIndicatorParameters.Click += new System.EventHandler(this.aceIndicatorParameters_Click);
             // 
+            // accLogs
+            // 
+            this.accLogs.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("accLogs.ImageOptions.Image")));
+            this.accLogs.Name = "accLogs";
+            this.accLogs.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.accLogs.Text = "Logs";
+            // 
             // fluentDesignFormControl1
             // 
             this.fluentDesignFormControl1.FluentDesignForm = this;
@@ -123,13 +131,6 @@ namespace DevExpressUI
             // 
             this.fluentFormDefaultManager1.DockingEnabled = false;
             this.fluentFormDefaultManager1.Form = this;
-            // 
-            // accLogs
-            // 
-            this.accLogs.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("accLogs.ImageOptions.Image")));
-            this.accLogs.Name = "accLogs";
-            this.accLogs.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accLogs.Text = "Logs";
             // 
             // MainFrom
             // 

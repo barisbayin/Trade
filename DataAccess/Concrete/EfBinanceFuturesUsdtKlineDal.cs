@@ -15,7 +15,7 @@ namespace DataAccess.Concrete
             using (TradeContext context = new TradeContext())
             {
 
-                var result = from c in context.BinanceFuturesUsdtKlinesEntity
+                var result = from c in context.BinanceFuturesUsdtKlines
                     where c.SymbolPair == symbolPair && c.KlineInterval == interval
                     select new CurrencyKlineToCalculateIndicatorDto
                     {
@@ -35,7 +35,7 @@ namespace DataAccess.Concrete
         {
 
             TradeContext context = new TradeContext();
-            var result = from c in context.BinanceFuturesUsdtKlinesEntity
+            var result = from c in context.BinanceFuturesUsdtKlines
                 where c.SymbolPair == symbolPair && c.KlineInterval == interval
                 select new CurrencyKlineToCalculateIndicatorDto
                 {

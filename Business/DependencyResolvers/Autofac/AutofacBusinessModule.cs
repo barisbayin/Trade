@@ -18,17 +18,20 @@ namespace Business.DependencyResolvers
         {
             builder.RegisterType<BinanceClient>().As<IBinanceClient>().SingleInstance();
             builder.RegisterType<BinanceSocketClient>().As<IBinanceSocketClient>().SingleInstance();
-            builder.RegisterType<EfBinanceFuturesUsdtKlineDal>().As<IBinanceFuturesUsdtKlineDal>().SingleInstance();
+            
             builder.RegisterType<BinanceCommonDatabaseParameterManager>().As<IBinanceCommonDatabaseParameterService>().SingleInstance();
-            builder.RegisterType<EfBinanceCommonDatabaseParameterDal>().As<IBinanceCommonDatabaseParameterDal>().SingleInstance();
             builder.RegisterType<ApiInformationManager>().As<IApiInformationService>().SingleInstance();
-            builder.RegisterType<EfApiInformationDal>().As<IApiInformationDal>().SingleInstance();
-            builder.RegisterType<EfIndicatorParameterDal>().As<IIndicatorParameterDal>().SingleInstance();
             builder.RegisterType<IndicatorParameterManager>().As<IIndicatorParameterService>().SingleInstance();
-            builder.RegisterType<EfIndicatorDal>().As<IIndicatorDal>().SingleInstance();
             builder.RegisterType<IndicatorManager>().As<IIndicatorService>().SingleInstance();
             builder.RegisterType<BinanceKlineManager>().As<IBinanceKlineService>().SingleInstance();
 
+            builder.RegisterType<EfTradeParameterDal>().As<ITradeParameterDal>().SingleInstance();
+            builder.RegisterType<EfTradeFlowDal>().As<ITradeFlowDal>().SingleInstance();
+            builder.RegisterType<EfIndicatorDal>().As<IIndicatorDal>().SingleInstance();
+            builder.RegisterType<EfApiInformationDal>().As<IApiInformationDal>().SingleInstance();
+            builder.RegisterType<EfIndicatorParameterDal>().As<IIndicatorParameterDal>().SingleInstance();
+            builder.RegisterType<EfBinanceCommonDatabaseParameterDal>().As<IBinanceCommonDatabaseParameterDal>().SingleInstance();
+            builder.RegisterType<EfBinanceFuturesUsdtKlineDal>().As<IBinanceFuturesUsdtKlineDal>().SingleInstance();
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

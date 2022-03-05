@@ -29,11 +29,11 @@ namespace AlgoTradeMaster
 
             #region Instances
 
-            ITradeFlowService tradeFlowParameterService = new TradeFlowManager(new EfTradeFlowDal());
+            ITradeFlowService tradeFlowService = new TradeFlowManager(new EfTradeFlowDal());
             IBinanceWsService binanceKlineWsService = new BinanceWsManager(new BinanceSocketClient());
             #endregion
 
-            var tradeFlowParameter = tradeFlowParameterService.GetTradeFlow().Result.Data;
+            var tradeFlowParameter = tradeFlowService.GetTradeFlow().Result.Data;
 
 
 

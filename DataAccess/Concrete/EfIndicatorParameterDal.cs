@@ -18,8 +18,8 @@ namespace DataAccess.Concrete
             using (TradeContext context = new TradeContext())
             {
                 var result = from ip in context.IndicatorParameters
-                             join i in context.Indicators
-                                 on ip.IndicatorId equals i.Id
+                             join i in context.Indicators on ip.IndicatorId equals i.Id
+
                              select new IndicatorParameterDto
                              {
                                  Id = ip.Id,

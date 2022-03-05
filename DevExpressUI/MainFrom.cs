@@ -76,5 +76,24 @@ namespace DevExpressUI
                 IndicatorParametersUC.Instance.BringToFront();
             }));
         }
+
+        private async void aceTradeParameters_Click(object sender, EventArgs e)
+        {
+            await Task.Run((() =>
+            {
+                if (!mainFormContainer.Controls.Contains(TradeParametersUC.Instance))
+                {
+                    mainFormContainer.BeginInvoke(new Action(delegate ()
+                    {
+                        mainFormContainer.Controls.Add(TradeParametersUC.Instance);
+
+                        TradeParametersUC.Instance.Dock = DockStyle.Fill;
+                        TradeParametersUC.Instance.BringToFront();
+                    }));
+                }
+
+                TradeParametersUC.Instance.BringToFront();
+            }));
+        }
     }
 }

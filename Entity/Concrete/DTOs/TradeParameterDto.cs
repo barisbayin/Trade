@@ -6,13 +6,19 @@ namespace Entity.Concrete.DTOs
 {
     public class TradeParameterDto
     {
-        public int Id { get; set; }
-        public int IndicatorParameterTitle { get; set; }
-        public int ApiTitle { get; set; }
+        public int? Id { get; set; } = null;
+        public string IndicatorParameterTitle { get; set; }
+        public string ApiTitle { get; set; }
         public string SymbolPair { get; set; }
         public string Interval { get; set; }
         public string MarginType { get; set; }
         public int Leverage { get; set; }
-        public bool InUse { get; set; }
+        public decimal MaxAmountLimit { get; set; }
+        public decimal MaxAmountPercentage { get; set; }
+        public bool AddPnlToMaxAmountLimit { get; set; }
+        public decimal PercentageOfPnlToBeAdded { get; set; }
+        public bool InUse { get; set; } = false;
+        public DateTime CreationDate { get; set; } 
+        public DateTime? ModifiedDate { get; set; } = null;
     }
 }

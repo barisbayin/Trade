@@ -15,7 +15,7 @@ namespace DataAccess.Concrete
         {
             using (TradeContext context = new TradeContext())
             {
-                var result = from tp in context.TradeFlowParametersEntity
+                var result = from tp in context.TradeFlowEntity
                     //join ip in context.IndicatorParameters on tp.IndicatorParameterId equals ip.Id
                     //join a in context.ApiInformations on tp.ApiInformationId equals a.Id 
 
