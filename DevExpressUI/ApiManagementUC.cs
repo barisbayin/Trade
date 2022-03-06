@@ -55,13 +55,13 @@ namespace DevExpressUI
         {
             if (chckShowDeleted.CheckState == CheckState.Unchecked)
             {
-                var result = (await _apiInformationService.GetAllNotRemovedApiInformation()).Data;
+                var result = (await _apiInformationService.GetAllNotRemovedApiInformationAsync()).Data;
                 gridApiList.DataSource = result;
 
             }
             else
             {
-                var result = (await _apiInformationService.GetAllApiInformation()).Data;
+                var result = (await _apiInformationService.GetAllApiInformationAsync()).Data;
                 gridApiList.DataSource = result;
             }
         }
@@ -99,7 +99,7 @@ namespace DevExpressUI
             try
             {
                 var id = Convert.ToInt32(lblIdNo.Text);
-                var isAlreadyRemoved = (await _apiInformationService.GetApiInformationById(id)).Data.IsRemoved;
+                var isAlreadyRemoved = (await _apiInformationService.GetApiInformationByIdAsync(id)).Data.IsRemoved;
 
                 if (isAlreadyRemoved)
                 {
@@ -109,7 +109,7 @@ namespace DevExpressUI
                 }
                 else
                 {
-                    var result = await _apiInformationService.DeleteApiInformationById(id);
+                    var result = await _apiInformationService.DeleteApiInformationByIdAsync(id);
 
                     if (result.Success)
                     {
@@ -171,7 +171,7 @@ namespace DevExpressUI
                         apiInformationEntity.ApiTitle = tbxApiTitle.Text;
                         apiInformationEntity.ApiKey = tbxApiKey.Text;
                         apiInformationEntity.SecretKey = tbxSecretKey.Text;
-                        var result = await _apiInformationService.AddApiInformation(apiInformationEntity);
+                        var result = await _apiInformationService.AddApiInformationAsync(apiInformationEntity);
                         if (result.Success)
                         {
                             lblResult.Text = "New Api " + result.Message;
@@ -190,7 +190,7 @@ namespace DevExpressUI
                         apiInformationEntity.ApiTitle = tbxApiTitle.Text;
                         apiInformationEntity.ApiKey = tbxApiKey.Text;
                         apiInformationEntity.SecretKey = tbxSecretKey.Text;
-                        var result = await _apiInformationService.UpdateApiInformationById(apiInformationEntity);
+                        var result = await _apiInformationService.UpdateApiInformationByIdAsync(apiInformationEntity);
 
                         if (result.Success)
                         {

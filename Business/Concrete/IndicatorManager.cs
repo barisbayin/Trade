@@ -33,7 +33,7 @@ namespace Business.Concrete
             return new SuccessDataResult<IndicatorEntity>(_indicatorDal.Get(x => x.Id == indicatorId));
         }
 
-        public async Task<IDataResult<List<IndicatorEntity>>> GetAllIndicators()
+        public async Task<IDataResult<List<IndicatorEntity>>> GetAllIndicatorsAsync()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Business.Concrete
             
         }
 
-        public IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResultAsync(string symbolPair, string interval, int indicatorParameterId)
+        public IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResult(string symbolPair, string interval, int indicatorParameterId)
         {
             List<BinanceFuturesUsdtKlineWithSuperTrend> binanceFuturesUsdtKlineWithSuperTrendList = new List<BinanceFuturesUsdtKlineWithSuperTrend>();
 

@@ -52,6 +52,12 @@ namespace DevExpressUI
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTradeParamaters = new DevExpress.XtraEditors.GroupControl();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.chckAddPnlToMaxAmountLimit = new DevExpress.XtraEditors.CheckEdit();
+            this.cbxLeverage = new System.Windows.Forms.ComboBox();
+            this.cbxMarginType = new System.Windows.Forms.ComboBox();
+            this.cbxSymbolPair = new System.Windows.Forms.ComboBox();
+            this.cbxInterval = new System.Windows.Forms.ComboBox();
+            this.cbxApiToUse = new System.Windows.Forms.ComboBox();
             this.lblPercentageOfPnlToBeAddedLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblAddPnlToMaxAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblMaxAmountPercentageLabel = new DevExpress.XtraEditors.LabelControl();
@@ -64,12 +70,6 @@ namespace DevExpressUI
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            this.cbxApiToUse = new System.Windows.Forms.ComboBox();
-            this.cbxInterval = new System.Windows.Forms.ComboBox();
-            this.cbxSymbolPair = new System.Windows.Forms.ComboBox();
-            this.cbxMarginType = new System.Windows.Forms.ComboBox();
-            this.cbxLeverage = new System.Windows.Forms.ComboBox();
-            this.chckAddPnlToMaxAmountLimit = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountLimit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountPercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).BeginInit();
@@ -266,6 +266,7 @@ namespace DevExpressUI
             this.gvTradeParameters.GridControl = this.gridTradeParameters;
             this.gvTradeParameters.Name = "gvTradeParameters";
             this.gvTradeParameters.OptionsView.ShowGroupPanel = false;
+            this.gvTradeParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeParameters_FocusedRowChanged);
             // 
             // tabPaneTradeParameters
             // 
@@ -381,6 +382,83 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
             this.tpEntries.Size = new System.Drawing.Size(450, 693);
             this.tpEntries.TabIndex = 2;
+            // 
+            // chckAddPnlToMaxAmountLimit
+            // 
+            this.tpEntries.SetColumn(this.chckAddPnlToMaxAmountLimit, 2);
+            this.chckAddPnlToMaxAmountLimit.Location = new System.Drawing.Point(182, 319);
+            this.chckAddPnlToMaxAmountLimit.Name = "chckAddPnlToMaxAmountLimit";
+            this.chckAddPnlToMaxAmountLimit.Properties.Caption = "";
+            this.chckAddPnlToMaxAmountLimit.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.tpEntries.SetRow(this.chckAddPnlToMaxAmountLimit, 10);
+            this.chckAddPnlToMaxAmountLimit.Size = new System.Drawing.Size(254, 20);
+            this.chckAddPnlToMaxAmountLimit.TabIndex = 43;
+            // 
+            // cbxLeverage
+            // 
+            this.tpEntries.SetColumn(this.cbxLeverage, 2);
+            this.cbxLeverage.FormattingEnabled = true;
+            this.cbxLeverage.Location = new System.Drawing.Point(182, 227);
+            this.cbxLeverage.Name = "cbxLeverage";
+            this.tpEntries.SetRow(this.cbxLeverage, 7);
+            this.cbxLeverage.Size = new System.Drawing.Size(254, 26);
+            this.cbxLeverage.TabIndex = 42;
+            // 
+            // cbxMarginType
+            // 
+            this.tpEntries.SetColumn(this.cbxMarginType, 2);
+            this.cbxMarginType.FormattingEnabled = true;
+            this.cbxMarginType.Location = new System.Drawing.Point(182, 197);
+            this.cbxMarginType.Name = "cbxMarginType";
+            this.tpEntries.SetRow(this.cbxMarginType, 6);
+            this.cbxMarginType.Size = new System.Drawing.Size(254, 26);
+            this.cbxMarginType.TabIndex = 41;
+            // 
+            // cbxSymbolPair
+            // 
+            this.tpEntries.SetColumn(this.cbxSymbolPair, 2);
+            this.cbxSymbolPair.FormattingEnabled = true;
+            this.cbxSymbolPair.Location = new System.Drawing.Point(182, 137);
+            this.cbxSymbolPair.Name = "cbxSymbolPair";
+            this.tpEntries.SetRow(this.cbxSymbolPair, 4);
+            this.cbxSymbolPair.Size = new System.Drawing.Size(254, 26);
+            this.cbxSymbolPair.TabIndex = 40;
+            // 
+            // cbxInterval
+            // 
+            this.tpEntries.SetColumn(this.cbxInterval, 2);
+            this.cbxInterval.FormattingEnabled = true;
+            this.cbxInterval.Items.AddRange(new object[] {
+            "OneMonth",
+            "OneWeek",
+            "ThreeDay",
+            "OneDay",
+            "TwelveHour",
+            "EightHour",
+            "SixHour",
+            "FourHour",
+            "TwoHour",
+            "OneHour",
+            "ThirtyMinutes",
+            "FifteenMinutes",
+            "FiveMinutes",
+            "ThreeMinutes",
+            "OneMinute"});
+            this.cbxInterval.Location = new System.Drawing.Point(182, 167);
+            this.cbxInterval.Name = "cbxInterval";
+            this.tpEntries.SetRow(this.cbxInterval, 5);
+            this.cbxInterval.Size = new System.Drawing.Size(254, 26);
+            this.cbxInterval.TabIndex = 39;
+            // 
+            // cbxApiToUse
+            // 
+            this.tpEntries.SetColumn(this.cbxApiToUse, 2);
+            this.cbxApiToUse.FormattingEnabled = true;
+            this.cbxApiToUse.Location = new System.Drawing.Point(182, 107);
+            this.cbxApiToUse.Name = "cbxApiToUse";
+            this.tpEntries.SetRow(this.cbxApiToUse, 3);
+            this.cbxApiToUse.Size = new System.Drawing.Size(254, 26);
+            this.cbxApiToUse.TabIndex = 38;
             // 
             // lblPercentageOfPnlToBeAddedLabel
             // 
@@ -502,67 +580,6 @@ namespace DevExpressUI
             this.lblIdLabel.TabIndex = 0;
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
-            // 
-            // cbxApiToUse
-            // 
-            this.tpEntries.SetColumn(this.cbxApiToUse, 2);
-            this.cbxApiToUse.FormattingEnabled = true;
-            this.cbxApiToUse.Location = new System.Drawing.Point(182, 107);
-            this.cbxApiToUse.Name = "cbxApiToUse";
-            this.tpEntries.SetRow(this.cbxApiToUse, 3);
-            this.cbxApiToUse.Size = new System.Drawing.Size(254, 26);
-            this.cbxApiToUse.TabIndex = 38;
-            // 
-            // cbxInterval
-            // 
-            this.tpEntries.SetColumn(this.cbxInterval, 2);
-            this.cbxInterval.FormattingEnabled = true;
-            this.cbxInterval.Location = new System.Drawing.Point(182, 167);
-            this.cbxInterval.Name = "cbxInterval";
-            this.tpEntries.SetRow(this.cbxInterval, 5);
-            this.cbxInterval.Size = new System.Drawing.Size(254, 26);
-            this.cbxInterval.TabIndex = 39;
-            // 
-            // cbxSymbolPair
-            // 
-            this.tpEntries.SetColumn(this.cbxSymbolPair, 2);
-            this.cbxSymbolPair.FormattingEnabled = true;
-            this.cbxSymbolPair.Location = new System.Drawing.Point(182, 137);
-            this.cbxSymbolPair.Name = "cbxSymbolPair";
-            this.tpEntries.SetRow(this.cbxSymbolPair, 4);
-            this.cbxSymbolPair.Size = new System.Drawing.Size(254, 26);
-            this.cbxSymbolPair.TabIndex = 40;
-            // 
-            // cbxMarginType
-            // 
-            this.tpEntries.SetColumn(this.cbxMarginType, 2);
-            this.cbxMarginType.FormattingEnabled = true;
-            this.cbxMarginType.Location = new System.Drawing.Point(182, 197);
-            this.cbxMarginType.Name = "cbxMarginType";
-            this.tpEntries.SetRow(this.cbxMarginType, 6);
-            this.cbxMarginType.Size = new System.Drawing.Size(254, 26);
-            this.cbxMarginType.TabIndex = 41;
-            // 
-            // cbxLeverage
-            // 
-            this.tpEntries.SetColumn(this.cbxLeverage, 2);
-            this.cbxLeverage.FormattingEnabled = true;
-            this.cbxLeverage.Location = new System.Drawing.Point(182, 227);
-            this.cbxLeverage.Name = "cbxLeverage";
-            this.tpEntries.SetRow(this.cbxLeverage, 7);
-            this.cbxLeverage.Size = new System.Drawing.Size(254, 26);
-            this.cbxLeverage.TabIndex = 42;
-            // 
-            // chckAddPnlToMaxAmountLimit
-            // 
-            this.tpEntries.SetColumn(this.chckAddPnlToMaxAmountLimit, 2);
-            this.chckAddPnlToMaxAmountLimit.Location = new System.Drawing.Point(182, 319);
-            this.chckAddPnlToMaxAmountLimit.Name = "chckAddPnlToMaxAmountLimit";
-            this.chckAddPnlToMaxAmountLimit.Properties.Caption = "";
-            this.chckAddPnlToMaxAmountLimit.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.tpEntries.SetRow(this.chckAddPnlToMaxAmountLimit, 10);
-            this.chckAddPnlToMaxAmountLimit.Size = new System.Drawing.Size(254, 20);
-            this.chckAddPnlToMaxAmountLimit.TabIndex = 43;
             // 
             // TradeParametersUC
             // 

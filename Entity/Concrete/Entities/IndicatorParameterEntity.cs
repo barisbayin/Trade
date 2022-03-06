@@ -19,8 +19,8 @@ namespace Entity.Concrete.Entities
         public decimal? Parameter5 { get; set; } = 0;
         public DateTime? CreationDate { get; set; } = null;
         public bool InUse { get; set; }
-        public bool? Removed { get; set; } = null;
         public DateTime? ModifiedDate { get; set; } = null;
-
+        public bool? Removed { get; set; } = null;
+        public DateTime? RemovedDate { get; set; } = null;
     }
 }

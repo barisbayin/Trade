@@ -76,7 +76,7 @@ namespace DevExpressUI
             try
             {
                 var id = Convert.ToInt32(lblIdNo.Text);
-                var result = await _binanceCommonDatabaseParameterService.DeleteDayParameterById(id);
+                var result = await _binanceCommonDatabaseParameterService.DeleteDayParameterByIdAsync(id);
 
                 if (result.Success)
                 {

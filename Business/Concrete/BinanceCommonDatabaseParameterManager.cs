@@ -34,7 +34,7 @@ namespace Business.Concrete
             return new SuccessDataResult<int>(dayParameter.DayParameter);
         }
 
-        public async Task<IResult> UpdateDayParameterByIntervalAndMarketplace(string interval, string marketplace, int dayParameter)
+        public async Task<IResult> UpdateDayParameterByIntervalAndMarketplaceAsync(string interval, string marketplace, int dayParameter)
         {
             Calculators calculators = new Calculators();
 
@@ -44,7 +44,7 @@ namespace Business.Concrete
 
         }
 
-        public async Task<IResult> DeleteDayParameterById(int id)
+        public async Task<IResult> DeleteDayParameterByIdAsync(int id)
         {
             try
             {

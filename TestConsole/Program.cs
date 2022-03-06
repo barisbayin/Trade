@@ -115,7 +115,7 @@ namespace TestConsole
                 new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),new EfIndicatorDal(),
                 new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
-            var result5 = indicatorService.GetAllIndicators().Result.Data;
+            var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
 
             foreach (var item in result5)
             {

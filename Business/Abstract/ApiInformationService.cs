@@ -7,12 +7,18 @@ namespace Business.Abstract
 {
     public interface IApiInformationService
     {
-        Task<IResult> AddApiInformation(ApiInformationEntity apiInformationEntity);
-        Task<IResult> UpdateApiInformationById(ApiInformationEntity apiInformationEntity);
-        Task<IDataResult<ApiInformationEntity>> GetApiInformationById(int id);
-        Task<IDataResult<List<ApiInformationEntity>>> GetAllApiInformation();
-        Task<IDataResult<List<ApiInformationEntity>>> GetAllNotRemovedApiInformation();
-        Task<IResult> DeleteApiInformationById(int id);
+        IDataResult<List<ApiInformationEntity>> GetAllNotRemovedApiInformation();
+
+
+        //Async Methods
+        Task<IResult> AddApiInformationAsync(ApiInformationEntity apiInformationEntity);
+        Task<IResult> UpdateApiInformationByIdAsync(ApiInformationEntity apiInformationEntity);
+        Task<IDataResult<ApiInformationEntity>> GetApiInformationByIdAsync(int id);
+        Task<IDataResult<List<ApiInformationEntity>>> GetAllApiInformationAsync();
+        Task<IDataResult<List<ApiInformationEntity>>> GetAllNotRemovedApiInformationAsync();
+        Task<IResult> DeleteApiInformationByIdAsync(int id);
+
+       
 
     }
 }

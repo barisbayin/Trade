@@ -371,7 +371,7 @@ namespace DevExpressUI
             this.tabPaneParameters.TabIndex = 0;
             this.tabPaneParameters.Text = "tabPane1";
             // 
-            // KlineParametersUC
+            // KlineParametersUc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

@@ -12,10 +12,11 @@ namespace Business.Abstract
     public interface IIndicatorService
     {
         IDataResult<IndicatorEntity> GetIndicatorById(int indicatorId);
-        Task<IDataResult<List<IndicatorEntity>>> GetAllIndicators();
-        IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResultAsync(string symbolPair, string interval, int indicatorParameterId);
+        IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResult(string symbolPair, string interval, int indicatorParameterId);
         IDataResult<List<FuturesUsdtRenkoBrick>> GetFuturesUsdtRenkoBricks(string symbolPair, string interval, int indicatorParameterId);
         IDataResult<List<FuturesUsdtRenkoBricksWithSuperTrend>> GetFuturesUsdtRenkoBricksSuperTrend(string symbolPair, string interval, int renkoBrickParameterId, int superTrendParameterId);
 
+        //Async Methods
+        Task<IDataResult<List<IndicatorEntity>>> GetAllIndicatorsAsync();
     }
 }

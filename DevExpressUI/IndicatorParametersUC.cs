@@ -59,7 +59,7 @@ namespace DevExpressUI
 
         private async void LoadIndicators()
         {
-            var result = await _indicatorService.GetAllIndicators();
+            var result = await _indicatorService.GetAllIndicatorsAsync();
             cbxIndicatorName.DataSource = result.Data;
             cbxIndicatorName.ValueMember = "Id";
             cbxIndicatorName.DisplayMember = "IndicatorName";
@@ -94,19 +94,31 @@ namespace DevExpressUI
             if (gvIndicatorParameters.RowCount > 0)
             {
                 lblIdNo.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Id"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Id"]).ToString();
+
                 cbxIndicatorName.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["IndicatorName"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["IndicatorName"]).ToString();
+
                 tbxParameterTitle.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["ParameterTitle"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["ParameterTitle"]).ToString();
+
                 cbxInterval.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Interval"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Interval"]).ToString();
+
                 tbxPeriod.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Period"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Period"]).ToString();
+
                 tbxMultiplier.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Multiplier"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Multiplier"]).ToString();
+
                 cbxKlineEndType.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["KlineEndType"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["KlineEndType"]).ToString();
                 tbxParameter1.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter1"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter1"]).ToString();
+
                 tbxParameter2.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter2"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter2"]).ToString();
+
                 tbxParameter3.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter3"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter3"]).ToString();
+
                 tbxParameter4.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter4"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter4"]).ToString();
+
                 tbxParameter5.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter5"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["Parameter5"]).ToString();
+
                 lblCreationDate.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["CreationDate"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["CreationDate"]).ToString();
                 lblInUse.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["InUse"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["InUse"]).ToString();
+
                 lblModifiedDate.Text = gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["ModifiedDate"]) == null ? "" : gvIndicatorParameters.GetRowCellValue(gvIndicatorParameters.FocusedRowHandle, gvIndicatorParameters.Columns["ModifiedDate"]).ToString();
 
             }
@@ -121,7 +133,7 @@ namespace DevExpressUI
             try
             {
                 var id = Convert.ToInt32(lblIdNo.Text);
-                var result = await _indicatorParameterService.DeleteIndicatorParameterById(id);
+                var result = await _indicatorParameterService.DeleteIndicatorParameterByIdAsync(id);
 
                 ClearAll();
                 LoadIndicatorParameterList();
@@ -164,7 +176,7 @@ namespace DevExpressUI
                         indicatorParameterEntity.Parameter4 = tbxParameter4.Text == "" ? 0 : Convert.ToDecimal(tbxParameter4.Text);
                         indicatorParameterEntity.Parameter5 = tbxParameter5.Text == "" ? 0 : Convert.ToDecimal(tbxParameter5.Text);
 
-                        var result = await _indicatorParameterService.AddIndicatorParameter(indicatorParameterEntity);
+                        var result = await _indicatorParameterService.AddIndicatorParameterAsync(indicatorParameterEntity);
 
                         if (result.Success)
                         {
@@ -194,7 +206,7 @@ namespace DevExpressUI
                         indicatorParameterEntity.Parameter4 = tbxParameter4.Text == "" ? 0 : Convert.ToDecimal(tbxParameter4.Text);
                         indicatorParameterEntity.Parameter5 = tbxParameter5.Text == "" ? 0 : Convert.ToDecimal(tbxParameter5.Text);
 
-                        var result = await _indicatorParameterService.UpdateIndicatorParameter(indicatorParameterEntity);
+                        var result = await _indicatorParameterService.UpdateIndicatorParameterAsync(indicatorParameterEntity);
 
                         if (result.Success)
                         {

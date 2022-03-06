@@ -18,7 +18,23 @@ namespace Business.Concrete
         {
             _apiInformationDal = apiInformationDal;
         }
-        public async Task<IResult> AddApiInformation(ApiInformationEntity apiInformationEntity)
+
+
+        public IDataResult<List<ApiInformationEntity>> GetAllNotRemovedApiInformation()
+        {
+            var result = _apiInformationDal.GetAll(x => x.IsRemoved == false);
+            if (result.Count > 0)
+            {
+                return new SuccessDataResult<List<ApiInformationEntity>>(result);
+            }
+            else
+            {
+                return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
+            }
+        }
+
+        //Async Methods
+        public async Task<IResult> AddApiInformationAsync(ApiInformationEntity apiInformationEntity)
         {
             var encryptedApiKey = AesEncryption.EncryptString(apiInformationEntity.ApiKey);
             var encryptedSecretKey = AesEncryption.EncryptString(apiInformationEntity.SecretKey);
@@ -41,7 +57,7 @@ namespace Business.Concrete
 
         }
 
-        public async Task<IResult> UpdateApiInformationById(ApiInformationEntity apiInformationEntity)
+        public async Task<IResult> UpdateApiInformationByIdAsync(ApiInformationEntity apiInformationEntity)
         {
             var encryptedApiKey = AesEncryption.EncryptString(apiInformationEntity.ApiKey);
             var encryptedSecretKey = AesEncryption.EncryptString(apiInformationEntity.SecretKey);
@@ -61,13 +77,13 @@ namespace Business.Concrete
             }
         }
 
-        public async Task<IDataResult<ApiInformationEntity>> GetApiInformationById(int id)
+        public async Task<IDataResult<ApiInformationEntity>> GetApiInformationByIdAsync(int id)
         {
             var result = await _apiInformationDal.GetAsync(x => x.Id == id);
             return new SuccessDataResult<ApiInformationEntity>(result);
         }
 
-        public async Task<IDataResult<List<ApiInformationEntity>>> GetAllApiInformation()
+        public async Task<IDataResult<List<ApiInformationEntity>>> GetAllApiInformationAsync()
         {
             var result = await _apiInformationDal.GetAllAsync();
             if (result.Count > 0)
@@ -80,7 +96,7 @@ namespace Business.Concrete
             }
         }
 
-        public async Task<IDataResult<List<ApiInformationEntity>>> GetAllNotRemovedApiInformation()
+        public async Task<IDataResult<List<ApiInformationEntity>>> GetAllNotRemovedApiInformationAsync()
         {
             var result = await _apiInformationDal.GetAllAsync(x => x.IsRemoved == false);
             if (result.Count > 0)
@@ -93,7 +109,7 @@ namespace Business.Concrete
             }
         }
 
-        public async Task<IResult> DeleteApiInformationById(int id)
+        public async Task<IResult> DeleteApiInformationByIdAsync(int id)
         {
             var willDeleteApi = await _apiInformationDal.GetAsync(x => x.Id == id);
             if (willDeleteApi.InUse==true)

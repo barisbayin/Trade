@@ -11,12 +11,14 @@ namespace Business.Abstract
 {
     public interface IIndicatorParameterService
     {
-        Task<IResult> AddIndicatorParameter(IndicatorParameterEntity indicatorParameterEntity);
-        Task<IResult> UpdateIndicatorParameter(IndicatorParameterEntity indicatorParameterEntity);
-        IDataResult<List<IndicatorParameterEntity>> GetAll();
+        IDataResult<List<IndicatorParameterEntity>> GetAllIndicatorParameters();
         IDataResult<IndicatorParameterEntity> GetIndicatorParameterEntityById(int id);
-        Task<IDataResult<IndicatorParameterEntity>> GetIndicatorParameterEntityByIdAsync(int id);
         IDataResult<List<IndicatorParameterDto>> GetIndicatorParameterDetails();
-        Task<IResult> DeleteIndicatorParameterById(int id);
+
+        //Async Methods
+        Task<IResult> AddIndicatorParameterAsync(IndicatorParameterEntity indicatorParameterEntity);
+        Task<IResult> UpdateIndicatorParameterAsync(IndicatorParameterEntity indicatorParameterEntity);
+        Task<IDataResult<IndicatorParameterEntity>> GetIndicatorParameterEntityByIdAsync(int id);
+        Task<IResult> DeleteIndicatorParameterByIdAsync(int id);
     }
 }
