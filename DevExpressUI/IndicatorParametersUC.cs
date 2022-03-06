@@ -144,8 +144,6 @@ namespace DevExpressUI
             {
                 lblResult.Text = CommonMessages.ChooseItem;
             }
-
-
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)

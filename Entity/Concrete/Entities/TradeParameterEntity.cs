@@ -9,6 +9,7 @@ namespace Entity.Concrete.Entities
         public int? Id { get; set; } = null;
         public int IndicatorParameterId { get; set; }
         public int ApiInformationId { get; set; }
+        public string TradeParameterTitle { get; set; }
         public string SymbolPair { get; set; }
         public string Interval { get; set; }
         public string MarginType { get; set; }

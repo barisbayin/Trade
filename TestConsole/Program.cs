@@ -22,14 +22,11 @@ namespace TestConsole
         {
 
 
+            IBinanceExchangeInformationService binanceExchangeInformationService =
+                new BinanceExchangeInformationManager(new EfBinanceFuturesUsdtSymbolDal(),new BinanceApiManager(new BinanceClient()));
+            var data = binanceExchangeInformationService.AddFuturesUsdtSymbolsAsync();
+            Console.WriteLine(data.Result.Message);
 
-            //var data = exchangeInformationService.GetBinanceFuturesUsdtSymbolInformationListAsync().Result.Data;
-
-            //foreach (var item in data)
-            //{
-            //    Console.WriteLine(item.Pair);
-            //    Thread.Sleep(5);
-            //}
 
 
             /*
@@ -111,16 +108,16 @@ namespace TestConsole
             //}
 
 
-            IIndicatorService indicatorService = new IndicatorManager(
-                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),new EfIndicatorDal(),
-                new IndicatorParameterManager(new EfIndicatorParameterDal()));
+            //IIndicatorService indicatorService = new IndicatorManager(
+            //    new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),new EfIndicatorDal(),
+            //    new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
-            var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
+            //var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
 
-            foreach (var item in result5)
-            {
-                Console.WriteLine(item.IndicatorName);
-            }
+            //foreach (var item in result5)
+            //{
+            //    Console.WriteLine(item.IndicatorName);
+            //}
 
             //var result = indicatorService.GetSuperTrendResultAsync("SOLUSDT", "FourHour", 1).Data;
             //foreach (var data in result)

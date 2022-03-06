@@ -27,6 +27,12 @@ namespace Business.Concrete
             _binanceApiService = binanceApiService;
         }
 
+        public IDataResult<List<BinanceFuturesUsdtSymbolEntity>> GetAllFuturesUsdtSymbolInformation()
+        {
+            var result = _binanceFuturesUsdtSymbolDal.GetAll();
+            return new SuccessDataResult<List<BinanceFuturesUsdtSymbolEntity>>(result);
+        }
+
         public async Task<IResult> AddFuturesUsdtSymbolsAsync()
         {
             _binanceFuturesUsdtSymbolDal.DeleteAllOrByFilter();
@@ -79,6 +85,12 @@ namespace Business.Concrete
             }
             return new SuccessResult(CommonMessages.FuturesUsdtSymbolInformationsAddedToDatabase);
 
+        }
+
+        public async Task<IDataResult<List<BinanceFuturesUsdtSymbolEntity>>> GetAllFuturesUsdtSymbolInformationAsync()
+        {
+            var result = await _binanceFuturesUsdtSymbolDal.GetAllAsync();
+            return new SuccessDataResult<List<BinanceFuturesUsdtSymbolEntity>>(result);
         }
     }
 }

@@ -24,6 +24,7 @@ namespace DataAccess.Concrete
                              select new TradeParameterDto
                              {
                                  Id = tp.Id,
+                                 TradeParameterTitle = tp.TradeParameterTitle,
                                  IndicatorParameterTitle = ip.ParameterTitle,
                                  ApiTitle = a.ApiTitle,
                                  SymbolPair = tp.SymbolPair,

@@ -7,6 +7,7 @@ namespace Entity.Concrete.DTOs
     public class TradeParameterDto
     {
         public int? Id { get; set; } = null;
+        public string TradeParameterTitle { get; set; }
         public string IndicatorParameterTitle { get; set; }
         public string ApiTitle { get; set; }
         public string SymbolPair { get; set; }

@@ -9,6 +9,8 @@ using DataAccess.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using RemoteData.Binance.GeneralApi.Abstract;
+using RemoteData.Binance.GeneralApi.Concrete;
 
 namespace Business.DependencyResolvers
 {
@@ -24,6 +26,12 @@ namespace Business.DependencyResolvers
             builder.RegisterType<IndicatorParameterManager>().As<IIndicatorParameterService>().SingleInstance();
             builder.RegisterType<IndicatorManager>().As<IIndicatorService>().SingleInstance();
             builder.RegisterType<BinanceKlineManager>().As<IBinanceKlineService>().SingleInstance();
+            builder.RegisterType<BinanceExchangeInformationManager>().As<IBinanceExchangeInformationService>().SingleInstance();
+
+            builder.RegisterType<BinanceApiManager>().As<IBinanceApiService>().SingleInstance();
+            
+
+
 
             builder.RegisterType<EfTradeParameterDal>().As<ITradeParameterDal>().SingleInstance();
             builder.RegisterType<EfTradeFlowDal>().As<ITradeFlowDal>().SingleInstance();
@@ -32,7 +40,8 @@ namespace Business.DependencyResolvers
             builder.RegisterType<EfIndicatorParameterDal>().As<IIndicatorParameterDal>().SingleInstance();
             builder.RegisterType<EfBinanceCommonDatabaseParameterDal>().As<IBinanceCommonDatabaseParameterDal>().SingleInstance();
             builder.RegisterType<EfBinanceFuturesUsdtKlineDal>().As<IBinanceFuturesUsdtKlineDal>().SingleInstance();
-
+            builder.RegisterType<EfBinanceFuturesUsdtSymbolDal>().As<IBinanceFuturesUsdtSymbolDal>().SingleInstance();
+            
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
