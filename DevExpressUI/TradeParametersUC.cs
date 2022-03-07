@@ -80,6 +80,16 @@ namespace DevExpressUI
             }
         }
 
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadTradeParameterList();
+            LoadIndicatorParameter();
+            LoadApiToUse();
+            LoadSymbolPairs();
+            ClearAll();
+            lblResult.Text = "";
+        }
+
         private async void btnAdd_Click(object sender, EventArgs e)
         {
             if (tbxTradeParameterTitle.Text == "" || cbxApiToUse.Text == "" || cbxIndicatorParameter.Text == "" || cbxApiToUse.Text == "" || cbxSymbolPair.Text == "" || cbxInterval.Text == "" || cbxMarginType.Text == "" || cbxLeverage.Text == "" || tbxMaxAmountLimit.Text == "" || tbxMaxAmountPercentage.Text == "")
@@ -181,17 +191,17 @@ namespace DevExpressUI
             cbxIndicatorParameter.DisplayMember = "ParameterTitle";
         }
 
-        private async void LoadApiToUse()
+        private void LoadApiToUse()
         {
-            var result = (await _apiInformationService.GetAllNotRemovedApiInformationAsync()).Data;
-            cbxApiToUse.DataSource = result;
+            var result = _apiInformationService.GetAllNotRemovedApiInformation();
+            cbxApiToUse.DataSource = result.Data;
             cbxApiToUse.ValueMember = "Id";
             cbxApiToUse.DisplayMember = "ApiTitle";
         }
 
-        private async void LoadSymbolPairs()
+        private void LoadSymbolPairs()
         {
-            var result = await _binanceExchangeInformationService.GetAllFuturesUsdtSymbolInformationAsync();
+            var result = _binanceExchangeInformationService.GetAllFuturesUsdtSymbolInformation();
             cbxSymbolPair.DataSource = result.Data;
             cbxSymbolPair.ValueMember = "Id";
             cbxSymbolPair.DisplayMember = "Pair";
@@ -200,6 +210,7 @@ namespace DevExpressUI
         private void ClearAll()
         {
             lblIdNo.Text = "";
+            tbxTradeParameterTitle.Text = "";
             cbxIndicatorParameter.Text = "";
             cbxApiToUse.Text = "";
             cbxSymbolPair.Text = "";
@@ -255,5 +266,17 @@ namespace DevExpressUI
                 ClearAll();
             }
         }
+
+        private void gvTradeParameters_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            bool inUse = Convert.ToBoolean(gvTradeParameters.GetRowCellValue(e.RowHandle, "InUse"));
+
+            if (inUse == true)
+            {
+                e.Appearance.BackColor = Color.Green;
+                e.Appearance.ForeColor = Color.White;
+            }
+        }
+
     }
 }

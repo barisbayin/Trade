@@ -6,6 +6,7 @@ namespace Entity.Concrete.Entities
     public class TradeFlowEntity : IEntity
     {
         public int Id { get; set; }
+        public int TradeParameterId { get; set; }
         public bool TradeStarted { get; set; }
         public DateTime TradeStartTime { get; set; }
         public bool TradeEnded { get; set; }

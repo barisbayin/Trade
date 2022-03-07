@@ -1,5 +1,4 @@
-﻿
-namespace DevExpressUI
+﻿namespace DevExpressUI
 {
     partial class TradeParametersUC
     {
@@ -52,6 +51,9 @@ namespace DevExpressUI
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTradeParamaters = new DevExpress.XtraEditors.GroupControl();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
+            this.tbxTradeParameterTitle = new DevExpress.XtraEditors.TextEdit();
+            this.lblTradeParameterTitleLabel = new DevExpress.XtraEditors.LabelControl();
             this.chckAddPnlToMaxAmountLimit = new DevExpress.XtraEditors.CheckEdit();
             this.cbxLeverage = new System.Windows.Forms.ComboBox();
             this.cbxMarginType = new System.Windows.Forms.ComboBox();
@@ -70,8 +72,6 @@ namespace DevExpressUI
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblTradeParameterTitleLabel = new DevExpress.XtraEditors.LabelControl();
-            this.tbxTradeParameterTitle = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountLimit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountPercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).BeginInit();
@@ -88,8 +88,8 @@ namespace DevExpressUI
             this.gcTradeParamaters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).BeginInit();
             this.tpEntries.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // lblModifiedDate
@@ -269,6 +269,7 @@ namespace DevExpressUI
             this.gvTradeParameters.GridControl = this.gridTradeParameters;
             this.gvTradeParameters.Name = "gvTradeParameters";
             this.gvTradeParameters.OptionsView.ShowGroupPanel = false;
+            this.gvTradeParameters.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvTradeParameters_RowStyle);
             this.gvTradeParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeParameters_FocusedRowChanged);
             // 
             // tabPaneTradeParameters
@@ -290,7 +291,6 @@ namespace DevExpressUI
             // 
             this.tabNavTradeParameters.Caption = "Trade Parameters";
             this.tabNavTradeParameters.Controls.Add(this.splitContainerControl1);
-            this.tabNavTradeParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavTradeParameters.ImageOptions.Image")));
             this.tabNavTradeParameters.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavTradeParameters.Name = "tabNavTradeParameters";
             this.tabNavTradeParameters.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
@@ -317,7 +317,6 @@ namespace DevExpressUI
             this.gcTradeParamaters.Appearance.Options.UseTextOptions = true;
             this.gcTradeParamaters.AppearanceCaption.Options.UseTextOptions = true;
             this.gcTradeParamaters.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gcTradeParamaters.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("gcTradeParamaters.CaptionImageOptions.Image")));
             this.gcTradeParamaters.Controls.Add(this.gridTradeParameters);
             this.gcTradeParamaters.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcTradeParamaters.Location = new System.Drawing.Point(0, 0);
@@ -335,6 +334,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 63.74F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85.92F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 3.89F)});
+            this.tpEntries.Controls.Add(this.btnRefresh);
             this.tpEntries.Controls.Add(this.tbxTradeParameterTitle);
             this.tpEntries.Controls.Add(this.lblTradeParameterTitleLabel);
             this.tpEntries.Controls.Add(this.chckAddPnlToMaxAmountLimit);
@@ -389,6 +389,41 @@ namespace DevExpressUI
             this.tpEntries.Size = new System.Drawing.Size(400, 693);
             this.tpEntries.TabIndex = 2;
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnRefresh.Appearance.Options.UseFont = true;
+            this.tpEntries.SetColumn(this.btnRefresh, 2);
+            this.btnRefresh.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.ImageOptions.Image")));
+            this.btnRefresh.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnRefresh.Location = new System.Drawing.Point(178, 5);
+            this.btnRefresh.Name = "btnRefresh";
+            this.tpEntries.SetRow(this.btnRefresh, 0);
+            this.btnRefresh.Size = new System.Drawing.Size(209, 34);
+            this.btnRefresh.TabIndex = 46;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // tbxTradeParameterTitle
+            // 
+            this.tpEntries.SetColumn(this.tbxTradeParameterTitle, 2);
+            this.tbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.tbxTradeParameterTitle.Name = "tbxTradeParameterTitle";
+            this.tpEntries.SetRow(this.tbxTradeParameterTitle, 2);
+            this.tbxTradeParameterTitle.Size = new System.Drawing.Size(209, 24);
+            this.tbxTradeParameterTitle.TabIndex = 45;
+            // 
+            // lblTradeParameterTitleLabel
+            // 
+            this.tpEntries.SetColumn(this.lblTradeParameterTitleLabel, 1);
+            this.lblTradeParameterTitleLabel.Location = new System.Drawing.Point(19, 80);
+            this.lblTradeParameterTitleLabel.Name = "lblTradeParameterTitleLabel";
+            this.tpEntries.SetRow(this.lblTradeParameterTitleLabel, 2);
+            this.lblTradeParameterTitleLabel.Size = new System.Drawing.Size(149, 18);
+            this.lblTradeParameterTitleLabel.TabIndex = 44;
+            this.lblTradeParameterTitleLabel.Text = "Trade Parameter Title:";
+            // 
             // chckAddPnlToMaxAmountLimit
             // 
             this.tpEntries.SetColumn(this.chckAddPnlToMaxAmountLimit, 2);
@@ -404,6 +439,17 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxLeverage, 2);
             this.cbxLeverage.FormattingEnabled = true;
+            this.cbxLeverage.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
             this.cbxLeverage.Location = new System.Drawing.Point(178, 257);
             this.cbxLeverage.Name = "cbxLeverage";
             this.tpEntries.SetRow(this.cbxLeverage, 8);
@@ -414,6 +460,9 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxMarginType, 2);
             this.cbxMarginType.FormattingEnabled = true;
+            this.cbxMarginType.Items.AddRange(new object[] {
+            "Isolated",
+            "Cross"});
             this.cbxMarginType.Location = new System.Drawing.Point(178, 227);
             this.cbxMarginType.Name = "cbxMarginType";
             this.tpEntries.SetRow(this.cbxMarginType, 7);
@@ -587,25 +636,6 @@ namespace DevExpressUI
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
             // 
-            // lblTradeParameterTitleLabel
-            // 
-            this.tpEntries.SetColumn(this.lblTradeParameterTitleLabel, 1);
-            this.lblTradeParameterTitleLabel.Location = new System.Drawing.Point(19, 80);
-            this.lblTradeParameterTitleLabel.Name = "lblTradeParameterTitleLabel";
-            this.tpEntries.SetRow(this.lblTradeParameterTitleLabel, 2);
-            this.lblTradeParameterTitleLabel.Size = new System.Drawing.Size(149, 18);
-            this.lblTradeParameterTitleLabel.TabIndex = 44;
-            this.lblTradeParameterTitleLabel.Text = "Trade Parameter Title:";
-            // 
-            // tbxTradeParameterTitle
-            // 
-            this.tpEntries.SetColumn(this.tbxTradeParameterTitle, 2);
-            this.tbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
-            this.tbxTradeParameterTitle.Name = "tbxTradeParameterTitle";
-            this.tpEntries.SetRow(this.tbxTradeParameterTitle, 2);
-            this.tbxTradeParameterTitle.Size = new System.Drawing.Size(209, 24);
-            this.tbxTradeParameterTitle.TabIndex = 45;
-            // 
             // TradeParametersUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -632,8 +662,8 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).EndInit();
             this.tpEntries.ResumeLayout(false);
             this.tpEntries.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -682,5 +712,6 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.CheckEdit chckAddPnlToMaxAmountLimit;
         private DevExpress.XtraEditors.TextEdit tbxTradeParameterTitle;
         private DevExpress.XtraEditors.LabelControl lblTradeParameterTitleLabel;
+        private DevExpress.XtraEditors.SimpleButton btnRefresh;
     }
 }

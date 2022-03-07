@@ -13,7 +13,7 @@ namespace Business.Abstract
         IDataResult<List<TradeParameterDto>> GetTradeParameterDetails();
 
         //Async Methods
-
+        Task<IDataResult<List<TradeParameterEntity>>> GetAllTradeParametersAsync();
         Task<IResult> AddTradeParameterAsync(TradeParameterEntity tradeParameterEntity);
         Task<IResult> UpdateTradeParameterAsync(TradeParameterEntity tradeParameterEntity);
         Task<IDataResult<TradeParameterEntity>> GetTradeParameterEntityByIdAsync(int id);

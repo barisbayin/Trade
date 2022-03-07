@@ -258,7 +258,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorName, 2);
             this.cbxIndicatorName.FormattingEnabled = true;
-            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 78);
+            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 77);
             this.cbxIndicatorName.Name = "cbxIndicatorName";
             this.tpEntries.SetRow(this.cbxIndicatorName, 2);
             this.cbxIndicatorName.Size = new System.Drawing.Size(188, 26);

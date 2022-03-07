@@ -77,6 +77,7 @@ namespace DevExpressUI
             this.aceTradeMonitor.Name = "aceTradeMonitor";
             this.aceTradeMonitor.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             this.aceTradeMonitor.Text = "Trade Monitor";
+            this.aceTradeMonitor.Click += new System.EventHandler(this.aceTradeMonitor_Click);
             // 
             // aceTradeParameters
             // 

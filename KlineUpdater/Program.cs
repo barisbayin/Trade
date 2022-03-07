@@ -35,9 +35,9 @@ namespace KlineUpdater
 
 
 
-            string symbolPair = "BTCUSDT";
+            string symbolPair = "LTCUSDT";
             string interval = "FourHour";
-            int indicatorParameterId = 12;
+            int indicatorParameterId = 13;
 
             IBinanceWsService binanceKlineWsService = new BinanceWsManager(new BinanceSocketClient());
             IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal = new EfBinanceFuturesUsdtKlineDal();
@@ -67,7 +67,7 @@ namespace KlineUpdater
 
 
 
-            while (indicatorParameterId==12)
+            while (indicatorParameterId==13)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
