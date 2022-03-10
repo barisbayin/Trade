@@ -21,11 +21,15 @@ namespace TestConsole
         static void Main(string[] args)
         {
 
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
 
-            IBinanceExchangeInformationService binanceExchangeInformationService =
-                new BinanceExchangeInformationManager(new EfBinanceFuturesUsdtSymbolDal(),new BinanceApiManager(new BinanceClient()));
-            var data = binanceExchangeInformationService.AddFuturesUsdtSymbolsAsync();
-            Console.WriteLine(data.Result.Message);
+            Console.WriteLine(startupPath+"\\apps\\");
+
+
+            //IBinanceExchangeInformationService binanceExchangeInformationService =
+            //    new BinanceExchangeInformationManager(new EfBinanceFuturesUsdtSymbolDal(),new BinanceApiManager(new BinanceClient()));
+            //var data = binanceExchangeInformationService.AddFuturesUsdtSymbolsAsync();
+            //Console.WriteLine(data.Result.Message);
 
 
 

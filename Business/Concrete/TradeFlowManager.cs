@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Costants.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using Entity.Concrete.DTOs;
 using Entity.Concrete.Entities;
 
 namespace Business.Concrete
@@ -17,16 +19,36 @@ namespace Business.Concrete
         {
             _tradeFlowDal = tradeFlowDal;
         }
-        public async Task<IDataResult<TradeFlowEntity>> GetTradeFlow()
+        public async Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlow()
         {
             var tradeFlow =(await _tradeFlowDal.GetAllAsync(x => x.IsSelected == true)).LastOrDefault();
             return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
         }
 
+        public async Task<IDataResult<TradeFlowEntity>> GetTradeFlowById(int id)
+        {
+            var tradeFlow = await _tradeFlowDal.GetAsync(x => x.Id == id);
+            return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
+        }
+
+        public async Task<IResult> AddTradeFlowAsync(TradeFlowEntity tradeFlowEntity)
+        {
+            tradeFlowEntity.CreationDate=DateTime.Now;
+            await _tradeFlowDal.AddAsync(tradeFlowEntity);
+            return new SuccessResult(CommonMessages.Added);
+        }
+
         public async Task<IResult> UpdateTradeFlow(TradeFlowEntity tradeFlowEntity)
         {
+            tradeFlowEntity.ModifiedDate=DateTime.Now;
             await _tradeFlowDal.UpdateAsync(tradeFlowEntity);
             return new SuccessResult();
+        }
+
+        public  IDataResult<List<TradeFlowPartialDto>> GetTradeFlowPartialDetails()
+        {
+            var result =  _tradeFlowDal.GetTradeFlowPartialDetails();
+            return new SuccessDataResult<List<TradeFlowPartialDto>>(result);
         }
     }
 }

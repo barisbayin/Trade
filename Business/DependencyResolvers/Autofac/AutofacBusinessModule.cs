@@ -29,7 +29,8 @@ namespace Business.DependencyResolvers
             builder.RegisterType<BinanceExchangeInformationManager>().As<IBinanceExchangeInformationService>().SingleInstance();
             builder.RegisterType<BinanceApiManager>().As<IBinanceApiService>().SingleInstance();
             builder.RegisterType<TradeParameterManager>().As<ITradeParameterService>().SingleInstance();
-            
+            builder.RegisterType<TradeFlowManager>().As<ITradeFlowService>().SingleInstance();
+
 
 
 

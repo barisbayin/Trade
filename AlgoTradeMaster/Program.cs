@@ -33,7 +33,7 @@ namespace AlgoTradeMaster
             IBinanceWsService binanceKlineWsService = new BinanceWsManager(new BinanceSocketClient());
             #endregion
 
-            var tradeFlowParameter = tradeFlowService.GetTradeFlow().Result.Data;
+            var tradeFlowParameter = tradeFlowService.GetSelectedTradeFlow().Result.Data;
 
 
 

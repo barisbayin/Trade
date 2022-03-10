@@ -9,6 +9,7 @@ namespace DataAccess.Abstract
 {
     public interface ITradeFlowDal : IEntityRepository<TradeFlowEntity>
     {
-        List<TradeParameterDto> GetTradeParameterDetails();
+        List<TradeFlowAllDto> GetTradeFlowAllDetails();
+        List<TradeFlowPartialDto> GetTradeFlowPartialDetails();
     }
 }

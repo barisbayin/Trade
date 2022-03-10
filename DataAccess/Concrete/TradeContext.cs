@@ -7,6 +7,7 @@ namespace DataAccess.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
             optionsBuilder.UseSqlServer(
                 @"Server=(localdb)\MSSQLLocalDB; Database=Trade; User Id=tradeuser; Password=Trd2021**");
         }
@@ -18,7 +19,7 @@ namespace DataAccess.Concrete
         public DbSet<IndicatorParameterEntity> IndicatorParameters { get; set; }
         public DbSet<ApiInformationEntity> ApiInformations { get; set; }
         public DbSet<TradeParameterEntity> TradeParameters { get; set; }
-        public DbSet<TradeFlowEntity> TradeFlowEntity { get; set; }
+        public DbSet<TradeFlowEntity> TradeFlows { get; set; }
         
     }
 }
