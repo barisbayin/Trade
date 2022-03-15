@@ -55,6 +55,7 @@ namespace DevExpressUI
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.tabNavApiManagement = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tabPaneParameters = new DevExpress.XtraBars.Navigation.TabPane();
+            this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gvApiList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridApiList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcApiManagment)).BeginInit();
@@ -182,6 +183,7 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 54.7F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 88.72F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 8.57F)});
+            this.tpEntries.Controls.Add(this.btnRefresh);
             this.tpEntries.Controls.Add(this.chckShowDeleted);
             this.tpEntries.Controls.Add(this.lblCreationDate);
             this.tpEntries.Controls.Add(this.tbxSecretKey);
@@ -388,6 +390,22 @@ namespace DevExpressUI
             this.tabPaneParameters.TabIndex = 1;
             this.tabPaneParameters.Text = "tpaneApiManagement";
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnRefresh.Appearance.Options.UseFont = true;
+            this.tpEntries.SetColumn(this.btnRefresh, 2);
+            this.btnRefresh.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.ImageOptions.Image")));
+            this.btnRefresh.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnRefresh.Location = new System.Drawing.Point(140, 5);
+            this.btnRefresh.Name = "btnRefresh";
+            this.tpEntries.SetRow(this.btnRefresh, 0);
+            this.btnRefresh.Size = new System.Drawing.Size(188, 34);
+            this.btnRefresh.TabIndex = 47;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // ApiManagementUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -447,5 +465,6 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.LabelControl lblApiTitleLabel;
         private DevExpress.XtraEditors.LabelControl lblExchangeLabel;
         private DevExpress.XtraEditors.LabelControl lblIdLabel;
+        private DevExpress.XtraEditors.SimpleButton btnRefresh;
     }
 }

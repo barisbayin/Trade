@@ -31,39 +31,21 @@ namespace DevExpressUI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TradeMonitorUC));
             this.gridTradeFlowPartial = new DevExpress.XtraGrid.GridControl();
-            this.gvTradeflowPartial = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gvTradeFlowPartial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lblResult = new DevExpress.XtraEditors.LabelControl();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.btnStart = new DevExpress.XtraEditors.SimpleButton();
+            this.btnSelect = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.tabPaneTradeMonitor = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavTradeMonitor = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTradeMonitorList = new DevExpress.XtraEditors.GroupControl();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
-            this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblIntervalLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblMaximumAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblSymbolPairLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblMarginTypeLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblLeverageLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblMaxAmountPercentageLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblAddPnlToMaxAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblPercentageOfPnlToBeAddedLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblInUseLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblCreationDateLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblCreationDate = new DevExpress.XtraEditors.LabelControl();
-            this.lblInUse = new DevExpress.XtraEditors.LabelControl();
-            this.lblModifiedDateLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblModifiedDate = new DevExpress.XtraEditors.LabelControl();
-            this.lblTradeParameterTitleLabel = new DevExpress.XtraEditors.LabelControl();
-            this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
-            this.cbxTradeParameterTitle = new System.Windows.Forms.ComboBox();
+            this.lblIsSelectedLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIsSelected = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
             this.lblInterval = new DevExpress.XtraEditors.LabelControl();
             this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
             this.lblSymbolPair = new DevExpress.XtraEditors.LabelControl();
@@ -75,9 +57,28 @@ namespace DevExpressUI
             this.lblLeverage = new DevExpress.XtraEditors.LabelControl();
             this.lblMarginType = new DevExpress.XtraEditors.LabelControl();
             this.lblPercentageOfPnl = new DevExpress.XtraEditors.LabelControl();
-            this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.cbxTradeParameterTitle = new System.Windows.Forms.ComboBox();
+            this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
+            this.lblTradeParameterTitleLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblModifiedDate = new DevExpress.XtraEditors.LabelControl();
+            this.lblModifiedDateLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblInUse = new DevExpress.XtraEditors.LabelControl();
+            this.lblCreationDate = new DevExpress.XtraEditors.LabelControl();
+            this.lblCreationDateLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblInUseLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblPercentageOfPnlToBeAddedLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblAddPnlToMaxAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblMaxAmountPercentageLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblLeverageLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblMarginTypeLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblSymbolPairLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblMaximumAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIntervalLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTradeflowPartial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneTradeMonitor)).BeginInit();
@@ -95,22 +96,23 @@ namespace DevExpressUI
             // 
             this.gridTradeFlowPartial.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridTradeFlowPartial.Location = new System.Drawing.Point(2, 21);
-            this.gridTradeFlowPartial.MainView = this.gvTradeflowPartial;
+            this.gridTradeFlowPartial.MainView = this.gvTradeFlowPartial;
             this.gridTradeFlowPartial.Name = "gridTradeFlowPartial";
             this.gridTradeFlowPartial.Size = new System.Drawing.Size(697, 813);
             this.gridTradeFlowPartial.TabIndex = 0;
             this.gridTradeFlowPartial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gvTradeflowPartial});
+            this.gvTradeFlowPartial});
             // 
-            // gvTradeflowPartial
+            // gvTradeFlowPartial
             // 
-            this.gvTradeflowPartial.GridControl = this.gridTradeFlowPartial;
-            this.gvTradeflowPartial.Name = "gvTradeflowPartial";
-            this.gvTradeflowPartial.OptionsView.ShowGroupPanel = false;
+            this.gvTradeFlowPartial.GridControl = this.gridTradeFlowPartial;
+            this.gvTradeFlowPartial.Name = "gvTradeFlowPartial";
+            this.gvTradeFlowPartial.OptionsView.ShowGroupPanel = false;
+            this.gvTradeFlowPartial.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeFlowPartial_FocusedRowChanged);
             // 
             // lblResult
             // 
-            this.lblResult.Location = new System.Drawing.Point(51, 159);
+            this.lblResult.Location = new System.Drawing.Point(51, 153);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(0, 18);
             this.lblResult.TabIndex = 3;
@@ -123,11 +125,12 @@ namespace DevExpressUI
             this.btnNew.Appearance.Options.UseFont = true;
             this.btnNew.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.ImageOptions.Image")));
             this.btnNew.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnNew.Location = new System.Drawing.Point(61, 108);
+            this.btnNew.Location = new System.Drawing.Point(70, 106);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(84, 34);
             this.btnNew.TabIndex = 2;
             this.btnNew.Text = "New";
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnDelete
             // 
@@ -136,7 +139,7 @@ namespace DevExpressUI
             this.btnDelete.Appearance.Options.UseFont = true;
             this.btnDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.ImageOptions.Image")));
             this.btnDelete.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnDelete.Location = new System.Drawing.Point(151, 108);
+            this.btnDelete.Location = new System.Drawing.Point(160, 106);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(84, 34);
             this.btnDelete.TabIndex = 1;
@@ -144,6 +147,8 @@ namespace DevExpressUI
             // 
             // groupControl1
             // 
+            this.groupControl1.Controls.Add(this.btnStart);
+            this.groupControl1.Controls.Add(this.btnSelect);
             this.groupControl1.Controls.Add(this.lblResult);
             this.groupControl1.Controls.Add(this.btnNew);
             this.groupControl1.Controls.Add(this.btnDelete);
@@ -156,6 +161,33 @@ namespace DevExpressUI
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
+            // btnStart
+            // 
+            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStart.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnStart.Appearance.Options.UseFont = true;
+            this.btnStart.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.ImageOptions.Image")));
+            this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnStart.Location = new System.Drawing.Point(208, 24);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(140, 43);
+            this.btnStart.TabIndex = 5;
+            this.btnStart.Text = "Start Trade!";
+            // 
+            // btnSelect
+            // 
+            this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSelect.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnSelect.Appearance.Options.UseFont = true;
+            this.btnSelect.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnSelect.ImageOptions.Image")));
+            this.btnSelect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnSelect.Location = new System.Drawing.Point(51, 24);
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.Size = new System.Drawing.Size(140, 43);
+            this.btnSelect.TabIndex = 4;
+            this.btnSelect.Text = "Select";
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -163,7 +195,7 @@ namespace DevExpressUI
             this.btnAdd.Appearance.Options.UseFont = true;
             this.btnAdd.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.ImageOptions.Image")));
             this.btnAdd.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnAdd.Location = new System.Drawing.Point(241, 108);
+            this.btnAdd.Location = new System.Drawing.Point(250, 106);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(84, 34);
             this.btnAdd.TabIndex = 0;
@@ -173,13 +205,11 @@ namespace DevExpressUI
             // tabPaneTradeMonitor
             // 
             this.tabPaneTradeMonitor.Controls.Add(this.tabNavTradeMonitor);
-            this.tabPaneTradeMonitor.Controls.Add(this.tabNavigationPage1);
             this.tabPaneTradeMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPaneTradeMonitor.Location = new System.Drawing.Point(0, 0);
             this.tabPaneTradeMonitor.Name = "tabPaneTradeMonitor";
             this.tabPaneTradeMonitor.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabPaneTradeMonitor.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
-            this.tabNavigationPage1,
             this.tabNavTradeMonitor});
             this.tabPaneTradeMonitor.RegularSize = new System.Drawing.Size(1111, 862);
             this.tabPaneTradeMonitor.SelectedPage = this.tabNavTradeMonitor;
@@ -189,7 +219,7 @@ namespace DevExpressUI
             // 
             // tabNavTradeMonitor
             // 
-            this.tabNavTradeMonitor.Caption = "Trade Monitor";
+            this.tabNavTradeMonitor.Caption = "Trade Flows";
             this.tabNavTradeMonitor.Controls.Add(this.splitContainerControl1);
             this.tabNavTradeMonitor.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavTradeMonitor.ImageOptions.Image")));
             this.tabNavTradeMonitor.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
@@ -225,7 +255,7 @@ namespace DevExpressUI
             this.gcTradeMonitorList.Name = "gcTradeMonitorList";
             this.gcTradeMonitorList.Size = new System.Drawing.Size(701, 836);
             this.gcTradeMonitorList.TabIndex = 0;
-            this.gcTradeMonitorList.Text = "Trade Parameter List";
+            this.gcTradeMonitorList.Text = "Trade Flow List";
             // 
             // tpEntries
             // 
@@ -236,8 +266,8 @@ namespace DevExpressUI
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 63.74F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85.92F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 3.89F)});
+            this.tpEntries.Controls.Add(this.lblIsSelectedLabel);
             this.tpEntries.Controls.Add(this.lblIsSelected);
-            this.tpEntries.Controls.Add(this.labelControl12);
             this.tpEntries.Controls.Add(this.lblInterval);
             this.tpEntries.Controls.Add(this.lblIdNo);
             this.tpEntries.Controls.Add(this.lblSymbolPair);
@@ -294,232 +324,25 @@ namespace DevExpressUI
             this.tpEntries.Size = new System.Drawing.Size(400, 650);
             this.tpEntries.TabIndex = 2;
             // 
-            // lblIdLabel
+            // lblIsSelectedLabel
             // 
-            this.tpEntries.SetColumn(this.lblIdLabel, 1);
-            this.lblIdLabel.Location = new System.Drawing.Point(19, 50);
-            this.lblIdLabel.Name = "lblIdLabel";
-            this.tpEntries.SetRow(this.lblIdLabel, 1);
-            this.lblIdLabel.Size = new System.Drawing.Size(19, 18);
-            this.lblIdLabel.TabIndex = 0;
-            this.lblIdLabel.Text = "Id:";
-            this.lblIdLabel.UseMnemonic = false;
-            // 
-            // lblIndicatorParameterLabel
-            // 
-            this.tpEntries.SetColumn(this.lblIndicatorParameterLabel, 1);
-            this.lblIndicatorParameterLabel.Location = new System.Drawing.Point(19, 170);
-            this.lblIndicatorParameterLabel.Name = "lblIndicatorParameterLabel";
-            this.tpEntries.SetRow(this.lblIndicatorParameterLabel, 5);
-            this.lblIndicatorParameterLabel.Size = new System.Drawing.Size(135, 18);
-            this.lblIndicatorParameterLabel.TabIndex = 1;
-            this.lblIndicatorParameterLabel.Text = "Indicator Parameter:";
-            // 
-            // lblApiToUseLabel
-            // 
-            this.tpEntries.SetColumn(this.lblApiToUseLabel, 1);
-            this.lblApiToUseLabel.Location = new System.Drawing.Point(19, 200);
-            this.lblApiToUseLabel.Name = "lblApiToUseLabel";
-            this.tpEntries.SetRow(this.lblApiToUseLabel, 6);
-            this.lblApiToUseLabel.Size = new System.Drawing.Size(77, 18);
-            this.lblApiToUseLabel.TabIndex = 2;
-            this.lblApiToUseLabel.Text = "Api To Use:";
-            // 
-            // lblIntervalLabel
-            // 
-            this.tpEntries.SetColumn(this.lblIntervalLabel, 1);
-            this.lblIntervalLabel.Location = new System.Drawing.Point(19, 140);
-            this.lblIntervalLabel.Name = "lblIntervalLabel";
-            this.tpEntries.SetRow(this.lblIntervalLabel, 4);
-            this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
-            this.lblIntervalLabel.TabIndex = 3;
-            this.lblIntervalLabel.Text = "Interval:";
-            // 
-            // lblMaximumAmountLimitLabel
-            // 
-            this.tpEntries.SetColumn(this.lblMaximumAmountLimitLabel, 1);
-            this.lblMaximumAmountLimitLabel.Location = new System.Drawing.Point(19, 290);
-            this.lblMaximumAmountLimitLabel.Name = "lblMaximumAmountLimitLabel";
-            this.tpEntries.SetRow(this.lblMaximumAmountLimitLabel, 9);
-            this.lblMaximumAmountLimitLabel.Size = new System.Drawing.Size(123, 18);
-            this.lblMaximumAmountLimitLabel.TabIndex = 12;
-            this.lblMaximumAmountLimitLabel.Text = "Max Amount Limit:";
-            // 
-            // lblSymbolPairLabel
-            // 
-            this.tpEntries.SetColumn(this.lblSymbolPairLabel, 1);
-            this.lblSymbolPairLabel.Location = new System.Drawing.Point(19, 110);
-            this.lblSymbolPairLabel.Name = "lblSymbolPairLabel";
-            this.tpEntries.SetRow(this.lblSymbolPairLabel, 3);
-            this.lblSymbolPairLabel.Size = new System.Drawing.Size(80, 18);
-            this.lblSymbolPairLabel.TabIndex = 14;
-            this.lblSymbolPairLabel.Text = "Symbol Pair:";
-            // 
-            // lblMarginTypeLabel
-            // 
-            this.tpEntries.SetColumn(this.lblMarginTypeLabel, 1);
-            this.lblMarginTypeLabel.Location = new System.Drawing.Point(19, 230);
-            this.lblMarginTypeLabel.Name = "lblMarginTypeLabel";
-            this.tpEntries.SetRow(this.lblMarginTypeLabel, 7);
-            this.lblMarginTypeLabel.Size = new System.Drawing.Size(87, 18);
-            this.lblMarginTypeLabel.TabIndex = 17;
-            this.lblMarginTypeLabel.Text = "Margin Type:";
-            // 
-            // lblLeverageLabel
-            // 
-            this.tpEntries.SetColumn(this.lblLeverageLabel, 1);
-            this.lblLeverageLabel.Location = new System.Drawing.Point(19, 260);
-            this.lblLeverageLabel.Name = "lblLeverageLabel";
-            this.tpEntries.SetRow(this.lblLeverageLabel, 8);
-            this.lblLeverageLabel.Size = new System.Drawing.Size(65, 18);
-            this.lblLeverageLabel.TabIndex = 18;
-            this.lblLeverageLabel.Text = "Leverage:";
-            // 
-            // lblMaxAmountPercentageLabel
-            // 
-            this.tpEntries.SetColumn(this.lblMaxAmountPercentageLabel, 1);
-            this.lblMaxAmountPercentageLabel.Location = new System.Drawing.Point(19, 320);
-            this.lblMaxAmountPercentageLabel.Name = "lblMaxAmountPercentageLabel";
-            this.tpEntries.SetRow(this.lblMaxAmountPercentageLabel, 10);
-            this.lblMaxAmountPercentageLabel.Size = new System.Drawing.Size(109, 18);
-            this.lblMaxAmountPercentageLabel.TabIndex = 19;
-            this.lblMaxAmountPercentageLabel.Text = "Max Amount %:";
-            // 
-            // lblAddPnlToMaxAmountLimitLabel
-            // 
-            this.tpEntries.SetColumn(this.lblAddPnlToMaxAmountLimitLabel, 1);
-            this.lblAddPnlToMaxAmountLimitLabel.Location = new System.Drawing.Point(19, 350);
-            this.lblAddPnlToMaxAmountLimitLabel.Name = "lblAddPnlToMaxAmountLimitLabel";
-            this.tpEntries.SetRow(this.lblAddPnlToMaxAmountLimitLabel, 11);
-            this.lblAddPnlToMaxAmountLimitLabel.Size = new System.Drawing.Size(109, 18);
-            this.lblAddPnlToMaxAmountLimitLabel.TabIndex = 20;
-            this.lblAddPnlToMaxAmountLimitLabel.Text = "Add Pnl To MAL:";
-            // 
-            // lblPercentageOfPnlToBeAddedLabel
-            // 
-            this.tpEntries.SetColumn(this.lblPercentageOfPnlToBeAddedLabel, 1);
-            this.lblPercentageOfPnlToBeAddedLabel.Location = new System.Drawing.Point(19, 380);
-            this.lblPercentageOfPnlToBeAddedLabel.Name = "lblPercentageOfPnlToBeAddedLabel";
-            this.tpEntries.SetRow(this.lblPercentageOfPnlToBeAddedLabel, 12);
-            this.lblPercentageOfPnlToBeAddedLabel.Size = new System.Drawing.Size(150, 18);
-            this.lblPercentageOfPnlToBeAddedLabel.TabIndex = 21;
-            this.lblPercentageOfPnlToBeAddedLabel.Text = "% Of Pnl ToBe Added:";
-            // 
-            // lblInUseLabel
-            // 
-            this.tpEntries.SetColumn(this.lblInUseLabel, 1);
-            this.lblInUseLabel.Location = new System.Drawing.Point(19, 410);
-            this.lblInUseLabel.Name = "lblInUseLabel";
-            this.tpEntries.SetRow(this.lblInUseLabel, 13);
-            this.lblInUseLabel.Size = new System.Drawing.Size(49, 18);
-            this.lblInUseLabel.TabIndex = 23;
-            this.lblInUseLabel.Text = "In Use:";
-            // 
-            // lblCreationDateLabel
-            // 
-            this.tpEntries.SetColumn(this.lblCreationDateLabel, 1);
-            this.lblCreationDateLabel.Location = new System.Drawing.Point(19, 470);
-            this.lblCreationDateLabel.Name = "lblCreationDateLabel";
-            this.tpEntries.SetRow(this.lblCreationDateLabel, 15);
-            this.lblCreationDateLabel.Size = new System.Drawing.Size(94, 18);
-            this.lblCreationDateLabel.TabIndex = 24;
-            this.lblCreationDateLabel.Text = "Creation Date:";
-            // 
-            // lblCreationDate
-            // 
-            this.tpEntries.SetColumn(this.lblCreationDate, 2);
-            this.lblCreationDate.Location = new System.Drawing.Point(178, 470);
-            this.lblCreationDate.Name = "lblCreationDate";
-            this.tpEntries.SetRow(this.lblCreationDate, 15);
-            this.lblCreationDate.Size = new System.Drawing.Size(10, 18);
-            this.lblCreationDate.TabIndex = 25;
-            this.lblCreationDate.Text = "..";
-            // 
-            // lblInUse
-            // 
-            this.tpEntries.SetColumn(this.lblInUse, 2);
-            this.lblInUse.Location = new System.Drawing.Point(178, 410);
-            this.lblInUse.Name = "lblInUse";
-            this.tpEntries.SetRow(this.lblInUse, 13);
-            this.lblInUse.Size = new System.Drawing.Size(10, 18);
-            this.lblInUse.TabIndex = 26;
-            this.lblInUse.Text = "..";
-            // 
-            // lblModifiedDateLabel
-            // 
-            this.tpEntries.SetColumn(this.lblModifiedDateLabel, 1);
-            this.lblModifiedDateLabel.Location = new System.Drawing.Point(19, 500);
-            this.lblModifiedDateLabel.Name = "lblModifiedDateLabel";
-            this.tpEntries.SetRow(this.lblModifiedDateLabel, 16);
-            this.lblModifiedDateLabel.Size = new System.Drawing.Size(94, 18);
-            this.lblModifiedDateLabel.TabIndex = 36;
-            this.lblModifiedDateLabel.Text = "Modified Date:";
-            // 
-            // lblModifiedDate
-            // 
-            this.tpEntries.SetColumn(this.lblModifiedDate, 2);
-            this.lblModifiedDate.Location = new System.Drawing.Point(178, 500);
-            this.lblModifiedDate.Name = "lblModifiedDate";
-            this.tpEntries.SetRow(this.lblModifiedDate, 16);
-            this.lblModifiedDate.Size = new System.Drawing.Size(10, 18);
-            this.lblModifiedDate.TabIndex = 37;
-            this.lblModifiedDate.Text = "..";
-            // 
-            // lblTradeParameterTitleLabel
-            // 
-            this.tpEntries.SetColumn(this.lblTradeParameterTitleLabel, 1);
-            this.lblTradeParameterTitleLabel.Location = new System.Drawing.Point(19, 80);
-            this.lblTradeParameterTitleLabel.Name = "lblTradeParameterTitleLabel";
-            this.tpEntries.SetRow(this.lblTradeParameterTitleLabel, 2);
-            this.lblTradeParameterTitleLabel.Size = new System.Drawing.Size(149, 18);
-            this.lblTradeParameterTitleLabel.TabIndex = 44;
-            this.lblTradeParameterTitleLabel.Text = "Trade Parameter Title:";
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnRefresh.Appearance.Options.UseFont = true;
-            this.tpEntries.SetColumn(this.btnRefresh, 2);
-            this.btnRefresh.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.ImageOptions.Image")));
-            this.btnRefresh.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnRefresh.Location = new System.Drawing.Point(178, 5);
-            this.btnRefresh.Name = "btnRefresh";
-            this.tpEntries.SetRow(this.btnRefresh, 0);
-            this.btnRefresh.Size = new System.Drawing.Size(209, 34);
-            this.btnRefresh.TabIndex = 4;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // cbxTradeParameterTitle
-            // 
-            this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
-            this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
-            this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
-            this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
-            this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
-            this.cbxTradeParameterTitle.TabIndex = 45;
+            this.tpEntries.SetColumn(this.lblIsSelectedLabel, 1);
+            this.lblIsSelectedLabel.Location = new System.Drawing.Point(19, 440);
+            this.lblIsSelectedLabel.Name = "lblIsSelectedLabel";
+            this.tpEntries.SetRow(this.lblIsSelectedLabel, 14);
+            this.lblIsSelectedLabel.Size = new System.Drawing.Size(77, 18);
+            this.lblIsSelectedLabel.TabIndex = 58;
+            this.lblIsSelectedLabel.Text = "Is Selected:";
             // 
             // lblIsSelected
             // 
-            this.tpEntries.SetColumn(this.lblIsSelected, 1);
-            this.lblIsSelected.Location = new System.Drawing.Point(19, 440);
+            this.tpEntries.SetColumn(this.lblIsSelected, 2);
+            this.lblIsSelected.Location = new System.Drawing.Point(178, 440);
             this.lblIsSelected.Name = "lblIsSelected";
             this.tpEntries.SetRow(this.lblIsSelected, 14);
-            this.lblIsSelected.Size = new System.Drawing.Size(77, 18);
-            this.lblIsSelected.TabIndex = 58;
-            this.lblIsSelected.Text = "Is Selected:";
-            // 
-            // labelControl12
-            // 
-            this.tpEntries.SetColumn(this.labelControl12, 2);
-            this.labelControl12.Location = new System.Drawing.Point(178, 440);
-            this.labelControl12.Name = "labelControl12";
-            this.tpEntries.SetRow(this.labelControl12, 14);
-            this.labelControl12.Size = new System.Drawing.Size(10, 18);
-            this.labelControl12.TabIndex = 57;
-            this.labelControl12.Text = "..";
+            this.lblIsSelected.Size = new System.Drawing.Size(10, 18);
+            this.lblIsSelected.TabIndex = 57;
+            this.lblIsSelected.Text = "..";
             // 
             // lblInterval
             // 
@@ -631,11 +454,212 @@ namespace DevExpressUI
             this.lblPercentageOfPnl.TabIndex = 46;
             this.lblPercentageOfPnl.Text = "..";
             // 
-            // tabNavigationPage1
+            // cbxTradeParameterTitle
             // 
-            this.tabNavigationPage1.Caption = "tabNavigationPage1";
-            this.tabNavigationPage1.Name = "tabNavigationPage1";
-            this.tabNavigationPage1.Size = new System.Drawing.Size(1111, 836);
+            this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
+            this.cbxTradeParameterTitle.FormattingEnabled = true;
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
+            this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
+            this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
+            this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
+            this.cbxTradeParameterTitle.TabIndex = 45;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnRefresh.Appearance.Options.UseFont = true;
+            this.tpEntries.SetColumn(this.btnRefresh, 2);
+            this.btnRefresh.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.ImageOptions.Image")));
+            this.btnRefresh.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnRefresh.Location = new System.Drawing.Point(178, 5);
+            this.btnRefresh.Name = "btnRefresh";
+            this.tpEntries.SetRow(this.btnRefresh, 0);
+            this.btnRefresh.Size = new System.Drawing.Size(209, 34);
+            this.btnRefresh.TabIndex = 4;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // lblTradeParameterTitleLabel
+            // 
+            this.tpEntries.SetColumn(this.lblTradeParameterTitleLabel, 1);
+            this.lblTradeParameterTitleLabel.Location = new System.Drawing.Point(19, 80);
+            this.lblTradeParameterTitleLabel.Name = "lblTradeParameterTitleLabel";
+            this.tpEntries.SetRow(this.lblTradeParameterTitleLabel, 2);
+            this.lblTradeParameterTitleLabel.Size = new System.Drawing.Size(149, 18);
+            this.lblTradeParameterTitleLabel.TabIndex = 44;
+            this.lblTradeParameterTitleLabel.Text = "Trade Parameter Title:";
+            // 
+            // lblModifiedDate
+            // 
+            this.tpEntries.SetColumn(this.lblModifiedDate, 2);
+            this.lblModifiedDate.Location = new System.Drawing.Point(178, 500);
+            this.lblModifiedDate.Name = "lblModifiedDate";
+            this.tpEntries.SetRow(this.lblModifiedDate, 16);
+            this.lblModifiedDate.Size = new System.Drawing.Size(10, 18);
+            this.lblModifiedDate.TabIndex = 37;
+            this.lblModifiedDate.Text = "..";
+            // 
+            // lblModifiedDateLabel
+            // 
+            this.tpEntries.SetColumn(this.lblModifiedDateLabel, 1);
+            this.lblModifiedDateLabel.Location = new System.Drawing.Point(19, 500);
+            this.lblModifiedDateLabel.Name = "lblModifiedDateLabel";
+            this.tpEntries.SetRow(this.lblModifiedDateLabel, 16);
+            this.lblModifiedDateLabel.Size = new System.Drawing.Size(94, 18);
+            this.lblModifiedDateLabel.TabIndex = 36;
+            this.lblModifiedDateLabel.Text = "Modified Date:";
+            // 
+            // lblInUse
+            // 
+            this.tpEntries.SetColumn(this.lblInUse, 2);
+            this.lblInUse.Location = new System.Drawing.Point(178, 410);
+            this.lblInUse.Name = "lblInUse";
+            this.tpEntries.SetRow(this.lblInUse, 13);
+            this.lblInUse.Size = new System.Drawing.Size(10, 18);
+            this.lblInUse.TabIndex = 26;
+            this.lblInUse.Text = "..";
+            // 
+            // lblCreationDate
+            // 
+            this.tpEntries.SetColumn(this.lblCreationDate, 2);
+            this.lblCreationDate.Location = new System.Drawing.Point(178, 470);
+            this.lblCreationDate.Name = "lblCreationDate";
+            this.tpEntries.SetRow(this.lblCreationDate, 15);
+            this.lblCreationDate.Size = new System.Drawing.Size(10, 18);
+            this.lblCreationDate.TabIndex = 25;
+            this.lblCreationDate.Text = "..";
+            // 
+            // lblCreationDateLabel
+            // 
+            this.tpEntries.SetColumn(this.lblCreationDateLabel, 1);
+            this.lblCreationDateLabel.Location = new System.Drawing.Point(19, 470);
+            this.lblCreationDateLabel.Name = "lblCreationDateLabel";
+            this.tpEntries.SetRow(this.lblCreationDateLabel, 15);
+            this.lblCreationDateLabel.Size = new System.Drawing.Size(94, 18);
+            this.lblCreationDateLabel.TabIndex = 24;
+            this.lblCreationDateLabel.Text = "Creation Date:";
+            // 
+            // lblInUseLabel
+            // 
+            this.tpEntries.SetColumn(this.lblInUseLabel, 1);
+            this.lblInUseLabel.Location = new System.Drawing.Point(19, 410);
+            this.lblInUseLabel.Name = "lblInUseLabel";
+            this.tpEntries.SetRow(this.lblInUseLabel, 13);
+            this.lblInUseLabel.Size = new System.Drawing.Size(49, 18);
+            this.lblInUseLabel.TabIndex = 23;
+            this.lblInUseLabel.Text = "In Use:";
+            // 
+            // lblPercentageOfPnlToBeAddedLabel
+            // 
+            this.tpEntries.SetColumn(this.lblPercentageOfPnlToBeAddedLabel, 1);
+            this.lblPercentageOfPnlToBeAddedLabel.Location = new System.Drawing.Point(19, 380);
+            this.lblPercentageOfPnlToBeAddedLabel.Name = "lblPercentageOfPnlToBeAddedLabel";
+            this.tpEntries.SetRow(this.lblPercentageOfPnlToBeAddedLabel, 12);
+            this.lblPercentageOfPnlToBeAddedLabel.Size = new System.Drawing.Size(150, 18);
+            this.lblPercentageOfPnlToBeAddedLabel.TabIndex = 21;
+            this.lblPercentageOfPnlToBeAddedLabel.Text = "% Of Pnl ToBe Added:";
+            // 
+            // lblAddPnlToMaxAmountLimitLabel
+            // 
+            this.tpEntries.SetColumn(this.lblAddPnlToMaxAmountLimitLabel, 1);
+            this.lblAddPnlToMaxAmountLimitLabel.Location = new System.Drawing.Point(19, 350);
+            this.lblAddPnlToMaxAmountLimitLabel.Name = "lblAddPnlToMaxAmountLimitLabel";
+            this.tpEntries.SetRow(this.lblAddPnlToMaxAmountLimitLabel, 11);
+            this.lblAddPnlToMaxAmountLimitLabel.Size = new System.Drawing.Size(109, 18);
+            this.lblAddPnlToMaxAmountLimitLabel.TabIndex = 20;
+            this.lblAddPnlToMaxAmountLimitLabel.Text = "Add Pnl To MAL:";
+            // 
+            // lblMaxAmountPercentageLabel
+            // 
+            this.tpEntries.SetColumn(this.lblMaxAmountPercentageLabel, 1);
+            this.lblMaxAmountPercentageLabel.Location = new System.Drawing.Point(19, 320);
+            this.lblMaxAmountPercentageLabel.Name = "lblMaxAmountPercentageLabel";
+            this.tpEntries.SetRow(this.lblMaxAmountPercentageLabel, 10);
+            this.lblMaxAmountPercentageLabel.Size = new System.Drawing.Size(109, 18);
+            this.lblMaxAmountPercentageLabel.TabIndex = 19;
+            this.lblMaxAmountPercentageLabel.Text = "Max Amount %:";
+            // 
+            // lblLeverageLabel
+            // 
+            this.tpEntries.SetColumn(this.lblLeverageLabel, 1);
+            this.lblLeverageLabel.Location = new System.Drawing.Point(19, 260);
+            this.lblLeverageLabel.Name = "lblLeverageLabel";
+            this.tpEntries.SetRow(this.lblLeverageLabel, 8);
+            this.lblLeverageLabel.Size = new System.Drawing.Size(65, 18);
+            this.lblLeverageLabel.TabIndex = 18;
+            this.lblLeverageLabel.Text = "Leverage:";
+            // 
+            // lblMarginTypeLabel
+            // 
+            this.tpEntries.SetColumn(this.lblMarginTypeLabel, 1);
+            this.lblMarginTypeLabel.Location = new System.Drawing.Point(19, 230);
+            this.lblMarginTypeLabel.Name = "lblMarginTypeLabel";
+            this.tpEntries.SetRow(this.lblMarginTypeLabel, 7);
+            this.lblMarginTypeLabel.Size = new System.Drawing.Size(87, 18);
+            this.lblMarginTypeLabel.TabIndex = 17;
+            this.lblMarginTypeLabel.Text = "Margin Type:";
+            // 
+            // lblSymbolPairLabel
+            // 
+            this.tpEntries.SetColumn(this.lblSymbolPairLabel, 1);
+            this.lblSymbolPairLabel.Location = new System.Drawing.Point(19, 110);
+            this.lblSymbolPairLabel.Name = "lblSymbolPairLabel";
+            this.tpEntries.SetRow(this.lblSymbolPairLabel, 3);
+            this.lblSymbolPairLabel.Size = new System.Drawing.Size(80, 18);
+            this.lblSymbolPairLabel.TabIndex = 14;
+            this.lblSymbolPairLabel.Text = "Symbol Pair:";
+            // 
+            // lblMaximumAmountLimitLabel
+            // 
+            this.tpEntries.SetColumn(this.lblMaximumAmountLimitLabel, 1);
+            this.lblMaximumAmountLimitLabel.Location = new System.Drawing.Point(19, 290);
+            this.lblMaximumAmountLimitLabel.Name = "lblMaximumAmountLimitLabel";
+            this.tpEntries.SetRow(this.lblMaximumAmountLimitLabel, 9);
+            this.lblMaximumAmountLimitLabel.Size = new System.Drawing.Size(123, 18);
+            this.lblMaximumAmountLimitLabel.TabIndex = 12;
+            this.lblMaximumAmountLimitLabel.Text = "Max Amount Limit:";
+            // 
+            // lblIntervalLabel
+            // 
+            this.tpEntries.SetColumn(this.lblIntervalLabel, 1);
+            this.lblIntervalLabel.Location = new System.Drawing.Point(19, 140);
+            this.lblIntervalLabel.Name = "lblIntervalLabel";
+            this.tpEntries.SetRow(this.lblIntervalLabel, 4);
+            this.lblIntervalLabel.Size = new System.Drawing.Size(55, 18);
+            this.lblIntervalLabel.TabIndex = 3;
+            this.lblIntervalLabel.Text = "Interval:";
+            // 
+            // lblApiToUseLabel
+            // 
+            this.tpEntries.SetColumn(this.lblApiToUseLabel, 1);
+            this.lblApiToUseLabel.Location = new System.Drawing.Point(19, 200);
+            this.lblApiToUseLabel.Name = "lblApiToUseLabel";
+            this.tpEntries.SetRow(this.lblApiToUseLabel, 6);
+            this.lblApiToUseLabel.Size = new System.Drawing.Size(77, 18);
+            this.lblApiToUseLabel.TabIndex = 2;
+            this.lblApiToUseLabel.Text = "Api To Use:";
+            // 
+            // lblIndicatorParameterLabel
+            // 
+            this.tpEntries.SetColumn(this.lblIndicatorParameterLabel, 1);
+            this.lblIndicatorParameterLabel.Location = new System.Drawing.Point(19, 170);
+            this.lblIndicatorParameterLabel.Name = "lblIndicatorParameterLabel";
+            this.tpEntries.SetRow(this.lblIndicatorParameterLabel, 5);
+            this.lblIndicatorParameterLabel.Size = new System.Drawing.Size(135, 18);
+            this.lblIndicatorParameterLabel.TabIndex = 1;
+            this.lblIndicatorParameterLabel.Text = "Indicator Parameter:";
+            // 
+            // lblIdLabel
+            // 
+            this.tpEntries.SetColumn(this.lblIdLabel, 1);
+            this.lblIdLabel.Location = new System.Drawing.Point(19, 50);
+            this.lblIdLabel.Name = "lblIdLabel";
+            this.tpEntries.SetRow(this.lblIdLabel, 1);
+            this.lblIdLabel.Size = new System.Drawing.Size(19, 18);
+            this.lblIdLabel.TabIndex = 0;
+            this.lblIdLabel.Text = "Id:";
+            this.lblIdLabel.UseMnemonic = false;
             // 
             // TradeMonitorUC
             // 
@@ -646,7 +670,7 @@ namespace DevExpressUI
             this.Size = new System.Drawing.Size(1111, 862);
             this.Load += new System.EventHandler(this.TradeMonitorUC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTradeflowPartial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
@@ -666,7 +690,7 @@ namespace DevExpressUI
 
         #endregion
         private DevExpress.XtraGrid.GridControl gridTradeFlowPartial;
-        private DevExpress.XtraGrid.Views.Grid.GridView gvTradeflowPartial;
+        private DevExpress.XtraGrid.Views.Grid.GridView gvTradeFlowPartial;
         private DevExpress.XtraEditors.LabelControl lblResult;
         private DevExpress.XtraEditors.SimpleButton btnNew;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
@@ -676,7 +700,6 @@ namespace DevExpressUI
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavTradeMonitor;
         private DevExpress.XtraEditors.SplitContainerControl splitContainerControl1;
         private DevExpress.XtraEditors.GroupControl gcTradeMonitorList;
-        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage1;
         private DevExpress.Utils.Layout.TablePanel tpEntries;
         private DevExpress.XtraEditors.LabelControl lblIdNo;
         private DevExpress.XtraEditors.LabelControl lblSymbolPair;
@@ -709,7 +732,9 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.LabelControl lblIndicatorParameterLabel;
         private DevExpress.XtraEditors.LabelControl lblIdLabel;
         private DevExpress.XtraEditors.LabelControl lblInterval;
+        private DevExpress.XtraEditors.LabelControl lblIsSelectedLabel;
         private DevExpress.XtraEditors.LabelControl lblIsSelected;
-        private DevExpress.XtraEditors.LabelControl labelControl12;
+        private DevExpress.XtraEditors.SimpleButton btnStart;
+        private DevExpress.XtraEditors.SimpleButton btnSelect;
     }
 }

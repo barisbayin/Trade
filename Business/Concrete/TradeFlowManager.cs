@@ -19,13 +19,13 @@ namespace Business.Concrete
         {
             _tradeFlowDal = tradeFlowDal;
         }
-        public async Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlow()
+        public async Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync()
         {
             var tradeFlow =(await _tradeFlowDal.GetAllAsync(x => x.IsSelected == true)).LastOrDefault();
             return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
         }
 
-        public async Task<IDataResult<TradeFlowEntity>> GetTradeFlowById(int id)
+        public async Task<IDataResult<TradeFlowEntity>> GetTradeFlowByIdAsync(int id)
         {
             var tradeFlow = await _tradeFlowDal.GetAsync(x => x.Id == id);
             return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
@@ -38,7 +38,7 @@ namespace Business.Concrete
             return new SuccessResult(CommonMessages.Added);
         }
 
-        public async Task<IResult> UpdateTradeFlow(TradeFlowEntity tradeFlowEntity)
+        public async Task<IResult> UpdateTradeFlowAsync(TradeFlowEntity tradeFlowEntity)
         {
             tradeFlowEntity.ModifiedDate=DateTime.Now;
             await _tradeFlowDal.UpdateAsync(tradeFlowEntity);

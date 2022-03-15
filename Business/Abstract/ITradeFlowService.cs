@@ -14,10 +14,10 @@ namespace Business.Abstract
 
 
         //Async Methods
-        Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlow();
-        Task<IDataResult<TradeFlowEntity>> GetTradeFlowById(int id);
+        Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync();
+        Task<IDataResult<TradeFlowEntity>> GetTradeFlowByIdAsync(int id);
         Task<IResult> AddTradeFlowAsync(TradeFlowEntity tradeFlowEntity);
-        Task<IResult> UpdateTradeFlow(TradeFlowEntity tradeFlowEntity);
+        Task<IResult> UpdateTradeFlowAsync(TradeFlowEntity tradeFlowEntity);
 
         
     }
