@@ -77,6 +77,7 @@ namespace DevExpressUI
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
+            this.btnUnselect = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -108,6 +109,7 @@ namespace DevExpressUI
             this.gvTradeFlowPartial.GridControl = this.gridTradeFlowPartial;
             this.gvTradeFlowPartial.Name = "gvTradeFlowPartial";
             this.gvTradeFlowPartial.OptionsView.ShowGroupPanel = false;
+            this.gvTradeFlowPartial.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvTradeFlowPartial_RowStyle);
             this.gvTradeFlowPartial.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeFlowPartial_FocusedRowChanged);
             // 
             // lblResult
@@ -147,8 +149,9 @@ namespace DevExpressUI
             // 
             // groupControl1
             // 
-            this.groupControl1.Controls.Add(this.btnStart);
             this.groupControl1.Controls.Add(this.btnSelect);
+            this.groupControl1.Controls.Add(this.btnUnselect);
+            this.groupControl1.Controls.Add(this.btnStart);
             this.groupControl1.Controls.Add(this.lblResult);
             this.groupControl1.Controls.Add(this.btnNew);
             this.groupControl1.Controls.Add(this.btnDelete);
@@ -168,7 +171,7 @@ namespace DevExpressUI
             this.btnStart.Appearance.Options.UseFont = true;
             this.btnStart.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.ImageOptions.Image")));
             this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnStart.Location = new System.Drawing.Point(208, 24);
+            this.btnStart.Location = new System.Drawing.Point(203, 30);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(140, 43);
             this.btnStart.TabIndex = 5;
@@ -181,7 +184,7 @@ namespace DevExpressUI
             this.btnSelect.Appearance.Options.UseFont = true;
             this.btnSelect.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnSelect.ImageOptions.Image")));
             this.btnSelect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnSelect.Location = new System.Drawing.Point(51, 24);
+            this.btnSelect.Location = new System.Drawing.Point(57, 30);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(140, 43);
             this.btnSelect.TabIndex = 4;
@@ -458,7 +461,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -661,6 +664,21 @@ namespace DevExpressUI
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
             // 
+            // btnUnselect
+            // 
+            this.btnUnselect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUnselect.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnUnselect.Appearance.Options.UseFont = true;
+            this.btnUnselect.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
+            this.btnUnselect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnUnselect.Location = new System.Drawing.Point(57, 30);
+            this.btnUnselect.Name = "btnUnselect";
+            this.btnUnselect.Size = new System.Drawing.Size(140, 43);
+            this.btnUnselect.TabIndex = 6;
+            this.btnUnselect.Text = "Unselect";
+            this.btnUnselect.Visible = false;
+            this.btnUnselect.Click += new System.EventHandler(this.btnUnselect_Click);
+            // 
             // TradeMonitorUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -736,5 +754,6 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.LabelControl lblIsSelected;
         private DevExpress.XtraEditors.SimpleButton btnStart;
         private DevExpress.XtraEditors.SimpleButton btnSelect;
+        private DevExpress.XtraEditors.SimpleButton btnUnselect;
     }
 }

@@ -173,6 +173,17 @@ namespace DevExpressUI
                 lblIsSelected.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IsSelected"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IsSelected"]).ToString();
                 lblCreationDate.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CreationDate"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CreationDate"]).ToString();
                 lblModifiedDate.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ModifiedDate"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ModifiedDate"]).ToString();
+
+                if (gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IsSelected"]).ToString()=="True")
+                {
+                    btnSelect.Visible = false;
+                    btnUnselect.Visible = true;
+                }
+                else
+                {
+                    btnSelect.Visible = true;
+                    btnUnselect.Visible = false;
+                }
             }
             else
             {
@@ -193,20 +204,46 @@ namespace DevExpressUI
             }
             else
             {
-                var selectedTradeFlow = (await _tradeFlowService.GetTradeFlowByIdAsync(Convert.ToInt32(lblIdNo.Text))).Data;
-                if (selectedTradeFlow.IsSelected == false)
-                {
-                    selectedTradeFlow.IsSelected = true;
-                    await _tradeFlowService.UpdateTradeFlowAsync(selectedTradeFlow);
-                    lblResult.Text = lblIdNo.Text + " " + CommonMessages.Selected;
-                }
-                else if (selectedTradeFlow.IsSelected == true)
-                {
-                    lblResult.Text = lblIdNo.Text + " " + CommonMessages.AlreadySelected;
-                }
+                var result = await _tradeFlowService.SelectTradeFlowAsync(Convert.ToInt32(lblIdNo.Text));
+
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
             }
             LoadTradeFlowDetails();
 
+        }
+
+        private async void btnUnselect_Click(object sender, EventArgs e)
+        {
+            if (lblIdNo.Text == "..")
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            else
+            {
+                var result = await _tradeFlowService.UnSelectTradeFlowAsync(Convert.ToInt32(lblIdNo.Text));
+
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
+            }
+            LoadTradeFlowDetails();
+        }
+
+        private void gvTradeFlowPartial_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            bool isSelected = Convert.ToBoolean(gvTradeFlowPartial.GetRowCellValue(e.RowHandle, "IsSelected"));
+            bool inUse = Convert.ToBoolean(gvTradeFlowPartial.GetRowCellValue(e.RowHandle, "InUse"));
+            if (isSelected == true)
+            {
+                e.Appearance.BackColor = Color.Blue;
+                e.Appearance.ForeColor = Color.White;
+            }
+
+            if (inUse == true)
+            {
+                e.Appearance.BackColor = Color.Green;
+                e.Appearance.ForeColor = Color.White;
+            }
         }
     }
 }

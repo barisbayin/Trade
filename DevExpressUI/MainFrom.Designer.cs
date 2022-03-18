@@ -60,9 +60,9 @@ namespace DevExpressUI
             this.accordionControl1.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
             this.aceTradeMonitor,
             this.aceTradeParameters,
-            this.aceKlineParameters,
-            this.aceApiManagement,
             this.aceIndicatorParameters,
+            this.aceApiManagement,
+            this.aceKlineParameters,
             this.accLogs});
             this.accordionControl1.Location = new System.Drawing.Point(0, 20);
             this.accordionControl1.Name = "accordionControl1";

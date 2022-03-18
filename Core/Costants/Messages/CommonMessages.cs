@@ -25,5 +25,8 @@ namespace Core.Costants.Messages
         public static string AlreadyInUse="Can not delete, already in use!";
         public static string Selected ="Selected!";
         public static string AlreadySelected = "Already selected!";
+        public static string AlreadySelectedItemFound= "Already selected item found";
+        public static string ItemIsNotAlreadySelected= "Item is not already selected!";
+        public static string UnSelected="Unselected!";
     }
 }

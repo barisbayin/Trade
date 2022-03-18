@@ -18,7 +18,9 @@ namespace Business.Abstract
         Task<IDataResult<TradeFlowEntity>> GetTradeFlowByIdAsync(int id);
         Task<IResult> AddTradeFlowAsync(TradeFlowEntity tradeFlowEntity);
         Task<IResult> UpdateTradeFlowAsync(TradeFlowEntity tradeFlowEntity);
+        Task<IResult> SelectTradeFlowAsync(int id);
+        Task<IResult> UnSelectTradeFlowAsync(int id);
 
-        
+
     }
 }
