@@ -43,7 +43,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<IndicatorEntity>>(message: CommonMessages.Error);
             }
-            
+
         }
 
         public IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResult(string symbolPair, string interval, int indicatorParameterId)
@@ -154,55 +154,33 @@ namespace Business.Concrete
             return new SuccessDataResult<List<FuturesUsdtRenkoBrick>>(futuresUsdtRenkoBrickList);
         }
 
-        public IDataResult<List<FuturesUsdtRenkoBricksWithSuperTrend>> GetFuturesUsdtRenkoBricksSuperTrend(string symbolPair, string interval, int renkoBrickParameterId, int superTrendParameterId)
+        public IDataResult<List<FuturesUsdtRenkoBricksWithSuperTrend>> GetFuturesUsdtRenkoBricksSuperTrend(string symbolPair, string interval, int indicatorParameterId)
         {
             List<CurrencyKlineToCalculateIndicatorDto> currencyKlineToCalculateIndicatorDtoList = new List<CurrencyKlineToCalculateIndicatorDto>();
 
-            var renkoBrickParameters = _indicatorParameterService.GetIndicatorParameterEntityById(renkoBrickParameterId).Data;
+            var renkoSuperTrendParameters = _indicatorParameterService.GetIndicatorParameterEntityById(indicatorParameterId).Data;
 
-            Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", renkoBrickParameters.Multiplier, renkoBrickParameters.KlineEndType);
+            Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1},ST_Period: {2}, ST_Multiplier: {3} ", renkoSuperTrendParameters.Parameter1, renkoSuperTrendParameters.KlineEndType, renkoSuperTrendParameters.Period, renkoSuperTrendParameters.Multiplier.Value);
 
             var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 
-            IEnumerable<RenkoResult> renkoResults = Indicator.GetRenko(dataList, renkoBrickParameters.Multiplier.Value, (EndType)Enum.Parse(typeof(EndType), renkoBrickParameters.KlineEndType));
+            var renkoDataList = dataList.GetRenko(renkoSuperTrendParameters.Parameter1.Value,
+                (EndType)Enum.Parse(typeof(EndType), renkoSuperTrendParameters.KlineEndType));
 
-            foreach (var renkoBrick in renkoResults)
-            {
-                CurrencyKlineToCalculateIndicatorDto currencyKlineToCalculateIndicator = new CurrencyKlineToCalculateIndicatorDto();
-
-                currencyKlineToCalculateIndicator.Date = renkoBrick.Date;
-                currencyKlineToCalculateIndicator.Open = renkoBrick.Open;
-                currencyKlineToCalculateIndicator.High = renkoBrick.High;
-                currencyKlineToCalculateIndicator.Low = renkoBrick.Low;
-                currencyKlineToCalculateIndicator.Close = renkoBrick.Close;
-                currencyKlineToCalculateIndicator.Volume = renkoBrick.Volume;
+            IEnumerable<SuperTrendResult> renkoSuperTrendResults = dataList.GetRenko(renkoSuperTrendParameters.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), renkoSuperTrendParameters.KlineEndType)).ConvertToQuotes().GetSuperTrend(renkoSuperTrendParameters.Period, Convert.ToDouble(renkoSuperTrendParameters.Multiplier));
 
 
-                currencyKlineToCalculateIndicatorDtoList.Add(currencyKlineToCalculateIndicator);
-
-            }
-
-            currencyKlineToCalculateIndicatorDtoList.OrderBy(x => x.Date);
-
-
-            List<FuturesUsdtRenkoBricksWithSuperTrend> futuresUsdtRenkoBricksWithSuperTrends = new List<FuturesUsdtRenkoBricksWithSuperTrend>();
-
-            var superTrendParameters = _indicatorParameterService.GetIndicatorParameterEntityById(superTrendParameterId).Data;
-
-            Console.WriteLine("SuperTrend Parameters => ATR Period: {0}, Multiplier: {1}", superTrendParameters.Period, superTrendParameters.Multiplier);
-
-
-            IEnumerable<SuperTrendResult> superTrendResults = Indicator.GetSuperTrend(currencyKlineToCalculateIndicatorDtoList, superTrendParameters.Period, Convert.ToDouble(superTrendParameters.Multiplier));
-
+            List<FuturesUsdtRenkoBricksWithSuperTrend> futuresUsdtRenkoBricksWithSuperTrends =
+                new List<FuturesUsdtRenkoBricksWithSuperTrend>();
             int i = -1;
-            foreach (var data in currencyKlineToCalculateIndicatorDtoList)
+            foreach (var data in renkoDataList)
             {
 
                 FuturesUsdtRenkoBricksWithSuperTrend futuresUsdtRenkoBricksWithSuperTrend = new FuturesUsdtRenkoBricksWithSuperTrend();
 
-                if (i < superTrendParameters.Period)
+                if (i < renkoSuperTrendParameters.Period)
                 {
                     futuresUsdtRenkoBricksWithSuperTrend.SymbolPair = symbolPair;
                     futuresUsdtRenkoBricksWithSuperTrend.KlineInterval = interval;
@@ -227,7 +205,7 @@ namespace Business.Concrete
                     i++;
                 }
 
-                if (i >= superTrendParameters.Period)
+                if (i >= renkoSuperTrendParameters.Period)
                 {
                     futuresUsdtRenkoBricksWithSuperTrend.SymbolPair = symbolPair;
                     futuresUsdtRenkoBricksWithSuperTrend.KlineInterval = interval;
@@ -237,15 +215,15 @@ namespace Business.Concrete
                     futuresUsdtRenkoBricksWithSuperTrend.Low = data.Low;
                     futuresUsdtRenkoBricksWithSuperTrend.Close = data.Close;
                     futuresUsdtRenkoBricksWithSuperTrend.BaseVolume = data.Volume;
-                    if (superTrendResults.ToArray()[i].UpperBand == null)
+                    if (renkoSuperTrendResults.ToArray()[i].UpperBand == null)
                     {
                         futuresUsdtRenkoBricksWithSuperTrend.SuperTrendSide = "BUY";
-                        futuresUsdtRenkoBricksWithSuperTrend.SuperTrendValue = superTrendResults.ToArray()[i].LowerBand.Value;
+                        futuresUsdtRenkoBricksWithSuperTrend.SuperTrendValue = renkoSuperTrendResults.ToArray()[i].LowerBand.Value;
                     }
-                    if (superTrendResults.ToArray()[i].LowerBand == null)
+                    if (renkoSuperTrendResults.ToArray()[i].LowerBand == null)
                     {
                         futuresUsdtRenkoBricksWithSuperTrend.SuperTrendSide = "SELL";
-                        futuresUsdtRenkoBricksWithSuperTrend.SuperTrendValue = superTrendResults.ToArray()[i].UpperBand.Value;
+                        futuresUsdtRenkoBricksWithSuperTrend.SuperTrendValue = renkoSuperTrendResults.ToArray()[i].UpperBand.Value;
                     }
 
                     if (data.Open < data.Close)
@@ -264,7 +242,7 @@ namespace Business.Concrete
 
 
             }
-            Console.WriteLine("SuperTrend calculated and data added to list!");
+            Console.WriteLine("RenkoSuperTrend calculated and data added to list!");
 
             return new SuccessDataResult<List<FuturesUsdtRenkoBricksWithSuperTrend>>(futuresUsdtRenkoBricksWithSuperTrends);
         }

@@ -13,6 +13,7 @@ using Business.Tasks.Triggers;
 using Entity.Concrete.Entities;
 using RemoteData.Binance.WebSocket.Abstract;
 using RemoteData.Binance.WebSocket.Concrete;
+using System.Configuration;
 
 namespace TestConsole
 {
@@ -23,7 +24,7 @@ namespace TestConsole
 
             string startupPath = System.IO.Directory.GetCurrentDirectory();
 
-            Console.WriteLine(startupPath+"\\apps\\");
+            Console.WriteLine(startupPath + "\\apps\\");
 
 
             //IBinanceExchangeInformationService binanceExchangeInformationService =
@@ -112,21 +113,21 @@ namespace TestConsole
             //}
 
 
-            //IIndicatorService indicatorService = new IndicatorManager(
-            //    new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()),new EfIndicatorDal(),
-            //    new IndicatorParameterManager(new EfIndicatorParameterDal()));
+            IIndicatorService indicatorService = new IndicatorManager(
+                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
+                new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
-            //var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
+            var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
 
-            //foreach (var item in result5)
-            //{
-            //    Console.WriteLine(item.IndicatorName);
-            //}
+            foreach (var item in result5)
+            {
+                Console.WriteLine(item.IndicatorName);
+            }
 
             //var result = indicatorService.GetSuperTrendResultAsync("SOLUSDT", "FourHour", 1).Data;
             //foreach (var data in result)
             //{
-            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Close: {3}, SuperTrendValue: {4}, SuperTrendSide: {5}", data.SymbolPair,data.KlineInterval,data.OpenTime,data.Close,data.SuperTrendValue,data.SuperTrendSide);
+            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Close: {3}, SuperTrendValue: {4}, SuperTrendSide: {5}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Close, data.SuperTrendValue, data.SuperTrendSide);
             //}
 
 
@@ -139,14 +140,14 @@ namespace TestConsole
             //}
 
 
-            /*
-            var result3 = indicatorService.GetFuturesUsdtRenkoBricksSuperTrend("BTCUSDT", "FourHour", 3,2).Data;
+
+            var result3 = indicatorService.GetFuturesUsdtRenkoBricksSuperTrend("BTCUSDT", "FourHour", 17).Data;
             foreach (var data in result3)
             {
                 Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, STValue: {7}, STSide: {6}, BrickSide: {5}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open, data.Close, data.IsUp, data.SuperTrendSide, data.SuperTrendValue);
 
             }
-            */
+
 
             //SubscribeKlineDataTrigger subscribeKlineDataTrigger = new SubscribeKlineDataTrigger();
             //subscribeKlineDataTrigger.TriggerTheJob();

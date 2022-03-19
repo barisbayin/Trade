@@ -1,5 +1,6 @@
 ﻿using Entity.Concrete.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace DataAccess.Concrete
 {
@@ -8,8 +9,9 @@ namespace DataAccess.Concrete
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseSqlServer(
-                @"Server=(localdb)\MSSQLLocalDB; Database=Trade; User Id=tradeuser; Password=Trd2021**");
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB; Database=Trade; User Id=tradeuser; Password=Trd2021**");
+            optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            
         }
 
         public DbSet<BinanceFuturesUsdtKlineEntity> BinanceFuturesUsdtKlines { get; set; }

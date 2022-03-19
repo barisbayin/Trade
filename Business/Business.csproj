@@ -10,7 +10,7 @@
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="Binance.Net" Version="7.2.6" />
     <PackageReference Include="Quartz" Version="3.3.3" />
-    <PackageReference Include="Skender.Stock.Indicators" Version="1.21.0" />
+    <PackageReference Include="Skender.Stock.Indicators" Version="1.22.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Configuration;
 using BinanceWsManager = RemoteData.Binance.WebSocket.Concrete.BinanceWsManager;
 using IBinanceWsService = RemoteData.Binance.WebSocket.Abstract.IBinanceWsService;
 
@@ -72,7 +73,7 @@ namespace KlineUpdater
                 Console.ForegroundColor = ConsoleColor.White;
 
                 //Console.WriteLine("OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.Open, streamData.Result.High, streamData.Result.Low, streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume, streamData.Result.QuoteVolume);
-                Thread.Sleep(1500);
+                Thread.Sleep(500);
 
 
 

@@ -85,7 +85,6 @@ namespace DevExpressUI
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            //System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\KlineUpdater\bin\Debug\netcoreapp3.1\KlineUpdater.exe");
             LoadTradeParameters();
             LoadTradeFlowDetails();
             ClearAll();
@@ -244,6 +243,11 @@ namespace DevExpressUI
                 e.Appearance.BackColor = Color.Green;
                 e.Appearance.ForeColor = Color.White;
             }
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\KlineUpdater\bin\Debug\netcoreapp3.1\KlineUpdater.exe");
         }
     }
 }

@@ -36,8 +36,9 @@ namespace DevExpressUI
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            this.btnStart = new DevExpress.XtraEditors.SimpleButton();
             this.btnSelect = new DevExpress.XtraEditors.SimpleButton();
+            this.btnUnselect = new DevExpress.XtraEditors.SimpleButton();
+            this.btnStart = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.tabPaneTradeMonitor = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavTradeMonitor = new DevExpress.XtraBars.Navigation.TabNavigationPage();
@@ -77,7 +78,6 @@ namespace DevExpressUI
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            this.btnUnselect = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
@@ -164,19 +164,6 @@ namespace DevExpressUI
             this.groupControl1.TabIndex = 0;
             this.groupControl1.Text = "groupControl1";
             // 
-            // btnStart
-            // 
-            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnStart.Appearance.Options.UseFont = true;
-            this.btnStart.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.ImageOptions.Image")));
-            this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnStart.Location = new System.Drawing.Point(203, 30);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(140, 43);
-            this.btnStart.TabIndex = 5;
-            this.btnStart.Text = "Start Trade!";
-            // 
             // btnSelect
             // 
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -190,6 +177,35 @@ namespace DevExpressUI
             this.btnSelect.TabIndex = 4;
             this.btnSelect.Text = "Select";
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            // 
+            // btnUnselect
+            // 
+            this.btnUnselect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUnselect.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnUnselect.Appearance.Options.UseFont = true;
+            this.btnUnselect.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnUnselect.ImageOptions.Image")));
+            this.btnUnselect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnUnselect.Location = new System.Drawing.Point(57, 30);
+            this.btnUnselect.Name = "btnUnselect";
+            this.btnUnselect.Size = new System.Drawing.Size(140, 43);
+            this.btnUnselect.TabIndex = 6;
+            this.btnUnselect.Text = "Unselect";
+            this.btnUnselect.Visible = false;
+            this.btnUnselect.Click += new System.EventHandler(this.btnUnselect_Click);
+            // 
+            // btnStart
+            // 
+            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStart.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnStart.Appearance.Options.UseFont = true;
+            this.btnStart.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.ImageOptions.Image")));
+            this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnStart.Location = new System.Drawing.Point(203, 30);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(140, 43);
+            this.btnStart.TabIndex = 5;
+            this.btnStart.Text = "Start Trade!";
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnAdd
             // 
@@ -461,7 +477,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -663,21 +679,6 @@ namespace DevExpressUI
             this.lblIdLabel.TabIndex = 0;
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
-            // 
-            // btnUnselect
-            // 
-            this.btnUnselect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUnselect.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnUnselect.Appearance.Options.UseFont = true;
-            this.btnUnselect.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
-            this.btnUnselect.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnUnselect.Location = new System.Drawing.Point(57, 30);
-            this.btnUnselect.Name = "btnUnselect";
-            this.btnUnselect.Size = new System.Drawing.Size(140, 43);
-            this.btnUnselect.TabIndex = 6;
-            this.btnUnselect.Text = "Unselect";
-            this.btnUnselect.Visible = false;
-            this.btnUnselect.Click += new System.EventHandler(this.btnUnselect_Click);
             // 
             // TradeMonitorUC
             // 
