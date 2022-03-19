@@ -45,7 +45,7 @@ namespace Business.Concrete
 
                     await _binanceFuturesUsdtKlineDal.DeleteAsync(lastKline);
 
-                    Console.WriteLine("{0},-{1}, Last kline is deleted!", symbolPair, interval);
+                    Console.WriteLine("{0}-{1}, Last kline is deleted!", symbolPair, interval);
 
                     var lastOpenTime = (await GetFuturesUsdtKlineLastOpenTimeBySymbolPairAndIntervalAsync(symbolPair, interval)).Data;
 

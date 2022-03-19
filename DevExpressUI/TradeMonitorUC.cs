@@ -247,7 +247,7 @@ namespace DevExpressUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\KlineUpdater\bin\Debug\netcoreapp3.1\KlineUpdater.exe");
+            System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\AlgoTradeMaster\bin\Debug\netcoreapp3.1\AlgoTradeMasterRenko.exe");
         }
     }
 }
