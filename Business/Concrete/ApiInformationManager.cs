@@ -33,6 +33,26 @@ namespace Business.Concrete
             }
         }
 
+        public IDataResult<ApiInformationEntity> GetDecryptedApiInformationById(int id)
+        {
+            var apiInformation = _apiInformationDal.Get(x => x.Id == id);
+            try
+            {
+                var decryptedApiKey = AesEncryption.DecryptString(apiInformation.ApiKey);
+                var decryptedSecretKey = AesEncryption.DecryptString(apiInformation.SecretKey);
+                apiInformation.ApiKey = decryptedApiKey;
+                apiInformation.SecretKey = decryptedSecretKey;
+
+                return new SuccessDataResult<ApiInformationEntity>(apiInformation);
+            }
+            catch (Exception e)
+            {
+                return new ErrorDataResult<ApiInformationEntity>(e.Message);
+            }
+
+
+        }
+
         //Async Methods
         public async Task<IResult> AddApiInformationAsync(ApiInformationEntity apiInformationEntity)
         {

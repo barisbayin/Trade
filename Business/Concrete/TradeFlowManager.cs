@@ -19,6 +19,28 @@ namespace Business.Concrete
         {
             _tradeFlowDal = tradeFlowDal;
         }
+
+        public IDataResult<TradeFlowAllDto> GetSelectedTradeFlowAllDetail()
+        {
+            try
+            {
+                var tradeFlowAllDetail = _tradeFlowDal.GetSelectedTradeFlowAllDetail();
+
+                return new SuccessDataResult<TradeFlowAllDto>(tradeFlowAllDetail);
+            }
+            catch (Exception e)
+            {
+                return new ErrorDataResult<TradeFlowAllDto>(e.Message);
+            }
+
+        }
+
+        public IDataResult<TradeFlowEntity> GetSelectedTradeFlow()
+        {
+            var tradeFlow = _tradeFlowDal.GetAll(x => x.IsSelected == true).LastOrDefault();
+            return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
+        }
+
         public async Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync()
         {
             var tradeFlow = (await _tradeFlowDal.GetAllAsync(x => x.IsSelected == true)).LastOrDefault();
@@ -49,9 +71,9 @@ namespace Business.Concrete
         {
             var hasIsSelected = (await _tradeFlowDal.GetAllAsync(x => x.IsSelected == true)).Any();
             var tradeFlow = await _tradeFlowDal.GetAsync(x => x.Id == id);
-            if (hasIsSelected==true)
+            if (hasIsSelected == true)
             {
-                if (tradeFlow.IsSelected==true)
+                if (tradeFlow.IsSelected == true)
                 {
                     return new ErrorResult(CommonMessages.AlreadySelected);
                 }
@@ -71,7 +93,7 @@ namespace Business.Concrete
         public async Task<IResult> UnSelectTradeFlowAsync(int id)
         {
             var tradeFlow = await _tradeFlowDal.GetAsync(x => x.Id == id);
-            if (tradeFlow.IsSelected==false)
+            if (tradeFlow.IsSelected == false)
             {
                 return new ErrorResult(CommonMessages.ItemIsNotAlreadySelected);
             }
@@ -79,7 +101,7 @@ namespace Business.Concrete
             {
                 tradeFlow.IsSelected = false;
                 await UpdateTradeFlowAsync(tradeFlow);
-                return  new SuccessResult(CommonMessages.UnSelected);
+                return new SuccessResult(CommonMessages.UnSelected);
             }
         }
 

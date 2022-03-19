@@ -11,7 +11,8 @@ namespace Business.Abstract
     public interface ITradeFlowService
     {
         IDataResult<List<TradeFlowPartialDto>> GetTradeFlowPartialDetails();
-
+        IDataResult<TradeFlowAllDto> GetSelectedTradeFlowAllDetail();
+        IDataResult<TradeFlowEntity> GetSelectedTradeFlow();
 
         //Async Methods
         Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync();
@@ -20,6 +21,7 @@ namespace Business.Abstract
         Task<IResult> UpdateTradeFlowAsync(TradeFlowEntity tradeFlowEntity);
         Task<IResult> SelectTradeFlowAsync(int id);
         Task<IResult> UnSelectTradeFlowAsync(int id);
+        
 
 
     }

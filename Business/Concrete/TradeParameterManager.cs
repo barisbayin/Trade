@@ -25,6 +25,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<TradeParameterDto>>(result);
         }
 
+        public IDataResult<TradeParameterEntity> GetTradeParameterEntityById(int id)
+        {
+            var result = _tradeParameterDal.Get(x => x.Id == id);
+            return new SuccessDataResult<TradeParameterEntity>(result);
+        }
+
         public async Task<IDataResult<List<TradeParameterEntity>>> GetAllTradeParametersAsync()
         {
             var result = await _tradeParameterDal.GetAllAsync(x=>x.Removed==false);

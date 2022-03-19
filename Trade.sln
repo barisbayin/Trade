@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevExpressUI", "DevExpressU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlineUpdater", "KlineUpdater\KlineUpdater.csproj", "{F8FEC0A0-1EFC-4747-8500-5D9A1FE6B74C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoTradeMaster", "AlgoTradeMaster\AlgoTradeMaster.csproj", "{1964B609-70D2-45A9-8ABE-1C7234029489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgoTradeMasterRenko", "AlgoTradeMaster\AlgoTradeMasterRenko.csproj", "{1964B609-70D2-45A9-8ABE-1C7234029489}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

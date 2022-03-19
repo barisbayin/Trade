@@ -41,11 +41,11 @@ namespace Business.Concrete
 
                 if (result)
                 {
-                    var lastKline= (await _binanceFuturesUsdtKlineDal.GetAllAsync(x=>x.SymbolPair==symbolPair && x.KlineInterval==interval)).LastOrDefault();
+                    var lastKline = (await _binanceFuturesUsdtKlineDal.GetAllAsync(x => x.SymbolPair == symbolPair && x.KlineInterval == interval)).LastOrDefault();
 
                     await _binanceFuturesUsdtKlineDal.DeleteAsync(lastKline);
 
-                    Console.WriteLine("Last kline is deleted!");
+                    Console.WriteLine("{0},-{1}, Last kline is deleted!", symbolPair, interval);
 
                     var lastOpenTime = (await GetFuturesUsdtKlineLastOpenTimeBySymbolPairAndIntervalAsync(symbolPair, interval)).Data;
 
@@ -53,7 +53,7 @@ namespace Business.Concrete
                     int i = 0;
                     foreach (var kline in klineListFromApi)
                     {
-                        
+
                         try
                         {
                             await _binanceFuturesUsdtKlineDal.AddAsync(kline);
@@ -67,7 +67,7 @@ namespace Business.Concrete
 
                     }
 
-                    Console.WriteLine(klineListFromApi.Count() -i + " " + CommonMessages.FuturesUsdtKlinesAddedToDatabase);
+                    Console.WriteLine(klineListFromApi.Count() - i + " " + CommonMessages.FuturesUsdtKlinesAddedToDatabase);
                 }
                 if (!result)
                 {
@@ -172,7 +172,7 @@ namespace Business.Concrete
 
         public async Task<IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval)
         {
-            var result= await _binanceFuturesUsdtKlineDal.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval);
+            var result = await _binanceFuturesUsdtKlineDal.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval);
             return new SuccessDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>(result);
         }
 

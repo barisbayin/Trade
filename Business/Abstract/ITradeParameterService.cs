@@ -11,6 +11,7 @@ namespace Business.Abstract
     public interface ITradeParameterService
     {
         IDataResult<List<TradeParameterDto>> GetTradeParameterDetails();
+        IDataResult<TradeParameterEntity> GetTradeParameterEntityById(int id);
 
         //Async Methods
         Task<IDataResult<List<TradeParameterEntity>>> GetAllTradeParametersAsync();
