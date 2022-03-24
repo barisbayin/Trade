@@ -247,7 +247,16 @@ namespace DevExpressUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\AlgoTradeMaster\bin\Debug\netcoreapp3.1\AlgoTradeMasterRenko.exe");
+            var tradeFlow = _tradeFlowService.CheckTheTradeFlowIsSelected(Convert.ToInt32(lblIdNo.Text));
+            if (tradeFlow.Success)
+            {
+                System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\AlgoTradeMaster\bin\Debug\netcoreapp3.1\AlgoTradeMasterRenko.exe");
+            }
+            else
+            {
+                lblResult.Text = tradeFlow.Message;
+            }
+            
         }
     }
 }

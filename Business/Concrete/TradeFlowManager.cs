@@ -41,6 +41,19 @@ namespace Business.Concrete
             return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
         }
 
+        public IDataResult<TradeFlowEntity> CheckTheTradeFlowIsSelected(int id)
+        {
+            var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+            if (tradeFlow.IsSelected==true)
+            {
+                return new SuccessDataResult<TradeFlowEntity>(CommonMessages.Selected);
+            }
+            else
+            {
+                return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemIsNotAlreadySelected);
+            }
+        }
+
         public async Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync()
         {
             var tradeFlow = (await _tradeFlowDal.GetAllAsync(x => x.IsSelected == true)).LastOrDefault();

@@ -28,6 +28,7 @@ namespace Entity.Concrete.DTOs
         public decimal? Parameter4 { get; set; } = 0;
         public decimal? Parameter5 { get; set; } = 0;
         public bool InUse { get; set; } = false;
+        public bool IsFinished { get; set; } = false;
         public bool TradeStarted { get; set; }
         public DateTime? TradeStartTime { get; set; }
         public bool TradeEnded { get; set; }
