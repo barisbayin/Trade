@@ -42,7 +42,7 @@ namespace DevExpressUI
 
         private void TradeMonitorUC_Load(object sender, EventArgs e)
         {
-            LoadTradeFlowDetails();
+            LoadNotEndedTradeFlowDetails();
             LoadTradeParameters();
             ClearAll();
             lblResult.ForeColor = Color.DarkRed;
@@ -60,6 +60,30 @@ namespace DevExpressUI
         {
 
             var result = _tradeFlowService.GetTradeFlowPartialDetails();
+            gridTradeFlowPartial.DataSource = result.Data;
+        }
+        private void LoadEndedTradeFlowDetails()
+        {
+
+            var result = _tradeFlowService.GetEndedTradeFlowPartialDetails();
+            gridTradeFlowPartial.DataSource = result.Data;
+        }
+        private void LoadNotEndedTradeFlowDetails()
+        {
+
+            var result = _tradeFlowService.GetNotEndedTradeFlowPartialDetails();
+            gridTradeFlowPartial.DataSource = result.Data;
+        }
+
+        private void LoadNotInUseTradeFlowDetails()
+        {
+            var result = _tradeFlowService.GetNotInUseTradeFlowPartialDetails();
+            gridTradeFlowPartial.DataSource = result.Data;
+        }
+
+        private void LoadInUseTradeFlowDetails()
+        {
+            var result = _tradeFlowService.GetInUseTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
         }
 
@@ -150,7 +174,7 @@ namespace DevExpressUI
                 }
 
 
-                LoadTradeFlowDetails();
+                LoadNotEndedTradeFlowDetails();
             }
         }
 
@@ -175,16 +199,6 @@ namespace DevExpressUI
                 lblCreationDate.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CreationDate"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CreationDate"]).ToString();
                 lblModifiedDate.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ModifiedDate"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ModifiedDate"]).ToString();
 
-                if (gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IsSelected"]).ToString()=="True")
-                {
-                    btnSelect.Visible = false;
-                    btnUnselect.Visible = true;
-                }
-                else
-                {
-                    btnSelect.Visible = true;
-                    btnUnselect.Visible = false;
-                }
             }
             else
             {
@@ -197,38 +211,7 @@ namespace DevExpressUI
             ClearAll();
         }
 
-        private async void btnSelect_Click(object sender, EventArgs e)
-        {
-            if (lblIdNo.Text == "..")
-            {
-                lblResult.Text = CommonMessages.ChooseItem;
-            }
-            else
-            {
-                var result = await _tradeFlowService.SelectTradeFlowAsync(Convert.ToInt32(lblIdNo.Text));
 
-                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
-
-            }
-            LoadTradeFlowDetails();
-
-        }
-
-        private async void btnUnselect_Click(object sender, EventArgs e)
-        {
-            if (lblIdNo.Text == "..")
-            {
-                lblResult.Text = CommonMessages.ChooseItem;
-            }
-            else
-            {
-                var result = await _tradeFlowService.UnSelectTradeFlowAsync(Convert.ToInt32(lblIdNo.Text));
-
-                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
-
-            }
-            LoadTradeFlowDetails();
-        }
 
         private void gvTradeFlowPartial_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
         {
@@ -249,15 +232,23 @@ namespace DevExpressUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            var tradeFlow = _tradeFlowService.CheckTheTradeFlowIsSelected(Convert.ToInt32(lblIdNo.Text));
-            if (tradeFlow.Success)
+            if (lblIdNo.Text == "..")
             {
-                System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\AlgoTradeMaster\bin\Debug\netcoreapp3.1\AlgoTradeMasterRenko.exe");
+                lblResult.Text = CommonMessages.ChooseItem;
             }
             else
             {
-                lblResult.Text = tradeFlow.Message;
+                var tradeFlow = _tradeFlowService.CheckTheTradeFlowIsSelected(Convert.ToInt32(lblIdNo.Text));
+                if (tradeFlow.Success)
+                {
+                    System.Diagnostics.Process.Start(@"cmd.exe", @"/k c:\Users\Barış\source\repos\Trade\AlgoTradeMaster\bin\Debug\netcoreapp3.1\AlgoTradeMasterRenko.exe");
+                }
+                else
+                {
+                    lblResult.Text = tradeFlow.Message;
+                }
             }
+
             
         }
 
@@ -274,7 +265,7 @@ namespace DevExpressUI
                 lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
 
             }
-            LoadTradeFlowDetails();
+            LoadNotEndedTradeFlowDetails();
         }
 
         private async void barUnselect_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -290,7 +281,7 @@ namespace DevExpressUI
                 lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
 
             }
-            LoadTradeFlowDetails();
+            LoadNotEndedTradeFlowDetails();
         }
 
         private void barMarkAsFinished_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -306,7 +297,39 @@ namespace DevExpressUI
                 lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
 
             }
-            LoadTradeFlowDetails();
+            LoadNotEndedTradeFlowDetails();
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbxTradeFlowLoadFilter_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (cbxTradeFlowLoadFilter.Text=="All")
+            {
+                LoadTradeFlowDetails();
+            }
+
+            else if (cbxTradeFlowLoadFilter.Text == "Ended")
+            {
+                LoadEndedTradeFlowDetails();
+            }
+            else if (cbxTradeFlowLoadFilter.Text == "Not Ended")
+            {
+                LoadNotEndedTradeFlowDetails();
+            }
+            else if (cbxTradeFlowLoadFilter.Text == "In Use")
+            {
+                LoadInUseTradeFlowDetails();
+            }
+            else if (cbxTradeFlowLoadFilter.Text == "Not In Use")
+            {
+                LoadNotInUseTradeFlowDetails();
+            }
+        }
+
+
     }
 }

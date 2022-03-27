@@ -19,7 +19,7 @@ namespace Entity.Concrete.DTOs
         public bool AddPnlToMaxAmountLimit { get; set; } = false;
         public decimal? PercentageOfPnlToBeAdded { get; set; } = null;
         public bool InUse { get; set; } = false;
-        public bool IsFinished { get; set; } = false;
+        public bool IsEnded { get; set; } = false;
         public bool IsSelected { get; set; } = false;
         public DateTime CreationDate { get; set; }
         public DateTime? ModifiedDate { get; set; } = null;

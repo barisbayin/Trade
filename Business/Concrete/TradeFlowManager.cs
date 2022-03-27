@@ -70,10 +70,10 @@ namespace Business.Concrete
             }
         }
 
-        public IDataResult<TradeFlowEntity> CheckTheTradeFlowIsFinished(int id)
+        public IDataResult<TradeFlowEntity> CheckTheTradeFlowIsEnded(int id)
         {
             var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
-            if (tradeFlow.IsFinished == true)
+            if (tradeFlow.IsEnded == true)
             {
                 return new SuccessDataResult<TradeFlowEntity>(CommonMessages.Finished);
             }
@@ -83,9 +83,33 @@ namespace Business.Concrete
             }
         }
 
+        public IDataResult<List<TradeFlowPartialDto>> GetEndedTradeFlowPartialDetails()
+        {
+            var result = _tradeFlowDal.GetTradeFlowPartialDetails().Where(x => x.IsEnded == true).ToList();
+            return new SuccessDataResult<List<TradeFlowPartialDto>>(result);
+        }
+
+        public IDataResult<List<TradeFlowPartialDto>> GetNotEndedTradeFlowPartialDetails()
+        {
+            var result = _tradeFlowDal.GetTradeFlowPartialDetails().Where(x => x.IsEnded == false).ToList();
+            return new SuccessDataResult<List<TradeFlowPartialDto>>(result);
+        }
+
+        public IDataResult<List<TradeFlowPartialDto>> GetInUseTradeFlowPartialDetails()
+        {
+            var result = _tradeFlowDal.GetTradeFlowPartialDetails().Where(x => x.InUse == true && x.IsEnded==false).ToList();
+            return new SuccessDataResult<List<TradeFlowPartialDto>>(result);
+        }
+
+        public IDataResult<List<TradeFlowPartialDto>> GetNotInUseTradeFlowPartialDetails()
+        {
+            var result = _tradeFlowDal.GetTradeFlowPartialDetails().Where(x => x.InUse == false && x.IsEnded == false).ToList();
+            return new SuccessDataResult<List<TradeFlowPartialDto>>(result);
+        }
+
         public IResult MarkAsFinishedById(int id)
         {
-            var result = CheckTheTradeFlowIsFinished(id);
+            var result = CheckTheTradeFlowIsEnded(id);
             if (result.Success== true)
             {
                 return new ErrorResult(result.Message);
@@ -94,7 +118,7 @@ namespace Business.Concrete
             {
                 var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
                 tradeFlow.InUse = false;
-                tradeFlow.IsFinished = true;
+                tradeFlow.IsEnded = true;
                 UpdateTradeFlow(tradeFlow);
                 return new SuccessResult(CommonMessages.MarkedAsFinished);
             }
@@ -143,9 +167,16 @@ namespace Business.Concrete
             }
             else
             {
-                tradeFlow.IsSelected = true;
-                await UpdateTradeFlowAsync(tradeFlow);
-                return new SuccessResult(CommonMessages.Selected);
+                if (tradeFlow.IsEnded==true || tradeFlow.InUse==true)
+                {
+                    return new ErrorResult(CommonMessages.CanNotSelectEndedOrInUseItem);
+                }
+                else
+                {
+                    tradeFlow.IsSelected = true;
+                    await UpdateTradeFlowAsync(tradeFlow);
+                    return new SuccessResult(CommonMessages.Selected);
+                }
             }
         }
 

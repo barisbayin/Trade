@@ -22,7 +22,7 @@ namespace Entity.Concrete.Entities
         public DateTime? PositionClosingTime { get; set; } = null;
         public bool IsSelected { get; set; } = false;
         public bool InUse { get; set; } = false;
-        public bool IsFinished { get; set; } = false;
+        public bool IsEnded { get; set; } = false;
         public DateTime CreationDate { get; set; } 
         public DateTime? ModifiedDate { get; set; } = null;
         public bool? Removed { get; set; } = false;

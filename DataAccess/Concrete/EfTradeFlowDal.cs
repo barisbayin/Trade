@@ -44,7 +44,7 @@ namespace DataAccess.Concrete
                                  Parameter4 = ip.Parameter4,
                                  Parameter5 = ip.Parameter5,
                                  InUse = tf.InUse,
-                                 IsFinished = tf.IsFinished,
+                                 IsEnded = tf.IsEnded,
                                  TradeStarted = tf.TradeStarted,
                                  TradeStartTime = tf.TradeStartTime,
                                  TradeEnded = tf.TradeEnded,
@@ -146,7 +146,7 @@ namespace DataAccess.Concrete
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumAmountLimit,
                                  PercentageOfPnlToBeAdded = tp.PercentageOfPnlToBeAdded,
                                  InUse = tf.InUse,
-                                 IsFinished = tf.IsFinished,
+                                 IsEnded = tf.IsEnded,
                                  IsSelected = tf.IsSelected,
                                  CreationDate = tf.CreationDate,
                                  ModifiedDate = tf.ModifiedDate

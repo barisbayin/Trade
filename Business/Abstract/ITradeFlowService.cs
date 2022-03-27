@@ -15,7 +15,11 @@ namespace Business.Abstract
         IDataResult<TradeFlowEntity> GetSelectedTradeFlow();
         IResult UpdateTradeFlow(TradeFlowEntity tradeFlowEntity);
         IDataResult<TradeFlowEntity> CheckTheTradeFlowIsSelected(int id);
-        IDataResult<TradeFlowEntity> CheckTheTradeFlowIsFinished(int id);
+        IDataResult<TradeFlowEntity> CheckTheTradeFlowIsEnded(int id);
+        IDataResult<List<TradeFlowPartialDto>> GetEndedTradeFlowPartialDetails();
+        IDataResult<List<TradeFlowPartialDto>> GetNotEndedTradeFlowPartialDetails();
+        IDataResult<List<TradeFlowPartialDto>> GetInUseTradeFlowPartialDetails();
+        IDataResult<List<TradeFlowPartialDto>> GetNotInUseTradeFlowPartialDetails();
         IResult MarkAsFinishedById(int id);
 
         //Async Methods

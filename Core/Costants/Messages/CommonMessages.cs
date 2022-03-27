@@ -31,5 +31,6 @@ namespace Core.Costants.Messages
         public static string Finished = "Finished";
         public static string ItemDidNotFinished = "Item did not finished!";
         public static string MarkedAsFinished="Marked as finished!";
+        public static string CanNotSelectEndedOrInUseItem = "Can not select ended or in use item!";
     }
 }
