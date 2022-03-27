@@ -9,6 +9,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete.DTOs;
 using Entity.Concrete.Entities;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Business.Concrete
 {
@@ -41,6 +42,21 @@ namespace Business.Concrete
             return new SuccessDataResult<TradeFlowEntity>(tradeFlow);
         }
 
+        public IResult UpdateTradeFlow(TradeFlowEntity tradeFlowEntity)
+        {
+            try
+            {
+                tradeFlowEntity.ModifiedDate = DateTime.Now;
+                _tradeFlowDal.Update(tradeFlowEntity);
+                return new SuccessResult();
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
+
+        }
+
         public IDataResult<TradeFlowEntity> CheckTheTradeFlowIsSelected(int id)
         {
             var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
@@ -51,6 +67,36 @@ namespace Business.Concrete
             else
             {
                 return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemIsNotAlreadySelected);
+            }
+        }
+
+        public IDataResult<TradeFlowEntity> CheckTheTradeFlowIsFinished(int id)
+        {
+            var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+            if (tradeFlow.IsFinished == true)
+            {
+                return new SuccessDataResult<TradeFlowEntity>(CommonMessages.Finished);
+            }
+            else
+            {
+                return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemDidNotFinished);
+            }
+        }
+
+        public IResult MarkAsFinishedById(int id)
+        {
+            var result = CheckTheTradeFlowIsFinished(id);
+            if (result.Success== true)
+            {
+                return new ErrorResult(result.Message);
+            }
+            else
+            {
+                var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+                tradeFlow.InUse = false;
+                tradeFlow.IsFinished = true;
+                UpdateTradeFlow(tradeFlow);
+                return new SuccessResult(CommonMessages.MarkedAsFinished);
             }
         }
 

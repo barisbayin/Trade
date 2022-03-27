@@ -54,10 +54,12 @@ namespace AlgoTradeMasterRenko
 
             #endregion
 
-            var tradeFlow =  tradeFlowService.GetSelectedTradeFlow().Data;
+            var tradeFlow = tradeFlowService.GetSelectedTradeFlow().Data;
             var tradeParameter = tradeParameterService.GetTradeParameterEntityById(tradeFlow.TradeParameterId).Data;
             var indicatorParameter = indicatorParameterService.GetIndicatorParameterEntityById(tradeParameter.IndicatorParameterId);
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId);
+
+
 
 
             #region Preparing For Trade

@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Business.Abstract;
 using Business.DependencyResolvers;
 using Core.Costants.Messages;
+using DevExpress.Utils.Menu;
 using Entity.Concrete.Entities;
 
 namespace DevExpressUI
@@ -57,6 +58,7 @@ namespace DevExpressUI
 
         private void LoadTradeFlowDetails()
         {
+
             var result = _tradeFlowService.GetTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
         }
@@ -257,6 +259,54 @@ namespace DevExpressUI
                 lblResult.Text = tradeFlow.Message;
             }
             
+        }
+
+        private async void barMarkAsSelected_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (lblIdNo.Text == "..")
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            else
+            {
+                var result = await _tradeFlowService.SelectTradeFlowAsync(Convert.ToInt32(lblIdNo.Text));
+
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
+            }
+            LoadTradeFlowDetails();
+        }
+
+        private async void barUnselect_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (lblIdNo.Text == "..")
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            else
+            {
+                var result = await _tradeFlowService.UnSelectTradeFlowAsync(Convert.ToInt32(lblIdNo.Text));
+
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
+            }
+            LoadTradeFlowDetails();
+        }
+
+        private void barMarkAsFinished_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (lblIdNo.Text == "..")
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            else
+            {
+                var result = _tradeFlowService.MarkAsFinishedById(Convert.ToInt32(lblIdNo.Text));
+
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
+            }
+            LoadTradeFlowDetails();
         }
     }
 }
