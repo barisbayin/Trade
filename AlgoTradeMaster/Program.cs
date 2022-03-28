@@ -57,7 +57,7 @@ namespace AlgoTradeMasterRenko
             var tradeFlow = tradeFlowService.GetSelectedTradeFlow().Data;
             var tradeParameter = tradeParameterService.GetTradeParameterEntityById(tradeFlow.TradeParameterId).Data;
             var indicatorParameter = indicatorParameterService.GetIndicatorParameterEntityById(tradeParameter.IndicatorParameterId);
-            var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId);
+            var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
 
 
@@ -66,7 +66,7 @@ namespace AlgoTradeMasterRenko
 
             BinanceClient binanceClient = new BinanceClient(new BinanceClientOptions()
             {
-                ApiCredentials = new ApiCredentials("API-KEY", "API-SECRET")
+                ApiCredentials = new ApiCredentials(apiInformation.ApiKey, apiInformation.SecretKey)
             });
 
             tradeFlow.InUse = true;
@@ -104,10 +104,10 @@ namespace AlgoTradeMasterRenko
                         streamData.Result.Id = lastKline.Id;
                         Console.ForegroundColor = ConsoleColor.White;
 
-                        binanceFuturesUsdtKlineDal.UpdateAsync(streamData.Result);
+                        await binanceFuturesUsdtKlineDal.UpdateAsync(streamData.Result);
                         Console.WriteLine("Kline updated! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.Open, streamData.Result.High, streamData.Result.Low, streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume, streamData.Result.QuoteVolume);
 
-                        var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(tradeParameter.SymbolPair, tradeParameter.Interval,tradeParameter.IndicatorParameterId).Data;
+                        var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(tradeParameter.SymbolPair, tradeParameter.Interval, tradeParameter.IndicatorParameterId).Data;
 
                         var renkoResult = renkoResults.LastOrDefault();
 
@@ -160,7 +160,7 @@ namespace AlgoTradeMasterRenko
                         if (renkoResult.IsUp == true)
                         {
                             var lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
-                            var firstTrueRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastFalseRenkoBrick.Id + 1).FirstOrDefault();
+                            var firstTrueRenkoAfterTheLastFalse = (renkoResults.Where(x => x.Id == lastFalseRenkoBrick.Id + 1)).FirstOrDefault();
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastFalseRenkoBrick.Date, lastFalseRenkoBrick.Open, lastFalseRenkoBrick.Close, lastFalseRenkoBrick.IsUp);
                             Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstTrueRenkoAfterTheLastFalse.Date, firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Close, firstTrueRenkoAfterTheLastFalse.IsUp);
@@ -171,7 +171,7 @@ namespace AlgoTradeMasterRenko
                         else if (renkoResult.IsUp == false)
                         {
                             var lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
-                            var firstFalseRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1).FirstOrDefault();
+                            var firstFalseRenkoAfterTheLastFalse = (renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1)).FirstOrDefault();
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
 
                             Console.WriteLine("Last True Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastTrueRenkoBrick.Date, lastTrueRenkoBrick.Open, lastTrueRenkoBrick.Close, lastTrueRenkoBrick.IsUp);

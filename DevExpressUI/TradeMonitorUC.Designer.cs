@@ -92,6 +92,7 @@ namespace DevExpressUI
             this.cbxTradeFlowLoadFilter = new System.Windows.Forms.ComboBox();
             this.drpOptionsButton = new DevExpress.XtraEditors.DropDownButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
+            this.barMarkAsNotInUse = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.popTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -120,6 +121,7 @@ namespace DevExpressUI
             new DevExpress.XtraBars.LinkPersistInfo(this.barSelect),
             new DevExpress.XtraBars.LinkPersistInfo(this.barUnselect),
             new DevExpress.XtraBars.LinkPersistInfo(this.barMarkAsFinished),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barMarkAsNotInUse),
             new DevExpress.XtraBars.LinkPersistInfo(this.barDelete)});
             this.popTradeFlow.Manager = this.barTradeFlow;
             this.popTradeFlow.Name = "popTradeFlow";
@@ -170,8 +172,9 @@ namespace DevExpressUI
             this.barMarkAsFinished,
             this.barSelect,
             this.barDelete,
-            this.barUnselect});
-            this.barTradeFlow.MaxItemId = 4;
+            this.barUnselect,
+            this.barMarkAsNotInUse});
+            this.barTradeFlow.MaxItemId = 5;
             // 
             // barDockControlTop
             // 
@@ -495,7 +498,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -815,6 +818,15 @@ namespace DevExpressUI
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // barMarkAsNotInUse
+            // 
+            this.barMarkAsNotInUse.Caption = "Mark As Not In Use";
+            this.barMarkAsNotInUse.Id = 4;
+            this.barMarkAsNotInUse.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barMarkAsNotInUse.ImageOptions.Image")));
+            this.barMarkAsNotInUse.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barMarkAsNotInUse.ImageOptions.LargeImage")));
+            this.barMarkAsNotInUse.Name = "barMarkAsNotInUse";
+            this.barMarkAsNotInUse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMarkAsNotInUse_ItemClick);
+            // 
             // TradeMonitorUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -917,5 +929,6 @@ namespace DevExpressUI
         private DevExpress.XtraEditors.DropDownButton drpOptionsButton;
         private DevExpress.XtraEditors.SimpleButton btnRefresh;
         private System.Windows.Forms.ComboBox cbxTradeFlowLoadFilter;
+        private DevExpress.XtraBars.BarButtonItem barMarkAsNotInUse;
     }
 }

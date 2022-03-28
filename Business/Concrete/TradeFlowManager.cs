@@ -70,7 +70,7 @@ namespace Business.Concrete
             }
         }
 
-        public IDataResult<TradeFlowEntity> CheckTheTradeFlowIsEnded(int id)
+        public IDataResult<TradeFlowEntity> CheckIfTheTradeFlowIsEnded(int id)
         {
             var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
             if (tradeFlow.IsEnded == true)
@@ -80,6 +80,19 @@ namespace Business.Concrete
             else
             {
                 return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemDidNotFinished);
+            }
+        }
+
+        public IDataResult<TradeFlowEntity> CheckIfTheTradeFlowIsInUse(int id)
+        {
+            var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+            if (tradeFlow.InUse == true)
+            {
+                return new SuccessDataResult<TradeFlowEntity>(CommonMessages.AlreadyInUse);
+            }
+            else
+            {
+                return new ErrorDataResult<TradeFlowEntity>(CommonMessages.NotInUse);
             }
         }
 
@@ -109,7 +122,7 @@ namespace Business.Concrete
 
         public IResult MarkAsFinishedById(int id)
         {
-            var result = CheckTheTradeFlowIsEnded(id);
+            var result = CheckIfTheTradeFlowIsEnded(id);
             if (result.Success== true)
             {
                 return new ErrorResult(result.Message);
@@ -121,6 +134,23 @@ namespace Business.Concrete
                 tradeFlow.IsEnded = true;
                 UpdateTradeFlow(tradeFlow);
                 return new SuccessResult(CommonMessages.MarkedAsFinished);
+            }
+        }
+
+        public IResult MarkAsNotInUseById(int id)
+        {
+            var result = CheckIfTheTradeFlowIsInUse(id);
+            if (result.Success == true)
+            {
+                var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+                tradeFlow.InUse = false;
+                UpdateTradeFlow(tradeFlow);
+                return new SuccessResult(CommonMessages.MarkedAsNotInUse);
+                
+            }
+            else
+            {
+                return new ErrorResult(result.Message);
             }
         }
 

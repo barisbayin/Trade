@@ -111,7 +111,7 @@ namespace DevExpressUI
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            LoadTradeParameters();
+            LoadNotEndedTradeFlowDetails();
             LoadTradeFlowDetails();
             ClearAll();
 
@@ -330,6 +330,20 @@ namespace DevExpressUI
             }
         }
 
+        private void barMarkAsNotInUse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (lblIdNo.Text == "..")
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            else
+            {
+                var result = _tradeFlowService.MarkAsNotInUseById(Convert.ToInt32(lblIdNo.Text));
 
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
+            }
+            LoadNotEndedTradeFlowDetails();
+        }
     }
 }
