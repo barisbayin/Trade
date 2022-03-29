@@ -93,6 +93,7 @@ namespace AlgoTradeMasterRenko
                 //Console.WriteLine("OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.Open, streamData.Result.High, streamData.Result.Low, streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume, streamData.Result.QuoteVolume);
                 Thread.Sleep(1000);
 
+                
 
 
                 if (streamData.Result.Open != 0)
@@ -187,6 +188,7 @@ namespace AlgoTradeMasterRenko
 
                     }
                 }
+
             }
         }
     }
