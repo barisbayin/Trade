@@ -128,7 +128,7 @@ namespace Business.Concrete
 
             IEnumerable<RenkoResult> renkoResults = Indicator.GetRenko(dataList, indicatorParameter.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
 
-            int i = 0;
+            int i = 1;
             foreach (var renkoBrick in renkoResults)
             {
                 FuturesUsdtRenkoBrick futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
