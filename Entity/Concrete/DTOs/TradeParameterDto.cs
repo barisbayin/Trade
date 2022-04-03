@@ -14,6 +14,7 @@ namespace Entity.Concrete.DTOs
         public string Interval { get; set; }
         public string MarginType { get; set; }
         public int Leverage { get; set; }
+        public decimal StopLossPercent { get; set; }
         public decimal MaxAmountLimit { get; set; }
         public decimal MaxAmountPercentage { get; set; }
         public bool AddPnlToMaxAmountLimit { get; set; }

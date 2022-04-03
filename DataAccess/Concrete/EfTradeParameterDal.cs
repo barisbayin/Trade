@@ -31,6 +31,7 @@ namespace DataAccess.Concrete
                                  Interval = tp.Interval,
                                  MarginType = tp.MarginType,
                                  Leverage = tp.Leverage,
+                                 StopLossPercent = tp.StopLossPercent,
                                  MaxAmountLimit = tp.MaximumAmountLimit,
                                  MaxAmountPercentage = tp.MaxAmountPercentage,
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumAmountLimit,

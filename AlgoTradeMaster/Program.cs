@@ -95,35 +95,37 @@ namespace AlgoTradeMasterRenko
             #endregion
 
 
-            var streamData = binanceKlineWsService.GetCurrentFuturesUsdtKlineDataAsync(tradeParameter.SymbolPair, (KlineInterval)Enum.Parse(typeof(KlineInterval), tradeParameter.Interval));
+            var streamData = await binanceKlineWsService.GetCurrentFuturesUsdtKlineDataAsync(tradeParameter.SymbolPair, (KlineInterval)Enum.Parse(typeof(KlineInterval), tradeParameter.Interval));
+
+
+            FuturesUsdtRenkoBrick lastRenkoBrick = new FuturesUsdtRenkoBrick();
+            FuturesUsdtRenkoBrick lastFalseRenkoBrick = new FuturesUsdtRenkoBrick();
+            FuturesUsdtRenkoBrick lastTrueRenkoBrick = new FuturesUsdtRenkoBrick();
+            FuturesUsdtRenkoBrick firstTrueRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
+            FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
+
+
 
 
 
             while (tradeFlow.InUse == true)
             {
+                int trueRenkoCount = -1;
+                int falseRenkoCount = -1;
 
                 Console.ForegroundColor = ConsoleColor.White;
-
                 Thread.Sleep(1000);
 
 
-                if (streamData.Result.Open != 0)
+                if (streamData.Open != 0)
                 {
+                    Console.WriteLine("UTC Time: {0}", DateTime.UtcNow);
 
                     var lastKline = await UpdateOrInsertKlineData(binanceFuturesUsdtKlineDal, tradeParameter, streamData);
 
-
-                    if (tradeFlow.LookingForPosition == true)
-                    {
-
-                        Console.WriteLine("Trade Status: Looking For Position");
-                    }
-
-
-
                     var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(tradeParameter.SymbolPair, tradeParameter.Interval, tradeParameter.IndicatorParameterId).Data;
 
-                    var lastRenkoBrick = renkoResults.LastOrDefault();
+                    lastRenkoBrick = renkoResults.LastOrDefault();
                     //var lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
                     //var lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
 
@@ -133,49 +135,73 @@ namespace AlgoTradeMasterRenko
                     {
                         case true:
                             {
-                                var lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
-                                var firstTrueRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastFalseRenkoBrick.Id + 1).FirstOrDefault();
+                                lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
+                                firstTrueRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastFalseRenkoBrick.Id + 1).FirstOrDefault();
 
-                                var trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id);
+                                trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id);
 
-                                if (trueRenkoCount >= 0 || trueRenkoCount < 3)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Yellow;
-                                    Console.WriteLine("LONG POSITION AREA: {0} - {1}",firstTrueRenkoAfterTheLastFalse.Open,lastRenkoBrick.Close);
-                                }
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                Console.WriteLine("Current PRICE:       OpenTime: {0}, Open: {1}, Close: {2}", streamData.OpenTime, streamData.Open, streamData.Close);
+
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine("Current Brick:       OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
+
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastFalseRenkoBrick.Date, lastFalseRenkoBrick.Open, lastFalseRenkoBrick.Close, lastFalseRenkoBrick.IsUp);
-                                Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstTrueRenkoAfterTheLastFalse.Date, firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Close, firstTrueRenkoAfterTheLastFalse.IsUp);
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                Console.WriteLine("Last FALSE Brick:    OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastFalseRenkoBrick.Date, lastFalseRenkoBrick.Open, lastFalseRenkoBrick.Close, lastFalseRenkoBrick.IsUp);
 
-                                currentProfit = Math.Round(streamData.Result.Close / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                Console.WriteLine("First TRUE Brick:    OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstTrueRenkoAfterTheLastFalse.Date, firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Close, firstTrueRenkoAfterTheLastFalse.IsUp);
+
+                                Console.ForegroundColor = ConsoleColor.White;
+
+                                currentProfit = Math.Round(streamData.Close / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
                                 break;
                             }
                         case false:
                             {
-                                var lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
-                                var firstFalseRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1).FirstOrDefault();
+                                lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
+                                firstFalseRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1).FirstOrDefault();
 
-                                var falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstFalseRenkoAfterTheLastFalse.Id);
+                                falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstFalseRenkoAfterTheLastFalse.Id);
 
-                                if (falseRenkoCount >= 0 || falseRenkoCount < 3)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Yellow;
-                                    Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
-                                }
+
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                Console.WriteLine("Current PRICE:       OpenTime: {0}, Open: {1}, Close: {2}", streamData.OpenTime, streamData.Open, streamData.Close);
+
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine("Current Brick:       OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
 
                                 Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                Console.WriteLine("Last TRUE Brick:     OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastTrueRenkoBrick.Date, lastTrueRenkoBrick.Open, lastTrueRenkoBrick.Close, lastTrueRenkoBrick.IsUp);
 
-                                Console.WriteLine("Last True Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastTrueRenkoBrick.Date, lastTrueRenkoBrick.Open, lastTrueRenkoBrick.Close, lastTrueRenkoBrick.IsUp);
-                                Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastFalse.Date, firstFalseRenkoAfterTheLastFalse.Open, firstFalseRenkoAfterTheLastFalse.Close, firstFalseRenkoAfterTheLastFalse.IsUp);
                                 Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("First FALSE Brick:   OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastFalse.Date, firstFalseRenkoAfterTheLastFalse.Open, firstFalseRenkoAfterTheLastFalse.Close, firstFalseRenkoAfterTheLastFalse.IsUp);
 
-                                currentProfit = Math.Round(streamData.Result.Close / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                                Console.ForegroundColor = ConsoleColor.White;
+
+                                currentProfit = Math.Round(streamData.Close / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
                                 break;
                             }
                     }
 
-                    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", lastRenkoBrick.SymbolPair, lastRenkoBrick.KlineInterval, lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp);
+                    if (tradeFlow.LookingForPosition == true)
+                    {
+
+                        Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
+
+                        if (trueRenkoCount >= 0 && trueRenkoCount < 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("LONG POSITION AREA: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                        }
+                        if (falseRenkoCount >= 0 && falseRenkoCount < 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                        }
+                    }
+
+                    //Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", lastRenkoBrick.SymbolPair, lastRenkoBrick.KlineInterval, lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp);
 
                     Console.WriteLine("##########   Current Profit = %" + currentProfit + "   ##########");
                     Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------");
@@ -185,37 +211,39 @@ namespace AlgoTradeMasterRenko
         }
 
         private static async Task<BinanceFuturesUsdtKlineEntity> UpdateOrInsertKlineData(IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal,
-            TradeParameterEntity tradeParameter, Task<BinanceFuturesUsdtKlineEntity> streamData)
+            TradeParameterEntity tradeParameter, BinanceFuturesUsdtKlineEntity streamData)
         {
             var lastKline = (await binanceFuturesUsdtKlineDal.GetAllAsync(x =>
                 x.SymbolPair == tradeParameter.SymbolPair && x.KlineInterval == tradeParameter.Interval)).LastOrDefault();
 
-            if (lastKline.OpenTime.Date == streamData.Result.OpenTime.Date &&
-                lastKline.OpenTime.TimeOfDay == streamData.Result.OpenTime.TimeOfDay)
+            if (lastKline.OpenTime.Date == streamData.OpenTime.Date &&
+                lastKline.OpenTime.TimeOfDay == streamData.OpenTime.TimeOfDay)
             {
-                streamData.Result.Id = lastKline.Id;
+                streamData.Id = lastKline.Id;
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
 
-                await binanceFuturesUsdtKlineDal.UpdateAsync(streamData.Result);
+                await binanceFuturesUsdtKlineDal.UpdateAsync(streamData);
+
                 Console.WriteLine(
-                    "Kline updated! => Time:{7}, OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}",
-                    streamData.Result.Open, streamData.Result.High, streamData.Result.Low,
-                    streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume,
-                    streamData.Result.QuoteVolume, DateTime.UtcNow);
+                    "Kline updated! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}",
+                    streamData.Open, streamData.High, streamData.Low,
+                    streamData.Close, streamData.OpenTime, streamData.BaseVolume,
+                    streamData.QuoteVolume);
 
                 Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
-                streamData.Result.Id = null;
-                await binanceFuturesUsdtKlineDal.AddAsync(streamData.Result);
+                streamData.Id = null;
+                await binanceFuturesUsdtKlineDal.AddAsync(streamData);
+
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
                 Console.WriteLine(
-                    "Kline inserted! => Time:{7}, OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}",
-                    streamData.Result.Open, streamData.Result.High, streamData.Result.Low,
-                    streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume,
-                    streamData.Result.QuoteVolume, DateTime.UtcNow);
+                    "Kline inserted! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}",
+                    streamData.Open, streamData.High, streamData.Low,
+                    streamData.Close, streamData.OpenTime, streamData.BaseVolume,
+                    streamData.QuoteVolume);
 
                 Console.ForegroundColor = ConsoleColor.White;
             }

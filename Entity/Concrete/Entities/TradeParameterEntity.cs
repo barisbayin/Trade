@@ -14,6 +14,7 @@ namespace Entity.Concrete.Entities
         public string Interval { get; set; }
         public string MarginType { get; set; }
         public int Leverage { get; set; }
+        public decimal StopLossPercent { get; set; }
         public decimal MaximumAmountLimit { get; set; }
         public decimal MaxAmountPercentage{ get; set; }
         public  bool AddPnlToMaximumAmountLimit { get; set; }

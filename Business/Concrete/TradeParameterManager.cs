@@ -45,34 +45,52 @@ namespace Business.Concrete
 
         public async Task<IResult> AddTradeParameterAsync(TradeParameterEntity tradeParameterEntity)
         {
-            tradeParameterEntity.InUse = false;
-            tradeParameterEntity.CreationDate = DateTime.Now;
-            tradeParameterEntity.Removed = false;
 
-            try
+
+            if (tradeParameterEntity.StopLossPercent==0)
             {
-                await _tradeParameterDal.AddAsync(tradeParameterEntity);
-                return new SuccessResult(CommonMessages.Added);
+                return new ErrorResult(CommonMessages.StopLossPercentCanNotBeZero);
             }
-            catch (Exception e)
+            else
             {
-                return new ErrorResult(CommonMessages.Error);
+                tradeParameterEntity.InUse = false;
+                tradeParameterEntity.CreationDate = DateTime.Now;
+                tradeParameterEntity.Removed = false;
+                try
+                {
+                    await _tradeParameterDal.AddAsync(tradeParameterEntity);
+                    return new SuccessResult(CommonMessages.Added);
+                }
+                catch (Exception e)
+                {
+                    return new ErrorResult(CommonMessages.Error);
+                }
             }
+
+            
         }
 
         public async Task<IResult> UpdateTradeParameterAsync(TradeParameterEntity tradeParameterEntity)
         {
             tradeParameterEntity.ModifiedDate = DateTime.Now;
 
-            try
+            if (tradeParameterEntity.StopLossPercent == 0)
             {
-                await _tradeParameterDal.UpdateAsync(tradeParameterEntity);
-                return new SuccessResult(CommonMessages.Updated);
+                return new ErrorResult(CommonMessages.StopLossPercentCanNotBeZero);
             }
-            catch (Exception e)
+            else
             {
-                return new ErrorResult(CommonMessages.Error);
+                try
+                {
+                    await _tradeParameterDal.UpdateAsync(tradeParameterEntity);
+                    return new SuccessResult(CommonMessages.Updated);
+                }
+                catch (Exception e)
+                {
+                    return new ErrorResult(CommonMessages.Error);
+                }
             }
+
         }
 
 

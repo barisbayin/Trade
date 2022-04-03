@@ -34,5 +34,6 @@ namespace Core.Costants.Messages
         public static string CanNotSelectEndedOrInUseItem = "Can not select ended or in use item!";
         public static string NotInUse ="Not in use!";
         public static string MarkedAsNotInUse= "Marked as not in use!";
+        public static string StopLossPercentCanNotBeZero= "Stop Loss Percent can not be 0";
     }
 }
