@@ -111,6 +111,10 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             var result = await _binanceClient.Spot.Order.GetOpenOrdersAsync();
             return new SuccessDataResult<IEnumerable<BinanceOrder>>(result.Data);
         }
+        //public async Task<IResult> OpenFuturesUsdtOrder(string symbolPair,string orderSide)
+        //{
+        //    _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,)
+        //}
 
         #endregion
 
@@ -235,6 +239,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                 return new SuccessDataResult<List<string>>(spotEthSymbolPairs);
             }
         }
+
 
 
         #endregion

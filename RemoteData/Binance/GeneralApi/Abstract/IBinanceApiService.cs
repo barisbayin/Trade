@@ -26,5 +26,9 @@ namespace RemoteData.Binance.GeneralApi.Abstract
         Task<IDataResult<List<string>>> GetBinanceSpotUsdtSymbolPairsAsync();
         Task<IDataResult<List<string>>> GetBinanceSpotBtcSymbolPairsAsync();
         Task<IDataResult<List<string>>> GetBinanceSpotEthSymbolPairsAsync();
+
+        //Task<IResult> OpenFuturesUsdtOrder();
+
+
     }
 }

@@ -106,14 +106,13 @@ namespace AlgoTradeMasterRenko
 
 
 
-
-
             while (tradeFlow.InUse == true)
             {
                 int trueRenkoCount = -1;
                 int falseRenkoCount = -1;
 
                 Console.ForegroundColor = ConsoleColor.White;
+
                 Thread.Sleep(1000);
 
 
@@ -193,15 +192,36 @@ namespace AlgoTradeMasterRenko
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("LONG POSITION AREA: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            tradeFlow.LookingForPosition = false;
+                            tradeFlow.ReadyToOpenOrder = true;
                         }
                         if (falseRenkoCount >= 0 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            tradeFlow.LookingForPosition = false;
+                            tradeFlow.ReadyToOpenOrder = true;
                         }
                     }
 
-                    //Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", lastRenkoBrick.SymbolPair, lastRenkoBrick.KlineInterval, lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp);
+                    if (tradeFlow.ReadyToOpenOrder == true)
+                    {
+                        if (trueRenkoCount >= 0 && trueRenkoCount < 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            tradeFlow.LookingForPosition = false;
+                            tradeFlow.ReadyToOpenOrder = true;
+                        }
+                        if (falseRenkoCount >= 0 && falseRenkoCount < 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            tradeFlow.LookingForPosition = false;
+                            tradeFlow.ReadyToOpenOrder = true;
+                        }
+                    }
+
 
                     Console.WriteLine("##########   Current Profit = %" + currentProfit + "   ##########");
                     Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------");
