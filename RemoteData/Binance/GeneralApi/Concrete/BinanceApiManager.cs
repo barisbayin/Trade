@@ -7,7 +7,9 @@ using RemoteData.Binance.Helpers;
 using RemoteData.Constants;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Binance.Net.Objects.Futures.MarketData;
 using Binance.Net.Objects.Spot.MarketData;
@@ -111,10 +113,24 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             var result = await _binanceClient.Spot.Order.GetOpenOrdersAsync();
             return new SuccessDataResult<IEnumerable<BinanceOrder>>(result.Data);
         }
-        //public async Task<IResult> OpenFuturesUsdtOrder(string symbolPair,string orderSide)
-        //{
-        //    _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,)
-        //}
+        public async Task<IResult> PlaceFuturesUsdtLimitOrder(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price)
+        {
+
+            var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
+                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.Limit, quantity,
+                (PositionSide)Enum.Parse(typeof(PositionSide), positionSide), TimeInForce.GoodTillCancel, null, price,
+                null, null, null, null, null, null, null, null, null, CancellationToken.None);
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            {
+                return new SuccessResult("Limit Order Placed: " + symbolPair + " | " + orderSide + " | " + positionSide + " | " + price + " | " + quantity);
+            }
+            else
+            {
+                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhenPlacingOrder);
+            }
+
+        }
 
         #endregion
 

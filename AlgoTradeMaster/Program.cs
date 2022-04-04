@@ -68,7 +68,7 @@ namespace AlgoTradeMasterRenko
             var indicatorParameter = indicatorParameterService.GetIndicatorParameterEntityById(tradeParameter.IndicatorParameterId).Data;
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
-            Console.Title = "ALGOTRADEMASTER-RENKO: " + tradeParameter.SymbolPair.ToUpper() + " | " + tradeParameter.Interval.ToUpper() + " | " + indicatorParameter.KlineEndType.ToUpper() + " | " + indicatorParameter.Parameter1 + " | " + apiInformation.ApiTitle.ToUpper();
+            Console.Title = "ALGOTRADEMASTER-RENKO: " + tradeParameter.SymbolPair.ToUpper() + " | " + tradeParameter.Interval.ToUpper() + " | " + indicatorParameter.KlineEndType.ToUpper() + " | " + "BRICK SIZE: "+ indicatorParameter.Parameter1 + " | " + apiInformation.ApiTitle.ToUpper();
 
 
 
@@ -102,7 +102,7 @@ namespace AlgoTradeMasterRenko
             FuturesUsdtRenkoBrick lastFalseRenkoBrick = new FuturesUsdtRenkoBrick();
             FuturesUsdtRenkoBrick lastTrueRenkoBrick = new FuturesUsdtRenkoBrick();
             FuturesUsdtRenkoBrick firstTrueRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
-            FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
+            FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastTrue = new FuturesUsdtRenkoBrick();
 
 
 
@@ -137,7 +137,7 @@ namespace AlgoTradeMasterRenko
                                 lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
                                 firstTrueRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastFalseRenkoBrick.Id + 1).FirstOrDefault();
 
-                                trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id);
+                                trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id) + 1;
 
                                 Console.ForegroundColor = ConsoleColor.Cyan;
                                 Console.WriteLine("Current PRICE:       OpenTime: {0}, Open: {1}, Close: {2}", streamData.OpenTime, streamData.Open, streamData.Close);
@@ -159,9 +159,9 @@ namespace AlgoTradeMasterRenko
                         case false:
                             {
                                 lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
-                                firstFalseRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1).FirstOrDefault();
+                                firstFalseRenkoAfterTheLastTrue = renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1).FirstOrDefault();
 
-                                falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstFalseRenkoAfterTheLastFalse.Id);
+                                falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstFalseRenkoAfterTheLastTrue.Id) + 1;
 
 
                                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -174,11 +174,11 @@ namespace AlgoTradeMasterRenko
                                 Console.WriteLine("Last TRUE Brick:     OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastTrueRenkoBrick.Date, lastTrueRenkoBrick.Open, lastTrueRenkoBrick.Close, lastTrueRenkoBrick.IsUp);
 
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("First FALSE Brick:   OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastFalse.Date, firstFalseRenkoAfterTheLastFalse.Open, firstFalseRenkoAfterTheLastFalse.Close, firstFalseRenkoAfterTheLastFalse.IsUp);
+                                Console.WriteLine("First FALSE Brick:   OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastTrue.Date, firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Close, firstFalseRenkoAfterTheLastTrue.IsUp);
 
                                 Console.ForegroundColor = ConsoleColor.White;
 
-                                currentProfit = Math.Round(streamData.Close / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                                currentProfit = Math.Round(streamData.Close / firstFalseRenkoAfterTheLastTrue.Close * 100 - 100, 2);
                                 break;
                             }
                     }
@@ -188,7 +188,7 @@ namespace AlgoTradeMasterRenko
 
                         Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
 
-                        if (trueRenkoCount >= 0 && trueRenkoCount < 3)
+                        if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("LONG POSITION AREA: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
@@ -198,7 +198,7 @@ namespace AlgoTradeMasterRenko
                         if (falseRenkoCount >= 0 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, lastRenkoBrick.Close);
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.ReadyToOpenOrder = true;
                         }
@@ -206,17 +206,17 @@ namespace AlgoTradeMasterRenko
 
                     if (tradeFlow.ReadyToOpenOrder == true)
                     {
-                        if (trueRenkoCount >= 0 && trueRenkoCount < 3)
+                        if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.ReadyToOpenOrder = true;
                         }
-                        if (falseRenkoCount >= 0 && falseRenkoCount < 3)
+                        if (falseRenkoCount >= 1 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            Console.WriteLine("SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, lastRenkoBrick.Close);
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.ReadyToOpenOrder = true;
                         }

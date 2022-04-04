@@ -151,8 +151,6 @@ namespace Business.Concrete
             }
             var binanceFuturesUsdtKlineList = listOfListKlines.SelectMany(x => x).ToList();
 
-            //var binanceFuturesUsdtKlineListWithNoId = binanceFuturesUsdtKlineList.Select(c => { c.Id = null; return c; }).ToList();
-
             return new SuccessDataResult<List<BinanceFuturesUsdtKlineEntity>>(binanceFuturesUsdtKlineList);
         }
 

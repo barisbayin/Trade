@@ -12,7 +12,7 @@ namespace RemoteData.Constants
         public static string StreamDataError = "An error occurred while retrieving stream data!";
         public static string NullOrZeroData = "There is no data!";
         public static string DataAddedToDatabase = "FuturesUsdt klines added to database!";
-        public static string NoKlineData = "There is no kilne data!";
-        
+        public static string NoKlineData = "There is no kline data!";
+        public static string AnErrorOccurredWhenPlacingOrder="An error occurred when placing order!";
     }
 }
