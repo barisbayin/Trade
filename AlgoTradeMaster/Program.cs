@@ -15,6 +15,7 @@ using Binance.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using DataAccess.Abstract;
 using Entity.Concrete.Entities;
+using RemoteData.Binance.GeneralApi.Abstract;
 using RemoteData.Binance.GeneralApi.Concrete;
 using BinanceWsManager = RemoteData.Binance.WebSocket.Concrete.BinanceWsManager;
 using IBinanceWsService = RemoteData.Binance.WebSocket.Abstract.IBinanceWsService;
@@ -49,6 +50,8 @@ namespace AlgoTradeMasterRenko
             IBinanceWsService binanceKlineWsService = new BinanceWsManager(new BinanceSocketClient());
             IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal = new EfBinanceFuturesUsdtKlineDal();
 
+
+
             IIndicatorService indicatorService = new IndicatorManager(
                 new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
                 new IndicatorParameterManager(new EfIndicatorParameterDal()));
@@ -68,16 +71,16 @@ namespace AlgoTradeMasterRenko
             var indicatorParameter = indicatorParameterService.GetIndicatorParameterEntityById(tradeParameter.IndicatorParameterId).Data;
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
+            IBinanceApiService binanceApiService = new BinanceApiManager(new BinanceClient(), apiInformation.ApiKey, apiInformation.SecretKey);
+
+
+
             Console.Title = "ALGOTRADEMASTER-RENKO: " + tradeParameter.SymbolPair.ToUpper() + " | " + tradeParameter.Interval.ToUpper() + " | " + indicatorParameter.KlineEndType.ToUpper() + " | " + "BRICK SIZE: " + indicatorParameter.Parameter1 + " | " + apiInformation.ApiTitle.ToUpper();
 
 
 
             #region Preparing For Trade
 
-            BinanceClient binanceClient = new BinanceClient(new BinanceClientOptions()
-            {
-                ApiCredentials = new ApiCredentials(apiInformation.ApiKey, apiInformation.SecretKey)
-            });
 
 
 
@@ -104,7 +107,7 @@ namespace AlgoTradeMasterRenko
             FuturesUsdtRenkoBrick firstTrueRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
             FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastTrue = new FuturesUsdtRenkoBrick();
 
-            int iteration = 0;
+            long iteration = 0;
 
             while (tradeFlow.InUse == true)
             {
@@ -144,7 +147,7 @@ namespace AlgoTradeMasterRenko
                                 Console.WriteLine("============================================================================================================================================================");
 
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN BRICK:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In Brick Number: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
+                                Console.WriteLine("Current PRICE/IN BRICK:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
 
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, trueRenkoCount);
@@ -174,7 +177,7 @@ namespace AlgoTradeMasterRenko
                                 Console.WriteLine("============================================================================================================================================================");
 
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN BRICK:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In Brick Number: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
+                                Console.WriteLine("Current PRICE/IN BRICK:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
 
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, falseRenkoCount);
@@ -202,45 +205,97 @@ namespace AlgoTradeMasterRenko
                         if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("LONG POSITION AREA: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            Console.WriteLine("LONG POSITION AREA: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * 2);
+
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.ReadyToOpenOrder = true;
                         }
                         if (falseRenkoCount >= 0 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, lastRenkoBrick.Close);
+                            Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 * 2);
+
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.ReadyToOpenOrder = true;
                         }
                     }
 
-                    if (tradeFlow.ReadyToOpenOrder == true)
+                    if (tradeFlow.ReadyToOpenOrder == true && tradeFlow.PlacingOrders == false)
                     {
                         if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, lastRenkoBrick.Close);
+                            Console.WriteLine("LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * 2);
+
                             tradeFlow.LookingForPosition = false;
-                            tradeFlow.ReadyToOpenOrder = true;
+                            tradeFlow.PlacingOrders = true;
                         }
                         if (falseRenkoCount >= 1 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, lastRenkoBrick.Close);
+                            Console.WriteLine("SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 * 2);
+
                             tradeFlow.LookingForPosition = false;
-                            tradeFlow.ReadyToOpenOrder = true;
+                            tradeFlow.PlacingOrders = true;
+                        }
+                    }
+
+                    if (tradeFlow.PlacingOrders == true)
+                    {
+                        decimal price1 = 0M;
+                        decimal price2 = 0M;
+
+                        decimal quantity1 = 0M;
+                        decimal quantity2 = 0M;
+
+                        if (lastRenkoBrick.IsUp == true)
+                        {
+                            price1 = Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 / 2);
+                            price2 = Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 + indicatorParameter.Parameter1 / 2);
+
+                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price1);
+                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price2);
+
+                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Buy",
+                                quantity1, "Long", price1);
+                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Buy",
+                                quantity2, "Long", price2);
+
+                            if (order1.Result.Success && order2.Result.Success)
+                            {
+                                tradeFlow.PlacingOrders = false;
+                            }
+                        }
+
+
+                        if (lastRenkoBrick.IsUp == false)
+                        {
+                            price1 = Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 / 2);
+                            price2 = Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 - indicatorParameter.Parameter1 / 2);
+
+                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price1);
+                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price2);
+
+                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Sell",
+                                quantity1, "Short", price1);
+                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Sell",
+                                quantity2, "Short", price2);
+
+                            if (order1.Result.Success && order2.Result.Success)
+                            {
+                                tradeFlow.PlacingOrders = false;
+                            }
                         }
                     }
 
 
                     Console.WriteLine("##########   Current Profit = %" + currentProfit + "   ##########");
                     iteration++;
-                    Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}",iteration);
+                    Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
 
                 }
 
-                
+
             }
         }
 

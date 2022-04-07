@@ -51,6 +51,8 @@
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTradeParamaters = new DevExpress.XtraEditors.GroupControl();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.tbxStopLossPercent = new DevExpress.XtraEditors.TextEdit();
+            this.lblStopLossPercentLabel = new DevExpress.XtraEditors.LabelControl();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.tbxTradeParameterTitle = new DevExpress.XtraEditors.TextEdit();
             this.lblTradeParameterTitleLabel = new DevExpress.XtraEditors.LabelControl();
@@ -72,8 +74,6 @@
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblStopLossPercentLabel = new DevExpress.XtraEditors.LabelControl();
-            this.tbxStopLossPercent = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountLimit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountPercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).BeginInit();
@@ -90,9 +90,9 @@
             this.gcTradeParamaters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).BeginInit();
             this.tpEntries.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // lblModifiedDate
@@ -395,6 +395,25 @@
             this.tpEntries.Size = new System.Drawing.Size(400, 693);
             this.tpEntries.TabIndex = 2;
             // 
+            // tbxStopLossPercent
+            // 
+            this.tpEntries.SetColumn(this.tbxStopLossPercent, 2);
+            this.tbxStopLossPercent.Location = new System.Drawing.Point(178, 287);
+            this.tbxStopLossPercent.Name = "tbxStopLossPercent";
+            this.tpEntries.SetRow(this.tbxStopLossPercent, 9);
+            this.tbxStopLossPercent.Size = new System.Drawing.Size(209, 24);
+            this.tbxStopLossPercent.TabIndex = 48;
+            // 
+            // lblStopLossPercentLabel
+            // 
+            this.tpEntries.SetColumn(this.lblStopLossPercentLabel, 1);
+            this.lblStopLossPercentLabel.Location = new System.Drawing.Point(19, 290);
+            this.lblStopLossPercentLabel.Name = "lblStopLossPercentLabel";
+            this.tpEntries.SetRow(this.lblStopLossPercentLabel, 9);
+            this.lblStopLossPercentLabel.Size = new System.Drawing.Size(122, 18);
+            this.lblStopLossPercentLabel.TabIndex = 47;
+            this.lblStopLossPercentLabel.Text = "Stop Loss Percent:";
+            // 
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -642,25 +661,6 @@
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
             // 
-            // lblStopLossPercentLabel
-            // 
-            this.tpEntries.SetColumn(this.lblStopLossPercentLabel, 1);
-            this.lblStopLossPercentLabel.Location = new System.Drawing.Point(19, 290);
-            this.lblStopLossPercentLabel.Name = "lblStopLossPercentLabel";
-            this.tpEntries.SetRow(this.lblStopLossPercentLabel, 9);
-            this.lblStopLossPercentLabel.Size = new System.Drawing.Size(122, 18);
-            this.lblStopLossPercentLabel.TabIndex = 47;
-            this.lblStopLossPercentLabel.Text = "Stop Loss Percent:";
-            // 
-            // tbxStopLossPercent
-            // 
-            this.tpEntries.SetColumn(this.tbxStopLossPercent, 2);
-            this.tbxStopLossPercent.Location = new System.Drawing.Point(178, 287);
-            this.tbxStopLossPercent.Name = "tbxStopLossPercent";
-            this.tpEntries.SetRow(this.tbxStopLossPercent, 9);
-            this.tbxStopLossPercent.Size = new System.Drawing.Size(209, 24);
-            this.tbxStopLossPercent.TabIndex = 48;
-            // 
             // TradeParametersUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -687,9 +687,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).EndInit();
             this.tpEntries.ResumeLayout(false);
             this.tpEntries.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

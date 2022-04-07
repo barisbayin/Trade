@@ -47,6 +47,18 @@ namespace RemoteData.Binance.WebSocket.Concrete
             return binanceFuturesUsdtKlineEntity;
         }
 
+        public async Task<BinanceFuturesUsdtKlineEntity> GetCurrentUserDataUpdatesAsync(string symbol, KlineInterval interval)
+        {
+            BinanceFuturesUsdtKlineEntity binanceFuturesUsdtKlineEntity = new BinanceFuturesUsdtKlineEntity();
 
+            //var streamKlineData = await _binanceSocketClient.FuturesUsdt.SubscribeToUserDataUpdatesAsync(symbol, interval, data =>
+            //{
+
+
+            //});
+
+
+            return binanceFuturesUsdtKlineEntity;
+        }
     }
 }

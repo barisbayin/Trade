@@ -13,6 +13,7 @@ namespace Entity.Concrete.Entities
         public DateTime? TradeEndTime { get; set; } = null;
         public bool LookingForPosition { get; set; } = false;
         public bool ReadyToOpenOrder { get; set; } = false;
+        public bool PlacingOrders { get; set; } = false;
         public bool OrdersStartedToFill { get; set; } = false;
         public bool AllOrdersFilled { get; set; } = false;
         public bool PositionOpened { get; set; } = false;
@@ -23,7 +24,7 @@ namespace Entity.Concrete.Entities
         public bool IsSelected { get; set; } = false;
         public bool InUse { get; set; } = false;
         public bool IsEnded { get; set; } = false;
-        public DateTime CreationDate { get; set; } 
+        public DateTime CreationDate { get; set; }
         public DateTime? ModifiedDate { get; set; } = null;
         public bool? Removed { get; set; } = false;
         public DateTime? RemovedDate { get; set; } = null;

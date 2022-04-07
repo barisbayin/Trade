@@ -127,9 +127,23 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             }
             else
             {
-                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhenPlacingOrder);
+                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhilePlacingOrder);
             }
 
+        }
+
+        public async Task<IResult> SetLeverageForFuturesUsdtSymbolPair(string symbolPair, int leverage)
+        {
+            var result = await _binanceClient.FuturesUsdt.ChangeInitialLeverageAsync(symbolPair, leverage);
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            {
+                return new SuccessResult(RemoteDataMessages.LeverageSet + ": " + symbolPair + " Leverage: " + leverage);
+            }
+            else
+            {
+                return new SuccessResult(RemoteDataMessages.AnErrorOccurredWhileSettingLeverage);
+            }
         }
 
         #endregion
