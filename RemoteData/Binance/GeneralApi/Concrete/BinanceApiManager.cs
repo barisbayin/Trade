@@ -132,7 +132,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         }
 
-        public async Task<IResult> SetLeverageForFuturesUsdtSymbolPair(string symbolPair, int leverage)
+        public async Task<IResult> SetLeverageForFuturesUsdtSymbolPairAsync(string symbolPair, int leverage)
         {
             var result = await _binanceClient.FuturesUsdt.ChangeInitialLeverageAsync(symbolPair, leverage);
 
@@ -207,20 +207,18 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             {
                 return new ErrorDataResult<List<string>>(RemoteDataMessages.ConnectionFailed);
             }
-            else
-            {
-                var spotUsdtSymbolPairs = new List<string>();
 
-                foreach (var symbol in binanceSpotUsdtSymbolInformationList.Data.Symbols)
+            var spotUsdtSymbolPairs = new List<string>();
+
+            foreach (var symbol in binanceSpotUsdtSymbolInformationList.Data.Symbols)
+            {
+                if (symbol.QuoteAsset == "USDT")
                 {
-                    if (symbol.QuoteAsset == "USDT")
-                    {
-                        spotUsdtSymbolPairs.Add(symbol.Name);
-                    }
+                    spotUsdtSymbolPairs.Add(symbol.Name);
                 }
-                spotUsdtSymbolPairs.Sort();
-                return new SuccessDataResult<List<string>>(spotUsdtSymbolPairs);
             }
+            spotUsdtSymbolPairs.Sort();
+            return new SuccessDataResult<List<string>>(spotUsdtSymbolPairs);
         }
         public async Task<IDataResult<List<string>>> GetBinanceSpotBtcSymbolPairsAsync()
         {

@@ -28,7 +28,7 @@ namespace RemoteData.Binance.GeneralApi.Abstract
         Task<IDataResult<List<string>>> GetBinanceSpotEthSymbolPairsAsync();
 
         Task<IResult> PlaceFuturesUsdtLimitOrder(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price);
-        Task<IResult> SetLeverageForFuturesUsdtSymbolPair(string symbolPair, int leverage);
+        Task<IResult> SetLeverageForFuturesUsdtSymbolPairAsync(string symbolPair, int leverage);
 
     }
 }
