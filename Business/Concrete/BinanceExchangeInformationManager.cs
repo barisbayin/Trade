@@ -2,6 +2,7 @@
 using RemoteData.Binance.GeneralApi.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DataAccess.Abstract;
 using System.Threading.Tasks;
@@ -33,8 +34,16 @@ namespace Business.Concrete
             return new SuccessDataResult<List<BinanceFuturesUsdtSymbolEntity>>(result);
         }
 
-        public async Task<IResult> AddFuturesUsdtSymbolsAsync()
+        public async Task<IResult> AddFuturesUsdtSymbolInformationAsync()
         {
+            var lastBinanceFuturesUsdtSymbolEntity = _binanceFuturesUsdtSymbolDal.GetAllAsync().Result.LastOrDefault();
+
+            if (lastBinanceFuturesUsdtSymbolEntity.CreationDate.Date == DateTime.Now.Date)
+            {
+                Console.WriteLine(CommonMessages.InformationAreAlreadyUpToDate);
+                return new SuccessResult(CommonMessages.InformationAreAlreadyUpToDate);
+            }
+
             _binanceFuturesUsdtSymbolDal.DeleteAllOrByFilter();
 
             Console.WriteLine("FuturesUsdt symbol information deleted!");
@@ -72,17 +81,20 @@ namespace Business.Concrete
                 binanceFuturesUsdtSymbolEntity.MarketLotSizeFilterStepSize = futuresUsdtSymbol.MarketLotSizeFilter.StepSize;
                 binanceFuturesUsdtSymbolEntity.MaxNumberOrders = futuresUsdtSymbol.MaxOrdersFilter.MaxNumberOrders;
                 binanceFuturesUsdtSymbolEntity.MaxNumberAlgorithmicOrders = futuresUsdtSymbol.MaxAlgoOrdersFilter.MaxNumberAlgorithmicOrders;
-                binanceFuturesUsdtSymbolEntity.PercentPriceFilterMultiplierUp= futuresUsdtSymbol.PricePercentFilter.MultiplierUp;
+                binanceFuturesUsdtSymbolEntity.PercentPriceFilterMultiplierUp = futuresUsdtSymbol.PricePercentFilter.MultiplierUp;
                 binanceFuturesUsdtSymbolEntity.PercentPriceFilterMultiplierDown = futuresUsdtSymbol.PricePercentFilter.MultiplierDown;
                 binanceFuturesUsdtSymbolEntity.PercentPriceFilterMultiplierDecimal = futuresUsdtSymbol.PricePercentFilter.MultiplierDecimal;
                 binanceFuturesUsdtSymbolEntity.MinNotional = futuresUsdtSymbol.MinNotionalFilter.MinNotional;
+                binanceFuturesUsdtSymbolEntity.CreationDate = DateTime.Now;
 
                 await _binanceFuturesUsdtSymbolDal.AddAsync(binanceFuturesUsdtSymbolEntity);
 
-                Console.WriteLine(binanceFuturesUsdtSymbolEntity.Pair+ "Added to database!");
+
 
 
             }
+            Console.WriteLine((await GetAllFuturesUsdtSymbolInformationAsync()).Data.Count+ "Futures Usdt Information " + " " + CommonMessages.Added);
+
             return new SuccessResult(CommonMessages.FuturesUsdtSymbolInformationsAddedToDatabase);
 
         }
@@ -91,6 +103,20 @@ namespace Business.Concrete
         {
             var result = await _binanceFuturesUsdtSymbolDal.GetAllAsync();
             return new SuccessDataResult<List<BinanceFuturesUsdtSymbolEntity>>(result);
+        }
+
+        public async Task<IDataResult<BinanceFuturesUsdtSymbolEntity>> GetFuturesUsdtSymbolInformationBySymbolPairAsync(string symbolPair)
+        {
+            try
+            {
+                var result = await _binanceFuturesUsdtSymbolDal.GetAsync(x => x.Name == symbolPair);
+                return new SuccessDataResult<BinanceFuturesUsdtSymbolEntity>(result);
+            }
+            catch (Exception e)
+            {
+                return new ErrorDataResult<BinanceFuturesUsdtSymbolEntity>(e.Message);
+            }
+
         }
     }
 }

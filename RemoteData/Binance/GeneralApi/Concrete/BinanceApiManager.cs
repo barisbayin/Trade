@@ -127,7 +127,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             }
             else
             {
-                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhilePlacingOrder);
+                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
             }
 
         }

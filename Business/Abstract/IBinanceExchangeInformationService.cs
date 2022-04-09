@@ -11,7 +11,8 @@ namespace Business.Abstract
     {
         IDataResult<List<BinanceFuturesUsdtSymbolEntity>> GetAllFuturesUsdtSymbolInformation();
         //Async Methods
-        Task<IResult> AddFuturesUsdtSymbolsAsync();
+        Task<IResult> AddFuturesUsdtSymbolInformationAsync();
         Task<IDataResult<List<BinanceFuturesUsdtSymbolEntity>>> GetAllFuturesUsdtSymbolInformationAsync();
+        Task<IDataResult<BinanceFuturesUsdtSymbolEntity>> GetFuturesUsdtSymbolInformationBySymbolPairAsync(string symbolPair);
     }
 }

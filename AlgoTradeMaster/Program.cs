@@ -42,15 +42,18 @@ namespace AlgoTradeMasterRenko
             #region Instances
 
             ITradeFlowService tradeFlowService = new TradeFlowManager(new EfTradeFlowDal());
+
             ITradeParameterService tradeParameterService = new TradeParameterManager(new EfTradeParameterDal());
+
             IIndicatorParameterService indicatorParameterService = new IndicatorParameterManager(new EfIndicatorParameterDal());
+
             IApiInformationService apiInformationService = new ApiInformationManager(new EfApiInformationDal());
+
             IBinanceKlineService binanceKlineService = new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal(), new BinanceApiManager(new BinanceClient()));
 
             IBinanceWsService binanceKlineWsService = new BinanceWsManager(new BinanceSocketClient());
+
             IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal = new EfBinanceFuturesUsdtKlineDal();
-
-
 
             IIndicatorService indicatorService = new IndicatorManager(
                 new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
@@ -58,7 +61,9 @@ namespace AlgoTradeMasterRenko
 
             #endregion
 
-            var tradeFlow = tradeFlowService.GetSelectedTradeFlow().Data;
+            #region Objects1
+
+            var tradeFlow = (await tradeFlowService.GetSelectedTradeFlowAsync()).Data;
 
             if (tradeFlow == null)
             {
@@ -67,13 +72,36 @@ namespace AlgoTradeMasterRenko
 
             }
 
-            var tradeParameter = tradeParameterService.GetTradeParameterEntityById(tradeFlow.TradeParameterId).Data;
-            var indicatorParameter = indicatorParameterService.GetIndicatorParameterEntityById(tradeParameter.IndicatorParameterId).Data;
+            var tradeParameter = (await tradeParameterService.GetTradeParameterEntityByIdAsync(tradeFlow.TradeParameterId)).Data;
+
+            var indicatorParameter = (await indicatorParameterService.GetIndicatorParameterEntityByIdAsync(tradeParameter.IndicatorParameterId)).Data;
+
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
+
+
+
+
+            #endregion
+
+            #region Object Related Instances
+
 
             IBinanceApiService binanceApiService = new BinanceApiManager(new BinanceClient(), apiInformation.ApiKey, apiInformation.SecretKey);
 
+            IBinanceExchangeInformationService binanceExchangeInformationService = new BinanceExchangeInformationManager(new EfBinanceFuturesUsdtSymbolDal(), binanceApiService);
 
+            #endregion
+
+            #region Objects2
+
+            var symbolPairInformation = (await
+                binanceExchangeInformationService.GetFuturesUsdtSymbolInformationBySymbolPairAsync(tradeParameter
+                    .SymbolPair)).Data;
+
+            #endregion
+
+
+            #region Controls & Settings
 
             Console.Title = "ALGOTRADEMASTER-RENKO: " + tradeParameter.SymbolPair.ToUpper() + " | " + tradeParameter.Interval.ToUpper() + " | " + indicatorParameter.KlineEndType.ToUpper() + " | " + "BRICK SIZE: " + indicatorParameter.Parameter1 + " | " + apiInformation.ApiTitle.ToUpper();
 
@@ -81,10 +109,16 @@ namespace AlgoTradeMasterRenko
 
             Console.WriteLine(leverageSet.Message);
 
+
+            #endregion
+
+
+
+
+
             #region Preparing For Trade
 
-
-
+            await binanceExchangeInformationService.AddFuturesUsdtSymbolInformationAsync();
 
             await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
 
@@ -232,6 +266,11 @@ namespace AlgoTradeMasterRenko
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.PlacingOrders = true;
                         }
+                        else
+                        {
+                            tradeFlow.LookingForPosition = true;
+                            tradeFlow.ReadyToOpenOrder = false;
+                        }
                         if (falseRenkoCount >= 1 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -240,6 +279,12 @@ namespace AlgoTradeMasterRenko
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.PlacingOrders = true;
                         }
+                        else
+                        {
+                            tradeFlow.LookingForPosition = true;
+                            tradeFlow.ReadyToOpenOrder = false;
+                        }
+
                     }
 
                     if (tradeFlow.PlacingOrders == true)
@@ -252,40 +297,54 @@ namespace AlgoTradeMasterRenko
 
                         if (lastRenkoBrick.IsUp == true)
                         {
-                            price1 = Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 / 2);
-                            price2 = Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 + indicatorParameter.Parameter1 / 2);
+                            price1 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
+                            price2 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
 
-                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price1);
-                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price2);
+                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision);
+                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision);
 
                             var order1 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Buy",
                                 quantity1, "Long", price1);
                             var order2 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Buy",
                                 quantity2, "Long", price2);
 
+                            Console.WriteLine("Order 1: " + order1.Result.Message);
+                            Console.WriteLine("Order 2: " + order2.Result.Message);
+
                             if (order1.Result.Success && order2.Result.Success)
                             {
                                 tradeFlow.PlacingOrders = false;
+                            }
+                            else
+                            {
+                                tradeFlow.LookingForPosition = true;
                             }
                         }
 
 
                         if (lastRenkoBrick.IsUp == false)
                         {
-                            price1 = Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 / 2);
-                            price2 = Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 - indicatorParameter.Parameter1 / 2);
+                            price1 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
+                            price2 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
 
-                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price1);
-                            quantity1 = Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage / 2 / price2);
+                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
+                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
 
                             var order1 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Sell",
                                 quantity1, "Short", price1);
                             var order2 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Sell",
                                 quantity2, "Short", price2);
 
+                            Console.WriteLine("Order 1: " + order1.Result.Message);
+                            Console.WriteLine("Order 2: " + order2.Result.Message);
+
                             if (order1.Result.Success && order2.Result.Success)
                             {
                                 tradeFlow.PlacingOrders = false;
+                            }
+                            else
+                            {
+                                tradeFlow.LookingForPosition = true;
                             }
                         }
                     }

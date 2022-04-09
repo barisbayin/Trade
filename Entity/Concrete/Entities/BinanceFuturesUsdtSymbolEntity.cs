@@ -45,5 +45,6 @@ namespace Entity.Concrete.Entities
         public int PercentPriceFilterMultiplierDecimal { get; set; }
 
         public decimal MinNotional { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

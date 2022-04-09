@@ -173,28 +173,31 @@ namespace TestConsole
             apiInformationService.AddApiInformation(apiInformationEntity);
             */
 
+
+            //IBinanceApiService binanceAccountInformationApiService =
+            //    new BinanceApiManager(new BinanceClient(), "mJelRp3XwTEB2j5I5nEOmIn14hkb9wxkUGMY972U0i9alycBodgMDXnZq7EeDZvN", "nAd6XuJ4cvXtTNbiwKKRRrKc9FZ48lbEy5SbQBTtpa367DbZsBUHi7PHBXeCK85J");
+
+
+            //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
+
+            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrder("SOLUSDT", "Buy", 1.2M, "Long", 100M);
             
-            IBinanceApiService binanceAccountInformationApiService =
-                new BinanceApiManager(new BinanceClient(), "mJelRp3XwTEB2j5I5nEOmIn14hkb9wxkUGMY972U0i9alycBodgMDXnZq7EeDZvN", "nAd6XuJ4cvXtTNbiwKKRRrKc9FZ48lbEy5SbQBTtpa367DbZsBUHi7PHBXeCK85J");
 
+            //result7.Wait();
 
-            var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("ETHUSDT", 3).Result;
-
-            var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrder("ETHUSDT","Buy", 0.0009M, "Long",2900.05M );
-
-            result7.Wait();
+            //Console.WriteLine(result7.Result.Message);
 
             //BinanceClient binanceClient = new BinanceClient();
             //binanceClient.SetApiCredentials("xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy", "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM");
 
             //var xxx = binanceClient.FuturesUsdt.ChangeInitialLeverageAsync("BTCUSDT", 3).Result;
-            
-            //var result3= binanceClient.Spot.Order.PlaceOrderAsync("BTCUSDT", OrderSide.Buy, OrderType.Limit,0.0017M,null,null,29000,TimeInForce.GoodTillCancel,null);
+
+            //var result3 = binanceClient.Spot.Order.PlaceOrderAsync("BTCUSDT", OrderSide.Buy, OrderType.Limit, 0.0017M, null, null, 29000, TimeInForce.GoodTillCancel, null);
 
             //result3.Wait();
 
-            Console.WriteLine(result7.Result.Success);
-            
+            //Console.WriteLine(result3.Result.Success);
+
             /*
             var result2 =  binanceClient.Spot.Order.CancelAllOpenOrdersAsync("BTCUSDT");
             result2.Wait();
@@ -202,6 +205,7 @@ namespace TestConsole
             Console.WriteLine(result2.Result.ResponseStatusCode);
             Console.WriteLine(result2.Result.Success);
             Console.WriteLine(result2.Result.OriginalData);
+            
             
 
 
@@ -212,6 +216,9 @@ namespace TestConsole
             }
 
             */
+
+            var sayi= Math.Round(1.2568336994M, 4, MidpointRounding.ToZero);
+            Console.WriteLine(sayi);
             Console.ReadLine();
         }
     }

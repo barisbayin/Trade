@@ -35,5 +35,6 @@ namespace Core.Costants.Messages
         public static string NotInUse ="Not in use!";
         public static string MarkedAsNotInUse= "Marked as not in use!";
         public static string StopLossPercentCanNotBeZero= "Stop Loss Percent can not be 0";
+        public static string InformationAreAlreadyUpToDate = "Information is already up to date!";
     }
 }

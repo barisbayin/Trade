@@ -206,7 +206,7 @@ namespace DevExpressUI
             var result = _binanceExchangeInformationService.GetAllFuturesUsdtSymbolInformation();
             cbxSymbolPair.DataSource = result.Data;
             cbxSymbolPair.ValueMember = "Id";
-            cbxSymbolPair.DisplayMember = "Pair";
+            cbxSymbolPair.DisplayMember = "Name";
         }
 
         private void ClearAll()
