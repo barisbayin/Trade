@@ -233,7 +233,7 @@ namespace AlgoTradeMasterRenko
                             }
                     }
 
-                    if (tradeFlow.LookingForPosition == true && tradeFlow.ReadyToOpenOrder == false)
+                    if (tradeFlow.LookingForPosition == true && tradeFlow.ReadyToOpenOrder == false && tradeFlow.FollowUpOfOpenPosition == false)
                     {
 
                         Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
@@ -256,8 +256,10 @@ namespace AlgoTradeMasterRenko
                         }
                     }
 
-                    if (tradeFlow.ReadyToOpenOrder == true && tradeFlow.PlacingOrders == false)
+                    if (tradeFlow.ReadyToOpenOrder == true && tradeFlow.PlacingOrders == false && tradeFlow.FollowUpOfOpenPosition == false)
                     {
+                        Console.WriteLine("Trade Status: READY TO OPEN ORDER!");
+
                         if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -271,6 +273,7 @@ namespace AlgoTradeMasterRenko
                             tradeFlow.LookingForPosition = true;
                             tradeFlow.ReadyToOpenOrder = false;
                         }
+
                         if (falseRenkoCount >= 1 && falseRenkoCount < 3)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -287,15 +290,17 @@ namespace AlgoTradeMasterRenko
 
                     }
 
-                    if (tradeFlow.PlacingOrders == true)
+                    if (tradeFlow.PlacingOrders && tradeFlow.FollowUpOfOpenPosition == false)
                     {
+                        Console.WriteLine("Trade Status: PLACING ORDERS!");
+
                         decimal price1 = 0M;
                         decimal price2 = 0M;
 
                         decimal quantity1 = 0M;
                         decimal quantity2 = 0M;
 
-                        if (lastRenkoBrick.IsUp == true)
+                        if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
                             price1 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
                             price2 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
@@ -314,15 +319,26 @@ namespace AlgoTradeMasterRenko
                             if (order1.Result.Success && order2.Result.Success)
                             {
                                 tradeFlow.PlacingOrders = false;
+                                tradeFlow.FollowUpOfOpenPosition = true;
                             }
                             else
                             {
                                 tradeFlow.LookingForPosition = true;
+                                tradeFlow.ReadyToOpenOrder = false;
+                                tradeFlow.FollowUpOfOpenPosition = false;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Order placement conditions have changed. Looking for position phase is started again.");
+                            tradeFlow.LookingForPosition = true;
+                            tradeFlow.ReadyToOpenOrder = false;
+                            tradeFlow.FollowUpOfOpenPosition = false;
                         }
 
 
-                        if (lastRenkoBrick.IsUp == false)
+
+                        if (falseRenkoCount >= 1 && falseRenkoCount < 3)
                         {
                             price1 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
                             price2 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
@@ -345,7 +361,16 @@ namespace AlgoTradeMasterRenko
                             else
                             {
                                 tradeFlow.LookingForPosition = true;
+                                tradeFlow.ReadyToOpenOrder = false;
+                                tradeFlow.FollowUpOfOpenPosition = false;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Order placement conditions have changed. Looking for position phase is started again.");
+                            tradeFlow.LookingForPosition = true;
+                            tradeFlow.ReadyToOpenOrder = false;
+                            tradeFlow.FollowUpOfOpenPosition = false;
                         }
                     }
 
