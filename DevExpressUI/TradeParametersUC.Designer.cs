@@ -32,8 +32,8 @@
             this.lblModifiedDate = new DevExpress.XtraEditors.LabelControl();
             this.lblModifiedDateLabel = new DevExpress.XtraEditors.LabelControl();
             this.cbxIndicatorParameter = new System.Windows.Forms.ComboBox();
-            this.tbxMaxAmountLimit = new DevExpress.XtraEditors.TextEdit();
-            this.tbxMaxAmountPercentage = new DevExpress.XtraEditors.TextEdit();
+            this.tbxMaxBalanceLimit = new DevExpress.XtraEditors.TextEdit();
+            this.tbxMaxABalancePercentage = new DevExpress.XtraEditors.TextEdit();
             this.tbxPercentageOfPnlToBeAdded = new DevExpress.XtraEditors.TextEdit();
             this.lblInUse = new DevExpress.XtraEditors.LabelControl();
             this.lblCreationDateLabel = new DevExpress.XtraEditors.LabelControl();
@@ -64,18 +64,18 @@
             this.cbxApiToUse = new System.Windows.Forms.ComboBox();
             this.lblPercentageOfPnlToBeAddedLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblAddPnlToMaxAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblMaxAmountPercentageLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblMaxBalancePercentageLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblLeverageLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblMarginTypeLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblSymbolPairLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblMaximumAmountLimitLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblMaximumBalanceLimitLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
             this.lblIntervalLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountLimit.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountPercentage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxBalanceLimit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxABalancePercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
@@ -119,29 +119,29 @@
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorParameter, 2);
             this.cbxIndicatorParameter.FormattingEnabled = true;
-            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 107);
+            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 108);
             this.cbxIndicatorParameter.Name = "cbxIndicatorParameter";
             this.tpEntries.SetRow(this.cbxIndicatorParameter, 3);
             this.cbxIndicatorParameter.Size = new System.Drawing.Size(209, 26);
             this.cbxIndicatorParameter.TabIndex = 35;
             // 
-            // tbxMaxAmountLimit
+            // tbxMaxBalanceLimit
             // 
-            this.tpEntries.SetColumn(this.tbxMaxAmountLimit, 2);
-            this.tbxMaxAmountLimit.Location = new System.Drawing.Point(178, 317);
-            this.tbxMaxAmountLimit.Name = "tbxMaxAmountLimit";
-            this.tpEntries.SetRow(this.tbxMaxAmountLimit, 10);
-            this.tbxMaxAmountLimit.Size = new System.Drawing.Size(209, 24);
-            this.tbxMaxAmountLimit.TabIndex = 33;
+            this.tpEntries.SetColumn(this.tbxMaxBalanceLimit, 2);
+            this.tbxMaxBalanceLimit.Location = new System.Drawing.Point(178, 317);
+            this.tbxMaxBalanceLimit.Name = "tbxMaxBalanceLimit";
+            this.tpEntries.SetRow(this.tbxMaxBalanceLimit, 10);
+            this.tbxMaxBalanceLimit.Size = new System.Drawing.Size(209, 24);
+            this.tbxMaxBalanceLimit.TabIndex = 33;
             // 
-            // tbxMaxAmountPercentage
+            // tbxMaxABalancePercentage
             // 
-            this.tpEntries.SetColumn(this.tbxMaxAmountPercentage, 2);
-            this.tbxMaxAmountPercentage.Location = new System.Drawing.Point(178, 347);
-            this.tbxMaxAmountPercentage.Name = "tbxMaxAmountPercentage";
-            this.tpEntries.SetRow(this.tbxMaxAmountPercentage, 11);
-            this.tbxMaxAmountPercentage.Size = new System.Drawing.Size(209, 24);
-            this.tbxMaxAmountPercentage.TabIndex = 32;
+            this.tpEntries.SetColumn(this.tbxMaxABalancePercentage, 2);
+            this.tbxMaxABalancePercentage.Location = new System.Drawing.Point(178, 347);
+            this.tbxMaxABalancePercentage.Name = "tbxMaxABalancePercentage";
+            this.tpEntries.SetRow(this.tbxMaxABalancePercentage, 11);
+            this.tbxMaxABalancePercentage.Size = new System.Drawing.Size(209, 24);
+            this.tbxMaxABalancePercentage.TabIndex = 32;
             // 
             // tbxPercentageOfPnlToBeAdded
             // 
@@ -351,8 +351,8 @@
             this.tpEntries.Controls.Add(this.lblModifiedDate);
             this.tpEntries.Controls.Add(this.lblModifiedDateLabel);
             this.tpEntries.Controls.Add(this.cbxIndicatorParameter);
-            this.tpEntries.Controls.Add(this.tbxMaxAmountLimit);
-            this.tpEntries.Controls.Add(this.tbxMaxAmountPercentage);
+            this.tpEntries.Controls.Add(this.tbxMaxBalanceLimit);
+            this.tpEntries.Controls.Add(this.tbxMaxABalancePercentage);
             this.tpEntries.Controls.Add(this.tbxPercentageOfPnlToBeAdded);
             this.tpEntries.Controls.Add(this.lblInUse);
             this.tpEntries.Controls.Add(this.lblCreationDate);
@@ -360,11 +360,11 @@
             this.tpEntries.Controls.Add(this.lblInUseLabel);
             this.tpEntries.Controls.Add(this.lblPercentageOfPnlToBeAddedLabel);
             this.tpEntries.Controls.Add(this.lblAddPnlToMaxAmountLimitLabel);
-            this.tpEntries.Controls.Add(this.lblMaxAmountPercentageLabel);
+            this.tpEntries.Controls.Add(this.lblMaxBalancePercentageLabel);
             this.tpEntries.Controls.Add(this.lblLeverageLabel);
             this.tpEntries.Controls.Add(this.lblMarginTypeLabel);
             this.tpEntries.Controls.Add(this.lblSymbolPairLabel);
-            this.tpEntries.Controls.Add(this.lblMaximumAmountLimitLabel);
+            this.tpEntries.Controls.Add(this.lblMaximumBalanceLimitLabel);
             this.tpEntries.Controls.Add(this.lblIdNo);
             this.tpEntries.Controls.Add(this.lblIntervalLabel);
             this.tpEntries.Controls.Add(this.lblApiToUseLabel);
@@ -475,7 +475,7 @@
             "8",
             "9",
             "10"});
-            this.cbxLeverage.Location = new System.Drawing.Point(178, 258);
+            this.cbxLeverage.Location = new System.Drawing.Point(178, 257);
             this.cbxLeverage.Name = "cbxLeverage";
             this.tpEntries.SetRow(this.cbxLeverage, 8);
             this.cbxLeverage.Size = new System.Drawing.Size(209, 26);
@@ -488,7 +488,7 @@
             this.cbxMarginType.Items.AddRange(new object[] {
             "Isolated",
             "Cross"});
-            this.cbxMarginType.Location = new System.Drawing.Point(178, 228);
+            this.cbxMarginType.Location = new System.Drawing.Point(178, 227);
             this.cbxMarginType.Name = "cbxMarginType";
             this.tpEntries.SetRow(this.cbxMarginType, 7);
             this.cbxMarginType.Size = new System.Drawing.Size(209, 26);
@@ -498,7 +498,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxSymbolPair, 2);
             this.cbxSymbolPair.FormattingEnabled = true;
-            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 168);
+            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 167);
             this.cbxSymbolPair.Name = "cbxSymbolPair";
             this.tpEntries.SetRow(this.cbxSymbolPair, 5);
             this.cbxSymbolPair.Size = new System.Drawing.Size(209, 26);
@@ -524,7 +524,7 @@
             "FiveMinutes",
             "ThreeMinutes",
             "OneMinute"});
-            this.cbxInterval.Location = new System.Drawing.Point(178, 198);
+            this.cbxInterval.Location = new System.Drawing.Point(178, 197);
             this.cbxInterval.Name = "cbxInterval";
             this.tpEntries.SetRow(this.cbxInterval, 6);
             this.cbxInterval.Size = new System.Drawing.Size(209, 26);
@@ -534,7 +534,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxApiToUse, 2);
             this.cbxApiToUse.FormattingEnabled = true;
-            this.cbxApiToUse.Location = new System.Drawing.Point(178, 138);
+            this.cbxApiToUse.Location = new System.Drawing.Point(178, 137);
             this.cbxApiToUse.Name = "cbxApiToUse";
             this.tpEntries.SetRow(this.cbxApiToUse, 4);
             this.cbxApiToUse.Size = new System.Drawing.Size(209, 26);
@@ -560,15 +560,15 @@
             this.lblAddPnlToMaxAmountLimitLabel.TabIndex = 20;
             this.lblAddPnlToMaxAmountLimitLabel.Text = "Add Pnl To MAL:";
             // 
-            // lblMaxAmountPercentageLabel
+            // lblMaxBalancePercentageLabel
             // 
-            this.tpEntries.SetColumn(this.lblMaxAmountPercentageLabel, 1);
-            this.lblMaxAmountPercentageLabel.Location = new System.Drawing.Point(19, 350);
-            this.lblMaxAmountPercentageLabel.Name = "lblMaxAmountPercentageLabel";
-            this.tpEntries.SetRow(this.lblMaxAmountPercentageLabel, 11);
-            this.lblMaxAmountPercentageLabel.Size = new System.Drawing.Size(109, 18);
-            this.lblMaxAmountPercentageLabel.TabIndex = 19;
-            this.lblMaxAmountPercentageLabel.Text = "Max Amount %:";
+            this.tpEntries.SetColumn(this.lblMaxBalancePercentageLabel, 1);
+            this.lblMaxBalancePercentageLabel.Location = new System.Drawing.Point(19, 350);
+            this.lblMaxBalancePercentageLabel.Name = "lblMaxBalancePercentageLabel";
+            this.tpEntries.SetRow(this.lblMaxBalancePercentageLabel, 11);
+            this.lblMaxBalancePercentageLabel.Size = new System.Drawing.Size(108, 18);
+            this.lblMaxBalancePercentageLabel.TabIndex = 19;
+            this.lblMaxBalancePercentageLabel.Text = "Max Balance %:";
             // 
             // lblLeverageLabel
             // 
@@ -600,15 +600,15 @@
             this.lblSymbolPairLabel.TabIndex = 14;
             this.lblSymbolPairLabel.Text = "Symbol Pair:";
             // 
-            // lblMaximumAmountLimitLabel
+            // lblMaximumBalanceLimitLabel
             // 
-            this.tpEntries.SetColumn(this.lblMaximumAmountLimitLabel, 1);
-            this.lblMaximumAmountLimitLabel.Location = new System.Drawing.Point(19, 320);
-            this.lblMaximumAmountLimitLabel.Name = "lblMaximumAmountLimitLabel";
-            this.tpEntries.SetRow(this.lblMaximumAmountLimitLabel, 10);
-            this.lblMaximumAmountLimitLabel.Size = new System.Drawing.Size(123, 18);
-            this.lblMaximumAmountLimitLabel.TabIndex = 12;
-            this.lblMaximumAmountLimitLabel.Text = "Max Amount Limit:";
+            this.tpEntries.SetColumn(this.lblMaximumBalanceLimitLabel, 1);
+            this.lblMaximumBalanceLimitLabel.Location = new System.Drawing.Point(19, 320);
+            this.lblMaximumBalanceLimitLabel.Name = "lblMaximumBalanceLimitLabel";
+            this.tpEntries.SetRow(this.lblMaximumBalanceLimitLabel, 10);
+            this.lblMaximumBalanceLimitLabel.Size = new System.Drawing.Size(122, 18);
+            this.lblMaximumBalanceLimitLabel.TabIndex = 12;
+            this.lblMaximumBalanceLimitLabel.Text = "Max Balance Limit:";
             // 
             // lblIdNo
             // 
@@ -669,8 +669,8 @@
             this.Name = "TradeParametersUC";
             this.Size = new System.Drawing.Size(1195, 830);
             this.Load += new System.EventHandler(this.TradeParametersUC_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountLimit.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxAmountPercentage.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxBalanceLimit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxMaxABalancePercentage.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
@@ -700,8 +700,8 @@
         private DevExpress.Utils.Layout.TablePanel tpEntries;
         private DevExpress.XtraEditors.LabelControl lblModifiedDateLabel;
         private System.Windows.Forms.ComboBox cbxIndicatorParameter;
-        private DevExpress.XtraEditors.TextEdit tbxMaxAmountLimit;
-        private DevExpress.XtraEditors.TextEdit tbxMaxAmountPercentage;
+        private DevExpress.XtraEditors.TextEdit tbxMaxBalanceLimit;
+        private DevExpress.XtraEditors.TextEdit tbxMaxABalancePercentage;
         private DevExpress.XtraEditors.TextEdit tbxPercentageOfPnlToBeAdded;
         private DevExpress.XtraEditors.LabelControl lblInUse;
         private DevExpress.XtraEditors.LabelControl lblCreationDate;
@@ -709,11 +709,11 @@
         private DevExpress.XtraEditors.LabelControl lblInUseLabel;
         private DevExpress.XtraEditors.LabelControl lblPercentageOfPnlToBeAddedLabel;
         private DevExpress.XtraEditors.LabelControl lblAddPnlToMaxAmountLimitLabel;
-        private DevExpress.XtraEditors.LabelControl lblMaxAmountPercentageLabel;
+        private DevExpress.XtraEditors.LabelControl lblMaxBalancePercentageLabel;
         private DevExpress.XtraEditors.LabelControl lblLeverageLabel;
         private DevExpress.XtraEditors.LabelControl lblMarginTypeLabel;
         private DevExpress.XtraEditors.LabelControl lblSymbolPairLabel;
-        private DevExpress.XtraEditors.LabelControl lblMaximumAmountLimitLabel;
+        private DevExpress.XtraEditors.LabelControl lblMaximumBalanceLimitLabel;
         private DevExpress.XtraEditors.LabelControl lblIdNo;
         private DevExpress.XtraEditors.LabelControl lblIntervalLabel;
         private DevExpress.XtraEditors.LabelControl lblApiToUseLabel;

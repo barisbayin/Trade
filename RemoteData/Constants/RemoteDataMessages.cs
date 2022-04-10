@@ -16,5 +16,6 @@ namespace RemoteData.Constants
         public static string AnErrorOccurredWhilePlacingOrder = "An error occurred while placing order!";
         public static string LeverageSet = "Leverage set";
         public static string AnErrorOccurredWhileSettingLeverage = "An error occurred while changing leverage";
+        public static string Error= "Error occurred";
     }
 }

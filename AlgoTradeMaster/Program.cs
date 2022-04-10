@@ -30,8 +30,9 @@ namespace AlgoTradeMasterRenko
 
             #region EntryCodes
 
-            Console.WindowWidth = 165;
-            Console.WindowHeight = 50;
+            Console.WindowWidth = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["ConsoleWindowWidth"]);
+            Console.WindowHeight = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["ConsoleWindowHeight"]);
+
 
 
             Console.WriteLine("\r\n                ▄▄▄       ██▓      ▄████  ▒█████  ▄▄▄█████▓ ██▀███   ▄▄▄      ▓█████▄ ▓█████  ███▄ ▄███▓ ▄▄▄        ██████ ▄▄▄█████▓▓█████  ██▀███  \r\n                ▒████▄    ▓██▒     ██▒ ▀█▒▒██▒  ██▒▓  ██▒ ▓▒▓██ ▒ ██▒▒████▄    ▒██▀ ██ ▓█   ▀ ▓██▒▀█▀ ██▒▒████▄    ▒██    ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒\r\n                ▒██  ▀█▄  ▒██░    ▒██░▄▄▄░▒██░  ██▒▒ ▓██░ ▒░▓██ ░▄█ ▒▒██  ▀█▄  ░██   █ ▒███   ▓██    ▓██░▒██  ▀█▄  ░ ▓██▄   ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒\r\n                ░██▄▄▄▄██ ▒██░    ░▓█  ██▓▒██   ██░░ ▓██▓ ░ ▒██▀▀█▄  ░██▄▄▄▄██ ░██▄  █▒▓█  ▄  ▒██    ▒██ ░██▄▄▄▄██   ▒   ██▒░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄  \r\n                ▓█    ▓██▒░██████▒░▒▓███▀▒░ ████▓▒░  ▒██▒ ░ ░██▓ ▒██▒ ▓█   ▓██▒░▒████▓ ░▒████▒▒██▒   ░██▒ ▓█   ▓██▒▒██████▒▒  ▒██▒ ░ ░▒████▒░██▓ ▒██▒\r\n                ▒▒    ▓▒█░░ ▒░▓  ░ ░▒   ▒ ░ ▒░▒░▒░   ▒ ░░   ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░ ▒▒▓  ▒ ░░ ▒░ ░░ ▒░   ░  ░ ▒▒   ▓▒█░▒ ▒▓▒ ▒ ░  ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░\r\n                ▒   ▒▒ ░░ ░ ▒  ░  ░   ░   ░ ▒ ▒░     ░      ░▒ ░ ▒░  ▒   ▒▒ ░ ░ ▒  ▒  ░ ░  ░░  ░      ░  ▒   ▒▒ ░░ ░▒  ░ ░    ░     ░ ░  ░  ░▒ ░ ▒░\r\n                ░   ▒     ░ ░   ░ ░   ░ ░ ░ ░ ▒    ░        ░░   ░   ░   ▒    ░ ░  ░    ░   ░      ░     ░   ▒   ░  ░  ░    ░         ░     ░░   ░ \r\n                ░  ░    ░  ░      ░     ░ ░              ░           ░  ░   ░       ░  ░       ░         ░  ░      ░              ░  ░   ░     \r\n                ░                                                                    \r\n            ");
@@ -69,6 +70,7 @@ namespace AlgoTradeMasterRenko
             {
                 Console.WriteLine("There is no selected TradeFlow!");
                 Console.ReadLine();
+                return;
 
             }
 
@@ -104,6 +106,23 @@ namespace AlgoTradeMasterRenko
             #region Controls & Settings
 
             Console.Title = "ALGOTRADEMASTER-RENKO: " + tradeParameter.SymbolPair.ToUpper() + " | " + tradeParameter.Interval.ToUpper() + " | " + indicatorParameter.KlineEndType.ToUpper() + " | " + "BRICK SIZE: " + indicatorParameter.Parameter1 + " | " + apiInformation.ApiTitle.ToUpper();
+
+            var accountInfo = (await binanceApiService.GetFuturesUsdtAccountInformationAsync()).Data;
+
+
+            if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
+                Console.WriteLine("The available balance is less than the maximum balance selected for this trade. Please increase balance or decrease maximum trade balance limit.");
+
+                Console.ReadLine();
+                return;
+            }
+
+            
+            Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
 
             var leverageSet = await binanceApiService.SetLeverageForFuturesUsdtSymbolPairAsync(tradeParameter.SymbolPair, tradeParameter.Leverage);
 
@@ -152,7 +171,7 @@ namespace AlgoTradeMasterRenko
 
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Thread.Sleep(1000);
+                Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TimePeriod"]));
 
 
                 if (streamData.Open != 0)
@@ -183,7 +202,7 @@ namespace AlgoTradeMasterRenko
                                 Console.WriteLine("============================================================================================================================================================");
 
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN BRICK:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
+                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
 
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, trueRenkoCount);
@@ -213,7 +232,7 @@ namespace AlgoTradeMasterRenko
                                 Console.WriteLine("============================================================================================================================================================");
 
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN BRICK:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
+                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
 
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, falseRenkoCount);
@@ -305,12 +324,12 @@ namespace AlgoTradeMasterRenko
                             price1 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
                             price2 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
 
-                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision);
-                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision);
+                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision);
+                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision);
 
-                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Buy",
+                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
                                 quantity1, "Long", price1);
-                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Buy",
+                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
                                 quantity2, "Long", price2);
 
                             Console.WriteLine("Order 1: " + order1.Result.Message);
@@ -343,12 +362,12 @@ namespace AlgoTradeMasterRenko
                             price1 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
                             price2 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
 
-                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
-                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumAmountLimit * tradeParameter.MaxAmountPercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
+                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
+                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
 
-                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Sell",
+                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
                                 quantity1, "Short", price1);
-                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrder(tradeParameter.SymbolPair, "Sell",
+                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
                                 quantity2, "Short", price2);
 
                             Console.WriteLine("Order 1: " + order1.Result.Message);

@@ -11,6 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Binance.Net.Objects.Futures.FuturesData;
 using Binance.Net.Objects.Futures.MarketData;
 using Binance.Net.Objects.Spot.MarketData;
 using Binance.Net.Objects.Spot.SpotData;
@@ -108,12 +109,18 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         #region Order Codes
 
-        public async Task<IDataResult<IEnumerable<BinanceOrder>>> GetAccountInformation()
+        public async Task<IDataResult<BinanceFuturesAccountInfo>> GetFuturesUsdtAccountInformationAsync()
         {
-            var result = await _binanceClient.Spot.Order.GetOpenOrdersAsync();
-            return new SuccessDataResult<IEnumerable<BinanceOrder>>(result.Data);
+            var result = await _binanceClient.FuturesUsdt.Account.GetAccountInfoAsync();
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            {
+                return new SuccessDataResult<BinanceFuturesAccountInfo>(result.Data);
+            }
+
+            return new ErrorDataResult<BinanceFuturesAccountInfo>(result.Error.Code + ": " + result.Error.Message);
         }
-        public async Task<IResult> PlaceFuturesUsdtLimitOrder(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price)
+        public async Task<IResult> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price)
         {
 
             var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
@@ -142,8 +149,39 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             }
             else
             {
-                return new SuccessResult(RemoteDataMessages.AnErrorOccurredWhileSettingLeverage);
+                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhileSettingLeverage + ": " + result.Error.Code + ": " + result.Error.Message);
             }
+        }
+
+
+
+        public async Task<IDataResult<IEnumerable<BinanceFuturesOrder>>> GetFuturesUsdtPlacedOrdersBySymbolPairAsync(string symbolPair)
+        {
+            var result = await _binanceClient.FuturesUsdt.Order.GetOpenOrdersAsync(symbolPair);
+            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            {
+                return new SuccessDataResult<IEnumerable<BinanceFuturesOrder>>(result.Data);
+            }
+            else
+            {
+                return new ErrorDataResult<IEnumerable<BinanceFuturesOrder>>(RemoteDataMessages.Error+ ": " + result.Error.Code + ": " + result.Error.Message);
+            }
+        }
+
+        public async Task<IDataResult<string>> StartUserDataStreamAsync()
+        {
+            var result = await _binanceClient.FuturesUsdt.UserStream.StartUserStreamAsync();
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            {
+
+                return new SuccessDataResult<string>(result.Data,result.Data);
+            }
+            else
+            {
+                return new ErrorDataResult<string>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
+            }
+            
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Core.Entities;
@@ -7,6 +8,7 @@ using Entity.Concrete;
 using RemoteData.Binance.WebSocket.Abstract;
 using RemoteData.Constants;
 using System.Threading.Tasks;
+using Binance.Net.Objects.Futures.UserStream;
 using Entity.Concrete.Entities;
 
 namespace RemoteData.Binance.WebSocket.Concrete
@@ -47,18 +49,70 @@ namespace RemoteData.Binance.WebSocket.Concrete
             return binanceFuturesUsdtKlineEntity;
         }
 
-        public async Task<BinanceFuturesUsdtKlineEntity> GetCurrentUserDataUpdatesAsync(string symbol, KlineInterval interval)
+
+
+        public async Task<List<BinanceFuturesStreamMarginPosition>> GetCurrentUserDataUpdatesAsync(string listenKey)
         {
-            BinanceFuturesUsdtKlineEntity binanceFuturesUsdtKlineEntity = new BinanceFuturesUsdtKlineEntity();
+            List<BinanceFuturesStreamMarginPosition> binanceFuturesStreamMarginPositions = new List<BinanceFuturesStreamMarginPosition>();
+            List<BinanceFuturesStreamPosition> binanceFuturesStreamPositions = new List<BinanceFuturesStreamPosition>();
 
-            //var streamKlineData = await _binanceSocketClient.FuturesUsdt.SubscribeToUserDataUpdatesAsync(symbol, interval, data =>
-            //{
+            var streamUserData = await _binanceSocketClient.FuturesUsdt.SubscribeToUserDataUpdatesAsync(listenKey, data =>
+            {
+               
+
+            }, data =>
+            {
+                var result = data.Data.Positions;
+
+                foreach (var position in result)
+                {
+                    BinanceFuturesStreamMarginPosition binanceFuturesStreamMarginPosition = new BinanceFuturesStreamMarginPosition();
+
+                    binanceFuturesStreamMarginPosition.Symbol = position.Symbol;
+                    binanceFuturesStreamMarginPosition.MarginType = position.MarginType;
+                    binanceFuturesStreamMarginPosition.IsolatedWallet = position.IsolatedWallet;
+                    binanceFuturesStreamMarginPosition.MarginType = position.MarginType;
+                    binanceFuturesStreamMarginPosition.MaintMargin = position.MaintMargin;
+                    binanceFuturesStreamMarginPosition.MarkPrice = position.MarkPrice;
+                    binanceFuturesStreamMarginPosition.PositionAmount = position.PositionAmount;
+                    binanceFuturesStreamMarginPosition.PositionSide = position.PositionSide;
+                    binanceFuturesStreamMarginPosition.UnrealizedPnl = position.UnrealizedPnl;
+
+                    binanceFuturesStreamMarginPositions.Add(binanceFuturesStreamMarginPosition);
+
+                }
+
+            }, data => 
+            {
+                var result = data.Data.UpdateData.Positions;
+
+                foreach (var position in result)
+                {
+                    BinanceFuturesStreamPosition binanceFuturesStreamPosition = new BinanceFuturesStreamPosition();
+
+                    binanceFuturesStreamPosition.Symbol = position.Symbol;
+                    binanceFuturesStreamPosition.Quantity = position.Quantity;
+                    binanceFuturesStreamPosition.EntryPrice = position.EntryPrice;
+                    binanceFuturesStreamPosition.MarginType = position.MarginType;
+                    binanceFuturesStreamPosition.PositionSide = position.PositionSide;
+                    binanceFuturesStreamPosition.UnrealizedPnl = position.UnrealizedPnl;
+                    binanceFuturesStreamPosition.IsolatedMargin = position.IsolatedMargin;
+                    binanceFuturesStreamPosition.RealizedPnl = position.RealizedPnl;
+
+                    binanceFuturesStreamPositions.Add(binanceFuturesStreamPosition);
+
+                }
+
+            }, data =>
+            {
+                
+            }, data =>
+            {
+
+            });
 
 
-            //});
-
-
-            return binanceFuturesUsdtKlineEntity;
+            return binanceFuturesStreamMarginPositions;
         }
     }
 }

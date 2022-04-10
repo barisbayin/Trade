@@ -14,6 +14,7 @@ using Entity.Concrete.Entities;
 using RemoteData.Binance.WebSocket.Abstract;
 using RemoteData.Binance.WebSocket.Concrete;
 using System.Configuration;
+using IBinanceWsService = RemoteData.Binance.WebSocket.Abstract.IBinanceWsService;
 
 namespace TestConsole
 {
@@ -174,14 +175,36 @@ namespace TestConsole
             */
 
 
-            //IBinanceApiService binanceAccountInformationApiService =
-            //    new BinanceApiManager(new BinanceClient(), "mJelRp3XwTEB2j5I5nEOmIn14hkb9wxkUGMY972U0i9alycBodgMDXnZq7EeDZvN", "nAd6XuJ4cvXtTNbiwKKRRrKc9FZ48lbEy5SbQBTtpa367DbZsBUHi7PHBXeCK85J");
+            IBinanceApiService binanceAccountInformationApiService =
+                new BinanceApiManager(new BinanceClient(), "mJelRp3XwTEB2j5I5nEOmIn14hkb9wxkUGMY972U0i9alycBodgMDXnZq7EeDZvN", "nAd6XuJ4cvXtTNbiwKKRRrKc9FZ48lbEy5SbQBTtpa367DbZsBUHi7PHBXeCK85J");
+
+            var orders = binanceAccountInformationApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync("SOLUSDT").Result.Data;
+
+            var listenKey = binanceAccountInformationApiService.StartUserDataStreamAsync().Result;
+
+            IBinanceWsService binanceWsService = new BinanceWsManager(new BinanceSocketClient());
+
+            var streamData = binanceWsService.GetCurrentUserDataUpdatesAsync(listenKey.Data);
+
+
+            while (true)
+            {
+                foreach (var item in streamData.Result)
+                {
+                    Console.WriteLine(item.Symbol +" "+ item.PositionSide + " " + item.UnrealizedPnl);
+                }
+              
+            }
+
+
 
 
             //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
 
-            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrder("SOLUSDT", "Buy", 1.2M, "Long", 100M);
-            
+            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 100M);
+
+            //var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
+
 
             //result7.Wait();
 

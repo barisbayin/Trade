@@ -92,7 +92,7 @@ namespace DevExpressUI
 
         private async void btnAdd_Click(object sender, EventArgs e)
         {
-            if (tbxTradeParameterTitle.Text == "" || cbxApiToUse.Text == "" || cbxIndicatorParameter.Text == "" || cbxApiToUse.Text == "" || cbxSymbolPair.Text == "" || cbxInterval.Text == "" || cbxMarginType.Text == "" || cbxLeverage.Text == "" || tbxMaxAmountLimit.Text == "" || tbxMaxAmountPercentage.Text == "")
+            if (tbxTradeParameterTitle.Text == "" || cbxApiToUse.Text == "" || cbxIndicatorParameter.Text == "" || cbxApiToUse.Text == "" || cbxSymbolPair.Text == "" || cbxInterval.Text == "" || cbxMarginType.Text == "" || cbxLeverage.Text == "" || tbxMaxBalanceLimit.Text == "" || tbxMaxABalancePercentage.Text == "")
             {
                 lblResult.Text = CommonMessages.EnterAllRequiredParameters;
             }
@@ -119,9 +119,9 @@ namespace DevExpressUI
                             tradeParameterEntity.MarginType = cbxMarginType.Text;
                             tradeParameterEntity.Leverage = Convert.ToInt32(cbxLeverage.Text);
                             tradeParameterEntity.StopLossPercent = tbxStopLossPercent.Text == "" ? 0 : Convert.ToDecimal(tbxStopLossPercent.Text);
-                            tradeParameterEntity.MaximumAmountLimit = tbxMaxAmountLimit.Text == "" ? 0 : Convert.ToDecimal(tbxMaxAmountLimit.Text);
-                            tradeParameterEntity.MaxAmountPercentage = tbxMaxAmountPercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxAmountPercentage.Text);
-                            tradeParameterEntity.AddPnlToMaximumAmountLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
+                            tradeParameterEntity.MaximumBalanceLimit = tbxMaxBalanceLimit.Text == "" ? 0 : Convert.ToDecimal(tbxMaxBalanceLimit.Text);
+                            tradeParameterEntity.MaxBalancePercentage = tbxMaxABalancePercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxABalancePercentage.Text);
+                            tradeParameterEntity.AddPnlToMaximumBalanceLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
                             tradeParameterEntity.PercentageOfPnlToBeAdded = tbxPercentageOfPnlToBeAdded.Text == "" ? 0 : Convert.ToDecimal(tbxPercentageOfPnlToBeAdded.Text);
 
                             var result = await _tradeParameterService.AddTradeParameterAsync(tradeParameterEntity);
@@ -150,9 +150,9 @@ namespace DevExpressUI
                             tradeParameterEntity.MarginType = cbxMarginType.Text;
                             tradeParameterEntity.Leverage = Convert.ToInt32(cbxLeverage.Text);
                             tradeParameterEntity.StopLossPercent = tbxStopLossPercent.Text == "" ? 0 : Convert.ToDecimal(tbxStopLossPercent.Text);
-                            tradeParameterEntity.MaximumAmountLimit = tbxMaxAmountLimit.Text == "" ? 0 : Convert.ToDecimal(tbxMaxAmountLimit.Text);
-                            tradeParameterEntity.MaxAmountPercentage = tbxMaxAmountPercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxAmountPercentage.Text);
-                            tradeParameterEntity.AddPnlToMaximumAmountLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
+                            tradeParameterEntity.MaximumBalanceLimit = tbxMaxBalanceLimit.Text == "" ? 0 : Convert.ToDecimal(tbxMaxBalanceLimit.Text);
+                            tradeParameterEntity.MaxBalancePercentage = tbxMaxABalancePercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxABalancePercentage.Text);
+                            tradeParameterEntity.AddPnlToMaximumBalanceLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
                             tradeParameterEntity.PercentageOfPnlToBeAdded = tbxPercentageOfPnlToBeAdded.Text == "" ? 0 : Convert.ToDecimal(tbxPercentageOfPnlToBeAdded.Text);
 
                             var result = await _tradeParameterService.UpdateTradeParameterAsync(tradeParameterEntity);
@@ -220,8 +220,8 @@ namespace DevExpressUI
             cbxMarginType.Text = "";
             cbxLeverage.Text = "";
             tbxStopLossPercent.Text = "";
-            tbxMaxAmountLimit.Text = "";
-            tbxMaxAmountPercentage.Text = "";
+            tbxMaxBalanceLimit.Text = "";
+            tbxMaxABalancePercentage.Text = "";
             chckAddPnlToMaxAmountLimit.CheckState = CheckState.Unchecked;
             tbxPercentageOfPnlToBeAdded.Text = "";
             lblInUse.Text = "";
@@ -250,9 +250,9 @@ namespace DevExpressUI
                 cbxLeverage.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["Leverage"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["Leverage"]).ToString();
                 tbxStopLossPercent.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["StopLossPercent"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["StopLossPercent"]).ToString();
 
-                tbxMaxAmountLimit.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountLimit"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountLimit"]).ToString();
+                tbxMaxBalanceLimit.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountLimit"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountLimit"]).ToString();
 
-                tbxMaxAmountPercentage.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountPercentage"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountPercentage"]).ToString();
+                tbxMaxABalancePercentage.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountPercentage"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountPercentage"]).ToString();
 
                 chckAddPnlToMaxAmountLimit.CheckState = Convert.ToBoolean(gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["AddPnlToMaxAmountLimit"])) == false ? CheckState.Unchecked : CheckState.Checked;
 
