@@ -11,10 +11,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Binance.Net.Enums;
+using Binance.Net.Interfaces.SubClients.Futures;
 using Binance.Net.Objects;
+using Binance.Net.Objects.Futures.FuturesData;
 using CryptoExchange.Net.Authentication;
 using DataAccess.Abstract;
 using Entity.Concrete.Entities;
+using Microsoft.EntityFrameworkCore.Internal;
 using RemoteData.Binance.GeneralApi.Abstract;
 using RemoteData.Binance.GeneralApi.Concrete;
 using BinanceWsManager = RemoteData.Binance.WebSocket.Concrete.BinanceWsManager;
@@ -80,7 +83,8 @@ namespace AlgoTradeMasterRenko
 
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
-
+            BinanceFuturesOrder binanceFuturesOrder1 = new BinanceFuturesOrder();
+            BinanceFuturesOrder binanceFuturesOrder2 = new BinanceFuturesOrder();
 
 
             #endregion
@@ -110,18 +114,18 @@ namespace AlgoTradeMasterRenko
             var accountInfo = (await binanceApiService.GetFuturesUsdtAccountInformationAsync()).Data;
 
 
-            if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
+            //if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Red;
 
-                Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
-                Console.WriteLine("The available balance is less than the maximum balance selected for this trade. Please increase balance or decrease maximum trade balance limit.");
+            //    Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
+            //    Console.WriteLine("The available balance is less than the maximum balance selected for this trade. Please increase balance or decrease maximum trade balance limit.");
 
-                Console.ReadLine();
-                return;
-            }
+            //    Console.ReadLine();
+            //    return;
+            //}
 
-            
+
             Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
 
             var leverageSet = await binanceApiService.SetLeverageForFuturesUsdtSymbolPairAsync(tradeParameter.SymbolPair, tradeParameter.Leverage);
@@ -252,32 +256,10 @@ namespace AlgoTradeMasterRenko
                             }
                     }
 
-                    if (tradeFlow.LookingForPosition == true && tradeFlow.ReadyToOpenOrder == false && tradeFlow.FollowUpOfOpenPosition == false)
-                    {
 
+                    if (tradeFlow.LookingForPosition == true && tradeFlow.PlacingOrders == false && tradeFlow.FollowUpOfOpenPosition == false)
+                    {
                         Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
-
-                        if (trueRenkoCount >= 1 && trueRenkoCount < 3)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("LONG POSITION AREA: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * 2);
-
-                            tradeFlow.LookingForPosition = false;
-                            tradeFlow.ReadyToOpenOrder = true;
-                        }
-                        if (falseRenkoCount >= 0 && falseRenkoCount < 3)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("SHORT POSITION AREA: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 * 2);
-
-                            tradeFlow.LookingForPosition = false;
-                            tradeFlow.ReadyToOpenOrder = true;
-                        }
-                    }
-
-                    if (tradeFlow.ReadyToOpenOrder == true && tradeFlow.PlacingOrders == false && tradeFlow.FollowUpOfOpenPosition == false)
-                    {
-                        Console.WriteLine("Trade Status: READY TO OPEN ORDER!");
 
                         if (trueRenkoCount >= 1 && trueRenkoCount < 3)
                         {
@@ -290,7 +272,6 @@ namespace AlgoTradeMasterRenko
                         else
                         {
                             tradeFlow.LookingForPosition = true;
-                            tradeFlow.ReadyToOpenOrder = false;
                         }
 
                         if (falseRenkoCount >= 1 && falseRenkoCount < 3)
@@ -304,12 +285,11 @@ namespace AlgoTradeMasterRenko
                         else
                         {
                             tradeFlow.LookingForPosition = true;
-                            tradeFlow.ReadyToOpenOrder = false;
                         }
 
                     }
 
-                    if (tradeFlow.PlacingOrders && tradeFlow.FollowUpOfOpenPosition == false)
+                    if (tradeFlow.PlacingOrders == true && tradeFlow.FollowUpOfOpenPosition == false)
                     {
                         Console.WriteLine("Trade Status: PLACING ORDERS!");
 
@@ -327,32 +307,47 @@ namespace AlgoTradeMasterRenko
                             quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision);
                             quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision);
 
-                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
+                            var order1 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
                                 quantity1, "Long", price1);
-                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
+                            var order2 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
                                 quantity2, "Long", price2);
 
-                            Console.WriteLine("Order 1: " + order1.Result.Message);
-                            Console.WriteLine("Order 2: " + order2.Result.Message);
 
-                            if (order1.Result.Success && order2.Result.Success)
+                            Console.WriteLine("Order 1: " + order1.Message);
+                            Console.WriteLine("Order 2: " + order2.Message);
+
+                            Console.WriteLine("Placed orders controlling...");
+
+                            var placedOrders = (await binanceApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync(tradeParameter.SymbolPair));
+
+
+                            if (placedOrders.Success)
+                            {
+
+                                binanceFuturesOrder1 = placedOrders.Data.ElementAt(0);
+                                binanceFuturesOrder2 = placedOrders.Data.ElementAt(1);
+
+                                Console.WriteLine("Placed Orders Control Result => ORDER ID-1: {0}, ORDER ID-2: {1}", binanceFuturesOrder1.OrderId, binanceFuturesOrder2.OrderId);
+
+                            }
+
+
+                            if (order1.Success && order2.Success && placedOrders.Success)
                             {
                                 tradeFlow.PlacingOrders = false;
-                                tradeFlow.FollowUpOfOpenPosition = true;
+                                tradeFlow.OrdersStartedToFill = true;
                             }
                             else
                             {
+                                tradeFlow.PlacingOrders = false;
                                 tradeFlow.LookingForPosition = true;
-                                tradeFlow.ReadyToOpenOrder = false;
-                                tradeFlow.FollowUpOfOpenPosition = false;
                             }
                         }
                         else
                         {
                             Console.WriteLine("Order placement conditions have changed. Looking for position phase is started again.");
                             tradeFlow.LookingForPosition = true;
-                            tradeFlow.ReadyToOpenOrder = false;
-                            tradeFlow.FollowUpOfOpenPosition = false;
+                            tradeFlow.PlacingOrders = false;
                         }
 
 
@@ -365,32 +360,79 @@ namespace AlgoTradeMasterRenko
                             quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
                             quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
 
-                            var order1 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
+                            var order1 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
                                 quantity1, "Short", price1);
-                            var order2 = binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
+                            var order2 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
                                 quantity2, "Short", price2);
 
-                            Console.WriteLine("Order 1: " + order1.Result.Message);
-                            Console.WriteLine("Order 2: " + order2.Result.Message);
+                            Console.WriteLine("Order 1: " + order1.Message);
+                            Console.WriteLine("Order 2: " + order2.Message);
 
-                            if (order1.Result.Success && order2.Result.Success)
+                            Console.WriteLine("Placed orders controlling...");
+
+                            var placedOrders = (await binanceApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync(tradeParameter.SymbolPair));
+
+
+                            if (placedOrders.Success)
+                            {
+
+                                binanceFuturesOrder1 = placedOrders.Data.ElementAt(0);
+                                binanceFuturesOrder2 = placedOrders.Data.ElementAt(1);
+
+                                Console.WriteLine("Placed Orders Control Result => ORDER ID-1: {0}, ORDER ID-2: {1}", binanceFuturesOrder1.OrderId, binanceFuturesOrder2.OrderId);
+
+                            }
+
+
+                            if (order1.Success && order2.Success && placedOrders.Success)
                             {
                                 tradeFlow.PlacingOrders = false;
+                                tradeFlow.OrdersStartedToFill = true;
                             }
                             else
                             {
+                                tradeFlow.PlacingOrders = false;
                                 tradeFlow.LookingForPosition = true;
-                                tradeFlow.ReadyToOpenOrder = false;
-                                tradeFlow.FollowUpOfOpenPosition = false;
                             }
                         }
                         else
                         {
                             Console.WriteLine("Order placement conditions have changed. Looking for position phase is started again.");
                             tradeFlow.LookingForPosition = true;
-                            tradeFlow.ReadyToOpenOrder = false;
-                            tradeFlow.FollowUpOfOpenPosition = false;
+                            tradeFlow.PlacingOrders = false;
                         }
+                    }
+
+                    if (tradeFlow.OrdersStartedToFill == true)
+                    {
+
+                        Console.WriteLine("Placed orders filling status is controlling...");
+
+                        binanceFuturesOrder1 =
+                            (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                tradeParameter.SymbolPair, binanceFuturesOrder1.OrderId)).Data;
+                        binanceFuturesOrder2 =
+                            (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                tradeParameter.SymbolPair, binanceFuturesOrder2.OrderId)).Data;
+
+                        Console.WriteLine("Order Id: {0}, SymbolPair: {1}, Price: {2}, Quantity: {3}, Filled Quantity: {4}", binanceFuturesOrder1.OrderId, binanceFuturesOrder1.Symbol, binanceFuturesOrder1.Price, binanceFuturesOrder1.Quantity, binanceFuturesOrder1.QuantityFilled);
+                        Console.WriteLine("Order Id: {0}, SymbolPair: {1}, Price: {2}, Quantity: {3}, Filled Quantity: {4}", binanceFuturesOrder2.OrderId, binanceFuturesOrder2.Symbol, binanceFuturesOrder2.Price, binanceFuturesOrder2.Quantity, binanceFuturesOrder2.QuantityFilled);
+
+
+
+                        if (binanceFuturesOrder1.Status == OrderStatus.Filled && binanceFuturesOrder2.Status == OrderStatus.Filled)
+                        {
+                            tradeFlow.OrdersStartedToFill = false;
+                            tradeFlow.FollowUpOfOpenPosition = true;
+                            Console.WriteLine("All orders filled! Let's follow the position!");
+
+                        }
+
+                    }
+
+                    if (tradeFlow.FollowUpOfOpenPosition == true)
+                    {
+                        
                     }
 
 

@@ -168,6 +168,19 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             }
         }
 
+        public async Task<IDataResult<BinanceFuturesOrder>> GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(string symbolPair, long orderId)
+        {
+            var result = await _binanceClient.FuturesUsdt.Order.GetOrderAsync(symbolPair,orderId);
+            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            {
+                return new SuccessDataResult<BinanceFuturesOrder>(result.Data);
+            }
+            else
+            {
+                return new ErrorDataResult<BinanceFuturesOrder>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
+            }
+        }
+
         public async Task<IDataResult<string>> StartUserDataStreamAsync()
         {
             var result = await _binanceClient.FuturesUsdt.UserStream.StartUserStreamAsync();

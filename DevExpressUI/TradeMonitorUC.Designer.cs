@@ -35,6 +35,7 @@ namespace DevExpressUI
             this.barSelect = new DevExpress.XtraBars.BarButtonItem();
             this.barUnselect = new DevExpress.XtraBars.BarButtonItem();
             this.barMarkAsFinished = new DevExpress.XtraBars.BarButtonItem();
+            this.barMarkAsNotInUse = new DevExpress.XtraBars.BarButtonItem();
             this.barDelete = new DevExpress.XtraBars.BarButtonItem();
             this.barTradeFlow = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -92,7 +93,6 @@ namespace DevExpressUI
             this.cbxTradeFlowLoadFilter = new System.Windows.Forms.ComboBox();
             this.drpOptionsButton = new DevExpress.XtraEditors.DropDownButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
-            this.barMarkAsNotInUse = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.popTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -152,6 +152,15 @@ namespace DevExpressUI
             this.barMarkAsFinished.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barMarkAsFinished.ImageOptions.LargeImage")));
             this.barMarkAsFinished.Name = "barMarkAsFinished";
             this.barMarkAsFinished.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMarkAsFinished_ItemClick);
+            // 
+            // barMarkAsNotInUse
+            // 
+            this.barMarkAsNotInUse.Caption = "Mark As Not In Use";
+            this.barMarkAsNotInUse.Id = 4;
+            this.barMarkAsNotInUse.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barMarkAsNotInUse.ImageOptions.Image")));
+            this.barMarkAsNotInUse.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barMarkAsNotInUse.ImageOptions.LargeImage")));
+            this.barMarkAsNotInUse.Name = "barMarkAsNotInUse";
+            this.barMarkAsNotInUse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMarkAsNotInUse_ItemClick);
             // 
             // barDelete
             // 
@@ -498,7 +507,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -817,15 +826,6 @@ namespace DevExpressUI
             this.btnRefresh.TabIndex = 4;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // barMarkAsNotInUse
-            // 
-            this.barMarkAsNotInUse.Caption = "Mark As Not In Use";
-            this.barMarkAsNotInUse.Id = 4;
-            this.barMarkAsNotInUse.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barMarkAsNotInUse.ImageOptions.Image")));
-            this.barMarkAsNotInUse.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barMarkAsNotInUse.ImageOptions.LargeImage")));
-            this.barMarkAsNotInUse.Name = "barMarkAsNotInUse";
-            this.barMarkAsNotInUse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMarkAsNotInUse_ItemClick);
             // 
             // TradeMonitorUC
             // 
