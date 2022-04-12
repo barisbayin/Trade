@@ -316,12 +316,12 @@ namespace AlgoTradeMasterRenko
                             Console.WriteLine("Order 1: " + order1.Message);
                             Console.WriteLine("Order 2: " + order2.Message);
 
-                            Console.WriteLine("Placed orders controlling...");
+                            Console.WriteLine("Placed orders are controlling...");
 
                             var placedOrders = (await binanceApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync(tradeParameter.SymbolPair));
 
 
-                            if (placedOrders.Success)
+                            if (placedOrders.Success && placedOrders.Data.Any())
                             {
 
                                 binanceFuturesOrder1 = placedOrders.Data.ElementAt(0);
@@ -332,7 +332,7 @@ namespace AlgoTradeMasterRenko
                             }
 
 
-                            if (order1.Success && order2.Success && placedOrders.Success)
+                            if (order1.Success && order2.Success && placedOrders.Data.Any())
                             {
                                 tradeFlow.PlacingOrders = false;
                                 tradeFlow.OrdersStartedToFill = true;
