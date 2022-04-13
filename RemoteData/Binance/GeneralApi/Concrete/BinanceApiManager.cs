@@ -7,6 +7,7 @@ using RemoteData.Binance.Helpers;
 using RemoteData.Constants;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -113,14 +114,14 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         {
             var result = await _binanceClient.FuturesUsdt.Account.GetAccountInfoAsync();
 
-            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<BinanceFuturesAccountInfo>(result.Data);
             }
 
             return new ErrorDataResult<BinanceFuturesAccountInfo>(result.Error.Code + ": " + result.Error.Message);
         }
-        public async Task<IResult> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price)
+        public async Task<IDataResult<BinanceFuturesPlacedOrder>> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price)
         {
 
             var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
@@ -128,24 +129,46 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                 (PositionSide)Enum.Parse(typeof(PositionSide), positionSide), TimeInForce.GoodTillCancel, null, price,
                 null, null, null, null, null, null, null, null, null, CancellationToken.None);
 
-            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
-                return new SuccessResult("Limit Order Placed: " + symbolPair + " | " + orderSide + " | " + positionSide + " | " + price + " | " + quantity);
+                return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data,
+                    "Limit Order Placed: " + result.Data.Symbol + " | " + result.Data.Side + " | " +
+                    result.Data.PositionSide + " | " + result.Data.Price + " | " + result.Data.Quantity);
+
             }
             else
             {
-                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
+                return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
             }
 
+        }
+
+        public async Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionMarketOrderAsync(string symbolPair, string orderSide)
+        {
+            var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
+                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.StopMarket, null, null, TimeInForce.GoodTillCancel, null, null, null, null, null, null, null, true, null, null, null, CancellationToken.None);
+
+            
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
+            {
+                return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data,
+                    "Limit Order Placed: " + result.Data.Symbol + " | " + result.Data.Side + " | " +
+                    result.Data.PositionSide + " | " + result.Data.Price + " | " + result.Data.Quantity);
+
+            }
+            else
+            {
+                return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
+            }
         }
 
         public async Task<IResult> SetLeverageForFuturesUsdtSymbolPairAsync(string symbolPair, int leverage)
         {
             var result = await _binanceClient.FuturesUsdt.ChangeInitialLeverageAsync(symbolPair, leverage);
 
-            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
-                return new SuccessResult(RemoteDataMessages.LeverageSet + ": " + symbolPair + " Leverage: " + leverage);
+                return new SuccessResult(RemoteDataMessages.LeverageSet + ": " + result.Data.Symbol + " Leverage: " + result.Data.Leverage);
             }
             else
             {
@@ -158,20 +181,21 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         public async Task<IDataResult<IEnumerable<BinanceFuturesOrder>>> GetFuturesUsdtPlacedOrdersBySymbolPairAsync(string symbolPair)
         {
             var result = await _binanceClient.FuturesUsdt.Order.GetOpenOrdersAsync(symbolPair);
-            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<IEnumerable<BinanceFuturesOrder>>(result.Data);
             }
             else
             {
-                return new ErrorDataResult<IEnumerable<BinanceFuturesOrder>>(RemoteDataMessages.Error+ ": " + result.Error.Code + ": " + result.Error.Message);
+                return new ErrorDataResult<IEnumerable<BinanceFuturesOrder>>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
             }
         }
 
         public async Task<IDataResult<BinanceFuturesOrder>> GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(string symbolPair, long orderId)
         {
-            var result = await _binanceClient.FuturesUsdt.Order.GetOrderAsync(symbolPair,orderId);
-            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            var result = await _binanceClient.FuturesUsdt.Order.GetOrderAsync(symbolPair, orderId);
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<BinanceFuturesOrder>(result.Data);
             }
@@ -185,16 +209,32 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         {
             var result = await _binanceClient.FuturesUsdt.UserStream.StartUserStreamAsync();
 
-            if (result.ResponseStatusCode == HttpStatusCode.OK)
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
 
-                return new SuccessDataResult<string>(result.Data,result.Data);
+                return new SuccessDataResult<string>(result.Data, result.Data);
             }
             else
             {
                 return new ErrorDataResult<string>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
             }
-            
+
+        }
+
+        public async Task<IDataResult<BinancePositionDetailsUsdt>> GetFuturesUsdtPositionDetailsBySymbolPairAsync(string symbolPair)
+        {
+            var result = await _binanceClient.FuturesUsdt.GetPositionInformationAsync(symbolPair);
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
+            {
+                var lastPosition = result.Data.LastOrDefault();
+
+                return new SuccessDataResult<BinancePositionDetailsUsdt>(lastPosition, "Active Position=> Symbol: " + lastPosition.Symbol + " Entry Price: " + lastPosition.EntryPrice + " Quantity: " + lastPosition.Quantity + " Leverage: " + lastPosition.Leverage + " Liquidation Price: " + lastPosition.LiquidationPrice + " PnL: " + lastPosition.UnrealizedPnl + " Isolated Margin:  " + lastPosition.IsolatedMargin);
+            }
+            else
+            {
+                return new ErrorDataResult<BinancePositionDetailsUsdt>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
+            }
         }
 
         #endregion

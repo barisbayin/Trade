@@ -178,37 +178,39 @@ namespace TestConsole
             IBinanceApiService binanceAccountInformationApiService =
                 new BinanceApiManager(new BinanceClient(), "mJelRp3XwTEB2j5I5nEOmIn14hkb9wxkUGMY972U0i9alycBodgMDXnZq7EeDZvN", "nAd6XuJ4cvXtTNbiwKKRRrKc9FZ48lbEy5SbQBTtpa367DbZsBUHi7PHBXeCK85J");
 
-            var orders = binanceAccountInformationApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync("SOLUSDT").Result.Data;
+            //var orders = binanceAccountInformationApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync("SOLUSDT").Result.Data;
 
-            var listenKey = binanceAccountInformationApiService.StartUserDataStreamAsync().Result;
+            //var listenKey = binanceAccountInformationApiService.StartUserDataStreamAsync().Result;
 
-            IBinanceWsService binanceWsService = new BinanceWsManager(new BinanceSocketClient());
+            //IBinanceWsService binanceWsService = new BinanceWsManager(new BinanceSocketClient());
 
-            var streamData = binanceWsService.GetCurrentUserDataUpdatesAsync(listenKey.Data);
+            //var streamData = binanceWsService.GetCurrentUserDataUpdatesAsync(listenKey.Data);
 
 
-            while (true)
-            {
-                foreach (var item in streamData.Result)
-                {
-                    Console.WriteLine(item.Symbol +" "+ item.PositionSide + " " + item.UnrealizedPnl);
-                }
-              
-            }
+            //while (true)
+            //{
+            //    foreach (var item in streamData.Result)
+            //    {
+            //        Console.WriteLine(item.Symbol +" "+ item.PositionSide + " " + item.UnrealizedPnl);
+            //    }
+
+            //}
 
 
 
 
             //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
 
-            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 100M);
-
-            //var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
-
-
+            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 104.2M);
             //result7.Wait();
-
-            //Console.WriteLine(result7.Result.Message);
+            //var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
+            var result8 = binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
+            result8.Wait();
+            var result9 =
+                binanceAccountInformationApiService.CloseFuturesUsdtPositionMarketOrderAsync("SOLUSDT", "Sell");
+            //result7.Wait();
+            result9.Wait();
+            Console.WriteLine(result9.Result.Message);
 
             //BinanceClient binanceClient = new BinanceClient();
             //binanceClient.SetApiCredentials("xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy", "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM");
@@ -240,7 +242,7 @@ namespace TestConsole
 
             */
 
-            var sayi= Math.Round(1.2568336994M, 4, MidpointRounding.ToZero);
+            var sayi = Math.Round(1.2568336994M, 4, MidpointRounding.ToZero);
             Console.WriteLine(sayi);
             Console.ReadLine();
         }

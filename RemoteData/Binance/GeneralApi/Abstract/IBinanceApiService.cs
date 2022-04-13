@@ -25,11 +25,13 @@ namespace RemoteData.Binance.GeneralApi.Abstract
         Task<IDataResult<List<string>>> GetBinanceSpotUsdtSymbolPairsAsync();
         Task<IDataResult<List<string>>> GetBinanceSpotBtcSymbolPairsAsync();
         Task<IDataResult<List<string>>> GetBinanceSpotEthSymbolPairsAsync();
-        Task<IResult> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price);
+        Task<IDataResult<BinanceFuturesPlacedOrder>> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price);
+        Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionMarketOrderAsync(string symbolPair, string orderSide);
         Task<IResult> SetLeverageForFuturesUsdtSymbolPairAsync(string symbolPair, int leverage);
         Task<IDataResult<IEnumerable<BinanceFuturesOrder>>> GetFuturesUsdtPlacedOrdersBySymbolPairAsync(string symbolPair);
         Task<IDataResult<BinanceFuturesOrder>> GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(string symbolPair, long orderId);
         Task<IDataResult<string>> StartUserDataStreamAsync();
+        Task<IDataResult<BinancePositionDetailsUsdt>> GetFuturesUsdtPositionDetailsBySymbolPairAsync(string symbolPair);
 
 
 
