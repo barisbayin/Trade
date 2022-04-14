@@ -199,15 +199,15 @@ namespace TestConsole
 
 
 
-            //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
+            var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
 
-            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 104.2M);
-            //result7.Wait();
-            //var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
+            var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 99.80M);
+            result7.Wait();
+            var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
             var result8 = binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
             result8.Wait();
             var result9 =
-                binanceAccountInformationApiService.CloseFuturesUsdtPositionMarketOrderAsync("SOLUSDT", "Sell");
+                binanceAccountInformationApiService.CloseFuturesUsdtPositionByMarketOrderAsync("SOLUSDT", "Sell",1.0M,"Long");
             //result7.Wait();
             result9.Wait();
             Console.WriteLine(result9.Result.Message);

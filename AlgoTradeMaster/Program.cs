@@ -133,6 +133,9 @@ namespace AlgoTradeMasterRenko
 
             Console.WriteLine(leverageSet.Message);
 
+            var marginTypeSet = await binanceApiService.SetMarginTypeForFuturesUsdtSymbolPairAsync(tradeParameter.SymbolPair, tradeParameter.MarginType);
+
+            Console.WriteLine(marginTypeSet.Message);
 
             #endregion
 
@@ -191,7 +194,7 @@ namespace AlgoTradeMasterRenko
                     lastRenkoBrick = renkoResults.LastOrDefault();
 
 
-                    decimal currentProfit = 0;
+
 
                     switch (lastRenkoBrick.IsUp)
                     {
@@ -222,7 +225,6 @@ namespace AlgoTradeMasterRenko
 
                                 Console.WriteLine("============================================================================================================================================================");
 
-                                currentProfit = Math.Round(streamData.Close / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
                                 break;
                             }
                         case false:
@@ -252,7 +254,6 @@ namespace AlgoTradeMasterRenko
 
                                 Console.WriteLine("============================================================================================================================================================");
 
-                                currentProfit = Math.Round(streamData.Close / firstFalseRenkoAfterTheLastTrue.Close * 100 - 100, 2);
                                 break;
                             }
                     }
@@ -418,10 +419,47 @@ namespace AlgoTradeMasterRenko
 
                         }
 
+                        if (trueRenkoCount > 4)
+                        {
+                            var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                            if (canceledAllOrders.Success)
+                            {
+                                Console.WriteLine("Number of TRUE bricks exceeded 5. Partially filled orders cancelling: " + canceledAllOrders.Message);
+                                tradeFlow.OrdersStartedToFill = false;
+                                tradeFlow.FollowUpOfOpenPosition = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
+                                Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
+                            }
+
+                        }
+
+                        if (falseRenkoCount > 4)
+                        {
+                            var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                            if (canceledAllOrders.Success)
+                            {
+                                Console.WriteLine("Number of FALSE bricks exceeded 5. Partially filled orders cancelling: " + canceledAllOrders.Message);
+                                tradeFlow.OrdersStartedToFill = false;
+                                tradeFlow.FollowUpOfOpenPosition = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
+                                Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
+                            }
+                        }
+
                     }
 
                     if (tradeFlow.FollowUpOfOpenPosition == true)
                     {
+                        decimal estimatedProfit = 0;
+
                         Console.WriteLine("Trade Status: FOLLOWING OPEN POSITION!");
 
                         var binancePositionDetailsUsdtResult =
@@ -431,16 +469,19 @@ namespace AlgoTradeMasterRenko
 
                         binancePositionDetailsUsdt = binancePositionDetailsUsdtResult.Data;
 
+                        var calculatedEntryPrice =
+                            (binanceFuturesOrder1.AvgPrice * binanceFuturesOrder1.QuantityFilled +
+                             binanceFuturesOrder2.AvgPrice * binanceFuturesOrder2.QuantityFilled) /
+                            (binanceFuturesOrder1.QuantityFilled + binanceFuturesOrder2.QuantityFilled);
+
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.EntryPrice - binancePositionDetailsUsdt.EntryPrice *
-                                tradeParameter.StopLossPercent));
+                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice - calculatedEntryPrice * tradeParameter.StopLossPercent));
                         }
 
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.EntryPrice + binancePositionDetailsUsdt.EntryPrice *
-                                tradeParameter.StopLossPercent));
+                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice + calculatedEntryPrice * tradeParameter.StopLossPercent));
                         }
 
                         Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
@@ -449,11 +490,37 @@ namespace AlgoTradeMasterRenko
                         {
                             Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
 
+                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binanceFuturesOrder1.QuantityFilled + binanceFuturesOrder2.QuantityFilled), symbolPairInformation.QuantityPrecision), "Long");
+
+                            if (stopOrder.Success)
+                            {
+                                Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                tradeFlow.FollowUpOfOpenPosition = false;
+                                tradeFlow.LookingForPosition = true;
+                            }
+
                         }
+
+                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short && streamData.Close >= stoplossPrice)
+                        {
+                            Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(binanceFuturesOrder1.QuantityFilled + binanceFuturesOrder2.QuantityFilled), symbolPairInformation.QuantityPrecision), "Short");
+
+                            if (stopOrder.Success)
+                            {
+                                Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                tradeFlow.FollowUpOfOpenPosition = false;
+                                tradeFlow.LookingForPosition = true;
+                            }
+
+                        }
+
+
                     }
 
 
-                    Console.WriteLine("##########   Current Profit = %" + binancePositionDetailsUsdt.UnrealizedPnl + "   ##########");
+                    Console.WriteLine("##########   Estimated Profit = %" + binancePositionDetailsUsdt.UnrealizedPnl + "   ##########");
                     iteration++;
                     Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
 

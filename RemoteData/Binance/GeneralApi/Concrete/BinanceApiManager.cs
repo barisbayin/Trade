@@ -136,17 +136,29 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                     result.Data.PositionSide + " | " + result.Data.Price + " | " + result.Data.Quantity);
 
             }
-            else
-            {
-                return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
 
         }
 
-        public async Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionMarketOrderAsync(string symbolPair, string orderSide)
+        public async Task<IDataResult<BinanceFuturesCancelAllOrders>> CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(string symbolPair)
+        {
+            var result = await _binanceClient.FuturesUsdt.Order.CancelAllOrdersAsync(symbolPair);
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
+            {
+                return new SuccessDataResult<BinanceFuturesCancelAllOrders>(result.Data,
+                    "Limit Orders Canceled: " + result.Data.Code + " | " + result.Data.Message);
+
+            }
+
+            return new SuccessDataResult<BinanceFuturesCancelAllOrders>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
+        }
+
+        public async Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionByMarketOrderAsync(string symbolPair, string orderSide, decimal quantity,string positionSide)
         {
             var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
-                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.StopMarket, null, null, TimeInForce.GoodTillCancel, null, null, null, null, null, null, null, true, null, null, null, CancellationToken.None);
+                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.Market, quantity, (PositionSide)Enum.Parse(typeof(PositionSide), positionSide),null, null, null, null, null, null, null, null, null, null, null, null, CancellationToken.None);
 
             
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
@@ -156,10 +168,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                     result.Data.PositionSide + " | " + result.Data.Price + " | " + result.Data.Quantity);
 
             }
-            else
-            {
-                return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
         }
 
         public async Task<IResult> SetLeverageForFuturesUsdtSymbolPairAsync(string symbolPair, int leverage)
@@ -170,12 +180,21 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             {
                 return new SuccessResult(RemoteDataMessages.LeverageSet + ": " + result.Data.Symbol + " Leverage: " + result.Data.Leverage);
             }
-            else
-            {
-                return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhileSettingLeverage + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhileSettingLeverage + ": " + result.Error.Code + ": " + result.Error.Message);
         }
 
+        public async Task<IResult> SetMarginTypeForFuturesUsdtSymbolPairAsync(string symbolPair, string marginType)
+        {
+            var result = await _binanceClient.FuturesUsdt.ChangeMarginTypeAsync(symbolPair, (FuturesMarginType)Enum.Parse(typeof(FuturesMarginType), marginType));
+
+            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
+            {
+                return new SuccessResult(RemoteDataMessages.MarginTypeSet + ": " + result.Data.Message);
+            }
+
+            return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhileSettingMarginType + ": " + result.Error.Code + ": " + result.Error.Message);
+        }
 
 
         public async Task<IDataResult<IEnumerable<BinanceFuturesOrder>>> GetFuturesUsdtPlacedOrdersBySymbolPairAsync(string symbolPair)
@@ -185,10 +204,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             {
                 return new SuccessDataResult<IEnumerable<BinanceFuturesOrder>>(result.Data);
             }
-            else
-            {
-                return new ErrorDataResult<IEnumerable<BinanceFuturesOrder>>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new ErrorDataResult<IEnumerable<BinanceFuturesOrder>>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
         }
 
         public async Task<IDataResult<BinanceFuturesOrder>> GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(string symbolPair, long orderId)
@@ -199,10 +216,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             {
                 return new SuccessDataResult<BinanceFuturesOrder>(result.Data);
             }
-            else
-            {
-                return new ErrorDataResult<BinanceFuturesOrder>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new ErrorDataResult<BinanceFuturesOrder>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
         }
 
         public async Task<IDataResult<string>> StartUserDataStreamAsync()
@@ -214,10 +229,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
                 return new SuccessDataResult<string>(result.Data, result.Data);
             }
-            else
-            {
-                return new ErrorDataResult<string>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new ErrorDataResult<string>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
 
         }
 
@@ -231,10 +244,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
                 return new SuccessDataResult<BinancePositionDetailsUsdt>(lastPosition, "Active Position=> Symbol: " + lastPosition.Symbol + " Entry Price: " + lastPosition.EntryPrice + " Quantity: " + lastPosition.Quantity + " Leverage: " + lastPosition.Leverage + " Liquidation Price: " + lastPosition.LiquidationPrice + " PnL: " + lastPosition.UnrealizedPnl + " Isolated Margin:  " + lastPosition.IsolatedMargin);
             }
-            else
-            {
-                return new ErrorDataResult<BinancePositionDetailsUsdt>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
-            }
+
+            return new ErrorDataResult<BinancePositionDetailsUsdt>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
         }
 
         #endregion
@@ -249,10 +260,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             {
                 return new ErrorDataResult<IEnumerable<BinanceFuturesUsdtSymbol>>(RemoteDataMessages.ConnectionFailed);
             }
-            else
-            {
-                return new SuccessDataResult<IEnumerable<BinanceFuturesUsdtSymbol>>(binanceFuturesUsdtSymbolInformationList.Data.Symbols);
-            }
+
+            return new SuccessDataResult<IEnumerable<BinanceFuturesUsdtSymbol>>(binanceFuturesUsdtSymbolInformationList.Data.Symbols);
         }
 
         public async Task<IDataResult<List<string>>> GetBinanceFuturesUsdtSymbolPairsAsync()

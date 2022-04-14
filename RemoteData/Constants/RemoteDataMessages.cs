@@ -17,5 +17,7 @@ namespace RemoteData.Constants
         public static string LeverageSet = "Leverage set";
         public static string AnErrorOccurredWhileSettingLeverage = "An error occurred while changing leverage";
         public static string Error= "Error occurred";
+        public static string MarginTypeSet ="Margin type set";
+        public static string AnErrorOccurredWhileSettingMarginType = "An error occurred while changing margin type";
     }
 }
