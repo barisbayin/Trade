@@ -155,12 +155,12 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             return new SuccessDataResult<BinanceFuturesCancelAllOrders>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
         }
 
-        public async Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionByMarketOrderAsync(string symbolPair, string orderSide, decimal quantity,string positionSide)
+        public async Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionByMarketOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide)
         {
             var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
-                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.Market, quantity, (PositionSide)Enum.Parse(typeof(PositionSide), positionSide),null, null, null, null, null, null, null, null, null, null, null, null, CancellationToken.None);
+                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.Market, quantity, (PositionSide)Enum.Parse(typeof(PositionSide), positionSide), null, null, null, null, null, null, null, null, null, null, null, null, CancellationToken.None);
 
-            
+
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data,
@@ -191,6 +191,11 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessResult(RemoteDataMessages.MarginTypeSet + ": " + result.Data.Message);
+            }
+
+            if (result.ResponseStatusCode == HttpStatusCode.BadRequest && result.Error.Code == -4046)
+            {
+                return new SuccessResult(RemoteDataMessages.MarginTypeSet + ": Margin type already " + marginType);
             }
 
             return new ErrorResult(RemoteDataMessages.AnErrorOccurredWhileSettingMarginType + ": " + result.Error.Code + ": " + result.Error.Message);
