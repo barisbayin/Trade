@@ -273,7 +273,7 @@ namespace AlgoTradeMasterRenko
                         if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("PRICE IS IN LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * 2);
+                            Console.WriteLine("PRICE IS IN LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
 
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.PlacingOrders = true;
@@ -286,7 +286,7 @@ namespace AlgoTradeMasterRenko
                         if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("PRICE IS IN SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 * 2);
+                            Console.WriteLine("PRICE IS IN SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
 
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.PlacingOrders = true;
@@ -305,6 +305,18 @@ namespace AlgoTradeMasterRenko
 
                         if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
+                            var orderQuantityCheck =
+                                (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
+                                    tradeParameter.Leverage / 100) /
+                                (firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 *
+                                    tradeParameter.OrderRangeBrickQuantity) * tradeParameter.OrderQuantity * symbolPairInformation.LotSizeFilterMinQuantity;
+
+                            if (orderQuantityCheck <= 0)
+                            {
+                                Console.WriteLine("Balance is not enough for {0} orders. Order count set 1 ", tradeParameter.OrderQuantity);
+                                tradeParameter.OrderQuantity = 1;
+                            }
+
                             var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(
                                 tradeParameter.SymbolPair, "Buy", "Long", tradeParameter.MaximumBalanceLimit,
                                 tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
@@ -396,16 +408,28 @@ namespace AlgoTradeMasterRenko
 
                         if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
+                            var orderQuantityCheck =
+                                (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
+                                    tradeParameter.Leverage / 100) /
+                                (firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 *
+                                    tradeParameter.OrderRangeBrickQuantity) * tradeParameter.OrderQuantity * symbolPairInformation.LotSizeFilterMinQuantity;
+
+                            if (orderQuantityCheck <= 0)
+                            {
+                                Console.WriteLine("Balance is not enough for {0} orders. Order count set 1 ", tradeParameter.OrderQuantity);
+                                tradeParameter.OrderQuantity = 1;
+                            }
+
                             var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(
                                 tradeParameter.SymbolPair, "Sell", "Short", tradeParameter.MaximumBalanceLimit,
                                 tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
-                                tradeParameter.OrderQuantity, firstTrueRenkoAfterTheLastFalse.Open,
+                                tradeParameter.OrderQuantity, firstFalseRenkoAfterTheLastTrue.Open,
                                 Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
                                 calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
 
 
 
-                            if (orders.Data != null)
+                            if (orders.Data != null && orders.Success)
                             {
 
                                 int i = 1;
@@ -488,7 +512,7 @@ namespace AlgoTradeMasterRenko
                     {
                         Console.WriteLine("Trade Status: CONTROLLING THE PLACED ORDERS TO FILL!");
 
-                        int i = 0;
+                        int i = 1;
 
                         var controlResults = new List<string>();
 
@@ -504,11 +528,13 @@ namespace AlgoTradeMasterRenko
                                     checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
                                     checkedOrder.Data.OrderId, checkedOrder.Data.Status);
                                 controlResults.Add("Filled");
+                                i++;
                             }
                             else
                             {
                                 Console.WriteLine("{0}. Order not filled yet. Control Result=> {1}", i, checkedOrder.Message);
                                 controlResults.Add("NotFilled");
+                                i++;
                             }
 
                         }
