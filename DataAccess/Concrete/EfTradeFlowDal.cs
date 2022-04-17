@@ -6,6 +6,7 @@ using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entity.Concrete.DTOs;
 using Entity.Concrete.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DataAccess.Concrete
 {
@@ -34,6 +35,10 @@ namespace DataAccess.Concrete
                                  MaxAmountPercentage = tp.MaxBalancePercentage,
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumBalanceLimit,
                                  PercentageOfPnlToBeAdded = tp.PercentageOfPnlToBeAdded,
+                                 OrderRangeBrickQuantity = tp.OrderRangeBrickQuantity,
+                                 OrderQuantity = tp.OrderQuantity,
+                                 PriceCalculationMethod = tp.PriceCalculationMethod,
+                                 CancelOrdersAfterBrick = tp.CancelOrdersAfterBrick,
                                  IndicatorName = i.IndicatorName,
                                  Period = ip.Period,
                                  Multiplier = ip.Multiplier,
@@ -54,7 +59,7 @@ namespace DataAccess.Concrete
                                  OrdersStartedToFill = tf.OrdersStartedToFill,
                                  AllOrdersFilled = tf.AllOrdersFilled,
                                  PositionOpened = tf.PositionOpened,
-                                 FollowUpOfOpenPosition = tf.FollowUpOfOpenPosition,
+                                 TrackingOpenPosition = tf.TrackingOpenPosition,
                                  PositionClosedByTakingProfit = tf.PositionClosedByTakingProfit,
                                  PositionClosedByStopLoss = tf.PositionClosedByStopLoss,
                                  PositionClosingTime = tf.PositionClosingTime,
@@ -91,6 +96,10 @@ namespace DataAccess.Concrete
                                  MaxAmountPercentage = tp.MaxBalancePercentage,
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumBalanceLimit,
                                  PercentageOfPnlToBeAdded = tp.PercentageOfPnlToBeAdded,
+                                 OrderRangeBrickQuantity = tp.OrderRangeBrickQuantity,
+                                 OrderQuantity = tp.OrderQuantity,
+                                 PriceCalculationMethod = tp.PriceCalculationMethod,
+                                 CancelOrdersAfterBrick = tp.CancelOrdersAfterBrick,
                                  IndicatorName = i.IndicatorName,
                                  Period = ip.Period,
                                  Multiplier = ip.Multiplier,
@@ -110,7 +119,7 @@ namespace DataAccess.Concrete
                                  OrdersStartedToFill = tf.OrdersStartedToFill,
                                  AllOrdersFilled = tf.AllOrdersFilled,
                                  PositionOpened = tf.PositionOpened,
-                                 FollowUpOfOpenPosition = tf.FollowUpOfOpenPosition,
+                                 TrackingOpenPosition = tf.TrackingOpenPosition,
                                  PositionClosedByTakingProfit = tf.PositionClosedByTakingProfit,
                                  PositionClosedByStopLoss = tf.PositionClosedByStopLoss,
                                  PositionClosingTime = tf.PositionClosingTime,
@@ -145,6 +154,9 @@ namespace DataAccess.Concrete
                                  MaxAmountPercentage = tp.MaxBalancePercentage,
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumBalanceLimit,
                                  PercentageOfPnlToBeAdded = tp.PercentageOfPnlToBeAdded,
+                                 OrderRangeBrickQuantity = tp.OrderRangeBrickQuantity,
+                                 PriceCalculationMethod = tp.PriceCalculationMethod,
+                                 CancelOrdersAfterBrick = tp.CancelOrdersAfterBrick,
                                  InUse = tf.InUse,
                                  IsEnded = tf.IsEnded,
                                  IsSelected = tf.IsSelected,

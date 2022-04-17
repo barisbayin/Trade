@@ -30,7 +30,7 @@ namespace Business.Concrete
 
         public IDataResult<List<BinanceFuturesUsdtSymbolEntity>> GetAllFuturesUsdtSymbolInformation()
         {
-            var result = _binanceFuturesUsdtSymbolDal.GetAll();
+            var result = _binanceFuturesUsdtSymbolDal.GetAll(x => x.MarginAsset == "USDT");
             return new SuccessDataResult<List<BinanceFuturesUsdtSymbolEntity>>(result);
         }
 
@@ -93,7 +93,7 @@ namespace Business.Concrete
 
 
             }
-            Console.WriteLine((await GetAllFuturesUsdtSymbolInformationAsync()).Data.Count+ "Futures Usdt Information " + " " + CommonMessages.Added);
+            Console.WriteLine((await GetAllFuturesUsdtSymbolInformationAsync()).Data.Count + "Futures Usdt Information " + " " + CommonMessages.Added);
 
             return new SuccessResult(CommonMessages.FuturesUsdtSymbolInformationsAddedToDatabase);
 

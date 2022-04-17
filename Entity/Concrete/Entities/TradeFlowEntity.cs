@@ -17,7 +17,7 @@ namespace Entity.Concrete.Entities
         public bool OrdersStartedToFill { get; set; } = false;
         public bool AllOrdersFilled { get; set; } = false;
         public bool PositionOpened { get; set; } = false;
-        public bool FollowUpOfOpenPosition { get; set; } = false;
+        public bool TrackingOpenPosition { get; set; } = false;
         public bool PositionClosedByTakingProfit { get; set; } = false;
         public bool PositionClosedByStopLoss { get; set; } = false;
         public DateTime? PositionClosingTime { get; set; } = null;

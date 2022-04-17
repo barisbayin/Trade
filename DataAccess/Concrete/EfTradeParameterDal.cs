@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
@@ -36,6 +37,10 @@ namespace DataAccess.Concrete
                                  MaxAmountPercentage = tp.MaxBalancePercentage,
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumBalanceLimit,
                                  PercentageOfPnlToBeAdded = tp.PercentageOfPnlToBeAdded,
+                                 OrderRangeBrickQuantity = tp.OrderRangeBrickQuantity,
+                                 OrderQuantity = tp.OrderQuantity,
+                                 PriceCalculationMethod = tp.PriceCalculationMethod,
+                                 CancelOrdersAfterBrick = tp.CancelOrdersAfterBrick,
                                  InUse = tp.InUse,
                                  CreationDate = tp.CreationDate,
                                  ModifiedDate = tp.ModifiedDate

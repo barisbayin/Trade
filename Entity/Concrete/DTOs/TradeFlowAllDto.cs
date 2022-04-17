@@ -18,6 +18,10 @@ namespace Entity.Concrete.DTOs
         public decimal MaxAmountPercentage { get; set; }
         public bool AddPnlToMaxAmountLimit { get; set; }
         public decimal PercentageOfPnlToBeAdded { get; set; }
+        public int OrderRangeBrickQuantity { get; set; }
+        public int OrderQuantity { get; set; }
+        public string PriceCalculationMethod { get; set; }
+        public int CancelOrdersAfterBrick { get; set; }
         public string IndicatorName { get; set; }
         public int Period { get; set; }
         public decimal? Multiplier { get; set; } = 0;
@@ -38,7 +42,7 @@ namespace Entity.Concrete.DTOs
         public bool OrdersStartedToFill { get; set; }
         public bool AllOrdersFilled { get; set; }
         public bool PositionOpened { get; set; }
-        public bool FollowUpOfOpenPosition { get; set; }
+        public bool TrackingOpenPosition { get; set; }
         public bool PositionClosedByTakingProfit { get; set; }
         public bool PositionClosedByStopLoss { get; set; }
         public DateTime? PositionClosingTime { get; set; }

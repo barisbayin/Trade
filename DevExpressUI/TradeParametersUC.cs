@@ -123,6 +123,10 @@ namespace DevExpressUI
                             tradeParameterEntity.MaxBalancePercentage = tbxMaxABalancePercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxABalancePercentage.Text);
                             tradeParameterEntity.AddPnlToMaximumBalanceLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
                             tradeParameterEntity.PercentageOfPnlToBeAdded = tbxPercentageOfPnlToBeAdded.Text == "" ? 0 : Convert.ToDecimal(tbxPercentageOfPnlToBeAdded.Text);
+                            tradeParameterEntity.OrderRangeBrickQuantity = Convert.ToInt32(tbxOrderRangeBrickQuantity.Text);
+                            tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
+                            tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
+                            tradeParameterEntity.CancelOrdersAfterBrick = Convert.ToInt32(tbxCancelOrdersAfterBrick.Text);
 
                             var result = await _tradeParameterService.AddTradeParameterAsync(tradeParameterEntity);
 
@@ -154,6 +158,11 @@ namespace DevExpressUI
                             tradeParameterEntity.MaxBalancePercentage = tbxMaxABalancePercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxABalancePercentage.Text);
                             tradeParameterEntity.AddPnlToMaximumBalanceLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
                             tradeParameterEntity.PercentageOfPnlToBeAdded = tbxPercentageOfPnlToBeAdded.Text == "" ? 0 : Convert.ToDecimal(tbxPercentageOfPnlToBeAdded.Text);
+                            tradeParameterEntity.OrderRangeBrickQuantity = Convert.ToInt32(tbxOrderRangeBrickQuantity.Text);
+                            tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
+                            tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
+                            tradeParameterEntity.CancelOrdersAfterBrick = Convert.ToInt32(tbxCancelOrdersAfterBrick.Text);
+
 
                             var result = await _tradeParameterService.UpdateTradeParameterAsync(tradeParameterEntity);
 
@@ -224,6 +233,10 @@ namespace DevExpressUI
             tbxMaxABalancePercentage.Text = "";
             chckAddPnlToMaxAmountLimit.CheckState = CheckState.Unchecked;
             tbxPercentageOfPnlToBeAdded.Text = "";
+            tbxOrderRangeBrickQuantity.Text = "";
+            cbxOrderQuantity.Text = "";
+            cbxPriceCalculationMethod.Text = "";
+            tbxCancelOrdersAfterBrick.Text = "";
             lblInUse.Text = "";
             lblCreationDate.Text = "";
             lblModifiedDate.Text = "";
@@ -248,6 +261,7 @@ namespace DevExpressUI
                 cbxMarginType.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MarginType"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MarginType"]).ToString();
 
                 cbxLeverage.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["Leverage"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["Leverage"]).ToString();
+
                 tbxStopLossPercent.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["StopLossPercent"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["StopLossPercent"]).ToString();
 
                 tbxMaxBalanceLimit.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountLimit"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["MaxAmountLimit"]).ToString();
@@ -257,6 +271,14 @@ namespace DevExpressUI
                 chckAddPnlToMaxAmountLimit.CheckState = Convert.ToBoolean(gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["AddPnlToMaxAmountLimit"])) == false ? CheckState.Unchecked : CheckState.Checked;
 
                 tbxPercentageOfPnlToBeAdded.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PercentageOfPnlToBeAdded"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PercentageOfPnlToBeAdded"]).ToString();
+
+                tbxOrderRangeBrickQuantity.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["OrderRangeBrickQuantity"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["OrderRangeBrickQuantity"]).ToString();
+
+                cbxOrderQuantity.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["OrderQuantity"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["OrderQuantity"]).ToString();
+
+                cbxPriceCalculationMethod.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PriceCalculationMethod"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PriceCalculationMethod"]).ToString();
+
+                tbxCancelOrdersAfterBrick.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["CancelOrdersAfterBrick"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["CancelOrdersAfterBrick"]).ToString();
 
                 lblInUse.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["InUse"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["InUse"]).ToString();
 

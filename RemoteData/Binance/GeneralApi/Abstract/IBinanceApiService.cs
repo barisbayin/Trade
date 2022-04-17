@@ -10,6 +10,7 @@ using Binance.Net.Objects.Futures.FuturesData;
 using Binance.Net.Objects.Futures.MarketData;
 using Binance.Net.Objects.Spot.MarketData;
 using Binance.Net.Objects.Spot.SpotData;
+using CryptoExchange.Net.Objects;
 using Entity.Concrete.Entities;
 
 namespace RemoteData.Binance.GeneralApi.Abstract
@@ -26,6 +27,8 @@ namespace RemoteData.Binance.GeneralApi.Abstract
         Task<IDataResult<List<string>>> GetBinanceSpotBtcSymbolPairsAsync();
         Task<IDataResult<List<string>>> GetBinanceSpotEthSymbolPairsAsync();
         Task<IDataResult<BinanceFuturesPlacedOrder>> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price);
+        Task<IDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>> PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(string symbolPair, string orderSide, string positionSide, decimal maximumBalanceLimit, decimal maxBalancePercentage, int leverage, int orderCount, decimal minPrice, decimal brickSize, int orderRangeBrickQuantity, int pricePrecision, int quantityPrecision);
+        Task<IDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>> PlaceFuturesUsdtMultipleLimitOrdersByLinearPriceAsync(string symbolPair, string orderSide, string positionSide, decimal maximumBalanceLimit, decimal maxBalancePercentage, int leverage, int orderCount, decimal minPrice, decimal brickSize, int orderRangeBrickQuantity, int pricePrecision, int quantityPrecision);
 
         Task<IDataResult<BinanceFuturesCancelAllOrders>> CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(string symbolPair);
         Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionByMarketOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide);

@@ -13,7 +13,7 @@ namespace RemoteData.Constants
         public static string NullOrZeroData = "There is no data!";
         public static string DataAddedToDatabase = "FuturesUsdt klines added to database!";
         public static string NoKlineData = "There is no kline data!";
-        public static string AnErrorOccurredWhilePlacingOrder = "An error occurred while placing order!";
+        public static string AnErrorOccurredWhilePlacingOrder = "An error occurred while placing order/s!";
         public static string LeverageSet = "Leverage set";
         public static string AnErrorOccurredWhileSettingLeverage = "An error occurred while changing leverage";
         public static string Error= "Error occurred";

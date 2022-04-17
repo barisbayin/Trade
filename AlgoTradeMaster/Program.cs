@@ -15,6 +15,7 @@ using Binance.Net.Interfaces.SubClients.Futures;
 using Binance.Net.Objects;
 using Binance.Net.Objects.Futures.FuturesData;
 using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Objects;
 using DataAccess.Abstract;
 using Entity.Concrete.Entities;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -83,9 +84,9 @@ namespace AlgoTradeMasterRenko
 
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
-            BinanceFuturesOrder binanceFuturesOrder1 = new BinanceFuturesOrder();
-            BinanceFuturesOrder binanceFuturesOrder2 = new BinanceFuturesOrder();
+
             BinancePositionDetailsUsdt binancePositionDetailsUsdt = new BinancePositionDetailsUsdt();
+            List<BinanceFuturesPlacedOrder> binanceFuturesPlacedOrders = new List<BinanceFuturesPlacedOrder>();
 
 
             #endregion
@@ -136,6 +137,10 @@ namespace AlgoTradeMasterRenko
             var marginTypeSet = await binanceApiService.SetMarginTypeForFuturesUsdtSymbolPairAsync(tradeParameter.SymbolPair, tradeParameter.MarginType);
 
             Console.WriteLine(marginTypeSet.Message);
+
+            int calculatedPricePrecision = BitConverter.GetBytes(decimal.GetBits(symbolPairInformation.PriceFilterTickSize / 1.000000000000000000000000000000000m)[3])[2];
+
+
 
             #endregion
 
@@ -259,14 +264,16 @@ namespace AlgoTradeMasterRenko
                     }
 
 
-                    if (tradeFlow.LookingForPosition == true && tradeFlow.PlacingOrders == false && tradeFlow.FollowUpOfOpenPosition == false)
+                    if (tradeFlow.LookingForPosition == true && tradeFlow.PlacingOrders == false && tradeFlow.TrackingOpenPosition == false)
                     {
+                        binanceFuturesPlacedOrders.Clear();
+
                         Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
 
-                        if (trueRenkoCount >= 1 && trueRenkoCount < 3)
+                        if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * 2);
+                            Console.WriteLine("PRICE IS IN LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * 2);
 
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.PlacingOrders = true;
@@ -276,10 +283,10 @@ namespace AlgoTradeMasterRenko
                             tradeFlow.LookingForPosition = true;
                         }
 
-                        if (falseRenkoCount >= 1 && falseRenkoCount < 3)
+                        if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 * 2);
+                            Console.WriteLine("PRICE IS IN SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 * 2);
 
                             tradeFlow.LookingForPosition = false;
                             tradeFlow.PlacingOrders = true;
@@ -291,107 +298,189 @@ namespace AlgoTradeMasterRenko
 
                     }
 
-                    if (tradeFlow.PlacingOrders == true && tradeFlow.FollowUpOfOpenPosition == false)
+                    if (tradeFlow.PlacingOrders == true && tradeFlow.TrackingOpenPosition == false)
                     {
                         Console.WriteLine("Trade Status: PLACING ORDERS!");
 
-                        decimal price1 = 0M;
-                        decimal price2 = 0M;
 
-                        decimal quantity1 = 0M;
-                        decimal quantity2 = 0M;
-
-                        if (trueRenkoCount >= 1 && trueRenkoCount < 3)
+                        if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
-                            price1 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
-                            price2 = Math.Round(Convert.ToDecimal(firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 + indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
-
-                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision);
-                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision);
-
-                            var order1 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
-                                quantity1, "Long", price1);
-                            var order2 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Buy",
-                                quantity2, "Long", price2);
+                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(
+                                tradeParameter.SymbolPair, "Buy", "Long", tradeParameter.MaximumBalanceLimit,
+                                tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
+                                tradeParameter.OrderQuantity, firstTrueRenkoAfterTheLastFalse.Open,
+                                Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
+                                calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
 
 
-                            Console.WriteLine("Order 1: " + order1.Message);
-                            Console.WriteLine("Order 2: " + order2.Message);
 
-                            Console.WriteLine("Placed orders controlling...");
-
-                            var checkOrder1 = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order1.Data.OrderId));
-
-                            var checkOrder2 =
-                                (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                    tradeParameter.SymbolPair, binanceFuturesOrder2.OrderId));
-
-                            if (checkOrder1.Success && checkOrder2.Success)
+                            if (orders.Data != null && orders.Success)
                             {
-                                binanceFuturesOrder1 = checkOrder1.Data;
-                                binanceFuturesOrder2 = checkOrder2.Data;
 
-                                Console.WriteLine("Placed Orders Control Result => ORDER ID-1: {0}, ORDER ID-2: {1}", binanceFuturesOrder1.OrderId, binanceFuturesOrder2.OrderId);
-                            }
+                                int i = 1;
+
+                                foreach (var order in orders.Data)
+                                {
+                                    binanceFuturesPlacedOrders.Add(order.Data);
+
+                                    Console.WriteLine(
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
+                                        order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
+                                        order.Data.OrderId, order.Data.Status);
+                                    i++;
+                                }
+
+                                Console.WriteLine("Placed orders are controlling...");
+
+                                int j = 1;
+
+                                List<string> controlResults = new List<string>();
+
+                                foreach (var order in orders.Data)
+                                {
+
+                                    var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
+
+                                    if (checkedOrder.Data != null)
+                                    {
+                                        Console.WriteLine(
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                            checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                            checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+                                        controlResults.Add("Success");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
+                                        controlResults.Add("Error");
+                                    }
+
+                                }
+
+                                var controlDecision = controlResults.Any(x => x == "Error");
+
+                                if (controlDecision == false)
+                                {
+                                    controlResults.Clear();
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.OrdersStartedToFill = true;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("One or more problems with placed orders. Please check manually.");
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.LookingForPosition = true;
+                                }
 
 
-                            if (order1.Success && order2.Success && checkOrder1.Success && checkOrder1.Success)
-                            {
-                                tradeFlow.PlacingOrders = false;
-                                tradeFlow.OrdersStartedToFill = true;
                             }
                             else
                             {
+                                Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
+                                int i = 1;
+                                foreach (var data in orders.Data)
+                                {
+                                    Console.WriteLine("Order-{0} :" + data.Error.Code + ": " + data.Error.Message, i);
+                                    i++;
+                                }
                                 tradeFlow.PlacingOrders = false;
                                 tradeFlow.LookingForPosition = true;
+
                             }
+
                         }
 
 
 
-                        if (falseRenkoCount >= 1 && falseRenkoCount < 3)
+                        if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
-                            price1 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
-                            price2 = Math.Round(Convert.ToDecimal(firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 - indicatorParameter.Parameter1 / 2), symbolPairInformation.PricePrecision);
+                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(
+                                tradeParameter.SymbolPair, "Sell", "Short", tradeParameter.MaximumBalanceLimit,
+                                tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
+                                tradeParameter.OrderQuantity, firstTrueRenkoAfterTheLastFalse.Open,
+                                Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
+                                calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
 
-                            quantity1 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price1), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
-                            quantity2 = Math.Round(Convert.ToDecimal(tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage * tradeParameter.Leverage / 2 / price2), symbolPairInformation.QuantityPrecision, MidpointRounding.ToZero);
 
-                            var order1 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
-                                quantity1, "Short", price1);
-                            var order2 = await binanceApiService.PlaceFuturesUsdtLimitOrderAsync(tradeParameter.SymbolPair, "Sell",
-                                quantity2, "Short", price2);
 
-                            Console.WriteLine("Order 1: " + order1.Message);
-                            Console.WriteLine("Order 2: " + order2.Message);
-
-                            Console.WriteLine("Placed orders controlling...");
-
-                            var checkOrder1 = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order1.Data.OrderId));
-
-                            var checkOrder2 =
-                                (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                    tradeParameter.SymbolPair, binanceFuturesOrder2.OrderId));
-
-                            if (checkOrder1.Success && checkOrder2.Success)
+                            if (orders.Data != null)
                             {
-                                binanceFuturesOrder1 = checkOrder1.Data;
-                                binanceFuturesOrder2 = checkOrder2.Data;
 
-                                Console.WriteLine("Placed Orders Control Result => ORDER ID-1: {0}, ORDER ID-2: {1}", binanceFuturesOrder1.OrderId, binanceFuturesOrder2.OrderId);
-                            }
+                                int i = 1;
+
+                                foreach (var order in orders.Data)
+                                {
+                                    binanceFuturesPlacedOrders.Add(order.Data);
+
+                                    Console.WriteLine(
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
+                                        order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
+                                        order.Data.OrderId, order.Data.Status);
+                                    i++;
+                                }
+
+                                Console.WriteLine("Placed orders are controlling...");
+
+                                int j = 1;
+
+                                var controlResults = new List<string>();
+
+                                foreach (var order in orders.Data)
+                                {
+
+                                    var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
+
+                                    if (checkedOrder.Data != null)
+                                    {
+                                        Console.WriteLine(
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                            checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                            checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+                                        controlResults.Add("Success");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
+                                        controlResults.Add("Error");
+                                    }
+
+                                }
+
+                                var controlDecision = controlResults.Any(x => x == "Error");
+
+                                if (controlDecision == false)
+                                {
+                                    controlResults.Clear();
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.OrdersStartedToFill = true;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.LookingForPosition = true;
+                                }
 
 
-                            if (order1.Success && order2.Success && checkOrder1.Success && checkOrder1.Success)
-                            {
-                                tradeFlow.PlacingOrders = false;
-                                tradeFlow.OrdersStartedToFill = true;
                             }
                             else
                             {
+                                Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
+                                int i = 1;
+                                foreach (var data in orders.Data)
+                                {
+                                    Console.WriteLine("Order-{0} :" + data.Error.Code + ": " + data.Error.Message, i);
+                                    i++;
+                                }
                                 tradeFlow.PlacingOrders = false;
                                 tradeFlow.LookingForPosition = true;
+
                             }
+
                         }
                     }
 
@@ -399,35 +488,58 @@ namespace AlgoTradeMasterRenko
                     {
                         Console.WriteLine("Trade Status: CONTROLLING THE PLACED ORDERS TO FILL!");
 
-                        binanceFuturesOrder1 =
-                            (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                tradeParameter.SymbolPair, binanceFuturesOrder1.OrderId)).Data;
-                        binanceFuturesOrder2 =
-                            (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                tradeParameter.SymbolPair, binanceFuturesOrder2.OrderId)).Data;
+                        int i = 0;
 
-                        Console.WriteLine("Order Id: {0}, SymbolPair: {1}, Price: {2}, Quantity: {3}, Filled Quantity: {4}, Status: {5}", binanceFuturesOrder1.OrderId, binanceFuturesOrder1.Symbol, binanceFuturesOrder1.Price, binanceFuturesOrder1.Quantity, binanceFuturesOrder1.QuantityFilled, binanceFuturesOrder2.Status.ToString());
-                        Console.WriteLine("Order Id: {0}, SymbolPair: {1}, Price: {2}, Quantity: {3}, Filled Quantity: {4}, Status: {5}", binanceFuturesOrder2.OrderId, binanceFuturesOrder2.Symbol, binanceFuturesOrder2.Price, binanceFuturesOrder2.Quantity, binanceFuturesOrder2.QuantityFilled, binanceFuturesOrder2.Status.ToString());
+                        var controlResults = new List<string>();
 
-
-
-                        if (binanceFuturesOrder1.Status == OrderStatus.Filled && binanceFuturesOrder2.Status == OrderStatus.Filled)
+                        foreach (var placedOrder in binanceFuturesPlacedOrders)
                         {
-                            tradeFlow.OrdersStartedToFill = false;
-                            tradeFlow.FollowUpOfOpenPosition = true;
-                            Console.WriteLine("All orders filled! Let's follow the position!");
+                            var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
+
+                            if (checkedOrder.Data != null && checkedOrder.Data.Status == OrderStatus.Filled)
+                            {
+                                Console.WriteLine(
+                                    "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                    i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                    checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                    checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+                                controlResults.Add("Filled");
+                            }
+                            else
+                            {
+                                Console.WriteLine("{0}. Order not filled yet. Control Result=> {1}", i, checkedOrder.Message);
+                                controlResults.Add("NotFilled");
+                            }
 
                         }
 
-                        if (trueRenkoCount > 4)
+
+                        var controlDecision = controlResults.Any(x => x == "NotFilled");
+
+                        if (controlDecision == false)
+                        {
+                            controlResults.Clear();
+                            Console.WriteLine("All orders filled! Let's follow the position!");
+                            tradeFlow.OrdersStartedToFill = false;
+                            tradeFlow.TrackingOpenPosition = true;
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("{0} order/s not filled. Waiting them to fill.", controlResults.Count(x => x == "NotFilled"));
+                            controlResults.Clear();
+                        }
+
+
+                        if (trueRenkoCount > tradeParameter.CancelOrdersAfterBrick)
                         {
                             var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
 
                             if (canceledAllOrders.Success)
                             {
-                                Console.WriteLine("Number of TRUE bricks exceeded 5. Partially filled orders cancelling: " + canceledAllOrders.Message);
+                                Console.WriteLine("Number of TRUE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
                                 tradeFlow.OrdersStartedToFill = false;
-                                tradeFlow.FollowUpOfOpenPosition = true;
+                                tradeFlow.TrackingOpenPosition = true;
                             }
                             else
                             {
@@ -437,15 +549,15 @@ namespace AlgoTradeMasterRenko
 
                         }
 
-                        if (falseRenkoCount > 4)
+                        if (falseRenkoCount > tradeParameter.CancelOrdersAfterBrick)
                         {
                             var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
 
                             if (canceledAllOrders.Success)
                             {
-                                Console.WriteLine("Number of FALSE bricks exceeded 5. Partially filled orders cancelling: " + canceledAllOrders.Message);
+                                Console.WriteLine("Number of FALSE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
                                 tradeFlow.OrdersStartedToFill = false;
-                                tradeFlow.FollowUpOfOpenPosition = true;
+                                tradeFlow.TrackingOpenPosition = true;
                             }
                             else
                             {
@@ -456,23 +568,35 @@ namespace AlgoTradeMasterRenko
 
                     }
 
-                    if (tradeFlow.FollowUpOfOpenPosition == true)
+                    if (tradeFlow.TrackingOpenPosition == true)
                     {
-                        decimal estimatedProfit = 0;
+                        var estimatedProfit = 0M;
 
-                        Console.WriteLine("Trade Status: FOLLOWING OPEN POSITION!");
+                        Console.WriteLine("Trade Status: TRACKING OPEN POSITION!");
 
-                        var binancePositionDetailsUsdtResult =
-                            await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
+                        var binancePositionDetailsUsdtResult = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
 
                         Console.WriteLine(binancePositionDetailsUsdtResult.Message);
 
                         binancePositionDetailsUsdt = binancePositionDetailsUsdtResult.Data;
 
-                        var calculatedEntryPrice =
-                            (binanceFuturesOrder1.AvgPrice * binanceFuturesOrder1.QuantityFilled +
-                             binanceFuturesOrder2.AvgPrice * binanceFuturesOrder2.QuantityFilled) /
-                            (binanceFuturesOrder1.QuantityFilled + binanceFuturesOrder2.QuantityFilled);
+
+                        var totalPositionSize = 0M;
+                        var totalFilledQuantity = 0M;
+
+                        foreach (var placedOrder in binanceFuturesPlacedOrders)
+                        {
+
+                            var perFilledOrderSize = placedOrder.AvgPrice * placedOrder.QuantityFilled;
+                            var perFilledQuantity = placedOrder.QuantityFilled;
+
+                            totalPositionSize = totalPositionSize + perFilledOrderSize;
+                            totalFilledQuantity = totalFilledQuantity + perFilledQuantity;
+
+                        }
+
+                        var calculatedEntryPrice = totalPositionSize / totalFilledQuantity;
+
 
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long)
                         {
@@ -486,16 +610,17 @@ namespace AlgoTradeMasterRenko
 
                         Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
+
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long && streamData.Close <= stoplossPrice)
                         {
                             Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
 
-                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binanceFuturesOrder1.QuantityFilled + binanceFuturesOrder2.QuantityFilled), symbolPairInformation.QuantityPrecision), "Long");
+                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Long");
 
                             if (stopOrder.Success)
                             {
                                 Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                tradeFlow.FollowUpOfOpenPosition = false;
+                                tradeFlow.TrackingOpenPosition = false;
                                 tradeFlow.LookingForPosition = true;
                             }
 
@@ -505,16 +630,29 @@ namespace AlgoTradeMasterRenko
                         {
                             Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
 
-                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(binanceFuturesOrder1.QuantityFilled + binanceFuturesOrder2.QuantityFilled), symbolPairInformation.QuantityPrecision), "Short");
+                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
 
                             if (stopOrder.Success)
                             {
                                 Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                tradeFlow.FollowUpOfOpenPosition = false;
+                                tradeFlow.TrackingOpenPosition = false;
                                 tradeFlow.LookingForPosition = true;
                             }
 
                         }
+
+                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long && streamData.Close >= stoplossPrice)
+                        {
+
+
+                        }
+
+                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short && streamData.Close <= stoplossPrice)
+                        {
+
+
+                        }
+
 
 
                     }
