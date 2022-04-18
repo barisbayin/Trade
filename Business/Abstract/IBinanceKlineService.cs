@@ -16,7 +16,7 @@ namespace Business.Abstract
         IResult DeleteFuturesUsdtKlinesBySymbolPairAndInterval(string symbolPair, string interval);
         IResult DeleteFuturesUsdtKlinesBySymbolPairAndMultiInterval(string symbolPair, List<string> intervalList);
         IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicator(
-            string symbolPair, string interval);
+            string symbolPair, string interval, int? dataCount);
 
         //Async methods...
         Task<IResult> AddOneFuturesUsdtKlineToDatabaseAsync(BinanceFuturesUsdtKlineEntity binanceFuturesUsdtKlineEntity);
@@ -28,7 +28,7 @@ namespace Business.Abstract
         Task<IDataResult<DateTime>> GetFuturesUsdtKlineLastOpenTimeBySymbolPairAndIntervalAsync(string symbolPair, string interval);
         Task<IDataResult<List<BinanceFuturesUsdtKlineEntity>>> GetFuturesUsdtKlinesBySymbolPairAndMultiIntervalsAsync(string symbolPair, List<string> intervalList);
         Task<IResult> CheckIfDatabaseHasFuturesUsdtKlineDataForTheSymbolPairAsync(string symbolPair, string interval);
-        Task<IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval);
+        Task<IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval, int? dataCount);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.DataAccess.EntityFramework;
+﻿using System;
+using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entity.Concrete.DTOs;
 using Entity.Concrete.Entities;
@@ -10,7 +11,7 @@ namespace DataAccess.Concrete
 {
     public class EfBinanceFuturesUsdtKlineDal : EfEntityRepositoryBase<BinanceFuturesUsdtKlineEntity, TradeContext>, IBinanceFuturesUsdtKlineDal
     {
-        public IEnumerable<CurrencyKlineToCalculateIndicatorDto> GetCurrencyKlinesToCalculateIndicator(string symbolPair, string interval)
+        public IEnumerable<CurrencyKlineToCalculateIndicatorDto> GetCurrencyKlinesToCalculateIndicator(string symbolPair, string interval, int? dataCount)
         {
             using (TradeContext context = new TradeContext())
             {
@@ -26,12 +27,13 @@ namespace DataAccess.Concrete
                         Close = c.Close,
                         Volume = c.BaseVolume
                     };
-                return result.OrderBy(c => c.Open).ToList();
 
+                return dataCount == null || dataCount == 0 ? result.OrderBy(c => c.Date).ToList() : result.OrderBy(c => c.Date).Take(Convert.ToInt32(dataCount)).ToList();
             }
         }
 
-        public async Task<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval)
+        public async Task<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicatorAsync(
+            string symbolPair, string interval, int? dataCount)
         {
 
             TradeContext context = new TradeContext();
@@ -47,7 +49,7 @@ namespace DataAccess.Concrete
                     Volume = c.BaseVolume
                 };
 
-            return result.OrderBy(c => c.Date).ToList();
+            return dataCount == null || dataCount == 0 ? result.OrderBy(c => c.Date).ToList() : result.OrderByDescending(c => c.Date).Take(Convert.ToInt32(dataCount)).ToList();
         }
     }
 }

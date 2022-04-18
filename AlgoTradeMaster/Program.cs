@@ -116,16 +116,16 @@ namespace AlgoTradeMasterRenko
             var accountInfo = (await binanceApiService.GetFuturesUsdtAccountInformationAsync()).Data;
 
 
-            //if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
-            //{
-            //    Console.ForegroundColor = ConsoleColor.Red;
+            if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
 
-            //    Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
-            //    Console.WriteLine("The available balance is less than the maximum balance selected for this trade. Please increase balance or decrease maximum trade balance limit.");
+                Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
+                Console.WriteLine("The available balance is less than the maximum balance selected for this trade. \nPlease increase balance or decrease maximum trade balance limit.");
 
-            //    Console.ReadLine();
-            //    return;
-            //}
+                Console.ReadLine();
+                return;
+            }
 
 
             Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
@@ -177,6 +177,12 @@ namespace AlgoTradeMasterRenko
 
             long iteration = 0;
             decimal stoplossPrice = 0;
+
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALL CONTROLS DONE! LET'S START TRADE!   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            tradeFlow.TradeStarted = true;
+            tradeFlow.TradeStartTime = DateTime.Now;
+            await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
 
             while (tradeFlow.InUse == true)
             {
@@ -439,7 +445,7 @@ namespace AlgoTradeMasterRenko
                                     binanceFuturesPlacedOrders.Add(order.Data);
 
                                     Console.WriteLine(
-                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \n           Side/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
                                         i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
                                         order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
                                         order.Data.OrderId, order.Data.Status);
@@ -460,7 +466,7 @@ namespace AlgoTradeMasterRenko
                                     if (checkedOrder.Data != null)
                                     {
                                         Console.WriteLine(
-                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
                                             j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
                                             checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
                                             checkedOrder.Data.OrderId, checkedOrder.Data.Status);
@@ -523,7 +529,7 @@ namespace AlgoTradeMasterRenko
                             if (checkedOrder.Data != null && checkedOrder.Data.Status == OrderStatus.Filled)
                             {
                                 Console.WriteLine(
-                                    "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                    "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
                                     i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
                                     checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
                                     checkedOrder.Data.OrderId, checkedOrder.Data.Status);
@@ -624,67 +630,101 @@ namespace AlgoTradeMasterRenko
                         var calculatedEntryPrice = totalPositionSize / totalFilledQuantity;
 
 
+
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice - calculatedEntryPrice * tradeParameter.StopLossPercent));
+                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice - calculatedEntryPrice * tradeParameter.StopLossPercent / 100));
+
+                            Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
+
+                            if (streamData.Close <= stoplossPrice)
+                            {
+                                Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                                var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Long");
+
+                                if (stopOrder.Success)
+                                {
+                                    Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                    tradeFlow.TrackingOpenPosition = false;
+                                    tradeFlow.LookingForPosition = true;
+                                }
+
+                            }
+
+                            if (streamData.Close > stoplossPrice)
+                            {
+                                if (trueRenkoCount == -1 && falseRenkoCount > -1)
+                                {
+                                    Console.WriteLine("Trend turns from long to short. Position will be closed!");
+
+                                    var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Long");
+
+
+                                    var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                                    if (positionCloseOrder.Success && binancePositionDetailsUsdtControl.Data == null)
+                                    {
+                                        tradeFlow.TrackingOpenPosition = false;
+                                        tradeFlow.LookingForPosition = true;
+                                    }
+                                }
+
+                            }
+
+                            estimatedProfit = Math.Round((binancePositionDetailsUsdt.MarkPrice / calculatedEntryPrice - 1) * 100, 2);
+
+                            Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + "   ##########");
+
                         }
 
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice + calculatedEntryPrice * tradeParameter.StopLossPercent));
-                        }
+                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice + calculatedEntryPrice * tradeParameter.StopLossPercent / 100));
 
-                        Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
+                            Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
-
-                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long && streamData.Close <= stoplossPrice)
-                        {
-                            Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
-
-                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Long");
-
-                            if (stopOrder.Success)
+                            if (streamData.Close >= stoplossPrice)
                             {
-                                Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                tradeFlow.TrackingOpenPosition = false;
-                                tradeFlow.LookingForPosition = true;
+                                Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                                var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
+
+                                if (stopOrder.Success)
+                                {
+                                    Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                    tradeFlow.TrackingOpenPosition = false;
+                                    tradeFlow.LookingForPosition = true;
+                                }
+
                             }
 
-                        }
-
-                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short && streamData.Close >= stoplossPrice)
-                        {
-                            Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
-
-                            var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
-
-                            if (stopOrder.Success)
+                            if (streamData.Close < stoplossPrice)
                             {
-                                Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                tradeFlow.TrackingOpenPosition = false;
-                                tradeFlow.LookingForPosition = true;
+                                Console.WriteLine("Trend turns from short to long. Position will be closed!");
+
+                                var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
+
+
+                                var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                                if (positionCloseOrder.Success && binancePositionDetailsUsdtControl.Data == null)
+                                {
+                                    tradeFlow.TrackingOpenPosition = false;
+                                    tradeFlow.LookingForPosition = true;
+                                }
+
                             }
 
-                        }
+                            estimatedProfit = Math.Round((1 - binancePositionDetailsUsdt.MarkPrice / calculatedEntryPrice) * 100, 2);
 
-                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long && streamData.Close >= stoplossPrice)
-                        {
-
+                            Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + "   ##########");
 
                         }
-
-                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short && streamData.Close <= stoplossPrice)
-                        {
-
-
-                        }
-
-
 
                     }
 
 
-                    Console.WriteLine("##########   Estimated Profit = %" + binancePositionDetailsUsdt.UnrealizedPnl + "   ##########");
                     iteration++;
                     Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
 

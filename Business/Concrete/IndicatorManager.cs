@@ -54,7 +54,7 @@ namespace Business.Concrete
 
             Console.WriteLine("SuperTrend Parameters => ATR Period: {0}, Multiplier: {1}", indicatorParameter.Period, indicatorParameter.Multiplier);
 
-            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval).Result.Data;
+            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval, Convert.ToInt32(indicatorParameter.Parameter2)).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 
@@ -122,7 +122,7 @@ namespace Business.Concrete
 
             Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", indicatorParameter.Parameter1, indicatorParameter.KlineEndType);
 
-            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval).Result.Data;
+            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval, Convert.ToInt32(indicatorParameter.Parameter2)).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 
@@ -162,7 +162,7 @@ namespace Business.Concrete
 
             Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1},ST_Period: {2}, ST_Multiplier: {3} ", renkoSuperTrendParameters.Parameter1, renkoSuperTrendParameters.KlineEndType, renkoSuperTrendParameters.Period, renkoSuperTrendParameters.Multiplier.Value);
 
-            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval).Result.Data;
+            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval,Convert.ToInt32(renkoSuperTrendParameters.Parameter2)).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 

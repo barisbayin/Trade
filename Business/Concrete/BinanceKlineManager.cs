@@ -98,9 +98,9 @@ namespace Business.Concrete
             return new SuccessResult(CommonMessages.FuturesUsdtKlinesAddedToDatabase);
         }
 
-        public IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicator(string symbolPair, string interval)
+        public IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicator(string symbolPair, string interval, int? dataCount)
         {
-            return new SuccessDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>(_binanceFuturesUsdtKlineDal.GetCurrencyKlinesToCalculateIndicator(symbolPair, interval));
+            return new SuccessDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>(_binanceFuturesUsdtKlineDal.GetCurrencyKlinesToCalculateIndicator(symbolPair, interval, dataCount));
         }
 
         public async Task<IResult> AddOneFuturesUsdtKlineToDatabaseAsync(BinanceFuturesUsdtKlineEntity binanceFuturesUsdtKlineEntity)
@@ -168,9 +168,9 @@ namespace Business.Concrete
             }
         }
 
-        public async Task<IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval)
+        public async Task<IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval, int? dataCount)
         {
-            var result = await _binanceFuturesUsdtKlineDal.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval);
+            var result = await _binanceFuturesUsdtKlineDal.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval, dataCount);
             return new SuccessDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>(result);
         }
 

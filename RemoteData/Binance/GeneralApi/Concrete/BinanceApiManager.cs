@@ -257,6 +257,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 List<string> controlResults = new List<string>();
+
                 foreach (var data in result.Data)
                 {
 
@@ -300,7 +301,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data,
-                    "Limit Order Placed: " + result.Data.Symbol + " | " + result.Data.Side + " | " +
+                    "Close Market Order Placed: " + result.Data.Symbol + " | " + result.Data.Side + " | " +
                     result.Data.PositionSide + " | " + result.Data.Price + " | " + result.Data.Quantity);
 
             }

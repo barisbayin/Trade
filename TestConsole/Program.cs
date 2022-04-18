@@ -199,18 +199,18 @@ namespace TestConsole
 
 
 
-            var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
+            //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
 
-            var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 99.80M);
-            result7.Wait();
-            var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
-            var result8 = binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
-            result8.Wait();
-            var result9 =
-                binanceAccountInformationApiService.CloseFuturesUsdtPositionByMarketOrderAsync("SOLUSDT", "Sell",1.0M,"Long");
+            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 99.80M);
             //result7.Wait();
-            result9.Wait();
-            Console.WriteLine(result9.Result.Message);
+            //var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
+            //var result8 = binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
+            //result8.Wait();
+            //var result9 =
+            //    binanceAccountInformationApiService.CloseFuturesUsdtPositionByMarketOrderAsync("SOLUSDT", "Sell",1.0M,"Long");
+            //result7.Wait();
+            //result9.Wait();
+            //Console.WriteLine(result9.Result.Message);
 
             //BinanceClient binanceClient = new BinanceClient();
             //binanceClient.SetApiCredentials("xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy", "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM");
@@ -241,7 +241,10 @@ namespace TestConsole
             }
 
             */
+            Console.WriteLine("test test alt \n satır testi");
 
+            Console.WriteLine(
+                "Placed Order- Control Result=> OrderId:  | Status:  | SymbolPair:  | Price/AvgPrice: / \n                               Quantity/QuantityFilled / | Side/PositionSide: /");
             var sayi = Math.Round(1.2568336994M, 4, MidpointRounding.ToZero);
             Console.WriteLine(sayi);
             Console.ReadLine();

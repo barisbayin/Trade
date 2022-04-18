@@ -12,8 +12,8 @@ namespace DataAccess.Abstract
     public interface IBinanceFuturesUsdtKlineDal : IEntityRepository<BinanceFuturesUsdtKlineEntity>
     {
         IEnumerable<CurrencyKlineToCalculateIndicatorDto> GetCurrencyKlinesToCalculateIndicator(string symbolPair,
-            string interval);
+            string interval, int? dataCount);
         Task<IEnumerable<CurrencyKlineToCalculateIndicatorDto>> GetCurrencyKlinesToCalculateIndicatorAsync(
-            string symbolPair, string interval);
+            string symbolPair, string interval, int? dataCount);
     }
 }
