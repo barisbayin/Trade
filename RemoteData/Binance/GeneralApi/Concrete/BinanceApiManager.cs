@@ -70,21 +70,23 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                     {
                         foreach (var data in dataResult.Data)
                         {
-                            var binanceFuturesUsdtKlineEntity = new BinanceFuturesUsdtKlineEntity();
+                            var binanceFuturesUsdtKlineEntity = new BinanceFuturesUsdtKlineEntity
+                            {
+                                SymbolPair = symbolPair,
+                                KlineInterval = interval.ToString(),
+                                OpenTime = data.OpenTime,
+                                Open = data.Open,
+                                High = data.High,
+                                Low = data.Low,
+                                Close = data.Close,
+                                BaseVolume = data.BaseVolume,
+                                CloseTime = data.CloseTime,
+                                QuoteVolume = data.QuoteVolume,
+                                TradeCount = data.TradeCount,
+                                TakerBuyBaseVolume = data.TakerBuyBaseVolume,
+                                TakerBuyQuoteVolume = data.TakerBuyQuoteVolume
+                            };
 
-                            binanceFuturesUsdtKlineEntity.SymbolPair = symbolPair;
-                            binanceFuturesUsdtKlineEntity.KlineInterval = interval.ToString();
-                            binanceFuturesUsdtKlineEntity.OpenTime = data.OpenTime;
-                            binanceFuturesUsdtKlineEntity.Open = data.Open;
-                            binanceFuturesUsdtKlineEntity.High = data.High;
-                            binanceFuturesUsdtKlineEntity.Low = data.Low;
-                            binanceFuturesUsdtKlineEntity.Close = data.Close;
-                            binanceFuturesUsdtKlineEntity.BaseVolume = data.BaseVolume;
-                            binanceFuturesUsdtKlineEntity.CloseTime = data.CloseTime;
-                            binanceFuturesUsdtKlineEntity.QuoteVolume = data.QuoteVolume;
-                            binanceFuturesUsdtKlineEntity.TradeCount = data.TradeCount;
-                            binanceFuturesUsdtKlineEntity.TakerBuyBaseVolume = data.TakerBuyBaseVolume;
-                            binanceFuturesUsdtKlineEntity.TakerBuyQuoteVolume = data.TakerBuyQuoteVolume;
 
                             specificKlineList.Add(binanceFuturesUsdtKlineEntity);
                         }
