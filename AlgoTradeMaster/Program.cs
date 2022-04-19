@@ -383,7 +383,7 @@ namespace AlgoTradeMasterRenko
                                         Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
                                         controlResults.Add("Error");
                                     }
-                                    
+
                                 }
 
                                 var controlDecision = controlResults.Any(x => x == "Error");
@@ -544,10 +544,13 @@ namespace AlgoTradeMasterRenko
 
                         foreach (var placedOrder in binanceFuturesPlacedOrders)
                         {
+                            Thread.Sleep(500);
+
                             var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
 
-                            if (checkedOrder.Data != null && checkedOrder.Data.Status == OrderStatus.Filled)
+                            if (checkedOrder.Data is { Status: OrderStatus.Filled })
                             {
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine(
                                     "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
                                     i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
@@ -558,7 +561,8 @@ namespace AlgoTradeMasterRenko
                             }
                             else
                             {
-                                Console.WriteLine("{0}. Order not filled yet. Control Result=> {1}", i, checkedOrder.Message);
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("OrderId: {0} is not filled yet. Control Result=> {1}", checkedOrder.Data.OrderId, checkedOrder.Message);
                                 controlResults.Add("NotFilled");
                                 i++;
                             }
@@ -571,13 +575,16 @@ namespace AlgoTradeMasterRenko
                         if (controlDecision == false)
                         {
                             controlResults.Clear();
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("All orders filled! Let's follow the position!");
                             tradeFlow.OrdersStartedToFill = false;
                             tradeFlow.TrackingOpenPosition = true;
 
+
                         }
                         else
                         {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("{0} order/s not filled. Waiting them to fill.", controlResults.Count(x => x == "NotFilled"));
                             controlResults.Clear();
                         }
@@ -589,12 +596,14 @@ namespace AlgoTradeMasterRenko
 
                             if (canceledAllOrders.Success)
                             {
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("Number of TRUE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
                                 tradeFlow.OrdersStartedToFill = false;
                                 tradeFlow.TrackingOpenPosition = true;
                             }
                             else
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
                                 Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
                             }
@@ -607,17 +616,19 @@ namespace AlgoTradeMasterRenko
 
                             if (canceledAllOrders.Success)
                             {
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("Number of FALSE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
                                 tradeFlow.OrdersStartedToFill = false;
                                 tradeFlow.TrackingOpenPosition = true;
                             }
                             else
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
                                 Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
                             }
                         }
-
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
 
                     if (tradeFlow.TrackingOpenPosition == true)
@@ -642,8 +653,8 @@ namespace AlgoTradeMasterRenko
                             var perFilledOrderSize = placedOrder.AvgPrice * placedOrder.QuantityFilled;
                             var perFilledQuantity = placedOrder.QuantityFilled;
 
-                            totalPositionSize = totalPositionSize + perFilledOrderSize;
-                            totalFilledQuantity = totalFilledQuantity + perFilledQuantity;
+                            totalPositionSize += perFilledOrderSize;
+                            totalFilledQuantity += perFilledQuantity;
 
                         }
 
@@ -655,19 +666,30 @@ namespace AlgoTradeMasterRenko
                         {
                             stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice - calculatedEntryPrice * tradeParameter.StopLossPercent / 100));
 
-                            Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
+                            Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
                             if (streamData.Close <= stoplossPrice)
                             {
+                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+
                                 Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                                Thread.Sleep(500);
 
                                 var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Long");
 
-                                if (stopOrder.Success)
+                                if (stopOrder.Success && stopOrder.Data.Status == OrderStatus.Filled)
                                 {
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
                                     tradeFlow.TrackingOpenPosition = false;
                                     tradeFlow.LookingForPosition = true;
+
+                                    Thread.Sleep(500);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Something wrong with stop order, PLEASE CHECK MANUALLY!! MESSAGE => " + stopOrder.Message);
                                 }
 
                             }
@@ -683,8 +705,11 @@ namespace AlgoTradeMasterRenko
 
                                     var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
 
-                                    if (positionCloseOrder.Success && binancePositionDetailsUsdtControl.Data == null)
+                                    if (positionCloseOrder.Success && positionCloseOrder.Data.Status == OrderStatus.Filled)
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Magenta;
+                                        Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
+                                        Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
                                         tradeFlow.TrackingOpenPosition = false;
                                         tradeFlow.LookingForPosition = true;
                                     }
@@ -694,27 +719,39 @@ namespace AlgoTradeMasterRenko
 
                             estimatedProfit = Math.Round((binancePositionDetailsUsdt.MarkPrice / calculatedEntryPrice - 1) * 100, 2);
 
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + "   ##########");
-
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
 
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short)
                         {
                             stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice + calculatedEntryPrice * tradeParameter.StopLossPercent / 100));
 
-                            Console.WriteLine("Stoploss Percent: {0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
+                            Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
                             if (streamData.Close >= stoplossPrice)
                             {
+                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+
                                 Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                                Thread.Sleep(500);
 
                                 var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
 
-                                if (stopOrder.Success)
+                                if (stopOrder.Success && stopOrder.Data.Status == OrderStatus.Filled)
                                 {
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
                                     tradeFlow.TrackingOpenPosition = false;
                                     tradeFlow.LookingForPosition = true;
+
+                                    Thread.Sleep(500);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Something wrong with stop order, PLEASE CHECK MANUALLY!! MESSAGE => " + stopOrder.Message);
                                 }
 
                             }
@@ -731,22 +768,23 @@ namespace AlgoTradeMasterRenko
 
                                     var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
 
-                                    if (positionCloseOrder.Success && binancePositionDetailsUsdtControl.Data == null)
+                                    if (positionCloseOrder.Success && positionCloseOrder.Data.Status == OrderStatus.Filled)
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Magenta;
+                                        Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
+                                        Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
                                         tradeFlow.TrackingOpenPosition = false;
                                         tradeFlow.LookingForPosition = true;
                                     }
                                 }
 
 
-
-
                             }
 
                             estimatedProfit = Math.Round((1 - binancePositionDetailsUsdt.MarkPrice / calculatedEntryPrice) * 100, 2);
-
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + "   ##########");
-
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
 
                     }
