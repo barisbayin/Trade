@@ -144,7 +144,11 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         }
 
-        public async Task<IDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>> PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(string symbolPair, string orderSide, string positionSide, decimal maximumBalanceLimit, decimal maxBalancePercentage, int leverage, int orderCount, decimal minPrice, decimal brickSize, int orderRangeBrickQuantity, int pricePrecision, int quantityPrecision)
+        public async Task<IDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>>
+            PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(string symbolPair, string orderSide,
+                string positionSide, decimal maximumBalanceLimit, decimal maxBalancePercentage, int leverage,
+                int orderCount, decimal limitPrice, string priceCalculationMethod, decimal brickSize,
+                int orderRangeBrickQuantity, int pricePrecision, int quantityPrecision)
         {
             var balancePerOrder = Convert.ToDecimal(maximumBalanceLimit * maxBalancePercentage / 100 * leverage / orderCount);
 
@@ -154,20 +158,44 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             {
                 var price = 0M;
 
+                var additionalPrice = brickSize / 2;
+
                 if (positionSide == "Long")
                 {
-                    price = Math.Round(RandomNumberGenerator.RandomDoubleNumberBetween(Convert.ToDouble(minPrice),
-                       Convert.ToDouble(minPrice + brickSize * orderRangeBrickQuantity)), pricePrecision);
+                    switch (priceCalculationMethod)
+                    {
+                        case "Random":
+                            price = Math.Round(Convert.ToDecimal(RandomNumberGenerator.RandomDoubleNumberBetween(Convert.ToDouble(limitPrice),
+                                Convert.ToDouble(limitPrice + brickSize * orderRangeBrickQuantity))), pricePrecision);
+                            break;
+                        case "Linear":
+                            price = Math.Round(limitPrice + additionalPrice, pricePrecision);
+
+                            var newAdditionalPrice = additionalPrice + brickSize / 2;
+                            additionalPrice = newAdditionalPrice;
+                            break;
+                    }
                 }
 
                 if (positionSide == "Short")
                 {
-                    price = Math.Round(RandomNumberGenerator.RandomDoubleNumberBetween(Convert.ToDouble(minPrice - brickSize * orderRangeBrickQuantity), Convert.ToDouble(minPrice)), pricePrecision);
+                    switch (priceCalculationMethod)
+                    {
+                        case "Random":
+                            price = Math.Round(Convert.ToDecimal(RandomNumberGenerator.RandomDoubleNumberBetween(Convert.ToDouble(limitPrice - brickSize * orderRangeBrickQuantity), Convert.ToDouble(limitPrice))), pricePrecision);
+                            break;
+                        case "Linear":
+                            price = Math.Round(limitPrice - additionalPrice, pricePrecision);
+
+                            var newAdditionalPrice = additionalPrice + brickSize / 2;
+                            additionalPrice = newAdditionalPrice;
+                            break;
+                    }
                 }
 
                 var quantity = Math.Round(Convert.ToDecimal(balancePerOrder / price), quantityPrecision);
 
-                BinanceFuturesBatchOrder binanceFuturesBatchOrder = new BinanceFuturesBatchOrder
+                var binanceFuturesBatchOrder = new BinanceFuturesBatchOrder
                 {
                     Symbol = symbolPair,
                     Side = (OrderSide)Enum.Parse(typeof(OrderSide), orderSide),
@@ -191,7 +219,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                 List<string> controlResults = new List<string>();
                 foreach (var data in result.Data)
                 {
-                    
+
                     controlResults.Add(data.Success ? "Success" : "Error");
 
                 }
@@ -209,73 +237,6 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         }
 
-        public async Task<IDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>> PlaceFuturesUsdtMultipleLimitOrdersByLinearPriceAsync(string symbolPair, string orderSide, string positionSide,
-            decimal maximumBalanceLimit, decimal maxBalancePercentage, int leverage, int orderCount, decimal minPrice,
-            decimal brickSize, int orderRangeBrickQuantity, int pricePrecision, int quantityPrecision)
-        {
-            var balancePerOrder = Convert.ToDecimal(maximumBalanceLimit * maxBalancePercentage / 100 * leverage / orderCount);
-
-            BinanceFuturesBatchOrder[] binanceFuturesBatchOrderArray = new BinanceFuturesBatchOrder[orderCount];
-
-            var additionalPrice = brickSize / 2;
-
-            for (int i = 0; i < orderCount; i++)
-            {
-                var price = 0M;
-
-                if (positionSide == "Long")
-                {
-                    price = Math.Round(minPrice + additionalPrice, pricePrecision);
-                }
-
-                if (positionSide == "Short")
-                {
-                    price = Math.Round(minPrice - additionalPrice, pricePrecision);
-                }
-                var quantity = Math.Round(Convert.ToDecimal(balancePerOrder / price), quantityPrecision);
-
-                BinanceFuturesBatchOrder binanceFuturesBatchOrder = new BinanceFuturesBatchOrder
-                {
-                    Symbol = symbolPair,
-                    Side = (OrderSide)Enum.Parse(typeof(OrderSide), orderSide),
-                    PositionSide = (PositionSide)Enum.Parse(typeof(PositionSide), positionSide),
-                    Type = OrderType.Limit,
-                    TimeInForce = TimeInForce.GoodTillCancel,
-                    Price = price,
-                    Quantity = quantity
-                };
-
-
-                binanceFuturesBatchOrderArray[i] = binanceFuturesBatchOrder;
-
-                additionalPrice = additionalPrice + brickSize;
-            }
-
-            var result = await _binanceClient.FuturesUsdt.Order.PlaceMultipleOrdersAsync(binanceFuturesBatchOrderArray);
-
-
-            if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
-            {
-                List<string> controlResults = new List<string>();
-
-                foreach (var data in result.Data)
-                {
-
-                    controlResults.Add(data.Success ? "Success" : "Error");
-
-                }
-
-                if (controlResults.Any(x => x == "Success"))
-                {
-                    return new SuccessDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>(result.Data, "Order/s placed successfully!");
-                }
-
-                return new ErrorDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder); 
-
-            }
-
-            return new ErrorDataResult<IEnumerable<CallResult<BinanceFuturesPlacedOrder>>>(result.Data, RemoteDataMessages.AnErrorOccurredWhilePlacingOrder + ": " + result.Error.Code + ": " + result.Error.Message);
-        }
 
 
         public async Task<IDataResult<BinanceFuturesCancelAllOrders>> CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(string symbolPair)

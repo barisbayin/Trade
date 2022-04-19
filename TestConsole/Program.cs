@@ -196,6 +196,18 @@ namespace TestConsole
 
             //}
 
+            var orders =
+                binanceAccountInformationApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
+                    "SOLUSDT", "Buy", "Long", 400, 95, 3, 2, 90, "Random", 0.5M, 2, 2, 0);
+
+
+            foreach (var order in orders.Result.Data)
+            {
+                
+            }
+
+
+
 
 
 

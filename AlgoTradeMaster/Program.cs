@@ -152,7 +152,7 @@ namespace AlgoTradeMasterRenko
 
             await binanceExchangeInformationService.AddFuturesUsdtSymbolInformationAsync();
 
-            await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
+            //await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
 
 
             tradeFlow.InUse = true;
@@ -182,7 +182,7 @@ namespace AlgoTradeMasterRenko
 
             tradeFlow.TradeStarted = true;
             tradeFlow.TradeStartTime = DateTime.Now;
-            await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
+            //await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
 
             while (tradeFlow.InUse == true)
             {
@@ -212,9 +212,9 @@ namespace AlgoTradeMasterRenko
                         case true:
                             {
                                 lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
-                                firstTrueRenkoAfterTheLastFalse = renkoResults.Where(x => x.Id == lastFalseRenkoBrick.Id + 1).FirstOrDefault();
+                                firstTrueRenkoAfterTheLastFalse = renkoResults.FirstOrDefault(x => x.Id == lastFalseRenkoBrick.Id + 1);
 
-                                trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id) + 1;
+                                trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(lastFalseRenkoBrick.Id);
 
                                 Console.ForegroundColor = ConsoleColor.White;
 
@@ -241,9 +241,9 @@ namespace AlgoTradeMasterRenko
                         case false:
                             {
                                 lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
-                                firstFalseRenkoAfterTheLastTrue = renkoResults.Where(x => x.Id == lastTrueRenkoBrick.Id + 1).FirstOrDefault();
+                                firstFalseRenkoAfterTheLastTrue = renkoResults.FirstOrDefault(x => x.Id == lastTrueRenkoBrick.Id + 1);
 
-                                falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(firstFalseRenkoAfterTheLastTrue.Id) + 1;
+                                falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(lastTrueRenkoBrick.Id);
 
                                 Console.ForegroundColor = ConsoleColor.White;
 
@@ -323,12 +323,15 @@ namespace AlgoTradeMasterRenko
                                 tradeParameter.OrderQuantity = 1;
                             }
 
-                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(
+
+                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
                                 tradeParameter.SymbolPair, "Buy", "Long", tradeParameter.MaximumBalanceLimit,
                                 tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
-                                tradeParameter.OrderQuantity, firstTrueRenkoAfterTheLastFalse.Open,
+                                tradeParameter.OrderQuantity, firstTrueRenkoAfterTheLastFalse.Open, tradeParameter.PriceCalculationMethod,
                                 Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
                                 calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
+
+
 
 
 
@@ -341,29 +344,34 @@ namespace AlgoTradeMasterRenko
                                 {
                                     binanceFuturesPlacedOrders.Add(order.Data);
 
+                                    Console.ForegroundColor = ConsoleColor.Magenta;
                                     Console.WriteLine(
-                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \nSide/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
                                         i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
                                         order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
                                         order.Data.OrderId, order.Data.Status);
                                     i++;
                                 }
 
+                                Console.ForegroundColor = ConsoleColor.White;
+
                                 Console.WriteLine("Placed orders are controlling...");
 
                                 int j = 1;
 
-                                List<string> controlResults = new List<string>();
+                                var controlResults = new List<string>();
 
                                 foreach (var order in orders.Data)
                                 {
+                                    Thread.Sleep(500);
 
                                     var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
 
-                                    if (checkedOrder.Data != null)
+                                    if (checkedOrder.Data != null && checkedOrder.Success)
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Green;
                                         Console.WriteLine(
-                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} \nPrice/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
                                             j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
                                             checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
                                             checkedOrder.Data.OrderId, checkedOrder.Data.Status);
@@ -371,10 +379,11 @@ namespace AlgoTradeMasterRenko
                                     }
                                     else
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
                                         controlResults.Add("Error");
                                     }
-
+                                    
                                 }
 
                                 var controlDecision = controlResults.Any(x => x == "Error");
@@ -387,7 +396,8 @@ namespace AlgoTradeMasterRenko
                                 }
                                 else
                                 {
-                                    Console.WriteLine("One or more problems with placed orders. Please check manually.");
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
                                     tradeFlow.PlacingOrders = false;
                                     tradeFlow.LookingForPosition = true;
                                 }
@@ -396,6 +406,7 @@ namespace AlgoTradeMasterRenko
                             }
                             else
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
                                 int i = 1;
                                 foreach (var data in orders.Data)
@@ -407,7 +418,7 @@ namespace AlgoTradeMasterRenko
                                 tradeFlow.LookingForPosition = true;
 
                             }
-
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
 
 
@@ -426,10 +437,10 @@ namespace AlgoTradeMasterRenko
                                 tradeParameter.OrderQuantity = 1;
                             }
 
-                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByRandomPriceAsync(
+                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
                                 tradeParameter.SymbolPair, "Sell", "Short", tradeParameter.MaximumBalanceLimit,
                                 tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
-                                tradeParameter.OrderQuantity, firstFalseRenkoAfterTheLastTrue.Open,
+                                tradeParameter.OrderQuantity, firstFalseRenkoAfterTheLastTrue.Open, tradeParameter.PriceCalculationMethod,
                                 Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
                                 calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
 
@@ -444,13 +455,16 @@ namespace AlgoTradeMasterRenko
                                 {
                                     binanceFuturesPlacedOrders.Add(order.Data);
 
+                                    Console.ForegroundColor = ConsoleColor.Magenta;
                                     Console.WriteLine(
-                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \n           Side/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \nSide/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
                                         i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
                                         order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
                                         order.Data.OrderId, order.Data.Status);
                                     i++;
                                 }
+
+                                Console.ForegroundColor = ConsoleColor.White;
 
                                 Console.WriteLine("Placed orders are controlling...");
 
@@ -460,13 +474,15 @@ namespace AlgoTradeMasterRenko
 
                                 foreach (var order in orders.Data)
                                 {
+                                    Thread.Sleep(500);
 
                                     var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
 
-                                    if (checkedOrder.Data != null)
+                                    if (checkedOrder.Data != null && checkedOrder.Success)
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Green;
                                         Console.WriteLine(
-                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} \nPrice/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
                                             j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
                                             checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
                                             checkedOrder.Data.OrderId, checkedOrder.Data.Status);
@@ -474,15 +490,16 @@ namespace AlgoTradeMasterRenko
                                     }
                                     else
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
                                         controlResults.Add("Error");
                                     }
 
                                 }
 
-                                var controlDecision = controlResults.Any(x => x == "Error");
+                                var controlDecision = controlResults.Any(x => x == "Success");
 
-                                if (controlDecision == false)
+                                if (controlDecision == true)
                                 {
                                     controlResults.Clear();
                                     tradeFlow.PlacingOrders = false;
@@ -490,7 +507,8 @@ namespace AlgoTradeMasterRenko
                                 }
                                 else
                                 {
-                                    Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("There are problems with placed orders. Please check manually.");
                                     tradeFlow.PlacingOrders = false;
                                     tradeFlow.LookingForPosition = true;
                                 }
@@ -499,6 +517,8 @@ namespace AlgoTradeMasterRenko
                             }
                             else
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
+
                                 Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
                                 int i = 1;
                                 foreach (var data in orders.Data)
@@ -510,7 +530,7 @@ namespace AlgoTradeMasterRenko
                                 tradeFlow.LookingForPosition = true;
 
                             }
-
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
                     }
 
@@ -719,7 +739,7 @@ namespace AlgoTradeMasterRenko
                                 }
 
 
-                                
+
 
                             }
 
