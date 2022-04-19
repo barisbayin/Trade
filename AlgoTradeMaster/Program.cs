@@ -701,18 +701,25 @@ namespace AlgoTradeMasterRenko
 
                             if (streamData.Close < stoplossPrice)
                             {
-                                Console.WriteLine("Trend turns from short to long. Position will be closed!");
 
-                                var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
-
-
-                                var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
-
-                                if (positionCloseOrder.Success && binancePositionDetailsUsdtControl.Data == null)
+                                if (falseRenkoCount == -1 && trueRenkoCount > -1)
                                 {
-                                    tradeFlow.TrackingOpenPosition = false;
-                                    tradeFlow.LookingForPosition = true;
+                                    Console.WriteLine("Trend turns from short to long. Position will be closed!");
+
+                                    var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Round(Convert.ToDecimal(totalFilledQuantity), symbolPairInformation.QuantityPrecision), "Short");
+
+
+                                    var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                                    if (positionCloseOrder.Success && binancePositionDetailsUsdtControl.Data == null)
+                                    {
+                                        tradeFlow.TrackingOpenPosition = false;
+                                        tradeFlow.LookingForPosition = true;
+                                    }
                                 }
+
+
+                                
 
                             }
 
