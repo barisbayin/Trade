@@ -22,6 +22,7 @@ namespace Entity.Concrete.DTOs
         public int OrderQuantity { get; set; }
         public string PriceCalculationMethod { get; set; }
         public int CancelOrdersAfterBrick { get; set; }
+        public int NumberOfBricksToBeTolerated { get; set; }
         public bool InUse { get; set; } = false;
         public bool IsEnded { get; set; } = false;
         public bool IsSelected { get; set; } = false;

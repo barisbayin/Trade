@@ -23,6 +23,7 @@ namespace Business.Abstract
         IDataResult<List<TradeFlowPartialDto>> GetNotInUseTradeFlowPartialDetails();
         IResult MarkAsFinishedById(int id);
         IResult MarkAsNotInUseById(int id);
+        IResult ResetTradeFlowById(int id);
 
         //Async Methods
         Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync();

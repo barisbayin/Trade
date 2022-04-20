@@ -41,6 +41,7 @@ namespace DataAccess.Concrete
                                  OrderQuantity = tp.OrderQuantity,
                                  PriceCalculationMethod = tp.PriceCalculationMethod,
                                  CancelOrdersAfterBrick = tp.CancelOrdersAfterBrick,
+                                 NumberOfBricksToBeTolerated = tp.NumberOfBricksToBeTolerated,
                                  InUse = tp.InUse,
                                  CreationDate = tp.CreationDate,
                                  ModifiedDate = tp.ModifiedDate

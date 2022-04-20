@@ -82,6 +82,8 @@
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblNumberOfBricksToBeToleratedLabel = new DevExpress.XtraEditors.LabelControl();
+            this.tbxNumberOfBricksToBeTolerated = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxBalanceLimit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxABalancePercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).BeginInit();
@@ -104,14 +106,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksToBeTolerated.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // lblModifiedDate
             // 
             this.tpEntries.SetColumn(this.lblModifiedDate, 2);
-            this.lblModifiedDate.Location = new System.Drawing.Point(178, 620);
+            this.lblModifiedDate.Location = new System.Drawing.Point(178, 650);
             this.lblModifiedDate.Name = "lblModifiedDate";
-            this.tpEntries.SetRow(this.lblModifiedDate, 20);
+            this.tpEntries.SetRow(this.lblModifiedDate, 21);
             this.lblModifiedDate.Size = new System.Drawing.Size(10, 18);
             this.lblModifiedDate.TabIndex = 37;
             this.lblModifiedDate.Text = "..";
@@ -119,9 +122,9 @@
             // lblModifiedDateLabel
             // 
             this.tpEntries.SetColumn(this.lblModifiedDateLabel, 1);
-            this.lblModifiedDateLabel.Location = new System.Drawing.Point(19, 620);
+            this.lblModifiedDateLabel.Location = new System.Drawing.Point(19, 650);
             this.lblModifiedDateLabel.Name = "lblModifiedDateLabel";
-            this.tpEntries.SetRow(this.lblModifiedDateLabel, 20);
+            this.tpEntries.SetRow(this.lblModifiedDateLabel, 21);
             this.lblModifiedDateLabel.Size = new System.Drawing.Size(94, 18);
             this.lblModifiedDateLabel.TabIndex = 36;
             this.lblModifiedDateLabel.Text = "Modified Date:";
@@ -130,7 +133,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorParameter, 2);
             this.cbxIndicatorParameter.FormattingEnabled = true;
-            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 107);
+            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 108);
             this.cbxIndicatorParameter.Name = "cbxIndicatorParameter";
             this.tpEntries.SetRow(this.cbxIndicatorParameter, 3);
             this.cbxIndicatorParameter.Size = new System.Drawing.Size(209, 26);
@@ -166,9 +169,9 @@
             // lblInUse
             // 
             this.tpEntries.SetColumn(this.lblInUse, 2);
-            this.lblInUse.Location = new System.Drawing.Point(178, 560);
+            this.lblInUse.Location = new System.Drawing.Point(178, 590);
             this.lblInUse.Name = "lblInUse";
-            this.tpEntries.SetRow(this.lblInUse, 18);
+            this.tpEntries.SetRow(this.lblInUse, 19);
             this.lblInUse.Size = new System.Drawing.Size(10, 18);
             this.lblInUse.TabIndex = 26;
             this.lblInUse.Text = "..";
@@ -176,9 +179,9 @@
             // lblCreationDateLabel
             // 
             this.tpEntries.SetColumn(this.lblCreationDateLabel, 1);
-            this.lblCreationDateLabel.Location = new System.Drawing.Point(19, 590);
+            this.lblCreationDateLabel.Location = new System.Drawing.Point(19, 620);
             this.lblCreationDateLabel.Name = "lblCreationDateLabel";
-            this.tpEntries.SetRow(this.lblCreationDateLabel, 19);
+            this.tpEntries.SetRow(this.lblCreationDateLabel, 20);
             this.lblCreationDateLabel.Size = new System.Drawing.Size(94, 18);
             this.lblCreationDateLabel.TabIndex = 24;
             this.lblCreationDateLabel.Text = "Creation Date:";
@@ -250,9 +253,9 @@
             // lblCreationDate
             // 
             this.tpEntries.SetColumn(this.lblCreationDate, 2);
-            this.lblCreationDate.Location = new System.Drawing.Point(178, 590);
+            this.lblCreationDate.Location = new System.Drawing.Point(178, 620);
             this.lblCreationDate.Name = "lblCreationDate";
-            this.tpEntries.SetRow(this.lblCreationDate, 19);
+            this.tpEntries.SetRow(this.lblCreationDate, 20);
             this.lblCreationDate.Size = new System.Drawing.Size(10, 18);
             this.lblCreationDate.TabIndex = 25;
             this.lblCreationDate.Text = "..";
@@ -260,9 +263,9 @@
             // lblInUseLabel
             // 
             this.tpEntries.SetColumn(this.lblInUseLabel, 1);
-            this.lblInUseLabel.Location = new System.Drawing.Point(19, 560);
+            this.lblInUseLabel.Location = new System.Drawing.Point(19, 590);
             this.lblInUseLabel.Name = "lblInUseLabel";
-            this.tpEntries.SetRow(this.lblInUseLabel, 18);
+            this.tpEntries.SetRow(this.lblInUseLabel, 19);
             this.lblInUseLabel.Size = new System.Drawing.Size(49, 18);
             this.lblInUseLabel.TabIndex = 23;
             this.lblInUseLabel.Text = "In Use:";
@@ -348,6 +351,8 @@
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 63.74F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85.92F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 3.89F)});
+            this.tpEntries.Controls.Add(this.tbxNumberOfBricksToBeTolerated);
+            this.tpEntries.Controls.Add(this.lblNumberOfBricksToBeToleratedLabel);
             this.tpEntries.Controls.Add(this.tbxCancelOrdersAfterBrick);
             this.tpEntries.Controls.Add(this.lblCancelOrdersAfterBrickLabel);
             this.tpEntries.Controls.Add(this.cbxOrderQuantity);
@@ -394,6 +399,7 @@
             this.tpEntries.Name = "tpEntries";
             this.tpEntries.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
@@ -472,7 +478,7 @@
             this.cbxPriceCalculationMethod.Items.AddRange(new object[] {
             "Linear",
             "Random"});
-            this.cbxPriceCalculationMethod.Location = new System.Drawing.Point(178, 498);
+            this.cbxPriceCalculationMethod.Location = new System.Drawing.Point(178, 497);
             this.cbxPriceCalculationMethod.Name = "cbxPriceCalculationMethod";
             this.tpEntries.SetRow(this.cbxPriceCalculationMethod, 16);
             this.cbxPriceCalculationMethod.Size = new System.Drawing.Size(209, 26);
@@ -578,7 +584,7 @@
             "8",
             "9",
             "10"});
-            this.cbxLeverage.Location = new System.Drawing.Point(178, 258);
+            this.cbxLeverage.Location = new System.Drawing.Point(178, 257);
             this.cbxLeverage.Name = "cbxLeverage";
             this.tpEntries.SetRow(this.cbxLeverage, 8);
             this.cbxLeverage.Size = new System.Drawing.Size(209, 26);
@@ -591,7 +597,7 @@
             this.cbxMarginType.Items.AddRange(new object[] {
             "Isolated",
             "Cross"});
-            this.cbxMarginType.Location = new System.Drawing.Point(178, 228);
+            this.cbxMarginType.Location = new System.Drawing.Point(178, 227);
             this.cbxMarginType.Name = "cbxMarginType";
             this.tpEntries.SetRow(this.cbxMarginType, 7);
             this.cbxMarginType.Size = new System.Drawing.Size(209, 26);
@@ -601,7 +607,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxSymbolPair, 2);
             this.cbxSymbolPair.FormattingEnabled = true;
-            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 168);
+            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 167);
             this.cbxSymbolPair.Name = "cbxSymbolPair";
             this.tpEntries.SetRow(this.cbxSymbolPair, 5);
             this.cbxSymbolPair.Size = new System.Drawing.Size(209, 26);
@@ -627,7 +633,7 @@
             "FiveMinutes",
             "ThreeMinutes",
             "OneMinute"});
-            this.cbxInterval.Location = new System.Drawing.Point(178, 198);
+            this.cbxInterval.Location = new System.Drawing.Point(178, 197);
             this.cbxInterval.Name = "cbxInterval";
             this.tpEntries.SetRow(this.cbxInterval, 6);
             this.cbxInterval.Size = new System.Drawing.Size(209, 26);
@@ -637,7 +643,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxApiToUse, 2);
             this.cbxApiToUse.FormattingEnabled = true;
-            this.cbxApiToUse.Location = new System.Drawing.Point(178, 138);
+            this.cbxApiToUse.Location = new System.Drawing.Point(178, 137);
             this.cbxApiToUse.Name = "cbxApiToUse";
             this.tpEntries.SetRow(this.cbxApiToUse, 4);
             this.cbxApiToUse.Size = new System.Drawing.Size(209, 26);
@@ -764,6 +770,25 @@
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
             // 
+            // lblNumberOfBricksToBeToleratedLabel
+            // 
+            this.tpEntries.SetColumn(this.lblNumberOfBricksToBeToleratedLabel, 1);
+            this.lblNumberOfBricksToBeToleratedLabel.Location = new System.Drawing.Point(19, 560);
+            this.lblNumberOfBricksToBeToleratedLabel.Name = "lblNumberOfBricksToBeToleratedLabel";
+            this.tpEntries.SetRow(this.lblNumberOfBricksToBeToleratedLabel, 18);
+            this.lblNumberOfBricksToBeToleratedLabel.Size = new System.Drawing.Size(149, 18);
+            this.lblNumberOfBricksToBeToleratedLabel.TabIndex = 59;
+            this.lblNumberOfBricksToBeToleratedLabel.Text = "Bricks ToBe Tolerated:";
+            // 
+            // tbxNumberOfBricksToBeTolerated
+            // 
+            this.tpEntries.SetColumn(this.tbxNumberOfBricksToBeTolerated, 2);
+            this.tbxNumberOfBricksToBeTolerated.Location = new System.Drawing.Point(178, 557);
+            this.tbxNumberOfBricksToBeTolerated.Name = "tbxNumberOfBricksToBeTolerated";
+            this.tpEntries.SetRow(this.tbxNumberOfBricksToBeTolerated, 18);
+            this.tbxNumberOfBricksToBeTolerated.Size = new System.Drawing.Size(209, 24);
+            this.tbxNumberOfBricksToBeTolerated.TabIndex = 60;
+            // 
             // TradeParametersUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -796,6 +821,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksToBeTolerated.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -855,5 +881,7 @@
         private DevExpress.XtraEditors.LabelControl lblOrderQuantityLabel;
         private DevExpress.XtraEditors.TextEdit tbxCancelOrdersAfterBrick;
         private DevExpress.XtraEditors.LabelControl lblCancelOrdersAfterBrickLabel;
+        private DevExpress.XtraEditors.TextEdit tbxNumberOfBricksToBeTolerated;
+        private DevExpress.XtraEditors.LabelControl lblNumberOfBricksToBeToleratedLabel;
     }
 }

@@ -22,6 +22,7 @@ namespace Entity.Concrete.DTOs
         public int OrderQuantity { get; set; }
         public string PriceCalculationMethod { get; set; }
         public int CancelOrdersAfterBrick { get; set; }
+        public int NumberOfBricksToBeTolerated { get; set; }
         public string IndicatorName { get; set; }
         public int Period { get; set; }
         public decimal? Multiplier { get; set; } = 0;

@@ -101,6 +101,11 @@ namespace DevExpressUI
             lblMaxAmountLimitPercentage.Text = "..";
             lblAddPnlToMAL.Text = "..";
             lblPercentageOfPnl.Text = "..";
+            lblOrderRangeBrickQuantity.Text = "..";
+            lblOrderQuantity.Text = "..";
+            lblPriceCalculationMethod.Text = "..";
+            lblCancelOrdersAfterBrick.Text = "..";
+            lblNumberOfBricksToBeTolerated.Text = "..";
             lblInUse.Text = "..";
             lblIsSelected.Text = "..";
             lblCreationDate.Text = "..";
@@ -183,20 +188,45 @@ namespace DevExpressUI
             if (gvTradeFlowPartial.RowCount > 0)
             {
                 lblIdNo.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["Id"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["Id"]).ToString();
+
                 cbxTradeParameterTitle.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["TradeParameterTitle"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["TradeParameterTitle"]).ToString();
+
                 lblSymbolPair.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["SymbolPair"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["SymbolPair"]).ToString();
+
                 lblInterval.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["Interval"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["Interval"]).ToString();
+
                 lblIndicatorParameter.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IndicatorParameterTitle"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IndicatorParameterTitle"]).ToString();
+
                 lblApiToUse.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ApiTitle"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ApiTitle"]).ToString();
+
                 lblMarginType.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["MarginType"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["MarginType"]).ToString();
+
                 lblLeverage.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["Leverage"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["Leverage"]).ToString();
+
                 lblMaxAmountLimit.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["MaxAmountLimit"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["MaxAmountLimit"]).ToString();
+
                 lblMaxAmountLimitPercentage.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["MaxAmountPercentage"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["MaxAmountPercentage"]).ToString();
+
                 lblAddPnlToMAL.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["AddPnlToMaxAmountLimit"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["AddPnlToMaxAmountLimit"]).ToString();
+
                 lblPercentageOfPnl.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["PercentageOfPnlToBeAdded"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["PercentageOfPnlToBeAdded"]).ToString();
+
+                lblOrderRangeBrickQuantity.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["OrderRangeBrickQuantity"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["OrderRangeBrickQuantity"]).ToString();
+
+                lblOrderQuantity.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["OrderQuantity"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["OrderQuantity"]).ToString();
+
+                lblPriceCalculationMethod.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["PriceCalculationMethod"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["PriceCalculationMethod"]).ToString();
+
+                lblCancelOrdersAfterBrick.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CancelOrdersAfterBrick"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CancelOrdersAfterBrick"]).ToString();
+
+                lblNumberOfBricksToBeTolerated.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["NumberOfBricksToBeTolerated"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["NumberOfBricksToBeTolerated"]).ToString();
+
                 lblInUse.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["InUse"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["InUse"]).ToString();
+
                 lblIsSelected.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IsSelected"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["IsSelected"]).ToString();
+
                 lblCreationDate.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CreationDate"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["CreationDate"]).ToString();
+
                 lblModifiedDate.Text = gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ModifiedDate"]) == null ? "" : gvTradeFlowPartial.GetRowCellValue(gvTradeFlowPartial.FocusedRowHandle, gvTradeFlowPartial.Columns["ModifiedDate"]).ToString();
 
             }
@@ -339,6 +369,22 @@ namespace DevExpressUI
             else
             {
                 var result = _tradeFlowService.MarkAsNotInUseById(Convert.ToInt32(lblIdNo.Text));
+
+                lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
+
+            }
+            LoadNotEndedTradeFlowDetails();
+        }
+
+        private void barResetTradeFlow_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (lblIdNo.Text == "..")
+            {
+                lblResult.Text = CommonMessages.ChooseItem;
+            }
+            else
+            {
+                var result = _tradeFlowService.ResetTradeFlowById(Convert.ToInt32(lblIdNo.Text));
 
                 lblResult.Text = "Id: " + lblIdNo.Text + " " + result.Message;
 

@@ -127,6 +127,7 @@ namespace DevExpressUI
                             tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
                             tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
                             tradeParameterEntity.CancelOrdersAfterBrick = Convert.ToInt32(tbxCancelOrdersAfterBrick.Text);
+                            tradeParameterEntity.NumberOfBricksToBeTolerated= Convert.ToInt32(tbxPercentageOfPnlToBeAdded.Text);
 
                             var result = await _tradeParameterService.AddTradeParameterAsync(tradeParameterEntity);
 
@@ -162,7 +163,7 @@ namespace DevExpressUI
                             tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
                             tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
                             tradeParameterEntity.CancelOrdersAfterBrick = Convert.ToInt32(tbxCancelOrdersAfterBrick.Text);
-
+                            tradeParameterEntity.NumberOfBricksToBeTolerated = Convert.ToInt32(tbxPercentageOfPnlToBeAdded.Text);
 
                             var result = await _tradeParameterService.UpdateTradeParameterAsync(tradeParameterEntity);
 
@@ -237,6 +238,7 @@ namespace DevExpressUI
             cbxOrderQuantity.Text = "";
             cbxPriceCalculationMethod.Text = "";
             tbxCancelOrdersAfterBrick.Text = "";
+            tbxNumberOfBricksToBeTolerated.Text = "";
             lblInUse.Text = "";
             lblCreationDate.Text = "";
             lblModifiedDate.Text = "";
@@ -279,6 +281,8 @@ namespace DevExpressUI
                 cbxPriceCalculationMethod.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PriceCalculationMethod"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PriceCalculationMethod"]).ToString();
 
                 tbxCancelOrdersAfterBrick.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["CancelOrdersAfterBrick"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["CancelOrdersAfterBrick"]).ToString();
+
+                tbxNumberOfBricksToBeTolerated.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["NumberOfBricksToBeTolerated"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["NumberOfBricksToBeTolerated"]).ToString();
 
                 lblInUse.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["InUse"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["InUse"]).ToString();
 

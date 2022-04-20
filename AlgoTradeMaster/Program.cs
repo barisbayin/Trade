@@ -85,9 +85,9 @@ namespace AlgoTradeMasterRenko
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
 
-            BinancePositionDetailsUsdt binancePositionDetailsUsdt = new BinancePositionDetailsUsdt();
-            List<BinanceFuturesPlacedOrder> binanceFuturesPlacedOrders = new List<BinanceFuturesPlacedOrder>();
-
+            var binancePositionDetailsUsdt = new BinancePositionDetailsUsdt();
+            var binanceFuturesPlacedOrders = new List<BinanceFuturesPlacedOrder>();
+            var binanceFuturesFilledOrders = new List<BinanceFuturesOrder>();
 
             #endregion
 
@@ -177,6 +177,7 @@ namespace AlgoTradeMasterRenko
 
             long iteration = 0;
             decimal stoplossPrice = 0;
+            int positionEntryBrickId = 0;
 
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALL CONTROLS DONE! LET'S START TRADE!   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
@@ -220,8 +221,16 @@ namespace AlgoTradeMasterRenko
 
                                 Console.WriteLine("============================================================================================================================================================");
 
-                                Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
+                                if (streamData.Close <= lastRenkoBrick.Close && streamData.Close >= lastRenkoBrick.Open)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                    Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount);
+                                }
+                                if (streamData.Close > lastRenkoBrick.Close)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                    Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
+                                }
 
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, trueRenkoCount);
@@ -248,9 +257,18 @@ namespace AlgoTradeMasterRenko
                                 Console.ForegroundColor = ConsoleColor.White;
 
                                 Console.WriteLine("============================================================================================================================================================");
+                                if (streamData.Close >= lastRenkoBrick.Close && streamData.Close <= lastRenkoBrick.Open)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                    Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount);
+                                }
 
-                                Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
+                                if (streamData.Close < lastRenkoBrick.Close)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                    Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
+                                }
+
 
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, falseRenkoCount);
@@ -311,6 +329,8 @@ namespace AlgoTradeMasterRenko
 
                         if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
+                            positionEntryBrickId = Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id);
+
                             var orderQuantityCheck =
                                 (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
                                     tradeParameter.Leverage / 100) /
@@ -425,6 +445,7 @@ namespace AlgoTradeMasterRenko
 
                         if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
+                            positionEntryBrickId = Convert.ToInt32(firstFalseRenkoAfterTheLastTrue.Id);
                             var orderQuantityCheck =
                                 (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
                                     tradeParameter.Leverage / 100) /
@@ -556,6 +577,7 @@ namespace AlgoTradeMasterRenko
                                     i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
                                     checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
                                     checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+
                                 controlResults.Add("Filled");
                                 i++;
                             }
@@ -574,12 +596,24 @@ namespace AlgoTradeMasterRenko
 
                         if (controlDecision == false)
                         {
-                            controlResults.Clear();
+                            
+                            
+                            foreach (var placedOrder in binanceFuturesPlacedOrders)
+                            {
+                                var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
+
+                                if (checkedOrder.Data is { Status: OrderStatus.Filled })
+                                {
+                                    binanceFuturesFilledOrders.Add(checkedOrder.Data);
+                                }
+                                
+                            }
                             Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("All orders filled! Let's follow the position!");
                             tradeFlow.OrdersStartedToFill = false;
                             tradeFlow.TrackingOpenPosition = true;
 
+                            controlResults.Clear();
 
                         }
                         else
@@ -590,7 +624,7 @@ namespace AlgoTradeMasterRenko
                         }
 
 
-                        if (trueRenkoCount > tradeParameter.CancelOrdersAfterBrick)
+                        if (trueRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastTrueRenkoBrick.Id > positionEntryBrickId)
                         {
                             var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
 
@@ -610,7 +644,7 @@ namespace AlgoTradeMasterRenko
 
                         }
 
-                        if (falseRenkoCount > tradeParameter.CancelOrdersAfterBrick)
+                        if (falseRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastFalseRenkoBrick.Id > positionEntryBrickId)
                         {
                             var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
 
@@ -647,11 +681,11 @@ namespace AlgoTradeMasterRenko
                         var totalPositionSize = 0M;
                         var totalFilledQuantity = 0M;
 
-                        foreach (var placedOrder in binanceFuturesPlacedOrders)
+                        foreach (var filledOrder in binanceFuturesFilledOrders)
                         {
 
-                            var perFilledOrderSize = placedOrder.AvgPrice * placedOrder.QuantityFilled;
-                            var perFilledQuantity = placedOrder.QuantityFilled;
+                            var perFilledOrderSize = filledOrder.AvgPrice * filledOrder.QuantityFilled;
+                            var perFilledQuantity = filledOrder.QuantityFilled;
 
                             totalPositionSize += perFilledOrderSize;
                             totalFilledQuantity += perFilledQuantity;
@@ -696,7 +730,7 @@ namespace AlgoTradeMasterRenko
 
                             if (streamData.Close > stoplossPrice)
                             {
-                                if (trueRenkoCount == -1 && falseRenkoCount > -1 && lastTrueRenkoBrick.Id > lastFalseRenkoBrick.Id)
+                                if (trueRenkoCount == -1 && falseRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastTrueRenkoBrick.Id > positionEntryBrickId)
                                 {
                                     Console.WriteLine("Trend turns from long to short. Position will be closed!");
 
@@ -759,7 +793,7 @@ namespace AlgoTradeMasterRenko
                             if (streamData.Close < stoplossPrice)
                             {
 
-                                if (falseRenkoCount == -1 && trueRenkoCount > -1 && lastFalseRenkoBrick.Id > lastTrueRenkoBrick.Id)
+                                if (falseRenkoCount == -1 && trueRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastFalseRenkoBrick.Id > positionEntryBrickId)
                                 {
                                     Console.WriteLine("Trend turns from short to long. Position will be closed!");
 

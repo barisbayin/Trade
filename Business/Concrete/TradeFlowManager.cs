@@ -154,6 +154,29 @@ namespace Business.Concrete
             }
         }
 
+        public IResult ResetTradeFlowById(int id)
+        {
+            var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+            
+            tradeFlow.LookingForPosition = false;
+            tradeFlow.ReadyToOpenOrder = false;
+            tradeFlow.PlacingOrders = false;
+            tradeFlow.OrdersStartedToFill = false;
+            tradeFlow.AllOrdersFilled = false;
+            tradeFlow.PositionOpened = false;
+            tradeFlow.TrackingOpenPosition = false;
+            tradeFlow.PositionClosedByTakingProfit = false;
+            tradeFlow.PositionClosedByStopLoss = false;
+            tradeFlow.IsSelected = false;
+            tradeFlow.InUse = false;
+            tradeFlow.IsEnded = false;
+            tradeFlow.ModifiedDate=DateTime.Now;
+            UpdateTradeFlow(tradeFlow);
+            return new SuccessResult(CommonMessages.TradeFlowReset);
+
+
+        }
+
         public async Task<IDataResult<TradeFlowEntity>> GetSelectedTradeFlowAsync()
         {
             var tradeFlow = (await _tradeFlowDal.GetAllAsync(x => x.IsSelected == true)).LastOrDefault();
