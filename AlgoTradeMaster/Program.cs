@@ -664,7 +664,7 @@ namespace AlgoTradeMasterRenko
 
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice - calculatedEntryPrice * tradeParameter.StopLossPercent / 100));
+                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice - calculatedEntryPrice * tradeParameter.StopLossPercent / 100), calculatedPricePrecision);
 
                             Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
@@ -696,7 +696,7 @@ namespace AlgoTradeMasterRenko
 
                             if (streamData.Close > stoplossPrice)
                             {
-                                if (trueRenkoCount == -1 && falseRenkoCount > -1)
+                                if (trueRenkoCount == -1 && falseRenkoCount > -1 && lastTrueRenkoBrick.Id > lastFalseRenkoBrick.Id)
                                 {
                                     Console.WriteLine("Trend turns from long to short. Position will be closed!");
 
@@ -705,7 +705,7 @@ namespace AlgoTradeMasterRenko
 
                                     var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
 
-                                    if (positionCloseOrder.Success && positionCloseOrder.Data.Status == OrderStatus.Filled)
+                                    if (positionCloseOrder.Success)
                                     {
                                         Console.ForegroundColor = ConsoleColor.Magenta;
                                         Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
@@ -726,7 +726,7 @@ namespace AlgoTradeMasterRenko
 
                         if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice + calculatedEntryPrice * tradeParameter.StopLossPercent / 100));
+                            stoplossPrice = Math.Round(Convert.ToDecimal(calculatedEntryPrice + calculatedEntryPrice * tradeParameter.StopLossPercent / 100), calculatedPricePrecision);
 
                             Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
@@ -759,7 +759,7 @@ namespace AlgoTradeMasterRenko
                             if (streamData.Close < stoplossPrice)
                             {
 
-                                if (falseRenkoCount == -1 && trueRenkoCount > -1)
+                                if (falseRenkoCount == -1 && trueRenkoCount > -1 && lastFalseRenkoBrick.Id > lastTrueRenkoBrick.Id)
                                 {
                                     Console.WriteLine("Trend turns from short to long. Position will be closed!");
 
@@ -768,7 +768,7 @@ namespace AlgoTradeMasterRenko
 
                                     var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
 
-                                    if (positionCloseOrder.Success && positionCloseOrder.Data.Status == OrderStatus.Filled)
+                                    if (positionCloseOrder.Success)
                                     {
                                         Console.ForegroundColor = ConsoleColor.Magenta;
                                         Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
