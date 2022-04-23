@@ -343,10 +343,23 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
-                var lastPosition = result.Data.LastOrDefault();
+                var positionControl = result.Data.Any(x => x.EntryPrice > 0);
 
-                return new SuccessDataResult<BinancePositionDetailsUsdt>(lastPosition, "Active Position=> Symbol: " + lastPosition.Symbol + " Entry Price: " + lastPosition.EntryPrice + " Quantity: " + lastPosition.Quantity + " Leverage: " + lastPosition.Leverage + " Liquidation Price: " + lastPosition.LiquidationPrice + " PnL: " + lastPosition.UnrealizedPnl + " Isolated Margin:  " + lastPosition.IsolatedMargin);
+                if (positionControl == true)
+                {
+                    var lastOpenPosition = result.Data.FirstOrDefault(x => x.EntryPrice > 0);
+
+                    return new SuccessDataResult<BinancePositionDetailsUsdt>(lastOpenPosition, "Active Position=> Symbol: " + lastOpenPosition.Symbol + " Entry Price: " + lastOpenPosition.EntryPrice + " Quantity: " + lastOpenPosition.Quantity + " Leverage: " + lastOpenPosition.Leverage + " Liquidation Price: " + lastOpenPosition.LiquidationPrice + " PnL: " + lastOpenPosition.UnrealizedPnl + " Isolated Margin:  " + lastOpenPosition.IsolatedMargin);
+                }
+                else
+                {
+                    var closedPosition = result.Data.FirstOrDefault();
+                    return new SuccessDataResult<BinancePositionDetailsUsdt>(closedPosition,"There is no open position");
+                }
+    
+                
             }
+
 
             return new ErrorDataResult<BinancePositionDetailsUsdt>(RemoteDataMessages.Error + ": " + result.Error.Code + ": " + result.Error.Message);
         }

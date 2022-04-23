@@ -196,20 +196,19 @@ namespace TestConsole
 
             //}
 
-            var orders =
-                binanceAccountInformationApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
-                    "SOLUSDT", "Buy", "Long", 400, 95, 3, 2, 90, "Random", 0.5M, 2, 2, 0);
-
-
-            foreach (var order in orders.Result.Data)
-            {
-                
-            }
+            //var orders =
+            //    binanceAccountInformationApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
+            //        "SOLUSDT", "Buy", "Long", 400, 95, 3, 2, 90, "Random", 0.5M, 2, 2, 0);
 
 
 
-
-
+            var position =
+                binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
+            position.Wait();
+            var stopOrder =
+                binanceAccountInformationApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync("SOLUSDT",11955706890);
+            stopOrder.Wait();
+            Console.WriteLine("111");
 
             //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
 
