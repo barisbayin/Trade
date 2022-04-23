@@ -117,16 +117,16 @@ namespace AlgoTradeMasterRenko
             var accountInfo = (await binanceApiService.GetFuturesUsdtAccountInformationAsync()).Data;
 
 
-            //if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
-            //{
-            //    Console.ForegroundColor = ConsoleColor.Red;
+            if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
 
-            //    Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
-            //    Console.WriteLine("The available balance is less than the maximum balance selected for this trade. \nPlease increase balance or decrease maximum trade balance limit.");
+                Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
+                Console.WriteLine("The available balance is less than the maximum balance selected for this trade. \nPlease increase balance or decrease maximum trade balance limit.");
 
-            //    Console.ReadLine();
-            //    return;
-            //}
+                Console.ReadLine();
+                return;
+            }
 
 
             Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
