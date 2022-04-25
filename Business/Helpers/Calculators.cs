@@ -5,12 +5,14 @@ using DataAccess.Abstract;
 using DataAccess.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Concrete.Entities;
 
 namespace Business.Helpers
 {
-    public class Calculators : IDisposable
+    public  class Calculators : IDisposable
     {
         public void Dispose()
         {
@@ -59,7 +61,7 @@ namespace Business.Helpers
             if (klineInterval == "OneDay")
             {
 
-                klineAmount = dayParameter; 
+                klineAmount = dayParameter;
 
             }
 
@@ -144,5 +146,49 @@ namespace Business.Helpers
         }
 
 
+        public class RenkoCount
+        {
+            public string RenkoSide { get; set; }
+            public int Count { get; set; }
+        }
+
+        public IDataResult<List<RenkoCount>> CalculateFuturesUsdtRenkoCountFromRenkoBrickList(List<FuturesUsdtRenkoBrick> futuresUsdtRenkoBrickList, int renkoCountRange)
+        {
+            var renkoCountList = new List<RenkoCount>();
+
+            var usingFuturesUsdtRenkoBrick = futuresUsdtRenkoBrickList.OrderByDescending(x=>x.Date).ToList();
+            int i = 0;
+            int j = 0;
+            foreach (var futuresUsdtRenkoBrick in usingFuturesUsdtRenkoBrick)
+            {
+                if (futuresUsdtRenkoBrick.IsUp == true)
+                {
+                    if (j > 0)
+                    {
+                        var renkoCount = new RenkoCount {RenkoSide = "False", Count = j};
+                        renkoCountList.Add(renkoCount);
+                        j = 0;
+                    }
+
+                    i++;
+                }
+                if (futuresUsdtRenkoBrick.IsUp == false)
+                {
+                    if (i > 0)
+                    {
+                        var renkoCount = new RenkoCount {RenkoSide = "True", Count = i};
+                        renkoCountList.Add(renkoCount);
+                        i = 0;
+                    }
+
+                    j++;
+                }
+
+            }
+
+            renkoCountList.Reverse();
+            var selectedRenkoCountList = renkoCountList.Skip(Math.Max(0, renkoCountList.Count() - renkoCountRange)).Take(renkoCountRange).ToList();
+            return new SuccessDataResult<List<RenkoCount>>(selectedRenkoCountList);
+        }
     }
 }

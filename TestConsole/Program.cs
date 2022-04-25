@@ -114,9 +114,10 @@ namespace TestConsole
             //}
 
 
-            //IIndicatorService indicatorService = new IndicatorManager(
-            //    new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
-            //    new IndicatorParameterManager(new EfIndicatorParameterDal()));
+            IIndicatorService indicatorService = new IndicatorManager(
+                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
+                new IndicatorParameterManager(new EfIndicatorParameterDal()));
+
 
             //var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
 
@@ -133,12 +134,21 @@ namespace TestConsole
 
 
 
-            //var result = indicatorService.GetFuturesUsdtRenkoBricks("BTCUSDT", "FourHour", 3).Data;
-            //foreach (var data in result)
-            //{
-            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp);
+            var result = indicatorService.GetFuturesUsdtRenkoBricks("SOLUSDT", "FourHour", 16).Data;
+            foreach (var data in result)
+            {
+                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp);
 
-            //}
+            }
+
+            Calculators calculators = new Calculators();
+
+            var result66 = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(result, 500);
+
+            foreach (var item in result66.Data)
+            {
+                Console.WriteLine(item.RenkoSide,item.Count);
+            }
 
 
 
@@ -202,13 +212,13 @@ namespace TestConsole
 
 
 
-            var position =
-                binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
-            position.Wait();
-            var stopOrder =
-                binanceAccountInformationApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync("SOLUSDT",11955706890);
-            stopOrder.Wait();
-            Console.WriteLine("111");
+            //var position =
+            //    binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
+            //position.Wait();
+            //var stopOrder =
+            //    binanceAccountInformationApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync("SOLUSDT",11955706890);
+            //stopOrder.Wait();
+            //Console.WriteLine("111");
 
             //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
 

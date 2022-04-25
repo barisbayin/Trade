@@ -14,6 +14,7 @@ using Binance.Net.Enums;
 using Binance.Net.Interfaces.SubClients.Futures;
 using Binance.Net.Objects;
 using Binance.Net.Objects.Futures.FuturesData;
+using Business.Helpers;
 using Core.Utilities.Results;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
@@ -64,6 +65,8 @@ namespace AlgoTradeMasterRenko
             IIndicatorService indicatorService = new IndicatorManager(
                 new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
                 new IndicatorParameterManager(new EfIndicatorParameterDal()));
+
+            Calculators calculators = new Calculators();
 
             #endregion
 
@@ -205,6 +208,32 @@ namespace AlgoTradeMasterRenko
 
                     var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(tradeParameter.SymbolPair, tradeParameter.Interval, tradeParameter.IndicatorParameterId).Data;
 
+                    var renkoCountList = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(renkoResults,
+                        Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
+
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    Console.WriteLine("===================================================================================================================================================================");
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("Last {0} Renko Count Results: ", Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
+
+                    foreach (var renkoCount in renkoCountList.Data)
+                    {
+                        if (renkoCount.RenkoSide=="True")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(renkoCount.Count +"-");
+                        }
+                        if (renkoCount.RenkoSide == "False")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(renkoCount.Count + "-");
+                        }
+                    }
+
+                    Console.WriteLine();
+
                     lastRenkoBrick = renkoResults.LastOrDefault();
 
 
@@ -219,9 +248,6 @@ namespace AlgoTradeMasterRenko
 
                                 trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(lastFalseRenkoBrick.Id);
 
-                                Console.ForegroundColor = ConsoleColor.White;
-
-                                Console.WriteLine("===================================================================================================================================================================");
 
                                 if (streamData.Close <= lastRenkoBrick.Close && streamData.Close >= lastRenkoBrick.Open)
                                 {
@@ -256,9 +282,6 @@ namespace AlgoTradeMasterRenko
 
                                 falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(lastTrueRenkoBrick.Id);
 
-                                Console.ForegroundColor = ConsoleColor.White;
-
-                                Console.WriteLine("===================================================================================================================================================================");
                                 if (streamData.Close >= lastRenkoBrick.Close && streamData.Close <= lastRenkoBrick.Open)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Cyan;
