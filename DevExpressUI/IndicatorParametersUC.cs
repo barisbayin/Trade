@@ -14,6 +14,7 @@ using Castle.Core.Internal;
 using Core.Costants.Messages;
 using CryptoExchange.Net;
 using DevExpress.Utils.Extensions;
+using DevExpressUI.Helpers;
 using Entity.Concrete.Entities;
 
 namespace DevExpressUI
@@ -55,6 +56,7 @@ namespace DevExpressUI
         {
             var result = _indicatorParameterService.GetIndicatorParameterDetails();
             gridIndicatorParameters.DataSource = result.Data;
+            SetGridColumnWidth();
         }
 
         private async void LoadIndicators()
@@ -233,6 +235,17 @@ namespace DevExpressUI
                 e.Appearance.BackColor = Color.Green;
                 e.Appearance.ForeColor = Color.White;
             }
+        }
+
+        private void gvIndicatorParameters_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            ColumnDateTimeFormatHelper.ColumnDateTimeFormatter(e);
+        }
+        private void SetGridColumnWidth()
+        {
+            this.gvIndicatorParameters.OptionsView.ColumnAutoWidth = false;
+            this.gvIndicatorParameters.BestFitColumns();
+
         }
     }
 }

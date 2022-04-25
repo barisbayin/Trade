@@ -130,6 +130,7 @@ namespace DevExpressUI
             this.gvDayParameters.Name = "gvDayParameters";
             this.gvDayParameters.OptionsView.ShowGroupPanel = false;
             this.gvDayParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvDayParameters_FocusedRowChanged);
+            this.gvDayParameters.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gvDayParameters_CustomColumnDisplayText);
             // 
             // gridView1
             // 

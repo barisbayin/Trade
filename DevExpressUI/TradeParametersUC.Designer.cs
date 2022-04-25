@@ -133,7 +133,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorParameter, 2);
             this.cbxIndicatorParameter.FormattingEnabled = true;
-            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 107);
+            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 108);
             this.cbxIndicatorParameter.Name = "cbxIndicatorParameter";
             this.tpEntries.SetRow(this.cbxIndicatorParameter, 3);
             this.cbxIndicatorParameter.Size = new System.Drawing.Size(209, 26);
@@ -288,6 +288,7 @@
             this.gvTradeParameters.OptionsView.ShowGroupPanel = false;
             this.gvTradeParameters.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvTradeParameters_RowStyle);
             this.gvTradeParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeParameters_FocusedRowChanged);
+            this.gvTradeParameters.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gvTradeParameters_CustomColumnDisplayText);
             // 
             // tabPaneTradeParameters
             // 
@@ -497,7 +498,7 @@
             this.cbxPriceCalculationMethod.Items.AddRange(new object[] {
             "Linear",
             "Random"});
-            this.cbxPriceCalculationMethod.Location = new System.Drawing.Point(178, 498);
+            this.cbxPriceCalculationMethod.Location = new System.Drawing.Point(178, 497);
             this.cbxPriceCalculationMethod.Name = "cbxPriceCalculationMethod";
             this.tpEntries.SetRow(this.cbxPriceCalculationMethod, 16);
             this.cbxPriceCalculationMethod.Size = new System.Drawing.Size(209, 26);
@@ -603,7 +604,7 @@
             "8",
             "9",
             "10"});
-            this.cbxLeverage.Location = new System.Drawing.Point(178, 258);
+            this.cbxLeverage.Location = new System.Drawing.Point(178, 257);
             this.cbxLeverage.Name = "cbxLeverage";
             this.tpEntries.SetRow(this.cbxLeverage, 8);
             this.cbxLeverage.Size = new System.Drawing.Size(209, 26);
@@ -616,7 +617,7 @@
             this.cbxMarginType.Items.AddRange(new object[] {
             "Isolated",
             "Cross"});
-            this.cbxMarginType.Location = new System.Drawing.Point(178, 228);
+            this.cbxMarginType.Location = new System.Drawing.Point(178, 227);
             this.cbxMarginType.Name = "cbxMarginType";
             this.tpEntries.SetRow(this.cbxMarginType, 7);
             this.cbxMarginType.Size = new System.Drawing.Size(209, 26);
@@ -626,7 +627,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxSymbolPair, 2);
             this.cbxSymbolPair.FormattingEnabled = true;
-            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 168);
+            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 167);
             this.cbxSymbolPair.Name = "cbxSymbolPair";
             this.tpEntries.SetRow(this.cbxSymbolPair, 5);
             this.cbxSymbolPair.Size = new System.Drawing.Size(209, 26);
@@ -652,7 +653,7 @@
             "FiveMinutes",
             "ThreeMinutes",
             "OneMinute"});
-            this.cbxInterval.Location = new System.Drawing.Point(178, 198);
+            this.cbxInterval.Location = new System.Drawing.Point(178, 197);
             this.cbxInterval.Name = "cbxInterval";
             this.tpEntries.SetRow(this.cbxInterval, 6);
             this.cbxInterval.Size = new System.Drawing.Size(209, 26);
@@ -662,7 +663,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxApiToUse, 2);
             this.cbxApiToUse.FormattingEnabled = true;
-            this.cbxApiToUse.Location = new System.Drawing.Point(178, 138);
+            this.cbxApiToUse.Location = new System.Drawing.Point(178, 137);
             this.cbxApiToUse.Name = "cbxApiToUse";
             this.tpEntries.SetRow(this.cbxApiToUse, 4);
             this.cbxApiToUse.Size = new System.Drawing.Size(209, 26);

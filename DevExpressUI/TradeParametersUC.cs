@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Business.Abstract;
 using Business.DependencyResolvers;
 using Core.Costants.Messages;
+using DevExpressUI.Helpers;
 using Entity.Concrete.Entities;
 
 namespace DevExpressUI
@@ -193,6 +194,7 @@ namespace DevExpressUI
         {
             var result = _tradeParameterService.GetTradeParameterDetails();
             gridTradeParameters.DataSource = result.Data;
+            SetGridColumnWidth();
         }
 
         private void LoadIndicatorParameter()
@@ -308,5 +310,15 @@ namespace DevExpressUI
             }
         }
 
+        private void gvTradeParameters_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            ColumnDateTimeFormatHelper.ColumnDateTimeFormatter(e);
+        }
+        private void SetGridColumnWidth()
+        {
+            this.gvTradeParameters.OptionsView.ColumnAutoWidth = false;
+            this.gvTradeParameters.BestFitColumns();
+
+        }
     }
 }

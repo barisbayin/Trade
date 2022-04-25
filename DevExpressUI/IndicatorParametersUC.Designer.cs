@@ -170,6 +170,7 @@ namespace DevExpressUI
             this.gvIndicatorParameters.OptionsView.ShowGroupPanel = false;
             this.gvIndicatorParameters.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvIndicatorParameters_RowStyle);
             this.gvIndicatorParameters.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvIndicatorParameters_FocusedRowChanged);
+            this.gvIndicatorParameters.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gvIndicatorParameters_CustomColumnDisplayText);
             // 
             // tpEntries
             // 
@@ -258,7 +259,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorName, 2);
             this.cbxIndicatorName.FormattingEnabled = true;
-            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 77);
+            this.cbxIndicatorName.Location = new System.Drawing.Point(140, 78);
             this.cbxIndicatorName.Name = "cbxIndicatorName";
             this.tpEntries.SetRow(this.cbxIndicatorName, 2);
             this.cbxIndicatorName.Size = new System.Drawing.Size(188, 26);

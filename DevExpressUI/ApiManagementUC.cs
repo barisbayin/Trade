@@ -12,6 +12,7 @@ using Business.DependencyResolvers;
 using Business.Abstract;
 using Business.Concrete;
 using Core.Costants.Messages;
+using DevExpressUI.Helpers;
 using Entity.Concrete.Entities;
 
 namespace DevExpressUI
@@ -57,12 +58,14 @@ namespace DevExpressUI
             {
                 var result = (await _apiInformationService.GetAllNotRemovedApiInformationAsync()).Data;
                 gridApiList.DataSource = result;
+                SetGridColumnWidth();
 
             }
             else
             {
                 var result = (await _apiInformationService.GetAllApiInformationAsync()).Data;
                 gridApiList.DataSource = result;
+                SetGridColumnWidth();
             }
         }
 
@@ -215,6 +218,17 @@ namespace DevExpressUI
             LoadApiList();
             ClearAll();
             lblResult.Text = "";
+        }
+
+        private void gvApiList_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            ColumnDateTimeFormatHelper.ColumnDateTimeFormatter(e);
+        }
+        private void SetGridColumnWidth()
+        {
+            this.gvApiList.OptionsView.ColumnAutoWidth = false;
+            this.gvApiList.BestFitColumns();
+
         }
     }
 }

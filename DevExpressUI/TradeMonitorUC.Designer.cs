@@ -328,6 +328,7 @@ namespace DevExpressUI
             this.gvTradeFlowPartial.OptionsView.ShowGroupPanel = false;
             this.gvTradeFlowPartial.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvTradeFlowPartial_RowStyle);
             this.gvTradeFlowPartial.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeFlowPartial_FocusedRowChanged);
+            this.gvTradeFlowPartial.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gvTradeFlowPartial_CustomColumnDisplayText);
             // 
             // tpEntries
             // 
@@ -659,7 +660,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);

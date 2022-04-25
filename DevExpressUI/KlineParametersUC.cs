@@ -4,6 +4,7 @@ using Core.Costants.Messages;
 using Entity.Concrete.Entities;
 using System;
 using System.Drawing;
+using DevExpressUI.Helpers;
 
 namespace DevExpressUI
 {
@@ -45,6 +46,7 @@ namespace DevExpressUI
         {
             var dayParameterList = (await _binanceCommonDatabaseParameterService.GetAllBinanceIntervalParametersAsync()).Data;
             gridDayParameters.DataSource = dayParameterList;
+            SetGridColumnWidth();
         }
 
 
@@ -152,6 +154,17 @@ namespace DevExpressUI
                 }
             }
 
+
+        }
+
+        private void gvDayParameters_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            ColumnDateTimeFormatHelper.ColumnDateTimeFormatter(e);
+        }
+        private void SetGridColumnWidth()
+        {
+            this.gvDayParameters.OptionsView.ColumnAutoWidth = false;
+            this.gvDayParameters.BestFitColumns();
 
         }
     }

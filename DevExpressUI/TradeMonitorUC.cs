@@ -12,6 +12,7 @@ using Business.Abstract;
 using Business.DependencyResolvers;
 using Core.Costants.Messages;
 using DevExpress.Utils.Menu;
+using DevExpressUI.Helpers;
 using Entity.Concrete.Entities;
 
 namespace DevExpressUI
@@ -44,6 +45,7 @@ namespace DevExpressUI
         {
             LoadNotEndedTradeFlowDetails();
             LoadTradeParameters();
+            SetGridColumnWidth();
             ClearAll();
             lblResult.ForeColor = Color.DarkRed;
         }
@@ -67,24 +69,28 @@ namespace DevExpressUI
 
             var result = _tradeFlowService.GetEndedTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
+            SetGridColumnWidth();
         }
         private void LoadNotEndedTradeFlowDetails()
         {
 
             var result = _tradeFlowService.GetNotEndedTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
+            SetGridColumnWidth();
         }
 
         private void LoadNotInUseTradeFlowDetails()
         {
             var result = _tradeFlowService.GetNotInUseTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
+            SetGridColumnWidth();
         }
 
         private void LoadInUseTradeFlowDetails()
         {
             var result = _tradeFlowService.GetInUseTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
+            SetGridColumnWidth();
         }
 
         private void ClearAll()
@@ -390,6 +396,18 @@ namespace DevExpressUI
 
             }
             LoadNotEndedTradeFlowDetails();
+        }
+
+        private void gvTradeFlowPartial_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            ColumnDateTimeFormatHelper.ColumnDateTimeFormatter(e);
+        }
+
+        private void SetGridColumnWidth()
+        {
+            this.gvTradeFlowPartial.OptionsView.ColumnAutoWidth = false;
+            this.gvTradeFlowPartial.BestFitColumns();
+
         }
     }
 }
