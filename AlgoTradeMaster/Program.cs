@@ -182,7 +182,7 @@ namespace AlgoTradeMasterRenko
 
             tradeFlow.InUse = true;
             tradeFlow.IsSelected = false;
-            tradeFlow.LookingForPosition = false;
+            tradeFlow.LookingForPosition = true;
             tradeFlow.TradeStarted = true;
             tradeFlow.TradeStartTime = DateTime.Now;
             //await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
@@ -194,7 +194,7 @@ namespace AlgoTradeMasterRenko
 
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TimePeriod"]));
+                Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["MainTimePeriod"]));
 
 
                 if (streamData.Open != 0)
@@ -382,7 +382,7 @@ namespace AlgoTradeMasterRenko
 
                                 foreach (var order in orders.Data)
                                 {
-                                    Thread.Sleep(500);
+                                    Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
                                     var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
 
@@ -497,7 +497,7 @@ namespace AlgoTradeMasterRenko
 
                                 foreach (var order in orders.Data)
                                 {
-                                    Thread.Sleep(500);
+                                    Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
                                     var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
 
@@ -570,7 +570,7 @@ namespace AlgoTradeMasterRenko
 
                         foreach (var placedOrder in binanceFuturesPlacedOrders)
                         {
-                            Thread.Sleep(500);
+                            Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
                             var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
 
@@ -702,7 +702,7 @@ namespace AlgoTradeMasterRenko
 
                                     Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
 
-                                    Thread.Sleep(500);
+                                    Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
                                     var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
 
@@ -713,7 +713,7 @@ namespace AlgoTradeMasterRenko
                                         tradeFlow.TrackingOpenPosition = false;
                                         tradeFlow.LookingForPosition = true;
 
-                                        Thread.Sleep(500);
+                                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
                                         Console.WriteLine("Maximum balance limit is updating...");
 
@@ -795,7 +795,7 @@ namespace AlgoTradeMasterRenko
                                         tradeFlow.TrackingOpenPosition = false;
                                         tradeFlow.LookingForPosition = true;
 
-                                        Thread.Sleep(1000);
+                                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
                                         Console.WriteLine("Maximum balance limit is updating...");
 

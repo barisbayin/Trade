@@ -114,5 +114,24 @@ namespace DevExpressUI
                 TradeMonitorUC.Instance.BringToFront();
             }));
         }
+
+        private async void accLogs_Click(object sender, EventArgs e)
+        {
+            await Task.Run((() =>
+            {
+                if (!mainFormContainer.Controls.Contains(TradeLogUC.Instance))
+                {
+                    mainFormContainer.BeginInvoke(new Action(delegate ()
+                    {
+                        mainFormContainer.Controls.Add(TradeLogUC.Instance);
+
+                        TradeLogUC.Instance.Dock = DockStyle.Fill;
+                        TradeLogUC.Instance.BringToFront();
+                    }));
+                }
+
+                TradeLogUC.Instance.BringToFront();
+            }));
+        }
     }
 }

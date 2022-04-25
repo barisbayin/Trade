@@ -10,7 +10,8 @@ namespace Business.Abstract
 {
     public interface ITradeFlowService
     {
-        IDataResult<List<TradeFlowPartialDto>> GetTradeFlowPartialDetails();
+        IDataResult<List<TradeFlowEntity>> GetAllTradeFlows();
+        IDataResult<List<TradeFlowPartialDto>> GetAllTradeFlowPartialDetails();
         IDataResult<TradeFlowAllDto> GetSelectedTradeFlowAllDetail();
         IDataResult<TradeFlowEntity> GetSelectedTradeFlow();
         IResult UpdateTradeFlow(TradeFlowEntity tradeFlowEntity);

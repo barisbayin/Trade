@@ -30,7 +30,7 @@ namespace Business.DependencyResolvers
             builder.RegisterType<BinanceApiManager>().As<IBinanceApiService>().SingleInstance();
             builder.RegisterType<TradeParameterManager>().As<ITradeParameterService>().SingleInstance();
             builder.RegisterType<TradeFlowManager>().As<ITradeFlowService>().SingleInstance();
-
+            builder.RegisterType<TradeLogManager>().As<ITradeLogService>().SingleInstance();
 
 
 
@@ -42,7 +42,7 @@ namespace Business.DependencyResolvers
             builder.RegisterType<EfBinanceCommonDatabaseParameterDal>().As<IBinanceCommonDatabaseParameterDal>().SingleInstance();
             builder.RegisterType<EfBinanceFuturesUsdtKlineDal>().As<IBinanceFuturesUsdtKlineDal>().SingleInstance();
             builder.RegisterType<EfBinanceFuturesUsdtSymbolDal>().As<IBinanceFuturesUsdtSymbolDal>().SingleInstance();
-            
+            builder.RegisterType<EfTradeLogDal>().As<ITradeLogDal>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

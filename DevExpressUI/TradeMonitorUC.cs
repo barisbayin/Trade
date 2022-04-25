@@ -59,7 +59,7 @@ namespace DevExpressUI
         private void LoadTradeFlowDetails()
         {
 
-            var result = _tradeFlowService.GetTradeFlowPartialDetails();
+            var result = _tradeFlowService.GetAllTradeFlowPartialDetails();
             gridTradeFlowPartial.DataSource = result.Data;
         }
         private void LoadEndedTradeFlowDetails()

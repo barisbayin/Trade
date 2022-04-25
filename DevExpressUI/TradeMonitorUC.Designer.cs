@@ -37,6 +37,7 @@ namespace DevExpressUI
             this.barMarkAsFinished = new DevExpress.XtraBars.BarButtonItem();
             this.barMarkAsNotInUse = new DevExpress.XtraBars.BarButtonItem();
             this.barDelete = new DevExpress.XtraBars.BarButtonItem();
+            this.barResetTradeFlow = new DevExpress.XtraBars.BarButtonItem();
             this.barTradeFlow = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -51,7 +52,18 @@ namespace DevExpressUI
             this.gridTradeFlowPartial = new DevExpress.XtraGrid.GridControl();
             this.gvTradeFlowPartial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.lblNumberOfBricksToBeTolerated = new DevExpress.XtraEditors.LabelControl();
+            this.lblCancelOrdersAfterBrick = new DevExpress.XtraEditors.LabelControl();
+            this.lblPriceCalculationMethod = new DevExpress.XtraEditors.LabelControl();
+            this.lblOrderQuantity = new DevExpress.XtraEditors.LabelControl();
+            this.lblOrderRangeBrickQuantity = new DevExpress.XtraEditors.LabelControl();
+            this.lblNumberOfBricksToBeToleratedLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblCancelOrdersAfterBrickLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblOrderQuantityLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblPriceCalculationMethodLabel = new DevExpress.XtraEditors.LabelControl();
+            this.lblOrderRangeBrickQuantityLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIsSelectedLabel = new DevExpress.XtraEditors.LabelControl();
+            this.drpOptionsButton = new DevExpress.XtraEditors.DropDownButton();
             this.lblIsSelected = new DevExpress.XtraEditors.LabelControl();
             this.lblInterval = new DevExpress.XtraEditors.LabelControl();
             this.lblIdNo = new DevExpress.XtraEditors.LabelControl();
@@ -91,19 +103,7 @@ namespace DevExpressUI
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.cbxTradeFlowLoadFilter = new System.Windows.Forms.ComboBox();
-            this.drpOptionsButton = new DevExpress.XtraEditors.DropDownButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
-            this.lblNumberOfBricksToBeToleratedLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblCancelOrdersAfterBrickLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblOrderQuantityLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblPriceCalculationMethodLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblOrderRangeBrickQuantityLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblOrderRangeBrickQuantity = new DevExpress.XtraEditors.LabelControl();
-            this.lblOrderQuantity = new DevExpress.XtraEditors.LabelControl();
-            this.lblPriceCalculationMethod = new DevExpress.XtraEditors.LabelControl();
-            this.lblCancelOrdersAfterBrick = new DevExpress.XtraEditors.LabelControl();
-            this.lblNumberOfBricksToBeTolerated = new DevExpress.XtraEditors.LabelControl();
-            this.barResetTradeFlow = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.popTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -181,6 +181,15 @@ namespace DevExpressUI
             this.barDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barDelete.ImageOptions.Image")));
             this.barDelete.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barDelete.ImageOptions.LargeImage")));
             this.barDelete.Name = "barDelete";
+            // 
+            // barResetTradeFlow
+            // 
+            this.barResetTradeFlow.Caption = "Reset Trade Flow";
+            this.barResetTradeFlow.Id = 5;
+            this.barResetTradeFlow.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barResetTradeFlow.ImageOptions.Image")));
+            this.barResetTradeFlow.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barResetTradeFlow.ImageOptions.LargeImage")));
+            this.barResetTradeFlow.Name = "barResetTradeFlow";
+            this.barResetTradeFlow.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barResetTradeFlow_ItemClick);
             // 
             // barTradeFlow
             // 
@@ -402,6 +411,106 @@ namespace DevExpressUI
             this.tpEntries.Size = new System.Drawing.Size(400, 734);
             this.tpEntries.TabIndex = 2;
             // 
+            // lblNumberOfBricksToBeTolerated
+            // 
+            this.tpEntries.SetColumn(this.lblNumberOfBricksToBeTolerated, 2);
+            this.lblNumberOfBricksToBeTolerated.Location = new System.Drawing.Point(178, 530);
+            this.lblNumberOfBricksToBeTolerated.Name = "lblNumberOfBricksToBeTolerated";
+            this.tpEntries.SetRow(this.lblNumberOfBricksToBeTolerated, 17);
+            this.lblNumberOfBricksToBeTolerated.Size = new System.Drawing.Size(10, 18);
+            this.lblNumberOfBricksToBeTolerated.TabIndex = 74;
+            this.lblNumberOfBricksToBeTolerated.Text = "..";
+            // 
+            // lblCancelOrdersAfterBrick
+            // 
+            this.tpEntries.SetColumn(this.lblCancelOrdersAfterBrick, 2);
+            this.lblCancelOrdersAfterBrick.Location = new System.Drawing.Point(178, 500);
+            this.lblCancelOrdersAfterBrick.Name = "lblCancelOrdersAfterBrick";
+            this.tpEntries.SetRow(this.lblCancelOrdersAfterBrick, 16);
+            this.lblCancelOrdersAfterBrick.Size = new System.Drawing.Size(10, 18);
+            this.lblCancelOrdersAfterBrick.TabIndex = 73;
+            this.lblCancelOrdersAfterBrick.Text = "..";
+            // 
+            // lblPriceCalculationMethod
+            // 
+            this.tpEntries.SetColumn(this.lblPriceCalculationMethod, 2);
+            this.lblPriceCalculationMethod.Location = new System.Drawing.Point(178, 470);
+            this.lblPriceCalculationMethod.Name = "lblPriceCalculationMethod";
+            this.tpEntries.SetRow(this.lblPriceCalculationMethod, 15);
+            this.lblPriceCalculationMethod.Size = new System.Drawing.Size(10, 18);
+            this.lblPriceCalculationMethod.TabIndex = 72;
+            this.lblPriceCalculationMethod.Text = "..";
+            // 
+            // lblOrderQuantity
+            // 
+            this.tpEntries.SetColumn(this.lblOrderQuantity, 2);
+            this.lblOrderQuantity.Location = new System.Drawing.Point(178, 440);
+            this.lblOrderQuantity.Name = "lblOrderQuantity";
+            this.tpEntries.SetRow(this.lblOrderQuantity, 14);
+            this.lblOrderQuantity.Size = new System.Drawing.Size(10, 18);
+            this.lblOrderQuantity.TabIndex = 71;
+            this.lblOrderQuantity.Text = "..";
+            // 
+            // lblOrderRangeBrickQuantity
+            // 
+            this.tpEntries.SetColumn(this.lblOrderRangeBrickQuantity, 2);
+            this.lblOrderRangeBrickQuantity.Location = new System.Drawing.Point(178, 410);
+            this.lblOrderRangeBrickQuantity.Name = "lblOrderRangeBrickQuantity";
+            this.tpEntries.SetRow(this.lblOrderRangeBrickQuantity, 13);
+            this.lblOrderRangeBrickQuantity.Size = new System.Drawing.Size(10, 18);
+            this.lblOrderRangeBrickQuantity.TabIndex = 70;
+            this.lblOrderRangeBrickQuantity.Text = "..";
+            // 
+            // lblNumberOfBricksToBeToleratedLabel
+            // 
+            this.tpEntries.SetColumn(this.lblNumberOfBricksToBeToleratedLabel, 1);
+            this.lblNumberOfBricksToBeToleratedLabel.Location = new System.Drawing.Point(19, 530);
+            this.lblNumberOfBricksToBeToleratedLabel.Name = "lblNumberOfBricksToBeToleratedLabel";
+            this.tpEntries.SetRow(this.lblNumberOfBricksToBeToleratedLabel, 17);
+            this.lblNumberOfBricksToBeToleratedLabel.Size = new System.Drawing.Size(149, 18);
+            this.lblNumberOfBricksToBeToleratedLabel.TabIndex = 69;
+            this.lblNumberOfBricksToBeToleratedLabel.Text = "Bricks ToBe Tolerated:";
+            // 
+            // lblCancelOrdersAfterBrickLabel
+            // 
+            this.tpEntries.SetColumn(this.lblCancelOrdersAfterBrickLabel, 1);
+            this.lblCancelOrdersAfterBrickLabel.Location = new System.Drawing.Point(19, 500);
+            this.lblCancelOrdersAfterBrickLabel.Name = "lblCancelOrdersAfterBrickLabel";
+            this.tpEntries.SetRow(this.lblCancelOrdersAfterBrickLabel, 16);
+            this.lblCancelOrdersAfterBrickLabel.Size = new System.Drawing.Size(145, 18);
+            this.lblCancelOrdersAfterBrickLabel.TabIndex = 67;
+            this.lblCancelOrdersAfterBrickLabel.Text = "Cancel Or. After Brick:";
+            // 
+            // lblOrderQuantityLabel
+            // 
+            this.tpEntries.SetColumn(this.lblOrderQuantityLabel, 1);
+            this.lblOrderQuantityLabel.Location = new System.Drawing.Point(19, 440);
+            this.lblOrderQuantityLabel.Name = "lblOrderQuantityLabel";
+            this.tpEntries.SetRow(this.lblOrderQuantityLabel, 14);
+            this.lblOrderQuantityLabel.Size = new System.Drawing.Size(102, 18);
+            this.lblOrderQuantityLabel.TabIndex = 65;
+            this.lblOrderQuantityLabel.Text = "Order Quantity:";
+            // 
+            // lblPriceCalculationMethodLabel
+            // 
+            this.tpEntries.SetColumn(this.lblPriceCalculationMethodLabel, 1);
+            this.lblPriceCalculationMethodLabel.Location = new System.Drawing.Point(19, 470);
+            this.lblPriceCalculationMethodLabel.Name = "lblPriceCalculationMethodLabel";
+            this.tpEntries.SetRow(this.lblPriceCalculationMethodLabel, 15);
+            this.lblPriceCalculationMethodLabel.Size = new System.Drawing.Size(125, 18);
+            this.lblPriceCalculationMethodLabel.TabIndex = 62;
+            this.lblPriceCalculationMethodLabel.Text = "Price Calc. Method:";
+            // 
+            // lblOrderRangeBrickQuantityLabel
+            // 
+            this.tpEntries.SetColumn(this.lblOrderRangeBrickQuantityLabel, 1);
+            this.lblOrderRangeBrickQuantityLabel.Location = new System.Drawing.Point(19, 410);
+            this.lblOrderRangeBrickQuantityLabel.Name = "lblOrderRangeBrickQuantityLabel";
+            this.tpEntries.SetRow(this.lblOrderRangeBrickQuantityLabel, 13);
+            this.lblOrderRangeBrickQuantityLabel.Size = new System.Drawing.Size(126, 18);
+            this.lblOrderRangeBrickQuantityLabel.TabIndex = 61;
+            this.lblOrderRangeBrickQuantityLabel.Text = "O/R Brick Quantity:";
+            // 
             // lblIsSelectedLabel
             // 
             this.tpEntries.SetColumn(this.lblIsSelectedLabel, 1);
@@ -411,6 +520,20 @@ namespace DevExpressUI
             this.lblIsSelectedLabel.Size = new System.Drawing.Size(77, 18);
             this.lblIsSelectedLabel.TabIndex = 58;
             this.lblIsSelectedLabel.Text = "Is Selected:";
+            // 
+            // drpOptionsButton
+            // 
+            this.drpOptionsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tpEntries.SetColumn(this.drpOptionsButton, 1);
+            this.drpOptionsButton.DropDownControl = this.popTradeFlow;
+            this.drpOptionsButton.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("drpOptionsButton.ImageOptions.Image")));
+            this.drpOptionsButton.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.drpOptionsButton.Location = new System.Drawing.Point(19, 5);
+            this.drpOptionsButton.Name = "drpOptionsButton";
+            this.tpEntries.SetRow(this.drpOptionsButton, 0);
+            this.drpOptionsButton.Size = new System.Drawing.Size(153, 34);
+            this.drpOptionsButton.TabIndex = 7;
+            this.drpOptionsButton.Text = "Options";
             // 
             // lblIsSelected
             // 
@@ -536,7 +659,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -823,25 +946,11 @@ namespace DevExpressUI
             "Ended",
             "In Use",
             "Not In Use"});
-            this.cbxTradeFlowLoadFilter.Location = new System.Drawing.Point(5, 12);
+            this.cbxTradeFlowLoadFilter.Location = new System.Drawing.Point(10, 12);
             this.cbxTradeFlowLoadFilter.Name = "cbxTradeFlowLoadFilter";
             this.cbxTradeFlowLoadFilter.Size = new System.Drawing.Size(138, 26);
             this.cbxTradeFlowLoadFilter.TabIndex = 8;
             this.cbxTradeFlowLoadFilter.SelectedValueChanged += new System.EventHandler(this.cbxTradeFlowLoadFilter_SelectedValueChanged);
-            // 
-            // drpOptionsButton
-            // 
-            this.drpOptionsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tpEntries.SetColumn(this.drpOptionsButton, 1);
-            this.drpOptionsButton.DropDownControl = this.popTradeFlow;
-            this.drpOptionsButton.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("drpOptionsButton.ImageOptions.Image")));
-            this.drpOptionsButton.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.drpOptionsButton.Location = new System.Drawing.Point(19, 5);
-            this.drpOptionsButton.Name = "drpOptionsButton";
-            this.tpEntries.SetRow(this.drpOptionsButton, 0);
-            this.drpOptionsButton.Size = new System.Drawing.Size(153, 34);
-            this.drpOptionsButton.TabIndex = 7;
-            this.drpOptionsButton.Text = "Options";
             // 
             // btnRefresh
             // 
@@ -856,115 +965,6 @@ namespace DevExpressUI
             this.btnRefresh.TabIndex = 4;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // lblNumberOfBricksToBeToleratedLabel
-            // 
-            this.tpEntries.SetColumn(this.lblNumberOfBricksToBeToleratedLabel, 1);
-            this.lblNumberOfBricksToBeToleratedLabel.Location = new System.Drawing.Point(19, 530);
-            this.lblNumberOfBricksToBeToleratedLabel.Name = "lblNumberOfBricksToBeToleratedLabel";
-            this.tpEntries.SetRow(this.lblNumberOfBricksToBeToleratedLabel, 17);
-            this.lblNumberOfBricksToBeToleratedLabel.Size = new System.Drawing.Size(149, 18);
-            this.lblNumberOfBricksToBeToleratedLabel.TabIndex = 69;
-            this.lblNumberOfBricksToBeToleratedLabel.Text = "Bricks ToBe Tolerated:";
-            // 
-            // lblCancelOrdersAfterBrickLabel
-            // 
-            this.tpEntries.SetColumn(this.lblCancelOrdersAfterBrickLabel, 1);
-            this.lblCancelOrdersAfterBrickLabel.Location = new System.Drawing.Point(19, 500);
-            this.lblCancelOrdersAfterBrickLabel.Name = "lblCancelOrdersAfterBrickLabel";
-            this.tpEntries.SetRow(this.lblCancelOrdersAfterBrickLabel, 16);
-            this.lblCancelOrdersAfterBrickLabel.Size = new System.Drawing.Size(145, 18);
-            this.lblCancelOrdersAfterBrickLabel.TabIndex = 67;
-            this.lblCancelOrdersAfterBrickLabel.Text = "Cancel Or. After Brick:";
-            // 
-            // lblOrderQuantityLabel
-            // 
-            this.tpEntries.SetColumn(this.lblOrderQuantityLabel, 1);
-            this.lblOrderQuantityLabel.Location = new System.Drawing.Point(19, 440);
-            this.lblOrderQuantityLabel.Name = "lblOrderQuantityLabel";
-            this.tpEntries.SetRow(this.lblOrderQuantityLabel, 14);
-            this.lblOrderQuantityLabel.Size = new System.Drawing.Size(102, 18);
-            this.lblOrderQuantityLabel.TabIndex = 65;
-            this.lblOrderQuantityLabel.Text = "Order Quantity:";
-            // 
-            // lblPriceCalculationMethodLabel
-            // 
-            this.tpEntries.SetColumn(this.lblPriceCalculationMethodLabel, 1);
-            this.lblPriceCalculationMethodLabel.Location = new System.Drawing.Point(19, 470);
-            this.lblPriceCalculationMethodLabel.Name = "lblPriceCalculationMethodLabel";
-            this.tpEntries.SetRow(this.lblPriceCalculationMethodLabel, 15);
-            this.lblPriceCalculationMethodLabel.Size = new System.Drawing.Size(125, 18);
-            this.lblPriceCalculationMethodLabel.TabIndex = 62;
-            this.lblPriceCalculationMethodLabel.Text = "Price Calc. Method:";
-            // 
-            // lblOrderRangeBrickQuantityLabel
-            // 
-            this.tpEntries.SetColumn(this.lblOrderRangeBrickQuantityLabel, 1);
-            this.lblOrderRangeBrickQuantityLabel.Location = new System.Drawing.Point(19, 410);
-            this.lblOrderRangeBrickQuantityLabel.Name = "lblOrderRangeBrickQuantityLabel";
-            this.tpEntries.SetRow(this.lblOrderRangeBrickQuantityLabel, 13);
-            this.lblOrderRangeBrickQuantityLabel.Size = new System.Drawing.Size(126, 18);
-            this.lblOrderRangeBrickQuantityLabel.TabIndex = 61;
-            this.lblOrderRangeBrickQuantityLabel.Text = "O/R Brick Quantity:";
-            // 
-            // lblOrderRangeBrickQuantity
-            // 
-            this.tpEntries.SetColumn(this.lblOrderRangeBrickQuantity, 2);
-            this.lblOrderRangeBrickQuantity.Location = new System.Drawing.Point(178, 410);
-            this.lblOrderRangeBrickQuantity.Name = "lblOrderRangeBrickQuantity";
-            this.tpEntries.SetRow(this.lblOrderRangeBrickQuantity, 13);
-            this.lblOrderRangeBrickQuantity.Size = new System.Drawing.Size(10, 18);
-            this.lblOrderRangeBrickQuantity.TabIndex = 70;
-            this.lblOrderRangeBrickQuantity.Text = "..";
-            // 
-            // lblOrderQuantity
-            // 
-            this.tpEntries.SetColumn(this.lblOrderQuantity, 2);
-            this.lblOrderQuantity.Location = new System.Drawing.Point(178, 440);
-            this.lblOrderQuantity.Name = "lblOrderQuantity";
-            this.tpEntries.SetRow(this.lblOrderQuantity, 14);
-            this.lblOrderQuantity.Size = new System.Drawing.Size(10, 18);
-            this.lblOrderQuantity.TabIndex = 71;
-            this.lblOrderQuantity.Text = "..";
-            // 
-            // lblPriceCalculationMethod
-            // 
-            this.tpEntries.SetColumn(this.lblPriceCalculationMethod, 2);
-            this.lblPriceCalculationMethod.Location = new System.Drawing.Point(178, 470);
-            this.lblPriceCalculationMethod.Name = "lblPriceCalculationMethod";
-            this.tpEntries.SetRow(this.lblPriceCalculationMethod, 15);
-            this.lblPriceCalculationMethod.Size = new System.Drawing.Size(10, 18);
-            this.lblPriceCalculationMethod.TabIndex = 72;
-            this.lblPriceCalculationMethod.Text = "..";
-            // 
-            // lblCancelOrdersAfterBrick
-            // 
-            this.tpEntries.SetColumn(this.lblCancelOrdersAfterBrick, 2);
-            this.lblCancelOrdersAfterBrick.Location = new System.Drawing.Point(178, 500);
-            this.lblCancelOrdersAfterBrick.Name = "lblCancelOrdersAfterBrick";
-            this.tpEntries.SetRow(this.lblCancelOrdersAfterBrick, 16);
-            this.lblCancelOrdersAfterBrick.Size = new System.Drawing.Size(10, 18);
-            this.lblCancelOrdersAfterBrick.TabIndex = 73;
-            this.lblCancelOrdersAfterBrick.Text = "..";
-            // 
-            // lblNumberOfBricksToBeTolerated
-            // 
-            this.tpEntries.SetColumn(this.lblNumberOfBricksToBeTolerated, 2);
-            this.lblNumberOfBricksToBeTolerated.Location = new System.Drawing.Point(178, 530);
-            this.lblNumberOfBricksToBeTolerated.Name = "lblNumberOfBricksToBeTolerated";
-            this.tpEntries.SetRow(this.lblNumberOfBricksToBeTolerated, 17);
-            this.lblNumberOfBricksToBeTolerated.Size = new System.Drawing.Size(10, 18);
-            this.lblNumberOfBricksToBeTolerated.TabIndex = 74;
-            this.lblNumberOfBricksToBeTolerated.Text = "..";
-            // 
-            // barResetTradeFlow
-            // 
-            this.barResetTradeFlow.Caption = "Reset Trade Flow";
-            this.barResetTradeFlow.Id = 5;
-            this.barResetTradeFlow.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barResetTradeFlow.ImageOptions.Image")));
-            this.barResetTradeFlow.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barResetTradeFlow.ImageOptions.LargeImage")));
-            this.barResetTradeFlow.Name = "barResetTradeFlow";
-            this.barResetTradeFlow.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barResetTradeFlow_ItemClick);
             // 
             // TradeMonitorUC
             // 

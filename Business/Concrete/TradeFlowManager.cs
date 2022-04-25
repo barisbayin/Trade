@@ -248,7 +248,13 @@ namespace Business.Concrete
             }
         }
 
-        public IDataResult<List<TradeFlowPartialDto>> GetTradeFlowPartialDetails()
+        public IDataResult<List<TradeFlowEntity>> GetAllTradeFlows()
+        {
+            var result = _tradeFlowDal.GetAll();
+            return new SuccessDataResult<List<TradeFlowEntity>>(result);
+        }
+
+        public IDataResult<List<TradeFlowPartialDto>> GetAllTradeFlowPartialDetails()
         {
             var result = _tradeFlowDal.GetTradeFlowPartialDetails();
             return new SuccessDataResult<List<TradeFlowPartialDto>>(result);

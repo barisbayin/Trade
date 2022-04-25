@@ -35,9 +35,9 @@ namespace DevExpressUI
             this.accordionControl1 = new DevExpress.XtraBars.Navigation.AccordionControl();
             this.aceTradeMonitor = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceTradeParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.aceKlineParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            this.aceApiManagement = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.aceIndicatorParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.aceApiManagement = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.aceKlineParameters = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accLogs = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.fluentDesignFormControl1 = new DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
@@ -87,13 +87,13 @@ namespace DevExpressUI
             this.aceTradeParameters.Text = "Trade Parameters";
             this.aceTradeParameters.Click += new System.EventHandler(this.aceTradeParameters_Click);
             // 
-            // aceKlineParameters
+            // aceIndicatorParameters
             // 
-            this.aceKlineParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceKlineParameters.ImageOptions.Image")));
-            this.aceKlineParameters.Name = "aceKlineParameters";
-            this.aceKlineParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.aceKlineParameters.Text = "Kline Parameters";
-            this.aceKlineParameters.Click += new System.EventHandler(this.aceParameters_Click);
+            this.aceIndicatorParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceIndicatorParameters.ImageOptions.Image")));
+            this.aceIndicatorParameters.Name = "aceIndicatorParameters";
+            this.aceIndicatorParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.aceIndicatorParameters.Text = "Indicator Parameters";
+            this.aceIndicatorParameters.Click += new System.EventHandler(this.aceIndicatorParameters_Click);
             // 
             // aceApiManagement
             // 
@@ -103,20 +103,21 @@ namespace DevExpressUI
             this.aceApiManagement.Text = "Api Management";
             this.aceApiManagement.Click += new System.EventHandler(this.aceApiManagement_Click);
             // 
-            // aceIndicatorParameters
+            // aceKlineParameters
             // 
-            this.aceIndicatorParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceIndicatorParameters.ImageOptions.Image")));
-            this.aceIndicatorParameters.Name = "aceIndicatorParameters";
-            this.aceIndicatorParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.aceIndicatorParameters.Text = "Indicator Parameters";
-            this.aceIndicatorParameters.Click += new System.EventHandler(this.aceIndicatorParameters_Click);
+            this.aceKlineParameters.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("aceKlineParameters.ImageOptions.Image")));
+            this.aceKlineParameters.Name = "aceKlineParameters";
+            this.aceKlineParameters.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.aceKlineParameters.Text = "Kline Parameters";
+            this.aceKlineParameters.Click += new System.EventHandler(this.aceParameters_Click);
             // 
             // accLogs
             // 
             this.accLogs.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("accLogs.ImageOptions.Image")));
             this.accLogs.Name = "accLogs";
             this.accLogs.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            this.accLogs.Text = "Logs";
+            this.accLogs.Text = "Trade Logs";
+            this.accLogs.Click += new System.EventHandler(this.accLogs_Click);
             // 
             // fluentDesignFormControl1
             // 
