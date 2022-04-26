@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Costants.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete.DTOs;
@@ -34,6 +35,40 @@ namespace Business.Concrete
         {
             var result = await _tradeLogDal.GetAllAsync(x => x.TradeFlowId == tradeFlowId);
             return new SuccessDataResult<List<TradeLogEntity>>(result);
+        }
+
+        public async Task<IResult> AddTradeLogAsync(TradeLogEntity tradeLogEntity)
+        {
+            tradeLogEntity.LogDate=DateTime.Now;
+            try
+            {
+                await _tradeLogDal.AddAsync(tradeLogEntity);
+                return new SuccessResult(CommonMessages.Added);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
+            
+        }
+
+        public async Task<IResult> AddTradeLogByParametersAsync(int tradeFlowId, int tradeId, string logRecord)
+        {
+            var tradeLogEntity = new TradeLogEntity
+            {
+                TradeFlowId = tradeFlowId, TradeId = tradeId, LogRecord = logRecord, LogDate = DateTime.Now
+            };
+
+
+            try
+            {
+                await _tradeLogDal.AddAsync(tradeLogEntity);
+                return new SuccessResult(CommonMessages.Added);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
         }
     }
 }

@@ -215,20 +215,20 @@ namespace AlgoTradeMasterRenko
 
                     Console.WriteLine("===================================================================================================================================================================");
 
-                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write("Last {0} Renko Count Results: ", Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
 
                     foreach (var renkoCount in renkoCountList.Data)
                     {
-                        if (renkoCount.RenkoSide=="True")
+                        if (renkoCount.RenkoSide == "True")
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write(renkoCount.Count +"-");
+                            Console.Write("|" + renkoCount.Count);
                         }
                         if (renkoCount.RenkoSide == "False")
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(renkoCount.Count + "-");
+                            Console.Write("|" + renkoCount.Count);
                         }
                     }
 
