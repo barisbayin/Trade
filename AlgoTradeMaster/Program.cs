@@ -176,10 +176,11 @@ namespace AlgoTradeMasterRenko
             FuturesUsdtRenkoBrick lastTrueRenkoBrick = new FuturesUsdtRenkoBrick();
             FuturesUsdtRenkoBrick firstTrueRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
             FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastTrue = new FuturesUsdtRenkoBrick();
+            FuturesUsdtRenkoBrick positionEntryRenkoBrick = new FuturesUsdtRenkoBrick();
 
             long iteration = 0;
             decimal stoplossPrice = 0;
-            int positionEntryBrickId = 0;
+            
 
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALL CONTROLS DONE! LET'S START TRADE!   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
@@ -354,7 +355,7 @@ namespace AlgoTradeMasterRenko
 
                         if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
-                            positionEntryBrickId = Convert.ToInt32(firstTrueRenkoAfterTheLastFalse.Id);
+                            positionEntryRenkoBrick =firstTrueRenkoAfterTheLastFalse;
 
                             var orderQuantityCheck =
                                 (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
@@ -470,7 +471,8 @@ namespace AlgoTradeMasterRenko
 
                         if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
-                            positionEntryBrickId = Convert.ToInt32(firstFalseRenkoAfterTheLastTrue.Id);
+                            positionEntryRenkoBrick = firstFalseRenkoAfterTheLastTrue;
+
                             var orderQuantityCheck =
                                 (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
                                     tradeParameter.Leverage / 100) /
@@ -657,7 +659,7 @@ namespace AlgoTradeMasterRenko
                         }
 
 
-                        if (trueRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastRenkoBrick.Id > positionEntryBrickId)
+                        if (trueRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastRenkoBrick.Date > positionEntryRenkoBrick.Date)
                         {
                             var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
 
@@ -677,7 +679,7 @@ namespace AlgoTradeMasterRenko
 
                         }
 
-                        if (falseRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastRenkoBrick.Id > positionEntryBrickId)
+                        if (falseRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastRenkoBrick.Date > positionEntryRenkoBrick.Date)
                         {
                             var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
 
@@ -752,7 +754,7 @@ namespace AlgoTradeMasterRenko
 
                                 if (streamData.Close > stoplossPrice)
                                 {
-                                    if (trueRenkoCount == -1 && falseRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastTrueRenkoBrick.Id > positionEntryBrickId)
+                                    if (trueRenkoCount == -1 && falseRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastTrueRenkoBrick.Date > positionEntryRenkoBrick.Date)
                                     {
                                         Console.WriteLine("Trend turns from long to short. Position will be closed!");
 
@@ -834,7 +836,7 @@ namespace AlgoTradeMasterRenko
                                 if (streamData.Close < stoplossPrice)
                                 {
 
-                                    if (falseRenkoCount == -1 && trueRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastFalseRenkoBrick.Id > positionEntryBrickId)
+                                    if (falseRenkoCount == -1 && trueRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastFalseRenkoBrick.Date > positionEntryRenkoBrick.Date)
                                     {
                                         Console.WriteLine("Trend turns from short to long. Position will be closed!");
 

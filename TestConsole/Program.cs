@@ -137,6 +137,11 @@ namespace TestConsole
             var result = indicatorService.GetFuturesUsdtRenkoBricks("SOLUSDT", "FourHour", 16).Data;
             foreach (var data in result)
             {
+                if (data.Date>DateTime.Now.AddDays(-1))
+                {
+                    Console.WriteLine(data.Date);
+                }
+                Console.WriteLine(data.Date);
                 Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp);
 
             }
