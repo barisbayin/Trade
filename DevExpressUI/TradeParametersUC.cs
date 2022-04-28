@@ -164,7 +164,7 @@ namespace DevExpressUI
                             tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
                             tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
                             tradeParameterEntity.CancelOrdersAfterBrick = Convert.ToInt32(tbxCancelOrdersAfterBrick.Text);
-                            tradeParameterEntity.NumberOfBricksToBeTolerated = Convert.ToInt32(tbxPercentageOfPnlToBeAdded.Text);
+                            tradeParameterEntity.NumberOfBricksToBeTolerated = Convert.ToInt32(tbxNumberOfBricksToBeTolerated.Text);
 
                             var result = await _tradeParameterService.UpdateTradeParameterAsync(tradeParameterEntity);
 

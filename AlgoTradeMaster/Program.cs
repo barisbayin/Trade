@@ -203,7 +203,7 @@ namespace AlgoTradeMasterRenko
 
                 if (streamData.Open != 0)
                 {
-                    Console.WriteLine("UTC Time: {0}", DateTime.UtcNow);
+                    Console.WriteLine("UTC Time: {0} | Local Time: {1}", DateTime.UtcNow, DateTime.Now);
 
                     var lastKline = await UpdateOrInsertKlineData(binanceFuturesUsdtKlineDal, tradeParameter, streamData);
 
