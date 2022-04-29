@@ -129,26 +129,82 @@ namespace Business.Concrete
             IEnumerable<RenkoResult> renkoResults = Indicator.GetRenko(dataList, indicatorParameter.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
 
             int i = 1;
+            int j = 1;
+            int k = 1;
+            bool lastRenkoBrickSide=renkoResults.First().IsUp;
+            DateTime lastRenkoBrickDateTime = renkoResults.First().Date;
+
             foreach (var renkoBrick in renkoResults)
             {
-                FuturesUsdtRenkoBrick futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
+                if (renkoBrick.IsUp==true)
                 {
-                    Id = i,
-                    SymbolPair = symbolPair,
-                    KlineInterval = interval,
-                    EndType = indicatorParameter.KlineEndType,
-                    Date = renkoBrick.Date,
-                    Open = renkoBrick.Open,
-                    High = renkoBrick.High,
-                    Low = renkoBrick.Low,
-                    Close = renkoBrick.Close,
-                    Volume = renkoBrick.Volume,
-                    IsUp = renkoBrick.IsUp
-                };
+                    if (lastRenkoBrickSide != renkoBrick.IsUp)
+                    {
+                        j++;
+                        lastRenkoBrickSide = renkoBrick.IsUp;
+                    }
+
+                    if (lastRenkoBrickDateTime != renkoBrick.Date)
+                    {
+                        k++;
+                        lastRenkoBrickDateTime = renkoBrick.Date;
+                    }
+
+                    FuturesUsdtRenkoBrick futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
+                    {
+                        Id = i,
+                        TrendId = j,
+                        InIntervalTrendId = k,
+                        SymbolPair = symbolPair,
+                        KlineInterval = interval,
+                        EndType = indicatorParameter.KlineEndType,
+                        Date = renkoBrick.Date,
+                        Open = renkoBrick.Open,
+                        High = renkoBrick.High,
+                        Low = renkoBrick.Low,
+                        Close = renkoBrick.Close,
+                        Volume = renkoBrick.Volume,
+                        IsUp = renkoBrick.IsUp
+                    };
+                    futuresUsdtRenkoBrickList.Add(futuresUsdtRenkoBrick);
+                    i++;
 
 
-                futuresUsdtRenkoBrickList.Add(futuresUsdtRenkoBrick);
-                i++;
+                }
+                
+                if (renkoBrick.IsUp == false)
+                {
+                    if (lastRenkoBrickSide != renkoBrick.IsUp)
+                    {
+                        j++;
+                        lastRenkoBrickSide = renkoBrick.IsUp;
+                    }
+
+                    if (lastRenkoBrickDateTime != renkoBrick.Date)
+                    {
+                        k++;
+                        lastRenkoBrickDateTime = renkoBrick.Date;
+                    }
+                    FuturesUsdtRenkoBrick futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
+                    {
+                        Id = i,
+                        TrendId = j,
+                        InIntervalTrendId = k,
+                        SymbolPair = symbolPair,
+                        KlineInterval = interval,
+                        EndType = indicatorParameter.KlineEndType,
+                        Date = renkoBrick.Date,
+                        Open = renkoBrick.Open,
+                        High = renkoBrick.High,
+                        Low = renkoBrick.Low,
+                        Close = renkoBrick.Close,
+                        Volume = renkoBrick.Volume,
+                        IsUp = renkoBrick.IsUp
+                    };
+                    futuresUsdtRenkoBrickList.Add(futuresUsdtRenkoBrick);
+                    i++;
+                }
+
             }
 
             return new SuccessDataResult<List<FuturesUsdtRenkoBrick>>(futuresUsdtRenkoBrickList);

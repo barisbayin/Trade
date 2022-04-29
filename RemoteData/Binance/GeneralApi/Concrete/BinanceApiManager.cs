@@ -262,8 +262,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data,
-                    "Close Market Order Placed: " + result.Data.Symbol + " | " + result.Data.Side + " | " +
-                    result.Data.PositionSide + " | " + result.Data.Price + " | " + result.Data.Quantity);
+                    "Close Market Order Placed=> " +"Order Id: "+ result.Data.OrderId+ " | " + "Symbol:" + result.Data.Symbol + " | " + "Position Side: "+ result.Data.PositionSide + " | " + "Order Side: "+
+                    result.Data.PositionSide + " | " + "Avg. Price: "+ result.Data.AvgPrice + " | " +"Filled Quantity: " + result.Data.QuantityFilled);
 
             }
 

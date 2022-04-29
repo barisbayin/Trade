@@ -134,15 +134,15 @@ namespace TestConsole
 
 
 
-            var result = indicatorService.GetFuturesUsdtRenkoBricks("SOLUSDT", "FourHour", 16).Data;
+            var result = indicatorService.GetFuturesUsdtRenkoBricks("CRVUSDT", "FourHour", 25).Data;
             foreach (var data in result)
             {
-                if (data.Date>DateTime.Now.AddDays(-1))
+                if (data.Date > DateTime.Now.AddDays(-1))
                 {
                     Console.WriteLine(data.Date);
                 }
                 Console.WriteLine(data.Date);
-                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp);
+                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}, TrendId: {6}, InIntervalTrendId: {7}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp,data.TrendId,data.InIntervalTrendId);
 
             }
 
@@ -152,7 +152,7 @@ namespace TestConsole
 
             foreach (var item in result66.Data)
             {
-                Console.WriteLine(item.RenkoSide,item.Count);
+                Console.WriteLine(item.RenkoSide, item.Count);
             }
 
 
@@ -221,8 +221,8 @@ namespace TestConsole
             //    binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
             //position.Wait();
             //var stopOrder =
-            //    binanceAccountInformationApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync("SOLUSDT",11955706890);
-            //stopOrder.Wait();
+            //var result44 = binanceAccountInformationApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync("CRVUSDT", 13542201759);
+            //result44.Wait();
             //Console.WriteLine("111");
 
             //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;

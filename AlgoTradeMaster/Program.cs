@@ -180,7 +180,7 @@ namespace AlgoTradeMasterRenko
 
             long iteration = 0;
             decimal stoplossPrice = 0;
-            
+
 
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALL CONTROLS DONE! LET'S START TRADE!   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
@@ -195,6 +195,8 @@ namespace AlgoTradeMasterRenko
             {
                 int trueRenkoCount = -1;
                 int falseRenkoCount = -1;
+                int lastInIntervalTrendCount = -1;
+                int lastInIntervalTrendId = 0;
 
                 Console.ForegroundColor = ConsoleColor.White;
 
@@ -208,6 +210,7 @@ namespace AlgoTradeMasterRenko
                     var lastKline = await UpdateOrInsertKlineData(binanceFuturesUsdtKlineDal, tradeParameter, streamData);
 
                     var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(tradeParameter.SymbolPair, tradeParameter.Interval, tradeParameter.IndicatorParameterId).Data;
+
 
                     var renkoCountList = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(renkoResults,
                         Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
@@ -236,9 +239,8 @@ namespace AlgoTradeMasterRenko
                     Console.WriteLine();
 
                     lastRenkoBrick = renkoResults.LastOrDefault();
-
-
-
+                    lastInIntervalTrendId = lastRenkoBrick.InIntervalTrendId;
+                    lastInIntervalTrendCount = renkoResults.Count(x => x.InIntervalTrendId == lastInIntervalTrendId);
 
                     switch (lastRenkoBrick.IsUp)
                     {
@@ -314,11 +316,13 @@ namespace AlgoTradeMasterRenko
                     }
 
 
-                    if (tradeFlow.LookingForPosition == true && tradeFlow.PlacingOrders == false && tradeFlow.TrackingOpenPosition == false)
-                    {
-                        binanceFuturesPlacedOrders.Clear();
+                    #region LOOKING FOR A POSITION
 
+                    if (tradeFlow.LookingForPosition == true)
+                    {
                         Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
+                        Console.WriteLine("Last In Interval Trend Count : {0}", lastInIntervalTrendCount);
+                        binanceFuturesPlacedOrders.Clear();
 
                         if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
@@ -347,15 +351,17 @@ namespace AlgoTradeMasterRenko
                         }
 
                     }
+                    #endregion
 
-                    if (tradeFlow.PlacingOrders == true && tradeFlow.TrackingOpenPosition == false)
+
+                    if (tradeFlow.PlacingOrders == true)
                     {
                         Console.WriteLine("Trade Status: PLACING ORDERS!");
 
 
                         if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
-                            positionEntryRenkoBrick =firstTrueRenkoAfterTheLastFalse;
+                            positionEntryRenkoBrick = firstTrueRenkoAfterTheLastFalse;
 
                             var orderQuantityCheck =
                                 (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
@@ -644,7 +650,7 @@ namespace AlgoTradeMasterRenko
 
                             }
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("All orders filled! Let's follow the position!");
+                            Console.WriteLine("All orders filled! Let's track the position!");
                             tradeFlow.OrdersStartedToFill = false;
                             tradeFlow.TrackingOpenPosition = true;
 
@@ -731,19 +737,27 @@ namespace AlgoTradeMasterRenko
 
                                     var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
 
-                                    if (stopOrder.Success && stopOrder.Data.Status == OrderStatus.Filled)
+                                    if (stopOrder.Success)
                                     {
-                                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                                        Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                        tradeFlow.TrackingOpenPosition = false;
-                                        tradeFlow.LookingForPosition = true;
+                                        var stopOrderControl =
+                                            binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                tradeParameter.SymbolPair, stopOrder.Data.OrderId);
 
-                                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+                                        if (stopOrderControl.Result.Success && stopOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                                            Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                            tradeFlow.TrackingOpenPosition = false;
+                                            tradeFlow.LookingForPosition = true;
 
-                                        Console.WriteLine("Maximum balance limit is updating...");
+                                            Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
+                                            Console.WriteLine("Maximum balance limit is updating...");
 
 
-                                        await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrder, binancePositionDetailsUsdt.EntryPrice);
+                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
+                                        }
+
                                     }
                                     else
                                     {
@@ -761,20 +775,25 @@ namespace AlgoTradeMasterRenko
                                         var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
 
 
-                                        var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
-
                                         if (positionCloseOrder.Success)
                                         {
-                                            Console.ForegroundColor = ConsoleColor.Magenta;
-                                            Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
-                                            Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
+                                            var closeOrderControl =
+                                                binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                    tradeParameter.SymbolPair, positionCloseOrder.Data.OrderId);
+                                            if (closeOrderControl.Result.Success && closeOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                                Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
+                                                Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
 
-                                            Console.WriteLine("Maximum balance limit is updating...");
+                                                Console.WriteLine("Maximum balance limit is updating...");
 
-                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, positionCloseOrder, binancePositionDetailsUsdt.EntryPrice);
+                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
 
-                                            tradeFlow.TrackingOpenPosition = false;
-                                            tradeFlow.LookingForPosition = true;
+                                                tradeFlow.TrackingOpenPosition = false;
+                                                tradeFlow.LookingForPosition = true;
+                                            }
+
                                         }
                                     }
 
@@ -813,18 +832,27 @@ namespace AlgoTradeMasterRenko
 
                                     var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Abs(Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision)), "Short");
 
-                                    if (stopOrder.Success && stopOrder.Data.Status == OrderStatus.Filled)
+                                    if (stopOrder.Success)
                                     {
-                                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                                        Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                        tradeFlow.TrackingOpenPosition = false;
-                                        tradeFlow.LookingForPosition = true;
+                                        var stopOrderControl =
+                                            binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                tradeParameter.SymbolPair, stopOrder.Data.OrderId);
 
-                                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+                                        if (stopOrderControl.Result.Success && stopOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                                            Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                            tradeFlow.TrackingOpenPosition = false;
+                                            tradeFlow.LookingForPosition = true;
 
-                                        Console.WriteLine("Maximum balance limit is updating...");
+                                            Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
-                                        await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrder, binancePositionDetailsUsdt.EntryPrice);
+                                            Console.WriteLine("Maximum balance limit is updating...");
+
+
+                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
+                                        }
+
                                     }
                                     else
                                     {
@@ -842,20 +870,25 @@ namespace AlgoTradeMasterRenko
 
                                         var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Abs(Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision)), "Short");
 
-
-                                        var binancePositionDetailsUsdtControl = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
-
                                         if (positionCloseOrder.Success)
                                         {
-                                            Console.ForegroundColor = ConsoleColor.Magenta;
-                                            Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
-                                            Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
+                                            var closeOrderControl =
+                                                binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                    tradeParameter.SymbolPair, positionCloseOrder.Data.OrderId);
+                                            if (closeOrderControl.Result.Success && closeOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                                Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
+                                                Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
 
-                                            Console.WriteLine("Maximum balance limit is updating...");
+                                                Console.WriteLine("Maximum balance limit is updating...");
 
-                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, positionCloseOrder, binancePositionDetailsUsdt.EntryPrice);
-                                            tradeFlow.TrackingOpenPosition = false;
-                                            tradeFlow.LookingForPosition = true;
+                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
+
+                                                tradeFlow.TrackingOpenPosition = false;
+                                                tradeFlow.LookingForPosition = true;
+                                            }
+
                                         }
                                     }
 
@@ -891,25 +924,24 @@ namespace AlgoTradeMasterRenko
         }
 
         private static async Task CalculateToAddPnLToMaximumBalance(IBinanceApiService binanceApiService,
-            TradeParameterEntity tradeParameter, IDataResult<BinanceFuturesPlacedOrder> closeOrder, decimal entryPrice)
+            TradeParameterEntity tradeParameter, IDataResult<BinanceFuturesOrder> closeOrder, decimal entryPrice)
         {
             decimal calculatedProfit;
-            var checkedStopOrder =
-                (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair,
-                    closeOrder.Data.OrderId));
 
-            if (checkedStopOrder.Data is { Status: OrderStatus.Filled })
+
+
+            if (closeOrder.Data is { Status: OrderStatus.Filled })
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(
                     "Stop Order Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
-                    checkedStopOrder.Data.Symbol, checkedStopOrder.Data.Price, checkedStopOrder.Data.AvgPrice,
-                    checkedStopOrder.Data.Quantity,
-                    checkedStopOrder.Data.QuantityFilled, checkedStopOrder.Data.Side, checkedStopOrder.Data.PositionSide,
-                    checkedStopOrder.Data.OrderId, checkedStopOrder.Data.Status);
+                    closeOrder.Data.Symbol, closeOrder.Data.Price, closeOrder.Data.AvgPrice,
+                    closeOrder.Data.Quantity,
+                    closeOrder.Data.QuantityFilled, closeOrder.Data.Side, closeOrder.Data.PositionSide,
+                    closeOrder.Data.OrderId, closeOrder.Data.Status);
 
-                calculatedProfit = (entryPrice - checkedStopOrder.Data.QuoteQuantityFilled /
-                    tradeParameter.Leverage) * checkedStopOrder.Data.Quantity;
+                calculatedProfit = (entryPrice - closeOrder.Data.QuoteQuantityFilled /
+                    tradeParameter.Leverage) * closeOrder.Data.Quantity;
 
                 if (calculatedProfit <= 0)
                 {
@@ -929,8 +961,8 @@ namespace AlgoTradeMasterRenko
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("OrderId: {0} is not filled yet. Control Result=> {1}", checkedStopOrder.Data.OrderId,
-                    checkedStopOrder.Message);
+                Console.WriteLine("OrderId: {0} is not filled yet. Control Result=> {1}", closeOrder.Data.OrderId,
+                    closeOrder.Message);
             }
         }
 

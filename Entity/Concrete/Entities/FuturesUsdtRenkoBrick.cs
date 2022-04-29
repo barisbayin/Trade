@@ -7,6 +7,8 @@ namespace Entity.Concrete.Entities
     public class FuturesUsdtRenkoBrick
     {
         public int? Id { get; set; }
+        public int TrendId { get; set; }
+        public int InIntervalTrendId { get; set; }
         public string SymbolPair { get; set; }
         public string KlineInterval { get; set; }
         public string EndType { get; set; }
