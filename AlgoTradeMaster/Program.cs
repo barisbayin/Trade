@@ -217,12 +217,21 @@ namespace AlgoTradeMasterRenko
                     var renkoCountList = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(renkoResults,
                         Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
 
+                    lastRenkoBrick = renkoResults.LastOrDefault();
+
+                    lastInIntervalTrendCount = renkoResults.Count(x => x.InIntervalTrendId == lastRenkoBrick.InIntervalTrendId);
+                    lastTrendBrickCount = renkoResults.Count(x => x.TrendId == lastRenkoBrick.TrendId);
+
                     Console.ForegroundColor = ConsoleColor.White;
 
                     Console.WriteLine("===================================================================================================================================================================");
 
+                    binanceFuturesPlacedOrders.Clear();
+
+                    #region Trend Counts Results
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("Last {0} Renko Count Results: ", Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
+
+                    Console.Write("Last {0} Trend Count Results: ", Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
 
                     foreach (var renkoCount in renkoCountList.Data)
                     {
@@ -240,9 +249,53 @@ namespace AlgoTradeMasterRenko
 
                     Console.WriteLine();
 
-                    lastRenkoBrick = renkoResults.LastOrDefault();
-                    lastInIntervalTrendCount = renkoResults.Count(x => x.InIntervalTrendId == lastRenkoBrick.InIntervalTrendId);
-                    lastTrendBrickCount = renkoResults.Count(x => x.TrendId == lastRenkoBrick.TrendId);
+                    #endregion
+                    
+
+                    #region Last Trend Count && Last In Interval Trend Counts
+
+                    var inIntervalTrendCountList =
+                        calculators.CalculateInIntervalTrendCountFromRenkoBrickList(
+                            renkoResults.Where(x => x.TrendId == lastRenkoBrick.TrendId));
+
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                    Console.Write("Last Trend Brick Count=> ");
+
+                    if (lastRenkoBrick.IsUp == true)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+
+                    if (lastRenkoBrick.IsUp == false)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+
+                    Console.Write(lastTrendBrickCount);
+
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write(" | Last In Interval Trend Counts=> ");
+
+                    foreach (var inIntervalTrendCount in inIntervalTrendCountList.Data)
+                    {
+                        if (lastRenkoBrick.IsUp == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        }
+
+                        if (lastRenkoBrick.IsUp == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                        Console.Write("|" + inIntervalTrendCount);
+                    }
+                    Console.WriteLine();
+
+                    #endregion
+
+
+                    #region Renko Results
 
                     switch (lastRenkoBrick.IsUp)
                     {
@@ -318,6 +371,9 @@ namespace AlgoTradeMasterRenko
                     }
 
 
+                    #endregion
+
+
                     #region LOOKING FOR A POSITION
 
                     if (tradeFlow.LookingForPosition == true)
@@ -326,7 +382,7 @@ namespace AlgoTradeMasterRenko
 
                         if (lastRenkoBrick.IsUp == true && lastTrendBrickCount == lastInIntervalTrendCount && lastInIntervalTrendCount <= tradeParameter.NumberOfBricksForEntry)
                         {
-                            Console.Write();
+                            //Console.Write();
                         }
                         Console.WriteLine("Last Trend Brick Count: {0} | Last In Interval Trend Count : {1}", lastTrendBrickCount, lastInIntervalTrendCount);
                         binanceFuturesPlacedOrders.Clear();

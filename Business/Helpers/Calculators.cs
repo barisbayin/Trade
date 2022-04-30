@@ -151,6 +151,7 @@ namespace Business.Helpers
             public string RenkoSide { get; set; }
             public int Count { get; set; }
         }
+        
 
         public IDataResult<List<RenkoCount>> CalculateFuturesUsdtRenkoCountFromRenkoBrickList(List<FuturesUsdtRenkoBrick> futuresUsdtRenkoBrickList, int renkoCountRange)
         {
@@ -189,6 +190,22 @@ namespace Business.Helpers
             renkoCountList.Reverse();
             var selectedRenkoCountList = renkoCountList.Skip(Math.Max(0, renkoCountList.Count() - renkoCountRange)).Take(renkoCountRange).ToList();
             return new SuccessDataResult<List<RenkoCount>>(selectedRenkoCountList);
+        }
+
+        public IDataResult<List<int>> CalculateInIntervalTrendCountFromRenkoBrickList(IEnumerable<FuturesUsdtRenkoBrick> futuresUsdtRenkoBrickList)
+        {
+            var inIntervalTrendCountList = new List<int>();
+
+            var usingFuturesUsdtRenkoBrick = futuresUsdtRenkoBrickList.OrderByDescending(x => x.Date).GroupBy(x=>x.InIntervalTrendId);
+
+            foreach (var item in usingFuturesUsdtRenkoBrick)
+            {
+                var inIntervalTrendCount = futuresUsdtRenkoBrickList.Count(x => x.InIntervalTrendId == item.Key);
+                inIntervalTrendCountList.Add(inIntervalTrendCount);
+
+            }
+
+            return new SuccessDataResult<List<int>>(inIntervalTrendCountList);
         }
     }
 }
