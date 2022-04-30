@@ -205,6 +205,7 @@ namespace Business.Helpers
 
             }
 
+            inIntervalTrendCountList.Reverse();
             return new SuccessDataResult<List<int>>(inIntervalTrendCountList);
         }
     }
