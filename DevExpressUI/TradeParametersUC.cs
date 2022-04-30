@@ -124,6 +124,7 @@ namespace DevExpressUI
                             tradeParameterEntity.MaxBalancePercentage = tbxMaxABalancePercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxABalancePercentage.Text);
                             tradeParameterEntity.AddPnlToMaximumBalanceLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
                             tradeParameterEntity.PercentageOfPnlToBeAdded = tbxPercentageOfPnlToBeAdded.Text == "" ? 0 : Convert.ToDecimal(tbxPercentageOfPnlToBeAdded.Text);
+                            tradeParameterEntity.NumberOfBricksForEntry= Convert.ToInt32(tbxNumberOfBricksForEntry.Text);
                             tradeParameterEntity.OrderRangeBrickQuantity = Convert.ToInt32(tbxOrderRangeBrickQuantity.Text);
                             tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
                             tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
@@ -160,6 +161,7 @@ namespace DevExpressUI
                             tradeParameterEntity.MaxBalancePercentage = tbxMaxABalancePercentage.Text == "" ? 0 : Convert.ToDecimal(tbxMaxABalancePercentage.Text);
                             tradeParameterEntity.AddPnlToMaximumBalanceLimit = Convert.ToBoolean(chckAddPnlToMaxAmountLimit.CheckState);
                             tradeParameterEntity.PercentageOfPnlToBeAdded = tbxPercentageOfPnlToBeAdded.Text == "" ? 0 : Convert.ToDecimal(tbxPercentageOfPnlToBeAdded.Text);
+                            tradeParameterEntity.NumberOfBricksForEntry = Convert.ToInt32(tbxNumberOfBricksForEntry.Text);
                             tradeParameterEntity.OrderRangeBrickQuantity = Convert.ToInt32(tbxOrderRangeBrickQuantity.Text);
                             tradeParameterEntity.OrderQuantity = Convert.ToInt32(cbxOrderQuantity.Text);
                             tradeParameterEntity.PriceCalculationMethod = cbxPriceCalculationMethod.Text;
@@ -236,6 +238,7 @@ namespace DevExpressUI
             tbxMaxABalancePercentage.Text = "";
             chckAddPnlToMaxAmountLimit.CheckState = CheckState.Unchecked;
             tbxPercentageOfPnlToBeAdded.Text = "";
+            tbxNumberOfBricksForEntry.Text = "";
             tbxOrderRangeBrickQuantity.Text = "";
             cbxOrderQuantity.Text = "";
             cbxPriceCalculationMethod.Text = "";
@@ -275,6 +278,8 @@ namespace DevExpressUI
                 chckAddPnlToMaxAmountLimit.CheckState = Convert.ToBoolean(gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["AddPnlToMaxAmountLimit"])) == false ? CheckState.Unchecked : CheckState.Checked;
 
                 tbxPercentageOfPnlToBeAdded.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PercentageOfPnlToBeAdded"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["PercentageOfPnlToBeAdded"]).ToString();
+
+                tbxNumberOfBricksForEntry.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["NumberOfBricksForEntry"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["NumberOfBricksForEntry"]).ToString();
 
                 tbxOrderRangeBrickQuantity.Text = gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["OrderRangeBrickQuantity"]) == null ? "" : gvTradeParameters.GetRowCellValue(gvTradeParameters.FocusedRowHandle, gvTradeParameters.Columns["OrderRangeBrickQuantity"]).ToString();
 

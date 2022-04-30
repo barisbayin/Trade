@@ -19,6 +19,7 @@ namespace Entity.Concrete.Entities
         public decimal MaxBalancePercentage{ get; set; }
         public  bool AddPnlToMaximumBalanceLimit { get; set; }
         public decimal PercentageOfPnlToBeAdded { get; set; }
+        public int NumberOfBricksForEntry { get; set; }
         public int OrderRangeBrickQuantity  { get; set; }
         public int NumberOfBricksToBeTolerated { get; set; }
         public int OrderQuantity { get; set; }

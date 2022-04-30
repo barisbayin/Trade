@@ -19,6 +19,7 @@ namespace Entity.Concrete.DTOs
         public decimal MaxAmountPercentage { get; set; }
         public bool AddPnlToMaxAmountLimit { get; set; }
         public decimal PercentageOfPnlToBeAdded { get; set; }
+        public int NumberOfBricksForEntry { get; set; }
         public int OrderRangeBrickQuantity { get; set; }
         public int OrderQuantity { get; set; }
         public string PriceCalculationMethod { get; set; }

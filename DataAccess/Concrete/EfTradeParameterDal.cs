@@ -37,6 +37,7 @@ namespace DataAccess.Concrete
                                  MaxAmountPercentage = tp.MaxBalancePercentage,
                                  AddPnlToMaxAmountLimit = tp.AddPnlToMaximumBalanceLimit,
                                  PercentageOfPnlToBeAdded = tp.PercentageOfPnlToBeAdded,
+                                 NumberOfBricksForEntry = tp.NumberOfBricksForEntry,
                                  OrderRangeBrickQuantity = tp.OrderRangeBrickQuantity,
                                  OrderQuantity = tp.OrderQuantity,
                                  PriceCalculationMethod = tp.PriceCalculationMethod,
