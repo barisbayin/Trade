@@ -11,6 +11,7 @@ namespace Entity.Concrete.Entities
         public DateTime? TradeStartTime { get; set; } = null;
         public bool TradeEnded { get; set; } = false;
         public DateTime? TradeEndTime { get; set; } = null;
+        public bool LookingForFirstPosition { get; set; } = false;
         public bool LookingForPosition { get; set; } = false;
         public bool ReadyToOpenOrder { get; set; } = false;
         public bool PlacingOrders { get; set; } = false;

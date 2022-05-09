@@ -51,6 +51,8 @@
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTradeParamaters = new DevExpress.XtraEditors.GroupControl();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.tbxNumberOfBricksForEntry = new DevExpress.XtraEditors.TextEdit();
+            this.lblNumberOfBricksForEntryLabel = new DevExpress.XtraEditors.LabelControl();
             this.tbxNumberOfBricksToBeTolerated = new DevExpress.XtraEditors.TextEdit();
             this.lblNumberOfBricksToBeToleratedLabel = new DevExpress.XtraEditors.LabelControl();
             this.tbxCancelOrdersAfterBrick = new DevExpress.XtraEditors.TextEdit();
@@ -84,8 +86,6 @@
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblNumberOfBricksForEntryLabel = new DevExpress.XtraEditors.LabelControl();
-            this.tbxNumberOfBricksForEntry = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxBalanceLimit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxMaxABalancePercentage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxPercentageOfPnlToBeAdded.Properties)).BeginInit();
@@ -102,6 +102,7 @@
             this.gcTradeParamaters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).BeginInit();
             this.tpEntries.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksForEntry.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksToBeTolerated.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxCancelOrdersAfterBrick.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxOrderQuantity.Properties)).BeginInit();
@@ -109,7 +110,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksForEntry.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // lblModifiedDate
@@ -136,7 +136,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxIndicatorParameter, 2);
             this.cbxIndicatorParameter.FormattingEnabled = true;
-            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 108);
+            this.cbxIndicatorParameter.Location = new System.Drawing.Point(178, 107);
             this.cbxIndicatorParameter.Name = "cbxIndicatorParameter";
             this.tpEntries.SetRow(this.cbxIndicatorParameter, 3);
             this.cbxIndicatorParameter.Size = new System.Drawing.Size(209, 26);
@@ -431,6 +431,25 @@
             this.tpEntries.Size = new System.Drawing.Size(400, 810);
             this.tpEntries.TabIndex = 2;
             // 
+            // tbxNumberOfBricksForEntry
+            // 
+            this.tpEntries.SetColumn(this.tbxNumberOfBricksForEntry, 2);
+            this.tbxNumberOfBricksForEntry.Location = new System.Drawing.Point(178, 437);
+            this.tbxNumberOfBricksForEntry.Name = "tbxNumberOfBricksForEntry";
+            this.tpEntries.SetRow(this.tbxNumberOfBricksForEntry, 14);
+            this.tbxNumberOfBricksForEntry.Size = new System.Drawing.Size(209, 24);
+            this.tbxNumberOfBricksForEntry.TabIndex = 62;
+            // 
+            // lblNumberOfBricksForEntryLabel
+            // 
+            this.tpEntries.SetColumn(this.lblNumberOfBricksForEntryLabel, 1);
+            this.lblNumberOfBricksForEntryLabel.Location = new System.Drawing.Point(19, 440);
+            this.lblNumberOfBricksForEntryLabel.Name = "lblNumberOfBricksForEntryLabel";
+            this.tpEntries.SetRow(this.lblNumberOfBricksForEntryLabel, 14);
+            this.lblNumberOfBricksForEntryLabel.Size = new System.Drawing.Size(142, 18);
+            this.lblNumberOfBricksForEntryLabel.TabIndex = 61;
+            this.lblNumberOfBricksForEntryLabel.Text = "Req. Bricks For Entry:";
+            // 
             // tbxNumberOfBricksToBeTolerated
             // 
             this.tpEntries.SetColumn(this.tbxNumberOfBricksToBeTolerated, 2);
@@ -504,7 +523,7 @@
             this.cbxPriceCalculationMethod.Items.AddRange(new object[] {
             "Linear",
             "Random"});
-            this.cbxPriceCalculationMethod.Location = new System.Drawing.Point(178, 527);
+            this.cbxPriceCalculationMethod.Location = new System.Drawing.Point(178, 528);
             this.cbxPriceCalculationMethod.Name = "cbxPriceCalculationMethod";
             this.tpEntries.SetRow(this.cbxPriceCalculationMethod, 17);
             this.cbxPriceCalculationMethod.Size = new System.Drawing.Size(209, 26);
@@ -610,7 +629,7 @@
             "8",
             "9",
             "10"});
-            this.cbxLeverage.Location = new System.Drawing.Point(178, 257);
+            this.cbxLeverage.Location = new System.Drawing.Point(178, 258);
             this.cbxLeverage.Name = "cbxLeverage";
             this.tpEntries.SetRow(this.cbxLeverage, 8);
             this.cbxLeverage.Size = new System.Drawing.Size(209, 26);
@@ -623,7 +642,7 @@
             this.cbxMarginType.Items.AddRange(new object[] {
             "Isolated",
             "Cross"});
-            this.cbxMarginType.Location = new System.Drawing.Point(178, 227);
+            this.cbxMarginType.Location = new System.Drawing.Point(178, 228);
             this.cbxMarginType.Name = "cbxMarginType";
             this.tpEntries.SetRow(this.cbxMarginType, 7);
             this.cbxMarginType.Size = new System.Drawing.Size(209, 26);
@@ -633,7 +652,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxSymbolPair, 2);
             this.cbxSymbolPair.FormattingEnabled = true;
-            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 167);
+            this.cbxSymbolPair.Location = new System.Drawing.Point(178, 168);
             this.cbxSymbolPair.Name = "cbxSymbolPair";
             this.tpEntries.SetRow(this.cbxSymbolPair, 5);
             this.cbxSymbolPair.Size = new System.Drawing.Size(209, 26);
@@ -659,7 +678,7 @@
             "FiveMinutes",
             "ThreeMinutes",
             "OneMinute"});
-            this.cbxInterval.Location = new System.Drawing.Point(178, 197);
+            this.cbxInterval.Location = new System.Drawing.Point(178, 198);
             this.cbxInterval.Name = "cbxInterval";
             this.tpEntries.SetRow(this.cbxInterval, 6);
             this.cbxInterval.Size = new System.Drawing.Size(209, 26);
@@ -669,7 +688,7 @@
             // 
             this.tpEntries.SetColumn(this.cbxApiToUse, 2);
             this.cbxApiToUse.FormattingEnabled = true;
-            this.cbxApiToUse.Location = new System.Drawing.Point(178, 137);
+            this.cbxApiToUse.Location = new System.Drawing.Point(178, 138);
             this.cbxApiToUse.Name = "cbxApiToUse";
             this.tpEntries.SetRow(this.cbxApiToUse, 4);
             this.cbxApiToUse.Size = new System.Drawing.Size(209, 26);
@@ -796,25 +815,6 @@
             this.lblIdLabel.Text = "Id:";
             this.lblIdLabel.UseMnemonic = false;
             // 
-            // lblNumberOfBricksForEntryLabel
-            // 
-            this.tpEntries.SetColumn(this.lblNumberOfBricksForEntryLabel, 1);
-            this.lblNumberOfBricksForEntryLabel.Location = new System.Drawing.Point(19, 440);
-            this.lblNumberOfBricksForEntryLabel.Name = "lblNumberOfBricksForEntryLabel";
-            this.tpEntries.SetRow(this.lblNumberOfBricksForEntryLabel, 14);
-            this.lblNumberOfBricksForEntryLabel.Size = new System.Drawing.Size(142, 18);
-            this.lblNumberOfBricksForEntryLabel.TabIndex = 61;
-            this.lblNumberOfBricksForEntryLabel.Text = "Req. Bricks For Entry:";
-            // 
-            // tbxNumberOfBricksForEntry
-            // 
-            this.tpEntries.SetColumn(this.tbxNumberOfBricksForEntry, 2);
-            this.tbxNumberOfBricksForEntry.Location = new System.Drawing.Point(178, 437);
-            this.tbxNumberOfBricksForEntry.Name = "tbxNumberOfBricksForEntry";
-            this.tpEntries.SetRow(this.tbxNumberOfBricksForEntry, 14);
-            this.tbxNumberOfBricksForEntry.Size = new System.Drawing.Size(209, 24);
-            this.tbxNumberOfBricksForEntry.TabIndex = 62;
-            // 
             // TradeParametersUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -841,6 +841,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).EndInit();
             this.tpEntries.ResumeLayout(false);
             this.tpEntries.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksForEntry.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksToBeTolerated.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxCancelOrdersAfterBrick.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxOrderQuantity.Properties)).EndInit();
@@ -848,7 +849,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbxStopLossPercent.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbxTradeParameterTitle.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chckAddPnlToMaxAmountLimit.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbxNumberOfBricksForEntry.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

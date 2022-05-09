@@ -30,6 +30,25 @@ namespace AlgoTradeMasterRenko
 {
     class Program
     {
+        private class VariableObjects
+        {
+            public FuturesUsdtRenkoBrick LastRenkoBrick { get; set; }
+            public FuturesUsdtRenkoBrick LastFalseRenkoBrick { get; set; }
+            public FuturesUsdtRenkoBrick LastTrueRenkoBrick { get; set; }
+            public FuturesUsdtRenkoBrick FirstTrueRenkoAfterTheLastFalse { get; set; }
+            public FuturesUsdtRenkoBrick FirstFalseRenkoAfterTheLastTrue { get; set; }
+            public FuturesUsdtRenkoBrick PositionEntryRenkoBrick { get; set; }
+            public BinancePositionDetailsUsdt BinancePositionDetailsUsdt { get; set; }
+            public List<BinanceFuturesPlacedOrder> BinanceFuturesPlacedOrders { get; set; }
+            public List<BinanceFuturesOrder> BinanceFuturesFilledOrders { get; set; }
+            public decimal StopLossPrice { get; set; } = 0;
+            public bool PositionEntryTrigger { get; set; } = false;
+            public int TrueRenkoCount { get; set; } = -1;
+            public int FalseRenkoCount { get; set; } = -1;
+            public int LastInIntervalTrendCount { get; set; } = -1;
+            public int LastTrendBrickCount { get; set; } = -1;
+
+        }
         static async Task Main(string[] args)
 
         {
@@ -88,10 +107,6 @@ namespace AlgoTradeMasterRenko
 
             var apiInformation = apiInformationService.GetDecryptedApiInformationById(tradeParameter.ApiInformationId).Data;
 
-
-            var binancePositionDetailsUsdt = new BinancePositionDetailsUsdt();
-            var binanceFuturesPlacedOrders = new List<BinanceFuturesPlacedOrder>();
-            var binanceFuturesFilledOrders = new List<BinanceFuturesOrder>();
 
             #endregion
 
@@ -171,657 +186,716 @@ namespace AlgoTradeMasterRenko
             var streamData = await binanceKlineWsService.GetCurrentFuturesUsdtKlineDataAsync(tradeParameter.SymbolPair, (KlineInterval)Enum.Parse(typeof(KlineInterval), tradeParameter.Interval));
 
 
-            FuturesUsdtRenkoBrick lastRenkoBrick = new FuturesUsdtRenkoBrick();
-            FuturesUsdtRenkoBrick lastFalseRenkoBrick = new FuturesUsdtRenkoBrick();
-            FuturesUsdtRenkoBrick lastTrueRenkoBrick = new FuturesUsdtRenkoBrick();
-            FuturesUsdtRenkoBrick firstTrueRenkoAfterTheLastFalse = new FuturesUsdtRenkoBrick();
-            FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastTrue = new FuturesUsdtRenkoBrick();
-            FuturesUsdtRenkoBrick positionEntryRenkoBrick = new FuturesUsdtRenkoBrick();
-
-            long iteration = 0;
-            decimal stoplossPrice = 0;
-            bool positionEntryTrigger = false;
-
-
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALL CONTROLS DONE! LET'S START TRADE!   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             tradeFlow.InUse = true;
             tradeFlow.IsSelected = false;
-            tradeFlow.LookingForPosition = true;
+            tradeFlow.LookingForFirstPosition = true;
             tradeFlow.TradeStarted = true;
             tradeFlow.TradeStartTime = DateTime.Now;
             //await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
 
-            int trueRenkoCount = -1;
-            int falseRenkoCount = -1;
-            int lastInIntervalTrendCount = -1;
-            int lastTrendBrickCount = -1;
+            long iteration = 0;
+
+            var variableObjects = new VariableObjects();
 
             while (tradeFlow.InUse == true)
             {
 
-
-
-
-
-                #region LOOKING FOR A POSITION
-
-                while (tradeFlow.LookingForPosition == true)
+                if (streamData.Open != 0)
                 {
-                    
+                    #region LOOKING FOR FIRST POSITION
 
-                    Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
-
-                    await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
-                        calculators, lastRenkoBrick, lastInIntervalTrendCount, lastTrendBrickCount,
-                        binanceFuturesPlacedOrders, lastFalseRenkoBrick, firstTrueRenkoAfterTheLastFalse, trueRenkoCount,
-                        lastTrueRenkoBrick, firstFalseRenkoAfterTheLastTrue, falseRenkoCount);
-
-                    binanceFuturesPlacedOrders.Clear();
-
-                    if (lastRenkoBrick.IsUp == true && lastTrendBrickCount == lastInIntervalTrendCount && lastInIntervalTrendCount <= tradeParameter.NumberOfBricksForEntry)
+                    while (tradeFlow.LookingForFirstPosition==true)
                     {
-                        //Console.Write();
-                    }
-                    Console.WriteLine("Last Trend Brick Count: {0} | Last In Interval Trend Count : {1}", lastTrendBrickCount, lastInIntervalTrendCount);
+                        Console.WriteLine("Trade Status: LOOKING FOR FIRST POSITION!");
 
+                        var updatedVariableObjects = await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
+                            calculators, variableObjects);
 
-                    if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("PRICE IS IN LONG POSITION ORDER ZONE: {0} - {1}", firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
-
-                        tradeFlow.LookingForPosition = false;
-                        tradeFlow.PlacingOrders = true;
-                    }
-                    else
-                    {
-                        tradeFlow.LookingForPosition = true;
-                    }
-
-                    if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("PRICE IS IN SHORT POSITION ORDER ZONE: {0} - {1}", firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
-
-                        tradeFlow.LookingForPosition = false;
-                        tradeFlow.PlacingOrders = true;
-                    }
-                    else
-                    {
-                        tradeFlow.LookingForPosition = true;
-                    }
-
-                }
-                #endregion
-
-
-                while (tradeFlow.PlacingOrders == true)
-                {
-                    Console.WriteLine("Trade Status: PLACING ORDERS!");
-
-
-                    if (trueRenkoCount >= 1 && trueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
-                    {
-                        positionEntryRenkoBrick = firstTrueRenkoAfterTheLastFalse;
-
-                        var orderQuantityCheck =
-                            (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
-                                tradeParameter.Leverage / 100) /
-                            (firstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 *
-                                tradeParameter.OrderRangeBrickQuantity) * tradeParameter.OrderQuantity * symbolPairInformation.LotSizeFilterMinQuantity;
-
-                        if (orderQuantityCheck <= 0)
+                        if (updatedVariableObjects.LastRenkoBrick.IsUp == true)
                         {
-                            Console.WriteLine("Balance is not enough for {0} orders. Order count set 1 ", tradeParameter.OrderQuantity);
-                            tradeParameter.OrderQuantity = 1;
+                            if (updatedVariableObjects.LastTrendBrickCount == updatedVariableObjects.LastInIntervalTrendCount && updatedVariableObjects.LastInIntervalTrendCount < tradeParameter.NumberOfBricksForEntry)
+                            {
+                                Console.WriteLine("The number of position entry bricks is expected to be triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
+                                updatedVariableObjects.PositionEntryTrigger = false;
+                            }
+
+                            if (updatedVariableObjects.LastTrendBrickCount == updatedVariableObjects.LastInIntervalTrendCount && updatedVariableObjects.LastInIntervalTrendCount >= tradeParameter.NumberOfBricksForEntry)
+                            {
+                                Console.WriteLine("The number of position entry bricks triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
+                                updatedVariableObjects.PositionEntryTrigger = true;
+                            }
+
+                            if (updatedVariableObjects.PositionEntryTrigger == true && updatedVariableObjects.TrueRenkoCount >= 1 && updatedVariableObjects.TrueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("PRICE IS IN LONG POSITION ORDER ZONE: {0} - {1}", updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse.Open, updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
+
+                                tradeFlow.LookingForFirstPosition = false;
+                                tradeFlow.PlacingOrders = true;
+                            }
+                        }
+
+                        if (updatedVariableObjects.LastRenkoBrick.IsUp == false)
+                        {
+                            if (updatedVariableObjects.LastTrendBrickCount == updatedVariableObjects.LastInIntervalTrendCount && updatedVariableObjects.LastInIntervalTrendCount < tradeParameter.NumberOfBricksForEntry)
+                            {
+                                Console.WriteLine("The number of position entry bricks is expected to be triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
+                                updatedVariableObjects.PositionEntryTrigger = false;
+                            }
+
+                            if (updatedVariableObjects.LastTrendBrickCount == updatedVariableObjects.LastInIntervalTrendCount && updatedVariableObjects.LastInIntervalTrendCount >= tradeParameter.NumberOfBricksForEntry)
+                            {
+                                Console.WriteLine("The number of position entry bricks triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
+                                updatedVariableObjects.PositionEntryTrigger = true;
+                            }
+
+                            if (updatedVariableObjects.PositionEntryTrigger == true && updatedVariableObjects.TrueRenkoCount >= 1 && updatedVariableObjects.TrueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("PRICE IS IN SHORT POSITION ORDER ZONE: {0} - {1}", updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue.Open, updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
+
+                                tradeFlow.LookingForFirstPosition = false;
+                                tradeFlow.PlacingOrders = true;
+                            }
+                        }
+
+                        iteration++;
+                        Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
+
+                    }
+
+                    #endregion
+
+                    #region LOOKING FOR A POSITION
+
+                    while (tradeFlow.LookingForPosition == true)
+                    {
+
+
+                        Console.WriteLine("Trade Status: LOOKING FOR POSITION!");
+
+                        var updatedVariableObjects = await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
+                            calculators, variableObjects);
+
+
+                        if (updatedVariableObjects.BinanceFuturesPlacedOrders != null)
+                        {
+                            updatedVariableObjects.BinanceFuturesPlacedOrders.Clear();
                         }
 
 
-                        var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
-                            tradeParameter.SymbolPair, "Buy", "Long", tradeParameter.MaximumBalanceLimit,
-                            tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
-                            tradeParameter.OrderQuantity, firstTrueRenkoAfterTheLastFalse.Open, tradeParameter.PriceCalculationMethod,
-                            Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
-                            calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
-
-
-                        if (orders.Data != null && orders.Success)
+                        if (updatedVariableObjects.TrueRenkoCount >= 1 && updatedVariableObjects.TrueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
                         {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("PRICE IS IN LONG POSITION ORDER ZONE: {0} - {1}", updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse.Open, updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
 
-                            int i = 1;
+                            tradeFlow.LookingForPosition = false;
+                            tradeFlow.PlacingOrders = true;
+                        }
+                        else
+                        {
+                            tradeFlow.LookingForPosition = true;
+                        }
 
-                            foreach (var order in orders.Data)
+                        if (updatedVariableObjects.FalseRenkoCount >= 1 && updatedVariableObjects.FalseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("PRICE IS IN SHORT POSITION ORDER ZONE: {0} - {1}", updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue.Open, updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue.Open - indicatorParameter.Parameter1 * tradeParameter.OrderRangeBrickQuantity);
+
+                            tradeFlow.LookingForPosition = false;
+                            tradeFlow.PlacingOrders = true;
+                        }
+                        else
+                        {
+                            tradeFlow.LookingForPosition = true;
+                        }
+
+                        iteration++;
+                        Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
+                    }
+                    #endregion
+
+
+                    while (tradeFlow.PlacingOrders == true)
+                    {
+                        Console.WriteLine("Trade Status: PLACING ORDERS!");
+
+                        var updatedVariableObjects = await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
+                            calculators, variableObjects);
+
+                        if (updatedVariableObjects.TrueRenkoCount >= 1 && updatedVariableObjects.TrueRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
+                        {
+                            updatedVariableObjects.PositionEntryRenkoBrick = updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse;
+
+                            var orderQuantityCheck =
+                                (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
+                                    tradeParameter.Leverage / 100) /
+                                (updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse.Open + indicatorParameter.Parameter1 *
+                                    tradeParameter.OrderRangeBrickQuantity) * tradeParameter.OrderQuantity * symbolPairInformation.LotSizeFilterMinQuantity;
+
+                            if (orderQuantityCheck <= 0)
                             {
-                                binanceFuturesPlacedOrders.Add(order.Data);
-
-                                Console.ForegroundColor = ConsoleColor.Magenta;
-                                Console.WriteLine(
-                                    "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \nSide/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
-                                    i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
-                                    order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
-                                    order.Data.OrderId, order.Data.Status);
-                                i++;
+                                Console.WriteLine("Balance is not enough for {0} orders. Order count set 1 ", tradeParameter.OrderQuantity);
+                                tradeParameter.OrderQuantity = 1;
                             }
 
-                            Console.ForegroundColor = ConsoleColor.White;
 
-                            Console.WriteLine("Placed orders are controlling...");
+                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
+                                tradeParameter.SymbolPair, "Buy", "Long", tradeParameter.MaximumBalanceLimit,
+                                tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
+                                tradeParameter.OrderQuantity, updatedVariableObjects.FirstTrueRenkoAfterTheLastFalse.Open, tradeParameter.PriceCalculationMethod,
+                                Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
+                                calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
 
-                            int j = 1;
 
-                            var controlResults = new List<string>();
-
-                            foreach (var order in orders.Data)
+                            if (orders.Data != null && orders.Success)
                             {
-                                Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
 
-                                var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
+                                int i = 1;
 
-                                if (checkedOrder.Data != null && checkedOrder.Success)
+                                foreach (var order in orders.Data)
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    updatedVariableObjects.BinanceFuturesPlacedOrders.Add(order.Data);
+
+                                    Console.ForegroundColor = ConsoleColor.Magenta;
                                     Console.WriteLine(
-                                        "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} \nPrice/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
-                                        j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
-                                        checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
-                                        checkedOrder.Data.OrderId, checkedOrder.Data.Status);
-                                    controlResults.Add("Success");
-                                    j++;
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \nSide/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
+                                        order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
+                                        order.Data.OrderId, order.Data.Status);
+                                    i++;
+                                }
+
+                                Console.ForegroundColor = ConsoleColor.White;
+
+                                Console.WriteLine("Placed orders are controlling...");
+
+                                int j = 1;
+
+                                var controlResults = new List<string>();
+
+                                foreach (var order in orders.Data)
+                                {
+                                    Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
+                                    var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
+
+                                    if (checkedOrder.Data != null && checkedOrder.Success)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        Console.WriteLine(
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} \nPrice/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                            checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                            checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+                                        controlResults.Add("Success");
+                                        j++;
+                                    }
+                                    else
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
+                                        controlResults.Add("Error");
+                                    }
+
+                                }
+
+                                var controlDecision = controlResults.Any(x => x == "Error");
+
+                                if (controlDecision == false)
+                                {
+                                    controlResults.Clear();
+                                    tradeFlow.LookingForPosition = false;
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.OrdersStartedToFill = true;
                                 }
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
-                                    controlResults.Add("Error");
+                                    Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.LookingForPosition = false;
+                                    tradeFlow.OrdersStartedToFill = true;
                                 }
 
-                            }
 
-                            var controlDecision = controlResults.Any(x => x == "Error");
-
-                            if (controlDecision == false)
-                            {
-                                controlResults.Clear();
-                                tradeFlow.LookingForPosition = false;
-                                tradeFlow.PlacingOrders = false;
-                                tradeFlow.OrdersStartedToFill = true;
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
+                                Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
+                                int i = 1;
+                                foreach (var data in orders.Data)
+                                {
+                                    Console.WriteLine("Order-{0} :" + data.Error.Code + ": " + data.Error.Message, i);
+                                    i++;
+                                }
                                 tradeFlow.PlacingOrders = false;
                                 tradeFlow.LookingForPosition = false;
-                                tradeFlow.OrdersStartedToFill = true;
+
                             }
-
-
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
-                            int i = 1;
-                            foreach (var data in orders.Data)
-                            {
-                                Console.WriteLine("Order-{0} :" + data.Error.Code + ": " + data.Error.Message, i);
-                                i++;
-                            }
-                            tradeFlow.PlacingOrders = false;
-                            tradeFlow.LookingForPosition = false;
-
-                        }
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-
-
-
-                    if (falseRenkoCount >= 1 && falseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
-                    {
-                        positionEntryRenkoBrick = firstFalseRenkoAfterTheLastTrue;
-
-                        var orderQuantityCheck =
-                            (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
-                                tradeParameter.Leverage / 100) /
-                            (firstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 *
-                                tradeParameter.OrderRangeBrickQuantity) * tradeParameter.OrderQuantity * symbolPairInformation.LotSizeFilterMinQuantity;
-
-                        if (orderQuantityCheck <= 0)
-                        {
-                            Console.WriteLine("Balance is not enough for {0} orders. Order count set 1 ", tradeParameter.OrderQuantity);
-                            tradeParameter.OrderQuantity = 1;
-                        }
-
-                        var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
-                            tradeParameter.SymbolPair, "Sell", "Short", tradeParameter.MaximumBalanceLimit,
-                            tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
-                            tradeParameter.OrderQuantity, firstFalseRenkoAfterTheLastTrue.Open, tradeParameter.PriceCalculationMethod,
-                            Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
-                            calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
-
-
-
-                        if (orders.Data != null && orders.Success)
-                        {
-
-                            int i = 1;
-
-                            foreach (var order in orders.Data)
-                            {
-                                binanceFuturesPlacedOrders.Add(order.Data);
-
-                                Console.ForegroundColor = ConsoleColor.Magenta;
-                                Console.WriteLine(
-                                    "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \nSide/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
-                                    i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
-                                    order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
-                                    order.Data.OrderId, order.Data.Status);
-                                i++;
-                            }
-
                             Console.ForegroundColor = ConsoleColor.White;
+                        }
 
-                            Console.WriteLine("Placed orders are controlling...");
 
-                            int j = 1;
 
-                            var controlResults = new List<string>();
+                        if (updatedVariableObjects.FalseRenkoCount >= 1 && updatedVariableObjects.FalseRenkoCount <= tradeParameter.OrderRangeBrickQuantity)
+                        {
+                            updatedVariableObjects.PositionEntryRenkoBrick = updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue;
 
-                            foreach (var order in orders.Data)
+                            var orderQuantityCheck =
+                                (tradeParameter.MaximumBalanceLimit * tradeParameter.MaxBalancePercentage *
+                                    tradeParameter.Leverage / 100) /
+                                (updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue.Open + indicatorParameter.Parameter1 *
+                                    tradeParameter.OrderRangeBrickQuantity) * tradeParameter.OrderQuantity * symbolPairInformation.LotSizeFilterMinQuantity;
+
+                            if (orderQuantityCheck <= 0)
                             {
-                                Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+                                Console.WriteLine("Balance is not enough for {0} orders. Order count set 1 ", tradeParameter.OrderQuantity);
+                                tradeParameter.OrderQuantity = 1;
+                            }
 
-                                var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
+                            var orders = await binanceApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
+                                tradeParameter.SymbolPair, "Sell", "Short", tradeParameter.MaximumBalanceLimit,
+                                tradeParameter.MaxBalancePercentage, tradeParameter.Leverage,
+                                tradeParameter.OrderQuantity, updatedVariableObjects.FirstFalseRenkoAfterTheLastTrue.Open, tradeParameter.PriceCalculationMethod,
+                                Convert.ToDecimal(indicatorParameter.Parameter1), tradeParameter.OrderRangeBrickQuantity,
+                                calculatedPricePrecision, symbolPairInformation.QuantityPrecision);
 
-                                if (checkedOrder.Data != null && checkedOrder.Success)
+
+
+                            if (orders.Data != null && orders.Success)
+                            {
+
+                                int i = 1;
+
+                                foreach (var order in orders.Data)
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    updatedVariableObjects.BinanceFuturesPlacedOrders.Add(order.Data);
+
+                                    Console.ForegroundColor = ConsoleColor.Magenta;
                                     Console.WriteLine(
-                                        "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} \nPrice/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
-                                        j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
-                                        checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
-                                        checkedOrder.Data.OrderId, checkedOrder.Data.Status);
-                                    controlResults.Add("Success");
-                                    j++;
+                                        "Order {0}: SymbolPair: {1} | Price/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} \nSide/PositionSide: {6}/{7} | OrderId: {8} | Status: {9}",
+                                        i, order.Data.Symbol, order.Data.Price, order.Data.AvgPrice, order.Data.Quantity,
+                                        order.Data.QuantityFilled, order.Data.Side, order.Data.PositionSide,
+                                        order.Data.OrderId, order.Data.Status);
+                                    i++;
+                                }
+
+                                Console.ForegroundColor = ConsoleColor.White;
+
+                                Console.WriteLine("Placed orders are controlling...");
+
+                                int j = 1;
+
+                                var controlResults = new List<string>();
+
+                                foreach (var order in orders.Data)
+                                {
+                                    Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
+                                    var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, order.Data.OrderId));
+
+                                    if (checkedOrder.Data != null && checkedOrder.Success)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        Console.WriteLine(
+                                            "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} \nPrice/AvgPrice: {2}/{3} | Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                            j, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                            checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                            checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+                                        controlResults.Add("Success");
+                                        j++;
+                                    }
+                                    else
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
+                                        controlResults.Add("Error");
+                                    }
+
+                                }
+
+                                var controlDecision = controlResults.Any(x => x == "Success");
+
+                                if (controlDecision == false)
+                                {
+                                    controlResults.Clear();
+                                    tradeFlow.LookingForPosition = false;
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.OrdersStartedToFill = true;
                                 }
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("An error occurred while checking Placed Order-{0} Control Result=> {1}", j, checkedOrder.Message);
-                                    controlResults.Add("Error");
+                                    Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
+                                    tradeFlow.PlacingOrders = false;
+                                    tradeFlow.LookingForPosition = false;
+                                    tradeFlow.OrdersStartedToFill = true;
                                 }
 
-                            }
 
-                            var controlDecision = controlResults.Any(x => x == "Success");
-
-                            if (controlDecision == false)
-                            {
-                                controlResults.Clear();
-                                tradeFlow.LookingForPosition = false;
-                                tradeFlow.PlacingOrders = false;
-                                tradeFlow.OrdersStartedToFill = true;
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("{0} problem/s with placed orders. Please check manually.", controlResults.Count(x => x == "Error"));
+
+                                Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
+                                int i = 1;
+                                foreach (var data in orders.Data)
+                                {
+                                    Console.WriteLine("Order-{0} :" + data.Error.Code + ": " + data.Error.Message, i);
+                                    i++;
+                                }
                                 tradeFlow.PlacingOrders = false;
                                 tradeFlow.LookingForPosition = false;
-                                tradeFlow.OrdersStartedToFill = true;
+
                             }
-
-
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-
-                            Console.WriteLine("There are problems with placed orders. Order data looks null. Please check manually. Message: {0}", orders.Message);
-                            int i = 1;
-                            foreach (var data in orders.Data)
-                            {
-                                Console.WriteLine("Order-{0} :" + data.Error.Code + ": " + data.Error.Message, i);
-                                i++;
-                            }
-                            tradeFlow.PlacingOrders = false;
-                            tradeFlow.LookingForPosition = false;
-
-                        }
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                }
-
-                while (tradeFlow.OrdersStartedToFill == true)
-                {
-                    Console.WriteLine("Trade Status: CONTROLLING THE PLACED ORDERS TO FILL!");
-
-                    int i = 1;
-
-                    var controlResults = new List<string>();
-
-                    foreach (var placedOrder in binanceFuturesPlacedOrders)
-                    {
-                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
-
-                        var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
-
-                        if (checkedOrder.Data is { Status: OrderStatus.Filled })
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine(
-                                "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
-                                i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
-                                checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
-                                checkedOrder.Data.OrderId, checkedOrder.Data.Status);
-
-                            controlResults.Add("Filled");
-                            i++;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("OrderId: {0} is not filled yet. {1}", checkedOrder.Data.OrderId, checkedOrder.Message);
-                            Console.WriteLine(
-                                "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
-                                i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
-                                checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
-                                checkedOrder.Data.OrderId, checkedOrder.Data.Status);
-                            controlResults.Add("NotFilled");
-                            i++;
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
 
+                        iteration++;
+                        Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
                     }
 
-
-                    var controlDecision = controlResults.Any(x => x == "NotFilled");
-
-                    if (controlDecision == false)
+                    while (tradeFlow.OrdersStartedToFill == true)
                     {
+                        Console.WriteLine("Trade Status: CONTROLLING THE PLACED ORDERS TO FILL!");
 
+                        int i = 1;
 
-                        foreach (var placedOrder in binanceFuturesPlacedOrders)
+                        var updatedVariableObjects = await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
+                            calculators, variableObjects);
+
+                        var controlResults = new List<string>();
+
+                        foreach (var placedOrder in updatedVariableObjects.BinanceFuturesPlacedOrders)
                         {
+                            Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
                             var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
 
                             if (checkedOrder.Data is { Status: OrderStatus.Filled })
                             {
-                                binanceFuturesFilledOrders.Add(checkedOrder.Data);
-                            }
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine(
+                                    "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                    i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                    checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                    checkedOrder.Data.OrderId, checkedOrder.Data.Status);
 
-                        }
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("All orders filled! Let's track the position!");
-                        tradeFlow.OrdersStartedToFill = false;
-                        tradeFlow.TrackingOpenPosition = true;
-
-                        controlResults.Clear();
-
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("{0} order/s not filled. Waiting them to fill.", controlResults.Count(x => x == "NotFilled"));
-                        controlResults.Clear();
-                    }
-
-
-                    if (trueRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastRenkoBrick.Date > positionEntryRenkoBrick.Date)
-                    {
-                        var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
-
-                        if (canceledAllOrders.Success)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("Number of TRUE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
-                            tradeFlow.OrdersStartedToFill = false;
-                            tradeFlow.TrackingOpenPosition = true;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
-                            Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
-                        }
-
-                    }
-
-                    if (falseRenkoCount > tradeParameter.CancelOrdersAfterBrick && lastRenkoBrick.Date > positionEntryRenkoBrick.Date)
-                    {
-                        var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
-
-                        if (canceledAllOrders.Success)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("Number of FALSE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
-                            tradeFlow.OrdersStartedToFill = false;
-                            tradeFlow.TrackingOpenPosition = true;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
-                            Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
-                        }
-                    }
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-
-                while (tradeFlow.TrackingOpenPosition == true)
-                {
-                    var estimatedProfit = 0M;
-
-                    Console.WriteLine("Trade Status: TRACKING OPEN POSITION!");
-
-                    var binancePositionDetailsUsdtResult = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
-
-                    Console.WriteLine(binancePositionDetailsUsdtResult.Message);
-
-                    if (binancePositionDetailsUsdtResult.Success)
-                    {
-                        binancePositionDetailsUsdt = binancePositionDetailsUsdtResult.Data;
-
-
-                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Long)
-                        {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.EntryPrice - binancePositionDetailsUsdt.EntryPrice * tradeParameter.StopLossPercent / 100), calculatedPricePrecision);
-
-                            Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
-
-                            if (streamData.Close <= stoplossPrice)
-                            {
-                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
-
-                                Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
-
-                                Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
-
-                                var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
-
-                                if (stopOrder.Success)
-                                {
-                                    var stopOrderControl =
-                                        binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                            tradeParameter.SymbolPair, stopOrder.Data.OrderId);
-
-                                    if (stopOrderControl.Result.Success && stopOrderControl.Result.Data.Status == OrderStatus.Filled)
-                                    {
-                                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                                        Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                        tradeFlow.TrackingOpenPosition = false;
-                                        tradeFlow.LookingForPosition = true;
-
-                                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
-
-                                        Console.WriteLine("Maximum balance limit is updating...");
-
-
-                                        await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
-                                    }
-
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Something wrong with stop order, PLEASE CHECK MANUALLY!! MESSAGE => " + stopOrder.Message);
-                                }
-
-                            }
-
-                            if (streamData.Close > stoplossPrice)
-                            {
-                                if (trueRenkoCount == -1 && falseRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastTrueRenkoBrick.Date > positionEntryRenkoBrick.Date)
-                                {
-                                    Console.WriteLine("Trend turns from long to short. Position will be closed!");
-
-                                    var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
-
-
-                                    if (positionCloseOrder.Success)
-                                    {
-                                        var closeOrderControl =
-                                            binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                                tradeParameter.SymbolPair, positionCloseOrder.Data.OrderId);
-                                        if (closeOrderControl.Result.Success && closeOrderControl.Result.Data.Status == OrderStatus.Filled)
-                                        {
-                                            Console.ForegroundColor = ConsoleColor.Magenta;
-                                            Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
-                                            Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
-
-                                            Console.WriteLine("Maximum balance limit is updating...");
-
-                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
-
-                                            tradeFlow.TrackingOpenPosition = false;
-                                            tradeFlow.LookingForPosition = true;
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-                            if (binancePositionDetailsUsdt.EntryPrice == 0)
-                            {
-                                estimatedProfit = 0;
+                                controlResults.Add("Filled");
+                                i++;
                             }
                             else
                             {
-                                estimatedProfit = Math.Round((binancePositionDetailsUsdt.MarkPrice / binancePositionDetailsUsdt.EntryPrice - 1) * 100, 2) * tradeParameter.Leverage;
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("OrderId: {0} is not filled yet. {1}", checkedOrder.Data.OrderId, checkedOrder.Message);
+                                Console.WriteLine(
+                                    "Placed Order-{0} Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
+                                    i, checkedOrder.Data.Symbol, checkedOrder.Data.Price, checkedOrder.Data.AvgPrice, checkedOrder.Data.Quantity,
+                                    checkedOrder.Data.QuantityFilled, checkedOrder.Data.Side, checkedOrder.Data.PositionSide,
+                                    checkedOrder.Data.OrderId, checkedOrder.Data.Status);
+                                controlResults.Add("NotFilled");
+                                i++;
                             }
 
-
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + " | " + "Unrealized PnL = $" + Math.Round(binancePositionDetailsUsdt.UnrealizedPnl, 2) + "   ##########");
-                            Console.ForegroundColor = ConsoleColor.White;
                         }
 
-                        if (binancePositionDetailsUsdt.PositionSide == PositionSide.Short)
+
+                        var controlDecision = controlResults.Any(x => x == "NotFilled");
+
+                        if (controlDecision == false)
                         {
-                            stoplossPrice = Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.EntryPrice + binancePositionDetailsUsdt.EntryPrice * tradeParameter.StopLossPercent / 100), calculatedPricePrecision);
 
-                            Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, stoplossPrice);
 
-                            if (streamData.Close >= stoplossPrice)
+                            foreach (var placedOrder in updatedVariableObjects.BinanceFuturesPlacedOrders)
                             {
-                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                                var checkedOrder = (await binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(tradeParameter.SymbolPair, placedOrder.OrderId));
 
-                                Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
-
-                                Thread.Sleep(500);
-
-
-
-                                var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Abs(Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision)), "Short");
-
-                                if (stopOrder.Success)
+                                if (checkedOrder.Data is { Status: OrderStatus.Filled })
                                 {
-                                    var stopOrderControl =
-                                        binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                            tradeParameter.SymbolPair, stopOrder.Data.OrderId);
-
-                                    if (stopOrderControl.Result.Success && stopOrderControl.Result.Data.Status == OrderStatus.Filled)
-                                    {
-                                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                                        Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
-                                        tradeFlow.TrackingOpenPosition = false;
-                                        tradeFlow.LookingForPosition = true;
-
-                                        Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
-
-                                        Console.WriteLine("Maximum balance limit is updating...");
-
-
-                                        await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
-                                    }
-
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Something wrong with stop order, PLEASE CHECK MANUALLY!! MESSAGE => " + stopOrder.Message);
+                                    updatedVariableObjects.BinanceFuturesFilledOrders.Add(checkedOrder.Data);
                                 }
 
                             }
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("All orders filled! Let's track the position!");
+                            tradeFlow.OrdersStartedToFill = false;
+                            tradeFlow.TrackingOpenPosition = true;
 
-                            if (streamData.Close < stoplossPrice)
+                            controlResults.Clear();
+
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("{0} order/s not filled. Waiting them to fill.", controlResults.Count(x => x == "NotFilled"));
+                            controlResults.Clear();
+                        }
+
+
+                        if (updatedVariableObjects.TrueRenkoCount > tradeParameter.CancelOrdersAfterBrick && updatedVariableObjects.LastRenkoBrick.Date > updatedVariableObjects.PositionEntryRenkoBrick.Date)
+                        {
+                            var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                            if (canceledAllOrders.Success)
                             {
-
-                                if (falseRenkoCount == -1 && trueRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && lastFalseRenkoBrick.Date > positionEntryRenkoBrick.Date)
-                                {
-                                    Console.WriteLine("Trend turns from short to long. Position will be closed!");
-
-                                    var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Abs(Math.Round(Convert.ToDecimal(binancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision)), "Short");
-
-                                    if (positionCloseOrder.Success)
-                                    {
-                                        var closeOrderControl =
-                                            binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
-                                                tradeParameter.SymbolPair, positionCloseOrder.Data.OrderId);
-                                        if (closeOrderControl.Result.Success && closeOrderControl.Result.Data.Status == OrderStatus.Filled)
-                                        {
-                                            Console.ForegroundColor = ConsoleColor.Magenta;
-                                            Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
-                                            Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
-
-                                            Console.WriteLine("Maximum balance limit is updating...");
-
-                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, binancePositionDetailsUsdt.EntryPrice);
-
-                                            tradeFlow.TrackingOpenPosition = false;
-                                            tradeFlow.LookingForPosition = true;
-                                        }
-
-                                    }
-                                }
-
-
-                            }
-
-                            if (binancePositionDetailsUsdt.EntryPrice == 0)
-                            {
-                                estimatedProfit = 0;
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Number of TRUE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
+                                tradeFlow.OrdersStartedToFill = false;
+                                tradeFlow.TrackingOpenPosition = true;
                             }
                             else
                             {
-                                estimatedProfit = Math.Round((1 - binancePositionDetailsUsdt.MarkPrice / binancePositionDetailsUsdt.EntryPrice) * 100, 2) * tradeParameter.Leverage;
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
+                                Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
                             }
 
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + " | " + "Unrealized PnL = $" + Math.Round(binancePositionDetailsUsdt.UnrealizedPnl, 2) + "   ##########");
-                            Console.ForegroundColor = ConsoleColor.White;
                         }
+
+                        if (updatedVariableObjects.FalseRenkoCount > tradeParameter.CancelOrdersAfterBrick && updatedVariableObjects.LastRenkoBrick.Date > updatedVariableObjects.PositionEntryRenkoBrick.Date)
+                        {
+                            var canceledAllOrders = await binanceApiService.CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                            if (canceledAllOrders.Success)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Number of FALSE bricks exceeded {0}. Partially or not filled orders cancelling: " + canceledAllOrders.Message, tradeParameter.CancelOrdersAfterBrick);
+                                tradeFlow.OrdersStartedToFill = false;
+                                tradeFlow.TrackingOpenPosition = true;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("An error occurred while cancelling partially filled orders. Please control your orders manually!");
+                                Console.WriteLine("Remote data message: " + canceledAllOrders.Message);
+                            }
+                        }
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        iteration++;
+                        Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
                     }
-                    else
+
+                    while (tradeFlow.TrackingOpenPosition == true)
                     {
-                        Console.WriteLine("An error occurred. Message: " + binancePositionDetailsUsdtResult.Message);
+                        var estimatedProfit = 0M;
+
+                        Console.WriteLine("Trade Status: TRACKING OPEN POSITION!");
+
+                        var updatedVariableObjects = await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
+                            calculators, variableObjects);
+
+                        var binancePositionDetailsUsdtResult = await binanceApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync(tradeParameter.SymbolPair);
+
+                        Console.WriteLine(binancePositionDetailsUsdtResult.Message);
+
+                        if (binancePositionDetailsUsdtResult.Success)
+                        {
+                            updatedVariableObjects.BinancePositionDetailsUsdt = binancePositionDetailsUsdtResult.Data;
+
+
+                            if (updatedVariableObjects.BinancePositionDetailsUsdt.PositionSide == PositionSide.Long)
+                            {
+                                updatedVariableObjects.StopLossPrice = Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice - updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice * tradeParameter.StopLossPercent / 100), calculatedPricePrecision);
+
+                                Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, updatedVariableObjects.StopLossPrice);
+
+                                if (streamData.Close <= updatedVariableObjects.StopLossPrice)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+
+                                    Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                                    Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
+                                    var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
+
+                                    if (stopOrder.Success)
+                                    {
+                                        var stopOrderControl =
+                                            binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                tradeParameter.SymbolPair, stopOrder.Data.OrderId);
+
+                                        if (stopOrderControl.Result.Success && stopOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                                            Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                            tradeFlow.TrackingOpenPosition = false;
+                                            tradeFlow.LookingForPosition = true;
+
+                                            Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
+                                            Console.WriteLine("Maximum balance limit is updating...");
+
+
+                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Something wrong with stop order, PLEASE CHECK MANUALLY!! MESSAGE => " + stopOrder.Message);
+                                    }
+
+                                }
+
+                                if (streamData.Close > updatedVariableObjects.StopLossPrice)
+                                {
+                                    if (updatedVariableObjects.TrueRenkoCount == -1 && updatedVariableObjects.FalseRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && updatedVariableObjects.LastTrueRenkoBrick.Date > updatedVariableObjects.PositionEntryRenkoBrick.Date)
+                                    {
+                                        Console.WriteLine("Trend turns from long to short. Position will be closed!");
+
+                                        var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
+
+                                        if (positionCloseOrder.Success)
+                                        {
+                                            var closeOrderControl =
+                                                binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                    tradeParameter.SymbolPair, positionCloseOrder.Data.OrderId);
+                                            if (closeOrderControl.Result.Success && closeOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                                Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
+                                                Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
+
+                                                Console.WriteLine("Maximum balance limit is updating...");
+
+                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+
+                                                tradeFlow.TrackingOpenPosition = false;
+                                                tradeFlow.LookingForPosition = true;
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                                if (updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice == 0)
+                                {
+                                    estimatedProfit = 0;
+                                }
+                                else
+                                {
+                                    estimatedProfit = Math.Round((updatedVariableObjects.BinancePositionDetailsUsdt.MarkPrice / updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice - 1) * 100, 2) * tradeParameter.Leverage;
+                                }
+
+
+                                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + " | " + "Unrealized PnL = $" + Math.Round(updatedVariableObjects.BinancePositionDetailsUsdt.UnrealizedPnl, 2) + "   ##########");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+
+                            if (updatedVariableObjects.BinancePositionDetailsUsdt.PositionSide == PositionSide.Short)
+                            {
+                                updatedVariableObjects.StopLossPrice = Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice + updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice * tradeParameter.StopLossPercent / 100), calculatedPricePrecision);
+
+                                Console.WriteLine("Stoploss Percent: %{0} , Calculated Stoploss Price: {1}", tradeParameter.StopLossPercent, updatedVariableObjects.StopLossPrice);
+
+                                if (streamData.Close >= updatedVariableObjects.StopLossPrice)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+
+                                    Console.WriteLine("The price fell below the stoploss price. Position will be stop.");
+
+                                    Thread.Sleep(500);
+
+
+
+                                    var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Abs(Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision)), "Short");
+
+                                    if (stopOrder.Success)
+                                    {
+                                        var stopOrderControl =
+                                            binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                tradeParameter.SymbolPair, stopOrder.Data.OrderId);
+
+                                        if (stopOrderControl.Result.Success && stopOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                                            Console.WriteLine("Position is STOPPED: " + stopOrder.Message);
+                                            tradeFlow.TrackingOpenPosition = false;
+                                            tradeFlow.LookingForPosition = true;
+
+                                            Thread.Sleep(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IntermediateTimePeriod"]));
+
+                                            Console.WriteLine("Maximum balance limit is updating...");
+
+
+                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Something wrong with stop order, PLEASE CHECK MANUALLY!! MESSAGE => " + stopOrder.Message);
+                                    }
+
+                                }
+
+                                if (streamData.Close < updatedVariableObjects.StopLossPrice)
+                                {
+
+                                    if (updatedVariableObjects.FalseRenkoCount == -1 && updatedVariableObjects.TrueRenkoCount > tradeParameter.NumberOfBricksToBeTolerated && updatedVariableObjects.LastFalseRenkoBrick.Date > updatedVariableObjects.PositionEntryRenkoBrick.Date)
+                                    {
+                                        Console.WriteLine("Trend turns from short to long. Position will be closed!");
+
+                                        var positionCloseOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Buy", Math.Abs(Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision)), "Short");
+
+                                        if (positionCloseOrder.Success)
+                                        {
+                                            var closeOrderControl =
+                                                binanceApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(
+                                                    tradeParameter.SymbolPair, positionCloseOrder.Data.OrderId);
+                                            if (closeOrderControl.Result.Success && closeOrderControl.Result.Data.Status == OrderStatus.Filled)
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                                Console.WriteLine("Position close order message: " + positionCloseOrder.Message);
+                                                Console.WriteLine("Position closed! | Trade status updated to Looking For Position.");
+
+                                                Console.WriteLine("Maximum balance limit is updating...");
+
+                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+
+                                                tradeFlow.TrackingOpenPosition = false;
+                                                tradeFlow.LookingForPosition = true;
+                                            }
+
+                                        }
+                                    }
+
+
+                                }
+
+                                if (updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice == 0)
+                                {
+                                    estimatedProfit = 0;
+                                }
+                                else
+                                {
+                                    estimatedProfit = Math.Round((1 - updatedVariableObjects.BinancePositionDetailsUsdt.MarkPrice / updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice) * 100, 2) * tradeParameter.Leverage;
+                                }
+
+                                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                Console.WriteLine("##########   Estimated Profit = %" + estimatedProfit + " | " + "Unrealized PnL = $" + Math.Round(updatedVariableObjects.BinancePositionDetailsUsdt.UnrealizedPnl, 2) + "   ##########");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("An error occurred. Message: " + binancePositionDetailsUsdtResult.Message);
+                        }
+
+                        iteration++;
+                        Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
                     }
+
                 }
-
-
-                iteration++;
-                Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ITERATION: {0}", iteration);
-
-
             }
         }
 
@@ -909,12 +983,12 @@ namespace AlgoTradeMasterRenko
             return lastKline;
         }
 
-        private static async Task InformationUpdates(BinanceFuturesUsdtKlineEntity streamData, IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal, TradeParameterEntity tradeParameter, IIndicatorService indicatorService, Calculators calculators, FuturesUsdtRenkoBrick lastRenkoBrick, int lastInIntervalTrendCount, int lastTrendBrickCount, List<BinanceFuturesPlacedOrder> binanceFuturesPlacedOrders, FuturesUsdtRenkoBrick lastFalseRenkoBrick, FuturesUsdtRenkoBrick firstTrueRenkoAfterTheLastFalse, int trueRenkoCount, FuturesUsdtRenkoBrick lastTrueRenkoBrick, FuturesUsdtRenkoBrick firstFalseRenkoAfterTheLastTrue, int falseRenkoCount)
+        private static async Task<VariableObjects> InformationUpdates(BinanceFuturesUsdtKlineEntity streamData, IBinanceFuturesUsdtKlineDal binanceFuturesUsdtKlineDal, TradeParameterEntity tradeParameter, IIndicatorService indicatorService, Calculators calculators, VariableObjects variableObjects)
         {
-            trueRenkoCount = -1;
-            falseRenkoCount = -1;
-            lastInIntervalTrendCount = -1;
-            lastTrendBrickCount = -1;
+            variableObjects.TrueRenkoCount = -1;
+            variableObjects.FalseRenkoCount = -1;
+            variableObjects.LastInIntervalTrendCount = -1;
+            variableObjects.LastTrendBrickCount = -1;
 
             if (streamData.Open != 0)
             {
@@ -934,18 +1008,19 @@ namespace AlgoTradeMasterRenko
                 var renkoCountList = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(renkoResults,
                     Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
 
-                lastRenkoBrick = renkoResults.LastOrDefault();
+                variableObjects.LastRenkoBrick = renkoResults.LastOrDefault();
 
-                lastInIntervalTrendCount = renkoResults.Count(x => x.InIntervalTrendId == lastRenkoBrick.InIntervalTrendId);
-                lastTrendBrickCount = renkoResults.Count(x => x.TrendId == lastRenkoBrick.TrendId);
+                variableObjects.LastInIntervalTrendCount = renkoResults.Count(x => x.InIntervalTrendId == variableObjects.LastRenkoBrick.InIntervalTrendId);
+                variableObjects.LastTrendBrickCount = renkoResults.Count(x => x.TrendId == variableObjects.LastRenkoBrick.TrendId);
 
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.WriteLine("===================================================================================================================================================================");
 
-                binanceFuturesPlacedOrders.Clear();
+                //variableObjects.BinanceFuturesPlacedOrders.Clear();
 
                 #region Trend Counts Results
+
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
                 Console.Write("Last {0} Trend Count Results: ", Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
@@ -973,35 +1048,35 @@ namespace AlgoTradeMasterRenko
 
                 var inIntervalTrendCountList =
                     calculators.CalculateInIntervalTrendCountFromRenkoBrickList(
-                        renkoResults.Where(x => x.TrendId == lastRenkoBrick.TrendId));
+                        renkoResults.Where(x => x.TrendId == variableObjects.LastRenkoBrick.TrendId));
 
                 Console.ForegroundColor = ConsoleColor.Gray;
 
                 Console.Write("Last Trend Brick Count=> ");
 
-                if (lastRenkoBrick.IsUp == true)
+                if (variableObjects.LastRenkoBrick.IsUp == true)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
 
-                if (lastRenkoBrick.IsUp == false)
+                if (variableObjects.LastRenkoBrick.IsUp == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                 }
 
-                Console.Write(lastTrendBrickCount);
+                Console.Write(variableObjects.LastTrendBrickCount);
 
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(" | Last In Interval Trend Counts=> ");
 
                 foreach (var inIntervalTrendCount in inIntervalTrendCountList.Data)
                 {
-                    if (lastRenkoBrick.IsUp == true)
+                    if (variableObjects.LastRenkoBrick.IsUp == true)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
 
-                    if (lastRenkoBrick.IsUp == false)
+                    if (variableObjects.LastRenkoBrick.IsUp == false)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
@@ -1014,35 +1089,35 @@ namespace AlgoTradeMasterRenko
 
 
 
-                switch (lastRenkoBrick.IsUp)
+                switch (variableObjects.LastRenkoBrick.IsUp)
                 {
                     case true:
                         {
-                            lastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
-                            firstTrueRenkoAfterTheLastFalse = renkoResults.FirstOrDefault(x => x.Id == lastFalseRenkoBrick.Id + 1);
+                            variableObjects.LastFalseRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == false);
+                            variableObjects.FirstTrueRenkoAfterTheLastFalse = renkoResults.FirstOrDefault(x => x.Id == variableObjects.LastFalseRenkoBrick.Id + 1);
 
-                            trueRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(lastFalseRenkoBrick.Id);
+                            variableObjects.TrueRenkoCount = Convert.ToInt32(variableObjects.LastRenkoBrick.Id) - Convert.ToInt32(variableObjects.LastFalseRenkoBrick.Id);
 
 
-                            if (streamData.Close <= lastRenkoBrick.Close && streamData.Close >= lastRenkoBrick.Open)
+                            if (streamData.Close <= variableObjects.LastRenkoBrick.Close && streamData.Close >= variableObjects.LastRenkoBrick.Open)
                             {
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount);
+                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, variableObjects.LastRenkoBrick.IsUp, variableObjects.TrueRenkoCount);
                             }
-                            if (streamData.Close > lastRenkoBrick.Close)
+                            if (streamData.Close > variableObjects.LastRenkoBrick.Close)
                             {
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, trueRenkoCount + 1);
+                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, variableObjects.LastRenkoBrick.IsUp, variableObjects.TrueRenkoCount + 1);
                             }
 
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, trueRenkoCount);
+                            Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", variableObjects.LastRenkoBrick.Date, variableObjects.LastRenkoBrick.Open, variableObjects.LastRenkoBrick.Close, variableObjects.LastRenkoBrick.IsUp, variableObjects.TrueRenkoCount);
 
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.WriteLine("First TRUE Brick:        OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstTrueRenkoAfterTheLastFalse.Date, firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Close, firstTrueRenkoAfterTheLastFalse.IsUp);
+                            Console.WriteLine("First TRUE Brick:        OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", variableObjects.FirstTrueRenkoAfterTheLastFalse.Date, variableObjects.FirstTrueRenkoAfterTheLastFalse.Open, variableObjects.FirstTrueRenkoAfterTheLastFalse.Close, variableObjects.FirstTrueRenkoAfterTheLastFalse.IsUp);
 
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Last FALSE Brick:        OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastFalseRenkoBrick.Date, lastFalseRenkoBrick.Open, lastFalseRenkoBrick.Close, lastFalseRenkoBrick.IsUp);
+                            Console.WriteLine("Last FALSE Brick:        OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", variableObjects.LastFalseRenkoBrick.Date, variableObjects.LastFalseRenkoBrick.Open, variableObjects.LastFalseRenkoBrick.Close, variableObjects.LastFalseRenkoBrick.IsUp);
 
                             Console.ForegroundColor = ConsoleColor.White;
 
@@ -1052,32 +1127,32 @@ namespace AlgoTradeMasterRenko
                         }
                     case false:
                         {
-                            lastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
-                            firstFalseRenkoAfterTheLastTrue = renkoResults.FirstOrDefault(x => x.Id == lastTrueRenkoBrick.Id + 1);
+                            variableObjects.LastTrueRenkoBrick = renkoResults.LastOrDefault(x => x.IsUp == true);
+                            variableObjects.FirstFalseRenkoAfterTheLastTrue = renkoResults.FirstOrDefault(x => x.Id == variableObjects.LastTrueRenkoBrick.Id + 1);
 
-                            falseRenkoCount = Convert.ToInt32(lastRenkoBrick.Id) - Convert.ToInt32(lastTrueRenkoBrick.Id);
+                            variableObjects.FalseRenkoCount = Convert.ToInt32(variableObjects.LastRenkoBrick.Id) - Convert.ToInt32(variableObjects.LastTrueRenkoBrick.Id);
 
-                            if (streamData.Close >= lastRenkoBrick.Close && streamData.Close <= lastRenkoBrick.Open)
+                            if (streamData.Close >= variableObjects.LastRenkoBrick.Close && streamData.Close <= variableObjects.LastRenkoBrick.Open)
                             {
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount);
+                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, variableObjects.LastRenkoBrick.IsUp, variableObjects.FalseRenkoCount);
                             }
 
-                            if (streamData.Close < lastRenkoBrick.Close)
+                            if (streamData.Close < variableObjects.LastRenkoBrick.Close)
                             {
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, lastRenkoBrick.IsUp, falseRenkoCount + 1);
+                                Console.WriteLine("Current PRICE/IN Brick:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, Price In BrickNumber: {4}", streamData.OpenTime, streamData.Open, streamData.Close, variableObjects.LastRenkoBrick.IsUp, variableObjects.FalseRenkoCount + 1);
                             }
 
 
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", lastRenkoBrick.Date, lastRenkoBrick.Open, lastRenkoBrick.Close, lastRenkoBrick.IsUp, falseRenkoCount);
+                            Console.WriteLine("Current COMPLETED Brick: OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}, BrickNumber: {4}", variableObjects.LastRenkoBrick.Date, variableObjects.LastRenkoBrick.Open, variableObjects.LastRenkoBrick.Close, variableObjects.LastRenkoBrick.IsUp, variableObjects.FalseRenkoCount);
 
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("First FALSE Brick:       OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastTrue.Date, firstFalseRenkoAfterTheLastTrue.Open, firstFalseRenkoAfterTheLastTrue.Close, firstFalseRenkoAfterTheLastTrue.IsUp);
+                            Console.WriteLine("First FALSE Brick:       OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", variableObjects.FirstFalseRenkoAfterTheLastTrue.Date, variableObjects.FirstFalseRenkoAfterTheLastTrue.Open, variableObjects.FirstFalseRenkoAfterTheLastTrue.Close, variableObjects.FirstFalseRenkoAfterTheLastTrue.IsUp);
 
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.WriteLine("Last TRUE Brick:         OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastTrueRenkoBrick.Date, lastTrueRenkoBrick.Open, lastTrueRenkoBrick.Close, lastTrueRenkoBrick.IsUp);
+                            Console.WriteLine("Last TRUE Brick:         OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", variableObjects.LastTrueRenkoBrick.Date, variableObjects.LastTrueRenkoBrick.Open, variableObjects.LastTrueRenkoBrick.Close, variableObjects.LastTrueRenkoBrick.IsUp);
 
                             Console.ForegroundColor = ConsoleColor.White;
 
@@ -1087,6 +1162,8 @@ namespace AlgoTradeMasterRenko
                         }
                 }
             }
+
+            return variableObjects;
         }
     }
 }

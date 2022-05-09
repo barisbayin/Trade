@@ -52,6 +52,8 @@ namespace DevExpressUI
             this.gridTradeFlowPartial = new DevExpress.XtraGrid.GridControl();
             this.gvTradeFlowPartial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
+            this.lblNumberOfBricksForEntry = new DevExpress.XtraEditors.LabelControl();
+            this.lblNumberOfBricksForEntryLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblNumberOfBricksToBeTolerated = new DevExpress.XtraEditors.LabelControl();
             this.lblCancelOrdersAfterBrick = new DevExpress.XtraEditors.LabelControl();
             this.lblPriceCalculationMethod = new DevExpress.XtraEditors.LabelControl();
@@ -104,8 +106,6 @@ namespace DevExpressUI
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.cbxTradeFlowLoadFilter = new System.Windows.Forms.ComboBox();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
-            this.lblNumberOfBricksForEntryLabel = new DevExpress.XtraEditors.LabelControl();
-            this.lblNumberOfBricksForEntry = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.popTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -417,6 +417,26 @@ namespace DevExpressUI
             this.tpEntries.Size = new System.Drawing.Size(400, 734);
             this.tpEntries.TabIndex = 2;
             // 
+            // lblNumberOfBricksForEntry
+            // 
+            this.tpEntries.SetColumn(this.lblNumberOfBricksForEntry, 2);
+            this.lblNumberOfBricksForEntry.Location = new System.Drawing.Point(178, 410);
+            this.lblNumberOfBricksForEntry.Name = "lblNumberOfBricksForEntry";
+            this.tpEntries.SetRow(this.lblNumberOfBricksForEntry, 13);
+            this.lblNumberOfBricksForEntry.Size = new System.Drawing.Size(10, 18);
+            this.lblNumberOfBricksForEntry.TabIndex = 76;
+            this.lblNumberOfBricksForEntry.Text = "..";
+            // 
+            // lblNumberOfBricksForEntryLabel
+            // 
+            this.tpEntries.SetColumn(this.lblNumberOfBricksForEntryLabel, 1);
+            this.lblNumberOfBricksForEntryLabel.Location = new System.Drawing.Point(19, 410);
+            this.lblNumberOfBricksForEntryLabel.Name = "lblNumberOfBricksForEntryLabel";
+            this.tpEntries.SetRow(this.lblNumberOfBricksForEntryLabel, 13);
+            this.lblNumberOfBricksForEntryLabel.Size = new System.Drawing.Size(142, 18);
+            this.lblNumberOfBricksForEntryLabel.TabIndex = 75;
+            this.lblNumberOfBricksForEntryLabel.Text = "Req. Bricks For Entry:";
+            // 
             // lblNumberOfBricksToBeTolerated
             // 
             this.tpEntries.SetColumn(this.lblNumberOfBricksToBeTolerated, 2);
@@ -665,7 +685,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -971,26 +991,6 @@ namespace DevExpressUI
             this.btnRefresh.TabIndex = 4;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // lblNumberOfBricksForEntryLabel
-            // 
-            this.tpEntries.SetColumn(this.lblNumberOfBricksForEntryLabel, 1);
-            this.lblNumberOfBricksForEntryLabel.Location = new System.Drawing.Point(19, 410);
-            this.lblNumberOfBricksForEntryLabel.Name = "lblNumberOfBricksForEntryLabel";
-            this.tpEntries.SetRow(this.lblNumberOfBricksForEntryLabel, 13);
-            this.lblNumberOfBricksForEntryLabel.Size = new System.Drawing.Size(142, 18);
-            this.lblNumberOfBricksForEntryLabel.TabIndex = 75;
-            this.lblNumberOfBricksForEntryLabel.Text = "Req. Bricks For Entry:";
-            // 
-            // lblNumberOfBricksForEntry
-            // 
-            this.tpEntries.SetColumn(this.lblNumberOfBricksForEntry, 2);
-            this.lblNumberOfBricksForEntry.Location = new System.Drawing.Point(178, 410);
-            this.lblNumberOfBricksForEntry.Name = "lblNumberOfBricksForEntry";
-            this.tpEntries.SetRow(this.lblNumberOfBricksForEntry, 13);
-            this.lblNumberOfBricksForEntry.Size = new System.Drawing.Size(10, 18);
-            this.lblNumberOfBricksForEntry.TabIndex = 76;
-            this.lblNumberOfBricksForEntry.Text = "..";
             // 
             // TradeMonitorUC
             // 

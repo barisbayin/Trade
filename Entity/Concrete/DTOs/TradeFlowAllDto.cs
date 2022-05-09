@@ -39,6 +39,7 @@ namespace Entity.Concrete.DTOs
         public DateTime? TradeStartTime { get; set; }
         public bool TradeEnded { get; set; }
         public DateTime? TradeEndTime { get; set; }
+        public bool LookingForFirstPosition { get; set; }
         public bool LookingForPosition { get; set; }
         public bool ReadyToOpenOrder { get; set; }
         public bool OrdersStartedToFill { get; set; }
