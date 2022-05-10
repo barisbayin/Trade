@@ -38,9 +38,13 @@ namespace AlgoTradeMasterRenko
             public FuturesUsdtRenkoBrick FirstTrueRenkoAfterTheLastFalse { get; set; }
             public FuturesUsdtRenkoBrick FirstFalseRenkoAfterTheLastTrue { get; set; }
             public FuturesUsdtRenkoBrick PositionEntryRenkoBrick { get; set; }
+
             public BinancePositionDetailsUsdt BinancePositionDetailsUsdt { get; set; }
-            public List<BinanceFuturesPlacedOrder> BinanceFuturesPlacedOrders { get; set; }
-            public List<BinanceFuturesOrder> BinanceFuturesFilledOrders { get; set; }
+
+            public List<BinanceFuturesPlacedOrder> BinanceFuturesPlacedOrders { get; set; } =
+                new List<BinanceFuturesPlacedOrder>();
+
+            public List<BinanceFuturesOrder> BinanceFuturesFilledOrders { get; set; } = new List<BinanceFuturesOrder>();
             public decimal StopLossPrice { get; set; } = 0;
             public bool PositionEntryTrigger { get; set; } = false;
             public int TrueRenkoCount { get; set; } = -1;
@@ -217,8 +221,15 @@ namespace AlgoTradeMasterRenko
                         {
                             if (updatedVariableObjects.LastTrendBrickCount == updatedVariableObjects.LastInIntervalTrendCount && updatedVariableObjects.LastInIntervalTrendCount < tradeParameter.NumberOfBricksForEntry)
                             {
-                                Console.WriteLine("The number of position entry bricks is expected to be triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
-                                updatedVariableObjects.PositionEntryTrigger = false;
+                                if (updatedVariableObjects.PositionEntryTrigger == false)
+                                {
+                                    Console.WriteLine("The number of position entry bricks is expected to be triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The number of position entry bricks triggered => Number Of Trigger Bricks: {0} | Trend Brick Count: {1}", tradeParameter.NumberOfBricksForEntry, updatedVariableObjects.LastTrendBrickCount);
+                                }
+                                
                             }
 
                             if (updatedVariableObjects.LastTrendBrickCount == updatedVariableObjects.LastInIntervalTrendCount && updatedVariableObjects.LastInIntervalTrendCount >= tradeParameter.NumberOfBricksForEntry)
