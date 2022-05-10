@@ -195,8 +195,6 @@ namespace AlgoTradeMasterRenko
             tradeFlow.InUse = true;
             tradeFlow.IsSelected = false;
             tradeFlow.LookingForFirstPosition = true;
-            tradeFlow.TradeStarted = true;
-            tradeFlow.TradeStartTime = DateTime.Now;
             //await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
 
             long iteration = 0;

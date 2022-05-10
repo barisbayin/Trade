@@ -23,6 +23,7 @@ namespace DataAccess.Concrete
         public DbSet<TradeParameterEntity> TradeParameters { get; set; }
         public DbSet<TradeFlowEntity> TradeFlows { get; set; }
         public DbSet<TradeLogEntity> TradeLogs { get; set; }
+        public DbSet<TradeEntity> Trades { get; set; }
 
     }
 }

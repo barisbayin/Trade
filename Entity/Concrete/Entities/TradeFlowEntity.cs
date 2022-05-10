@@ -7,10 +7,6 @@ namespace Entity.Concrete.Entities
     {
         public int? Id { get; set; }
         public int TradeParameterId { get; set; }
-        public bool TradeStarted { get; set; } = false;
-        public DateTime? TradeStartTime { get; set; } = null;
-        public bool TradeEnded { get; set; } = false;
-        public DateTime? TradeEndTime { get; set; } = null;
         public bool LookingForFirstPosition { get; set; } = false;
         public bool LookingForPosition { get; set; } = false;
         public bool ReadyToOpenOrder { get; set; } = false;
