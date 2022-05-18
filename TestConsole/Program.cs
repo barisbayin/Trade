@@ -132,28 +132,35 @@ namespace TestConsole
             //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Close: {3}, SuperTrendValue: {4}, SuperTrendSide: {5}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Close, data.SuperTrendValue, data.SuperTrendSide);
             //}
 
-
-
-            var result = indicatorService.GetFuturesUsdtRenkoBricks("CRVUSDT", "FourHour", 25).Data;
+            var result = indicatorService.GetSuperTrendResult("CRVUSDT", "FourHour", 25).Data;
             foreach (var data in result)
             {
-                if (data.Date > DateTime.Now.AddDays(-1))
-                {
-                    Console.WriteLine(data.Date);
-                }
-                Console.WriteLine(data.Date);
-                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}, TrendId: {6}, InIntervalTrendId: {7}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp,data.TrendId,data.InIntervalTrendId);
+
+
+                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, STValue: {7}, STSide: {6}, TrendId: {5}, SuperTrendBoth: {8}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open, data.Close, data.TrendId,  data.SuperTrendSide, data.SuperTrendValue,data.SuperTrendBoth);
 
             }
 
-            Calculators calculators = new Calculators();
+            //var result = indicatorService.GetFuturesUsdtRenkoBricks("CRVUSDT", "FourHour", 25).Data;
+            //foreach (var data in result)
+            //{
+            //    if (data.Date > DateTime.Now.AddDays(-1))
+            //    {
+            //        Console.WriteLine(data.Date);
+            //    }
+            //    Console.WriteLine(data.Date);
+            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}, TrendId: {6}, InIntervalTrendId: {7}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp,data.TrendId,data.InIntervalTrendId);
 
-            var result66 = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(result, 500);
+            //}
 
-            foreach (var item in result66.Data)
-            {
-                Console.WriteLine(item.RenkoSide, item.Count);
-            }
+            //Calculators calculators = new Calculators();
+
+            //var result66 = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(result, 500);
+
+            //foreach (var item in result66.Data)
+            //{
+            //    Console.WriteLine(item.RenkoSide, item.Count);
+            //}
 
 
 

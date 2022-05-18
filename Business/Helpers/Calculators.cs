@@ -151,7 +151,11 @@ namespace Business.Helpers
             public string RenkoSide { get; set; }
             public int Count { get; set; }
         }
-        
+        public class SuperTrendCount
+        {
+            public string SuperTrendSide { get; set; }
+            public int Count { get; set; }
+        }
 
         public IDataResult<List<RenkoCount>> CalculateFuturesUsdtRenkoCountFromRenkoBrickList(List<FuturesUsdtRenkoBrick> futuresUsdtRenkoBrickList, int renkoCountRange)
         {
@@ -207,6 +211,61 @@ namespace Business.Helpers
 
             inIntervalTrendCountList.Reverse();
             return new SuccessDataResult<List<int>>(inIntervalTrendCountList);
+        }
+
+
+        public IDataResult<List<SuperTrendCount>> CalculateFuturesUsdtSuperTrendCount(List<BinanceFuturesUsdtKlineWithSuperTrend> binanceFuturesUsdtKlineWithSuperTrendList, int superTrendCountRange)
+        {
+            var superTrendCountList = new List<SuperTrendCount>();
+
+            var usingSuperTrendKlineList = binanceFuturesUsdtKlineWithSuperTrendList.OrderByDescending(x => x.OpenTime).ToList();
+            int i = 0;
+            int j = 0;
+            foreach (var superTrendKline in usingSuperTrendKlineList)
+            {
+                if (superTrendKline.SuperTrendSide == "BUY")
+                {
+                    if (j > 0)
+                    {
+                        var superTrendCount = new SuperTrendCount() { SuperTrendSide = "BUY", Count = j };
+                        superTrendCountList.Add(superTrendCount);
+                        j = 0;
+                    }
+
+                    i++;
+                }
+                if (superTrendKline.SuperTrendSide == "SELL")
+                {
+                    if (i > 0)
+                    {
+                        var superTrendCount = new SuperTrendCount { SuperTrendSide = "SELL", Count = i };
+                        superTrendCountList.Add(superTrendCount);
+                        i = 0;
+                    }
+
+                    j++;
+                }
+
+            }
+
+            superTrendCountList.Reverse();
+            var selectedSuperTrendCountList = superTrendCountList.Skip(Math.Max(0, superTrendCountList.Count() - superTrendCountRange)).Take(superTrendCountRange).ToList();
+            return new SuccessDataResult<List<SuperTrendCount>>(selectedSuperTrendCountList);
+        }
+
+        public IDataResult<BinanceFuturesUsdtKlineWithSuperTrend> RoundDecimals(
+            BinanceFuturesUsdtKlineWithSuperTrend binanceFuturesUsdtKlineWithSuperTrend, int normalizePricePrecision)
+        {
+            foreach (var item in binanceFuturesUsdtKlineWithSuperTrend.GetType().GetProperties())
+            {
+                if (item.PropertyType.Name=="Decimal")
+                {
+                    var value = Math.Round(Convert.ToDecimal(item.GetValue(binanceFuturesUsdtKlineWithSuperTrend)),normalizePricePrecision);
+                    item.SetValue(binanceFuturesUsdtKlineWithSuperTrend,value);
+                }
+            }
+
+            return new SuccessDataResult<BinanceFuturesUsdtKlineWithSuperTrend>(binanceFuturesUsdtKlineWithSuperTrend);
         }
     }
 }

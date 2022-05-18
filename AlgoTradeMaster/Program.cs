@@ -139,16 +139,16 @@ namespace AlgoTradeMasterRenko
             var accountInfo = (await binanceApiService.GetFuturesUsdtAccountInformationAsync()).Data;
 
 
-            if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
+            //if (accountInfo.AvailableBalance < tradeParameter.MaximumBalanceLimit)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Red;
 
-                Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
-                Console.WriteLine("The available balance is less than the maximum balance selected for this trade. \nPlease increase balance or decrease maximum trade balance limit.");
+            //    Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
+            //    Console.WriteLine("The available balance is less than the maximum balance selected for this trade. \nPlease increase balance or decrease maximum trade balance limit.");
 
-                Console.ReadLine();
-                return;
-            }
+            //    Console.ReadLine();
+            //    return;
+            //}
 
 
             Console.WriteLine("Available Balance: {0}, Maximum Balance For This Trade: {1}", accountInfo.AvailableBalance, tradeParameter.MaximumBalanceLimit);
@@ -176,8 +176,6 @@ namespace AlgoTradeMasterRenko
             await binanceExchangeInformationService.AddFuturesUsdtSymbolInformationAsync();
 
             //await tradeFlowService.UpdateTradeFlowAsync(tradeFlow);
-
-
 
 
             var result = binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync(tradeParameter.SymbolPair, new List<string> { tradeParameter.Interval });
@@ -724,6 +722,7 @@ namespace AlgoTradeMasterRenko
 
                                     var stopOrder = await binanceApiService.CloseFuturesUsdtPositionByMarketOrderAsync(tradeParameter.SymbolPair, "Sell", Math.Round(Convert.ToDecimal(updatedVariableObjects.BinancePositionDetailsUsdt.Quantity), symbolPairInformation.QuantityPrecision), "Long");
 
+
                                     if (stopOrder.Success)
                                     {
                                         var stopOrderControl =
@@ -742,7 +741,7 @@ namespace AlgoTradeMasterRenko
                                             Console.WriteLine("Maximum balance limit is updating...");
 
 
-                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result.Data, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
                                         }
 
                                     }
@@ -774,7 +773,7 @@ namespace AlgoTradeMasterRenko
 
                                                 Console.WriteLine("Maximum balance limit is updating...");
 
-                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result.Data, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
 
                                                 tradeFlow.TrackingOpenPosition = false;
                                                 tradeFlow.LookingForPosition = true;
@@ -836,7 +835,7 @@ namespace AlgoTradeMasterRenko
                                             Console.WriteLine("Maximum balance limit is updating...");
 
 
-                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+                                            await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, stopOrderControl.Result.Data, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
                                         }
 
                                     }
@@ -869,7 +868,7 @@ namespace AlgoTradeMasterRenko
 
                                                 Console.WriteLine("Maximum balance limit is updating...");
 
-                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
+                                                await CalculateToAddPnLToMaximumBalance(binanceApiService, tradeParameter, closeOrderControl.Result.Data, updatedVariableObjects.BinancePositionDetailsUsdt.EntryPrice);
 
                                                 tradeFlow.TrackingOpenPosition = false;
                                                 tradeFlow.LookingForPosition = true;
@@ -909,45 +908,39 @@ namespace AlgoTradeMasterRenko
         }
 
         private static async Task CalculateToAddPnLToMaximumBalance(IBinanceApiService binanceApiService,
-            TradeParameterEntity tradeParameter, IDataResult<BinanceFuturesOrder> closeOrder, decimal entryPrice)
+            TradeParameterEntity tradeParameter, BinanceFuturesOrder closeOrder, decimal entryPrice)
         {
             decimal calculatedProfit;
 
-
-
-            if (closeOrder.Data is { Status: OrderStatus.Filled })
+            if (closeOrder is { Status: OrderStatus.Filled })
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(
                     "Stop Order Control Result=> OrderId: {8} | Status: {9} | SymbolPair: {1} | Price/AvgPrice: {2}/{3} \n                               Quantity/QuantityFilled {4}/{5} | Side/PositionSide: {6}/{7}",
-                    closeOrder.Data.Symbol, closeOrder.Data.Price, closeOrder.Data.AvgPrice,
-                    closeOrder.Data.Quantity,
-                    closeOrder.Data.QuantityFilled, closeOrder.Data.Side, closeOrder.Data.PositionSide,
-                    closeOrder.Data.OrderId, closeOrder.Data.Status);
+                    closeOrder.Symbol, closeOrder.Price, closeOrder.AvgPrice,
+                    closeOrder.Quantity,
+                    closeOrder.QuantityFilled, closeOrder.Side, closeOrder.PositionSide,
+                    closeOrder.OrderId, closeOrder.Status);
 
-                calculatedProfit = (entryPrice - closeOrder.Data.QuoteQuantityFilled /
-                    tradeParameter.Leverage) * closeOrder.Data.Quantity;
+                calculatedProfit = (entryPrice - closeOrder.QuoteQuantityFilled /
+                    tradeParameter.Leverage) * closeOrder.Quantity;
 
                 if (calculatedProfit <= 0)
                 {
-                    tradeParameter.MaximumBalanceLimit =
-                        tradeParameter.MaximumBalanceLimit + calculatedProfit;
+                    tradeParameter.MaximumBalanceLimit += calculatedProfit;
                 }
                 else
                 {
                     if (tradeParameter.AddPnlToMaximumBalanceLimit == true)
                     {
-                        tradeParameter.MaximumBalanceLimit =
-                            tradeParameter.MaximumBalanceLimit +
-                            calculatedProfit * tradeParameter.PercentageOfPnlToBeAdded / 100;
+                        tradeParameter.MaximumBalanceLimit += calculatedProfit * tradeParameter.PercentageOfPnlToBeAdded / 100;
                     }
                 }
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("OrderId: {0} is not filled yet. Control Result=> {1}", closeOrder.Data.OrderId,
-                    closeOrder.Message);
+                Console.WriteLine("OrderId: {0} is not filled yet.", closeOrder.OrderId);
             }
         }
 

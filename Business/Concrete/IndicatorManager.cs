@@ -61,13 +61,18 @@ namespace Business.Concrete
             IEnumerable<SuperTrendResult> superTrendResults = Indicator.GetSuperTrend(dataList, indicatorParameter.Period, Convert.ToDouble(indicatorParameter.Multiplier));
 
             int i = -1;
-            foreach (var data in dataList)
+            int j = 0;
+            int k = 1;
+            int m = 1;
+            foreach (var data in dataList.OrderBy(x=>x.Date))
             {
 
                 BinanceFuturesUsdtKlineWithSuperTrend binanceFuturesUsdtKlineWithSuperTrend = new BinanceFuturesUsdtKlineWithSuperTrend();
 
                 if (i < indicatorParameter.Period)
                 {
+                    j++;
+                    binanceFuturesUsdtKlineWithSuperTrend.Id = j;
                     binanceFuturesUsdtKlineWithSuperTrend.SymbolPair = symbolPair;
                     binanceFuturesUsdtKlineWithSuperTrend.KlineInterval = interval;
                     binanceFuturesUsdtKlineWithSuperTrend.OpenTime = data.Date;
@@ -78,11 +83,15 @@ namespace Business.Concrete
                     binanceFuturesUsdtKlineWithSuperTrend.BaseVolume = data.Volume;
                     binanceFuturesUsdtKlineWithSuperTrend.SuperTrendSide = "NULL";
                     binanceFuturesUsdtKlineWithSuperTrend.SuperTrendValue = 0;
+                    binanceFuturesUsdtKlineWithSuperTrend.SuperTrendBoth = 0;
+
                     i++;
                 }
 
                 if (i >= indicatorParameter.Period)
                 {
+                    j++;
+                    binanceFuturesUsdtKlineWithSuperTrend.Id = j;
                     binanceFuturesUsdtKlineWithSuperTrend.SymbolPair = symbolPair;
                     binanceFuturesUsdtKlineWithSuperTrend.KlineInterval = interval;
                     binanceFuturesUsdtKlineWithSuperTrend.OpenTime = data.Date;
@@ -91,16 +100,26 @@ namespace Business.Concrete
                     binanceFuturesUsdtKlineWithSuperTrend.Low = data.Low;
                     binanceFuturesUsdtKlineWithSuperTrend.Close = data.Close;
                     binanceFuturesUsdtKlineWithSuperTrend.BaseVolume = data.Volume;
+
                     if (superTrendResults.ToArray()[i].UpperBand == null)
                     {
+                        binanceFuturesUsdtKlineWithSuperTrend.TrendId = k;
+                        m = k + 1;
+
                         binanceFuturesUsdtKlineWithSuperTrend.SuperTrendSide = "BUY";
                         binanceFuturesUsdtKlineWithSuperTrend.SuperTrendValue = superTrendResults.ToArray()[i].LowerBand.Value;
                     }
                     if (superTrendResults.ToArray()[i].LowerBand == null)
                     {
+                        binanceFuturesUsdtKlineWithSuperTrend.TrendId = m;
+                        k = m + 1;
+
                         binanceFuturesUsdtKlineWithSuperTrend.SuperTrendSide = "SELL";
                         binanceFuturesUsdtKlineWithSuperTrend.SuperTrendValue = superTrendResults.ToArray()[i].UpperBand.Value;
                     }
+
+                    binanceFuturesUsdtKlineWithSuperTrend.SuperTrendBoth =
+                        superTrendResults.ToArray()[i].SuperTrend.Value;
 
                     i++;
                 }
@@ -111,6 +130,7 @@ namespace Business.Concrete
             }
             Console.WriteLine("SuperTrend calculated and data added to list!");
 
+
             return new SuccessDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>>(binanceFuturesUsdtKlineWithSuperTrendList);
         }
 
@@ -120,23 +140,37 @@ namespace Business.Concrete
 
             var indicatorParameter = _indicatorParameterService.GetIndicatorParameterEntityById(indicatorParameterId).Data;
 
-            Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", indicatorParameter.Parameter1, indicatorParameter.KlineEndType);
+
 
             var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval, Convert.ToInt32(indicatorParameter.Parameter2)).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 
-            IEnumerable<RenkoResult> renkoResults = Indicator.GetRenko(dataList, indicatorParameter.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
+            IEnumerable<RenkoResult> renkoResults = null;
+
+            if (indicatorParameter.Period == null || indicatorParameter.Period == 0)
+            {
+                Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1}", indicatorParameter.Parameter1, indicatorParameter.KlineEndType);
+                renkoResults = dataList.GetRenko(indicatorParameter.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
+            }
+            if (indicatorParameter.Period > 0)
+            {
+                Console.WriteLine("Renko Parameters => AtrPeriod: {0}, EndType: {1}", indicatorParameter.Period, indicatorParameter.KlineEndType);
+                renkoResults = dataList.GetRenkoAtr(indicatorParameter.Period,
+                    (EndType)Enum.Parse(typeof(EndType), indicatorParameter.KlineEndType));
+            }
+
+
 
             int i = 1;
             int j = 1;
             int k = 1;
-            bool lastRenkoBrickSide=renkoResults.First().IsUp;
-            DateTime lastRenkoBrickDateTime = renkoResults.First().Date;
+            bool lastRenkoBrickSide = renkoResults.First().IsUp;
+            var lastRenkoBrickDateTime = renkoResults.First().Date;
 
             foreach (var renkoBrick in renkoResults)
             {
-                if (renkoBrick.IsUp==true)
+                if (renkoBrick.IsUp == true)
                 {
                     if (lastRenkoBrickSide != renkoBrick.IsUp)
                     {
@@ -150,7 +184,7 @@ namespace Business.Concrete
                         lastRenkoBrickDateTime = renkoBrick.Date;
                     }
 
-                    FuturesUsdtRenkoBrick futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
+                    var futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
                     {
                         Id = i,
                         TrendId = j,
@@ -171,7 +205,7 @@ namespace Business.Concrete
 
 
                 }
-                
+
                 if (renkoBrick.IsUp == false)
                 {
                     if (lastRenkoBrickSide != renkoBrick.IsUp)
@@ -185,7 +219,7 @@ namespace Business.Concrete
                         k++;
                         lastRenkoBrickDateTime = renkoBrick.Date;
                     }
-                    FuturesUsdtRenkoBrick futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
+                    var futuresUsdtRenkoBrick = new FuturesUsdtRenkoBrick
                     {
                         Id = i,
                         TrendId = j,
@@ -218,7 +252,7 @@ namespace Business.Concrete
 
             Console.WriteLine("Renko Parameters => BrickSize: {0}, EndType: {1},ST_Period: {2}, ST_Multiplier: {3} ", renkoSuperTrendParameters.Parameter1, renkoSuperTrendParameters.KlineEndType, renkoSuperTrendParameters.Period, renkoSuperTrendParameters.Multiplier.Value);
 
-            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval,Convert.ToInt32(renkoSuperTrendParameters.Parameter2)).Result.Data;
+            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval, Convert.ToInt32(renkoSuperTrendParameters.Parameter2)).Result.Data;
 
             Console.WriteLine("{0} kline data found for=> Symbol Pair: {1} , Interval: {2}", dataList.Count(), symbolPair, interval);
 

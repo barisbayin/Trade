@@ -7,9 +7,10 @@ namespace Entity.Concrete.Entities
 {
     public class BinanceFuturesUsdtKlineWithSuperTrend : BinanceFuturesUsdtKlineEntity, IEntity
     {
-
+        public int TrendId { get; set; }
         public string SuperTrendSide { get; set; }
         public decimal SuperTrendValue { get; set; }
+        public decimal SuperTrendBoth { get; set; }
 
     }
 }

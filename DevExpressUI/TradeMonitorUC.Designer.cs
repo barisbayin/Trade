@@ -49,13 +49,9 @@ namespace DevExpressUI
             this.tabNavTradeMonitor = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTradeMonitorList = new DevExpress.XtraEditors.GroupControl();
-            this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
-            this.btnStart = new DevExpress.XtraEditors.SimpleButton();
-            this.lblResult = new DevExpress.XtraEditors.LabelControl();
-            this.btnNew = new DevExpress.XtraEditors.SimpleButton();
-            this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
-            this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
-            this.tabNavTrades = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.gridTradeFlowPartial = new DevExpress.XtraGrid.GridControl();
+            this.gvTradeFlowPartial = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
             this.lblIdLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblIndicatorParameterLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblApiToUseLabel = new DevExpress.XtraEditors.LabelControl();
@@ -101,15 +97,16 @@ namespace DevExpressUI
             this.lblNumberOfBricksToBeTolerated = new DevExpress.XtraEditors.LabelControl();
             this.lblNumberOfBricksForEntryLabel = new DevExpress.XtraEditors.LabelControl();
             this.lblNumberOfBricksForEntry = new DevExpress.XtraEditors.LabelControl();
-            this.tpEntries = new DevExpress.Utils.Layout.TablePanel();
-            this.gvTradeFlowPartial = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridTradeFlowPartial = new DevExpress.XtraGrid.GridControl();
-            this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.groupControl3 = new DevExpress.XtraEditors.GroupControl();
+            this.btnStart = new DevExpress.XtraEditors.SimpleButton();
+            this.lblResult = new DevExpress.XtraEditors.LabelControl();
+            this.btnNew = new DevExpress.XtraEditors.SimpleButton();
+            this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.cbxTradeFlowLoadFilter = new System.Windows.Forms.ComboBox();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
+            this.tabNavTrades = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.splitContainerControl2 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcTrades = new DevExpress.XtraEditors.GroupControl();
             this.gridTrades = new DevExpress.XtraGrid.GridControl();
@@ -166,6 +163,9 @@ namespace DevExpressUI
             this.simpleButton3 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton4 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton5 = new DevExpress.XtraEditors.SimpleButton();
+            this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.popTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTradeFlow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvTrades)).BeginInit();
@@ -178,17 +178,15 @@ namespace DevExpressUI
             this.splitContainerControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcTradeMonitorList)).BeginInit();
             this.gcTradeMonitorList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).BeginInit();
-            this.groupControl3.SuspendLayout();
-            this.tabNavTrades.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).BeginInit();
             this.tpEntries.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).BeginInit();
-            this.groupControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).BeginInit();
+            this.groupControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
+            this.tabNavTrades.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl2)).BeginInit();
             this.splitContainerControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcTrades)).BeginInit();
@@ -199,6 +197,8 @@ namespace DevExpressUI
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl6)).BeginInit();
             this.groupControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).BeginInit();
+            this.groupControl4.SuspendLayout();
             this.SuspendLayout();
             // 
             // popTradeFlow
@@ -388,93 +388,110 @@ namespace DevExpressUI
             this.gcTradeMonitorList.TabIndex = 0;
             this.gcTradeMonitorList.Text = "Trade Flow List";
             // 
-            // groupControl3
+            // gridTradeFlowPartial
             // 
-            this.groupControl3.Controls.Add(this.btnStart);
-            this.groupControl3.Controls.Add(this.lblResult);
-            this.groupControl3.Controls.Add(this.btnNew);
-            this.groupControl3.Controls.Add(this.btnDelete);
-            this.groupControl3.Controls.Add(this.btnAdd);
-            this.groupControl3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupControl3.Location = new System.Drawing.Point(0, 736);
-            this.groupControl3.Name = "groupControl3";
-            this.groupControl3.ShowCaption = false;
-            this.groupControl3.Size = new System.Drawing.Size(400, 186);
-            this.groupControl3.TabIndex = 0;
-            this.groupControl3.Text = "groupControl3";
+            this.gridTradeFlowPartial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridTradeFlowPartial.Location = new System.Drawing.Point(2, 21);
+            this.gridTradeFlowPartial.MainView = this.gvTradeFlowPartial;
+            this.gridTradeFlowPartial.Name = "gridTradeFlowPartial";
+            this.gridTradeFlowPartial.Size = new System.Drawing.Size(693, 899);
+            this.gridTradeFlowPartial.TabIndex = 0;
+            this.gridTradeFlowPartial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gvTradeFlowPartial});
             // 
-            // btnStart
+            // gvTradeFlowPartial
             // 
-            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnStart.Appearance.Options.UseFont = true;
-            this.btnStart.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.ImageOptions.Image")));
-            this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnStart.Location = new System.Drawing.Point(70, 30);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(264, 58);
-            this.btnStart.TabIndex = 5;
-            this.btnStart.Text = "Start Trade!";
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.gvTradeFlowPartial.GridControl = this.gridTradeFlowPartial;
+            this.gvTradeFlowPartial.Name = "gvTradeFlowPartial";
+            this.gvTradeFlowPartial.OptionsView.ShowGroupPanel = false;
+            this.gvTradeFlowPartial.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvTradeFlowPartial_RowStyle);
+            this.gvTradeFlowPartial.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeFlowPartial_FocusedRowChanged);
+            this.gvTradeFlowPartial.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gvTradeFlowPartial_CustomColumnDisplayText);
             // 
-            // lblResult
+            // tpEntries
             // 
-            this.lblResult.Location = new System.Drawing.Point(51, 153);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(0, 18);
-            this.lblResult.TabIndex = 3;
-            this.lblResult.UseMnemonic = false;
-            // 
-            // btnNew
-            // 
-            this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnNew.Appearance.Options.UseFont = true;
-            this.btnNew.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.ImageOptions.Image")));
-            this.btnNew.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnNew.Location = new System.Drawing.Point(70, 106);
-            this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(84, 34);
-            this.btnNew.TabIndex = 2;
-            this.btnNew.Text = "New";
-            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnDelete.Appearance.Options.UseFont = true;
-            this.btnDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.ImageOptions.Image")));
-            this.btnDelete.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnDelete.Location = new System.Drawing.Point(160, 106);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(84, 34);
-            this.btnDelete.TabIndex = 1;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.btnAdd.Appearance.Options.UseFont = true;
-            this.btnAdd.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.ImageOptions.Image")));
-            this.btnAdd.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.btnAdd.Location = new System.Drawing.Point(250, 106);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(84, 34);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Save";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // tabNavTrades
-            // 
-            this.tabNavTrades.Caption = "Trades";
-            this.tabNavTrades.Controls.Add(this.splitContainerControl2);
-            this.tabNavTrades.Controls.Add(this.groupControl4);
-            this.tabNavTrades.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavigationPage1.ImageOptions.Image")));
-            this.tabNavTrades.Name = "tabNavTrades";
-            this.tabNavTrades.Size = new System.Drawing.Size(1107, 969);
+            this.tpEntries.AutoScroll = true;
+            this.tpEntries.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            this.tpEntries.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 6.45F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 63.74F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85.92F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 3.89F)});
+            this.tpEntries.Controls.Add(this.lblNumberOfBricksForEntry);
+            this.tpEntries.Controls.Add(this.lblNumberOfBricksForEntryLabel);
+            this.tpEntries.Controls.Add(this.lblNumberOfBricksToBeTolerated);
+            this.tpEntries.Controls.Add(this.lblCancelOrdersAfterBrick);
+            this.tpEntries.Controls.Add(this.lblPriceCalculationMethod);
+            this.tpEntries.Controls.Add(this.lblOrderQuantity);
+            this.tpEntries.Controls.Add(this.lblOrderRangeBrickQuantity);
+            this.tpEntries.Controls.Add(this.lblNumberOfBricksToBeToleratedLabel);
+            this.tpEntries.Controls.Add(this.lblCancelOrdersAfterBrickLabel);
+            this.tpEntries.Controls.Add(this.lblOrderQuantityLabel);
+            this.tpEntries.Controls.Add(this.lblPriceCalculationMethodLabel);
+            this.tpEntries.Controls.Add(this.lblOrderRangeBrickQuantityLabel);
+            this.tpEntries.Controls.Add(this.lblIsSelectedLabel);
+            this.tpEntries.Controls.Add(this.drpOptionsButton);
+            this.tpEntries.Controls.Add(this.lblIsSelected);
+            this.tpEntries.Controls.Add(this.lblInterval);
+            this.tpEntries.Controls.Add(this.lblIdNo);
+            this.tpEntries.Controls.Add(this.lblSymbolPair);
+            this.tpEntries.Controls.Add(this.lblIndicatorParameter);
+            this.tpEntries.Controls.Add(this.lblApiToUse);
+            this.tpEntries.Controls.Add(this.lblAddPnlToMAL);
+            this.tpEntries.Controls.Add(this.lblMaxBalanceLimitPercentage);
+            this.tpEntries.Controls.Add(this.lblMaxBalanceLimit);
+            this.tpEntries.Controls.Add(this.lblLeverage);
+            this.tpEntries.Controls.Add(this.lblMarginType);
+            this.tpEntries.Controls.Add(this.lblPercentageOfPnl);
+            this.tpEntries.Controls.Add(this.cbxTradeParameterTitle);
+            this.tpEntries.Controls.Add(this.lblTradeParameterTitleLabel);
+            this.tpEntries.Controls.Add(this.lblModifiedDate);
+            this.tpEntries.Controls.Add(this.lblModifiedDateLabel);
+            this.tpEntries.Controls.Add(this.lblInUse);
+            this.tpEntries.Controls.Add(this.lblCreationDate);
+            this.tpEntries.Controls.Add(this.lblCreationDateLabel);
+            this.tpEntries.Controls.Add(this.lblInUseLabel);
+            this.tpEntries.Controls.Add(this.lblPercentageOfPnlToBeAddedLabel);
+            this.tpEntries.Controls.Add(this.lblAddPnlToMaxBalanceLimitLabel);
+            this.tpEntries.Controls.Add(this.lblMaxBalancePercentageLabel);
+            this.tpEntries.Controls.Add(this.lblLeverageLabel);
+            this.tpEntries.Controls.Add(this.lblMarginTypeLabel);
+            this.tpEntries.Controls.Add(this.lblSymbolPairLabel);
+            this.tpEntries.Controls.Add(this.lblMaximumBalanceLimitLabel);
+            this.tpEntries.Controls.Add(this.lblIntervalLabel);
+            this.tpEntries.Controls.Add(this.lblApiToUseLabel);
+            this.tpEntries.Controls.Add(this.lblIndicatorParameterLabel);
+            this.tpEntries.Controls.Add(this.lblIdLabel);
+            this.tpEntries.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tpEntries.Location = new System.Drawing.Point(0, 0);
+            this.tpEntries.Name = "tpEntries";
+            this.tpEntries.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tpEntries.Size = new System.Drawing.Size(400, 736);
+            this.tpEntries.TabIndex = 2;
             // 
             // lblIdLabel
             // 
@@ -661,7 +678,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -931,149 +948,84 @@ namespace DevExpressUI
             this.lblNumberOfBricksForEntry.TabIndex = 76;
             this.lblNumberOfBricksForEntry.Text = "..";
             // 
-            // tpEntries
+            // groupControl3
             // 
-            this.tpEntries.AutoScroll = true;
-            this.tpEntries.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
-            this.tpEntries.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 6.45F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 63.74F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85.92F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 3.89F)});
-            this.tpEntries.Controls.Add(this.lblNumberOfBricksForEntry);
-            this.tpEntries.Controls.Add(this.lblNumberOfBricksForEntryLabel);
-            this.tpEntries.Controls.Add(this.lblNumberOfBricksToBeTolerated);
-            this.tpEntries.Controls.Add(this.lblCancelOrdersAfterBrick);
-            this.tpEntries.Controls.Add(this.lblPriceCalculationMethod);
-            this.tpEntries.Controls.Add(this.lblOrderQuantity);
-            this.tpEntries.Controls.Add(this.lblOrderRangeBrickQuantity);
-            this.tpEntries.Controls.Add(this.lblNumberOfBricksToBeToleratedLabel);
-            this.tpEntries.Controls.Add(this.lblCancelOrdersAfterBrickLabel);
-            this.tpEntries.Controls.Add(this.lblOrderQuantityLabel);
-            this.tpEntries.Controls.Add(this.lblPriceCalculationMethodLabel);
-            this.tpEntries.Controls.Add(this.lblOrderRangeBrickQuantityLabel);
-            this.tpEntries.Controls.Add(this.lblIsSelectedLabel);
-            this.tpEntries.Controls.Add(this.drpOptionsButton);
-            this.tpEntries.Controls.Add(this.lblIsSelected);
-            this.tpEntries.Controls.Add(this.lblInterval);
-            this.tpEntries.Controls.Add(this.lblIdNo);
-            this.tpEntries.Controls.Add(this.lblSymbolPair);
-            this.tpEntries.Controls.Add(this.lblIndicatorParameter);
-            this.tpEntries.Controls.Add(this.lblApiToUse);
-            this.tpEntries.Controls.Add(this.lblAddPnlToMAL);
-            this.tpEntries.Controls.Add(this.lblMaxBalanceLimitPercentage);
-            this.tpEntries.Controls.Add(this.lblMaxBalanceLimit);
-            this.tpEntries.Controls.Add(this.lblLeverage);
-            this.tpEntries.Controls.Add(this.lblMarginType);
-            this.tpEntries.Controls.Add(this.lblPercentageOfPnl);
-            this.tpEntries.Controls.Add(this.cbxTradeParameterTitle);
-            this.tpEntries.Controls.Add(this.lblTradeParameterTitleLabel);
-            this.tpEntries.Controls.Add(this.lblModifiedDate);
-            this.tpEntries.Controls.Add(this.lblModifiedDateLabel);
-            this.tpEntries.Controls.Add(this.lblInUse);
-            this.tpEntries.Controls.Add(this.lblCreationDate);
-            this.tpEntries.Controls.Add(this.lblCreationDateLabel);
-            this.tpEntries.Controls.Add(this.lblInUseLabel);
-            this.tpEntries.Controls.Add(this.lblPercentageOfPnlToBeAddedLabel);
-            this.tpEntries.Controls.Add(this.lblAddPnlToMaxBalanceLimitLabel);
-            this.tpEntries.Controls.Add(this.lblMaxBalancePercentageLabel);
-            this.tpEntries.Controls.Add(this.lblLeverageLabel);
-            this.tpEntries.Controls.Add(this.lblMarginTypeLabel);
-            this.tpEntries.Controls.Add(this.lblSymbolPairLabel);
-            this.tpEntries.Controls.Add(this.lblMaximumBalanceLimitLabel);
-            this.tpEntries.Controls.Add(this.lblIntervalLabel);
-            this.tpEntries.Controls.Add(this.lblApiToUseLabel);
-            this.tpEntries.Controls.Add(this.lblIndicatorParameterLabel);
-            this.tpEntries.Controls.Add(this.lblIdLabel);
-            this.tpEntries.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tpEntries.Location = new System.Drawing.Point(0, 0);
-            this.tpEntries.Name = "tpEntries";
-            this.tpEntries.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 44F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 30F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tpEntries.Size = new System.Drawing.Size(400, 736);
-            this.tpEntries.TabIndex = 2;
+            this.groupControl3.Controls.Add(this.btnStart);
+            this.groupControl3.Controls.Add(this.lblResult);
+            this.groupControl3.Controls.Add(this.btnNew);
+            this.groupControl3.Controls.Add(this.btnDelete);
+            this.groupControl3.Controls.Add(this.btnAdd);
+            this.groupControl3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupControl3.Location = new System.Drawing.Point(0, 736);
+            this.groupControl3.Name = "groupControl3";
+            this.groupControl3.ShowCaption = false;
+            this.groupControl3.Size = new System.Drawing.Size(400, 186);
+            this.groupControl3.TabIndex = 0;
+            this.groupControl3.Text = "groupControl3";
             // 
-            // gvTradeFlowPartial
+            // btnStart
             // 
-            this.gvTradeFlowPartial.GridControl = this.gridTradeFlowPartial;
-            this.gvTradeFlowPartial.Name = "gvTradeFlowPartial";
-            this.gvTradeFlowPartial.OptionsView.ShowGroupPanel = false;
-            this.gvTradeFlowPartial.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvTradeFlowPartial_RowStyle);
-            this.gvTradeFlowPartial.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gvTradeFlowPartial_FocusedRowChanged);
-            this.gvTradeFlowPartial.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gvTradeFlowPartial_CustomColumnDisplayText);
+            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStart.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnStart.Appearance.Options.UseFont = true;
+            this.btnStart.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.ImageOptions.Image")));
+            this.btnStart.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnStart.Location = new System.Drawing.Point(70, 30);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(264, 58);
+            this.btnStart.TabIndex = 5;
+            this.btnStart.Text = "Start Trade!";
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // gridTradeFlowPartial
+            // lblResult
             // 
-            this.gridTradeFlowPartial.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridTradeFlowPartial.Location = new System.Drawing.Point(2, 21);
-            this.gridTradeFlowPartial.MainView = this.gvTradeFlowPartial;
-            this.gridTradeFlowPartial.Name = "gridTradeFlowPartial";
-            this.gridTradeFlowPartial.Size = new System.Drawing.Size(693, 899);
-            this.gridTradeFlowPartial.TabIndex = 0;
-            this.gridTradeFlowPartial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gvTradeFlowPartial});
+            this.lblResult.Location = new System.Drawing.Point(51, 153);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(0, 18);
+            this.lblResult.TabIndex = 3;
+            this.lblResult.UseMnemonic = false;
             // 
-            // groupControl4
+            // btnNew
             // 
-            this.groupControl4.Controls.Add(this.comboBox1);
-            this.groupControl4.Controls.Add(this.simpleButton1);
-            this.groupControl4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupControl4.Location = new System.Drawing.Point(0, 0);
-            this.groupControl4.Name = "groupControl4";
-            this.groupControl4.ShowCaption = false;
-            this.groupControl4.Size = new System.Drawing.Size(1107, 52);
-            this.groupControl4.TabIndex = 11;
-            this.groupControl4.Text = "groupControl4";
+            this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNew.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnNew.Appearance.Options.UseFont = true;
+            this.btnNew.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.ImageOptions.Image")));
+            this.btnNew.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnNew.Location = new System.Drawing.Point(70, 106);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(84, 34);
+            this.btnNew.TabIndex = 2;
+            this.btnNew.Text = "New";
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
-            // comboBox1
+            // btnDelete
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "All",
-            "Not Ended",
-            "Ended",
-            "In Use",
-            "Not In Use"});
-            this.comboBox1.Location = new System.Drawing.Point(10, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(138, 26);
-            this.comboBox1.TabIndex = 8;
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDelete.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnDelete.Appearance.Options.UseFont = true;
+            this.btnDelete.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.ImageOptions.Image")));
+            this.btnDelete.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnDelete.Location = new System.Drawing.Point(160, 106);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(84, 34);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // simpleButton1
+            // btnAdd
             // 
-            this.simpleButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.simpleButton1.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.simpleButton1.Appearance.Options.UseFont = true;
-            this.simpleButton1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
-            this.simpleButton1.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.simpleButton1.Location = new System.Drawing.Point(976, 5);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(116, 34);
-            this.simpleButton1.TabIndex = 4;
-            this.simpleButton1.Text = "Refresh";
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdd.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.btnAdd.Appearance.Options.UseFont = true;
+            this.btnAdd.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.ImageOptions.Image")));
+            this.btnAdd.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnAdd.Location = new System.Drawing.Point(250, 106);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(84, 34);
+            this.btnAdd.TabIndex = 0;
+            this.btnAdd.Text = "Save";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // groupControl2
             // 
@@ -1114,6 +1066,15 @@ namespace DevExpressUI
             this.btnRefresh.TabIndex = 4;
             this.btnRefresh.Text = "Refresh";
             // 
+            // tabNavTrades
+            // 
+            this.tabNavTrades.Caption = "Trades";
+            this.tabNavTrades.Controls.Add(this.splitContainerControl2);
+            this.tabNavTrades.Controls.Add(this.groupControl4);
+            this.tabNavTrades.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("tabNavTrades.ImageOptions.Image")));
+            this.tabNavTrades.Name = "tabNavTrades";
+            this.tabNavTrades.Size = new System.Drawing.Size(1107, 969);
+            // 
             // splitContainerControl2
             // 
             this.splitContainerControl2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1135,7 +1096,7 @@ namespace DevExpressUI
             this.gcTrades.Appearance.Options.UseTextOptions = true;
             this.gcTrades.AppearanceCaption.Options.UseTextOptions = true;
             this.gcTrades.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gcTrades.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("groupControl5.CaptionImageOptions.Image")));
+            this.gcTrades.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("gcTrades.CaptionImageOptions.Image")));
             this.gcTrades.Controls.Add(this.gridTrades);
             this.gcTrades.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gcTrades.Location = new System.Drawing.Point(0, 0);
@@ -1513,7 +1474,7 @@ namespace DevExpressUI
             // 
             this.tablePanel1.SetColumn(this.comboBox2, 2);
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(178, 78);
+            this.comboBox2.Location = new System.Drawing.Point(178, 77);
             this.comboBox2.Name = "comboBox2";
             this.tablePanel1.SetRow(this.comboBox2, 2);
             this.comboBox2.Size = new System.Drawing.Size(209, 26);
@@ -1775,6 +1736,45 @@ namespace DevExpressUI
             this.simpleButton5.TabIndex = 0;
             this.simpleButton5.Text = "Save";
             // 
+            // groupControl4
+            // 
+            this.groupControl4.Controls.Add(this.comboBox1);
+            this.groupControl4.Controls.Add(this.simpleButton1);
+            this.groupControl4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupControl4.Location = new System.Drawing.Point(0, 0);
+            this.groupControl4.Name = "groupControl4";
+            this.groupControl4.ShowCaption = false;
+            this.groupControl4.Size = new System.Drawing.Size(1107, 52);
+            this.groupControl4.TabIndex = 11;
+            this.groupControl4.Text = "groupControl4";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "All",
+            "Not Ended",
+            "Ended",
+            "In Use",
+            "Not In Use"});
+            this.comboBox1.Location = new System.Drawing.Point(10, 12);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(138, 26);
+            this.comboBox1.TabIndex = 8;
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.simpleButton1.Appearance.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.simpleButton1.Appearance.Options.UseFont = true;
+            this.simpleButton1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
+            this.simpleButton1.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.simpleButton1.Location = new System.Drawing.Point(976, 5);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(116, 34);
+            this.simpleButton1.TabIndex = 4;
+            this.simpleButton1.Text = "Refresh";
+            // 
             // TradeMonitorUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -1799,19 +1799,17 @@ namespace DevExpressUI
             this.splitContainerControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gcTradeMonitorList)).EndInit();
             this.gcTradeMonitorList.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).EndInit();
-            this.groupControl3.ResumeLayout(false);
-            this.groupControl3.PerformLayout();
-            this.tabNavTrades.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tpEntries)).EndInit();
             this.tpEntries.ResumeLayout(false);
             this.tpEntries.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTradeFlowPartial)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridTradeFlowPartial)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).EndInit();
-            this.groupControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl3)).EndInit();
+            this.groupControl3.ResumeLayout(false);
+            this.groupControl3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
             this.groupControl2.ResumeLayout(false);
+            this.tabNavTrades.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl2)).EndInit();
             this.splitContainerControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gcTrades)).EndInit();
@@ -1824,6 +1822,8 @@ namespace DevExpressUI
             ((System.ComponentModel.ISupportInitialize)(this.groupControl6)).EndInit();
             this.groupControl6.ResumeLayout(false);
             this.groupControl6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl4)).EndInit();
+            this.groupControl4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
