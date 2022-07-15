@@ -325,9 +325,13 @@ namespace AlgoTradeMasterSuperTrend
                 var superTrendResults = indicatorService.GetSuperTrendResult(tradeParameter.SymbolPair, tradeParameter.Interval, tradeParameter.IndicatorParameterId).Data;
 
                 var superTrendCountList = calculators.CalculateFuturesUsdtSuperTrendCount(superTrendResults,
-                    Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["RenkoCountRange"]));
+                    Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SuperTrendCountRange"]));
 
                 variableObjects.LastSuperTrendKline = superTrendResults.LastOrDefault();
+
+                variableObjects.LastSuperTrendKline = calculators
+                    .RoundDecimals(variableObjects.LastSuperTrendKline,
+                        variableObjects.NormalizePricePrecision).Data;
 
                 variableObjects.LastTrendCount = superTrendResults.Count(x => x.TrendId == variableObjects.LastSuperTrendKline.TrendId);
 
@@ -343,18 +347,19 @@ namespace AlgoTradeMasterSuperTrend
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
                 Console.Write("Last {0} SuperTrend Count Results: ", Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SuperTrendCountRange"]));
-
+               
                 foreach (var superTrendCount in superTrendCountList.Data)
                 {
-                    if (superTrendCount.SuperTrendSide == "BUY")
+                    switch (superTrendCount.SuperTrendSide)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("|" + superTrendCount.Count);
-                    }
-                    if (superTrendCount.SuperTrendSide == "SELL")
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("|" + superTrendCount.Count);
+                        case "BUY":
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("|" + superTrendCount.Count);
+                            break;
+                        case "SELL":
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("|" + superTrendCount.Count);
+                            break;
                     }
                 }
 
@@ -368,18 +373,29 @@ namespace AlgoTradeMasterSuperTrend
                     case true:
                         {
                             variableObjects.LastSellSuperTrendKline = superTrendResults.LastOrDefault(x => x.SuperTrendSide == "SELL");
+
+                            variableObjects.LastSellSuperTrendKline = calculators
+                                .RoundDecimals(variableObjects.LastSellSuperTrendKline,
+                                    variableObjects.NormalizePricePrecision).Data;
+
                             variableObjects.FirstBuyAfterTheLastSell = superTrendResults.FirstOrDefault(x => x.Id == variableObjects.LastSellSuperTrendKline.Id + 1);
+
+                            variableObjects.FirstBuyAfterTheLastSell = calculators
+                                .RoundDecimals(variableObjects.FirstBuyAfterTheLastSell,
+                                    variableObjects.NormalizePricePrecision).Data;
+
 
                             variableObjects.BuySuperTrendCount = Convert.ToInt32(variableObjects.LastSuperTrendKline.Id) - Convert.ToInt32(variableObjects.LastSellSuperTrendKline.Id);
 
+
                             var proximityPercent = Math.Round((variableObjects.LastSuperTrendKline.Close /
-                                                       variableObjects.LastSuperTrendKline.SuperTrendValue) * 100, 2);
+                                                       variableObjects.LastSuperTrendKline.SuperTrendValue) * 100 - 100, 2);
                             var proximityPrice = Math.Round(variableObjects.LastSuperTrendKline.Close -
                                                                variableObjects.LastSuperTrendKline.SuperTrendValue, variableObjects.NormalizePricePrecision);
 
                             Console.ForegroundColor = ConsoleColor.Blue;
 
-                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.Open, variableObjects.LastSuperTrendKline.High, variableObjects.LastSuperTrendKline.Low, variableObjects.LastSuperTrendKline.Close, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
+                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4},\n                  STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.Open, variableObjects.LastSuperTrendKline.High, variableObjects.LastSuperTrendKline.Low, variableObjects.LastSuperTrendKline.Close, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
 
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
 
@@ -399,7 +415,12 @@ namespace AlgoTradeMasterSuperTrend
                             variableObjects.LastBuySuperTrendKline = superTrendResults.LastOrDefault(x => x.SuperTrendSide == "BUY");
                             variableObjects.LastBuySuperTrendKline = calculators.RoundDecimals(
                                 variableObjects.LastBuySuperTrendKline, variableObjects.NormalizePricePrecision).Data;
+
                             variableObjects.FirstSellAfterTheLastBuy = superTrendResults.FirstOrDefault(x => x.Id == variableObjects.LastBuySuperTrendKline.Id + 1);
+
+                            variableObjects.FirstSellAfterTheLastBuy = calculators
+                                .RoundDecimals(variableObjects.FirstSellAfterTheLastBuy,
+                                    variableObjects.NormalizePricePrecision).Data;
 
                             variableObjects.SellSuperTrendCount = Convert.ToInt32(variableObjects.LastSuperTrendKline.Id) - Convert.ToInt32(variableObjects.LastBuySuperTrendKline.Id);
 
@@ -410,7 +431,7 @@ namespace AlgoTradeMasterSuperTrend
 
                             Console.ForegroundColor = ConsoleColor.Blue;
 
-                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, \n STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.Open, variableObjects.LastSuperTrendKline.High, variableObjects.LastSuperTrendKline.Low, variableObjects.LastSuperTrendKline.Close, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
+                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, \n                   STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.Open, variableObjects.LastSuperTrendKline.High, variableObjects.LastSuperTrendKline.Low, variableObjects.LastSuperTrendKline.Close, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
 
                             Console.ForegroundColor = ConsoleColor.Red;
 

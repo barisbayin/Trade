@@ -227,7 +227,7 @@ namespace Business.Helpers
                 {
                     if (j > 0)
                     {
-                        var superTrendCount = new SuperTrendCount() { SuperTrendSide = "BUY", Count = j };
+                        var superTrendCount = new SuperTrendCount() { SuperTrendSide = "SELL", Count = j };
                         superTrendCountList.Add(superTrendCount);
                         j = 0;
                     }
@@ -238,7 +238,7 @@ namespace Business.Helpers
                 {
                     if (i > 0)
                     {
-                        var superTrendCount = new SuperTrendCount { SuperTrendSide = "SELL", Count = i };
+                        var superTrendCount = new SuperTrendCount { SuperTrendSide = "BUY", Count = i };
                         superTrendCountList.Add(superTrendCount);
                         i = 0;
                     }
@@ -249,8 +249,17 @@ namespace Business.Helpers
             }
 
             superTrendCountList.Reverse();
-            var selectedSuperTrendCountList = superTrendCountList.Skip(Math.Max(0, superTrendCountList.Count() - superTrendCountRange)).Take(superTrendCountRange).ToList();
-            return new SuccessDataResult<List<SuperTrendCount>>(selectedSuperTrendCountList);
+
+            if (superTrendCountList.Count>superTrendCountRange)
+            {
+                var selectedSuperTrendCountList = superTrendCountList.Skip(Math.Max(0, superTrendCountList.Count() - superTrendCountRange)).Take(superTrendCountRange).ToList();
+                return new SuccessDataResult<List<SuperTrendCount>>(selectedSuperTrendCountList);
+            }
+            else
+            {
+                return new SuccessDataResult<List<SuperTrendCount>>(superTrendCountList);
+            }
+            
         }
 
         public IDataResult<BinanceFuturesUsdtKlineWithSuperTrend> RoundDecimals(
