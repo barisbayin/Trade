@@ -33,6 +33,40 @@ namespace Business.Concrete
             return new SuccessDataResult<IndicatorEntity>(_indicatorDal.Get(x => x.Id == indicatorId));
         }
 
+        public IDataResult<List<BinanceFuturesUsdtHeikinAshiKlineEntity>> GetHeikinAshiKlineResult(string symbolPair, string interval, int indicatorParameterId)
+        {
+            List<BinanceFuturesUsdtHeikinAshiKlineEntity> binanceFuturesUsdtHeikinAshiKlineList = new List<BinanceFuturesUsdtHeikinAshiKlineEntity>();
+
+            Console.WriteLine("Heikin-Ashi klines calculating for SymbolPair: {0}, Interval: {1}", symbolPair, interval);
+
+            var indicatorParameter = _indicatorParameterService.GetIndicatorParameterEntityById(indicatorParameterId).Data;
+
+            var dataList = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval, Convert.ToInt32(indicatorParameter.Parameter2)).Result.Data;
+
+            IEnumerable<HeikinAshiResult> heikinAshiResults = dataList.GetHeikinAshi();
+            int j = 1;
+
+            foreach (var data in heikinAshiResults.OrderBy(x => x.Date))
+            {
+                var binanceFuturesUsdtHeikinAshiKlineEntity = new BinanceFuturesUsdtHeikinAshiKlineEntity
+                    {
+                        Id = j,
+                        SymbolPair = symbolPair,
+                        KlineInterval = interval,
+                        OpenTime = data.Date,
+                        Open = data.Open,
+                        High = data.High,
+                        Low = data.Low,
+                        Close = data.Close,
+                        BaseVolume = data.Volume
+                    };
+
+                j++;
+                binanceFuturesUsdtHeikinAshiKlineList.Add(binanceFuturesUsdtHeikinAshiKlineEntity);
+            }
+            return new SuccessDataResult<List<BinanceFuturesUsdtHeikinAshiKlineEntity>>(binanceFuturesUsdtHeikinAshiKlineList);
+        }
+
         public async Task<IDataResult<List<IndicatorEntity>>> GetAllIndicatorsAsync()
         {
             try
@@ -64,7 +98,7 @@ namespace Business.Concrete
             int j = 0;
             int k = 1;
             int m = 1;
-            foreach (var data in dataList.OrderBy(x=>x.Date))
+            foreach (var data in dataList.OrderBy(x => x.Date))
             {
 
                 BinanceFuturesUsdtKlineWithSuperTrend binanceFuturesUsdtKlineWithSuperTrend = new BinanceFuturesUsdtKlineWithSuperTrend();

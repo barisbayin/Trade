@@ -15,6 +15,7 @@ namespace Business.Abstract
         IDataResult<List<BinanceFuturesUsdtKlineWithSuperTrend>> GetSuperTrendResult(string symbolPair, string interval, int indicatorParameterId);
         IDataResult<List<FuturesUsdtRenkoBrick>> GetFuturesUsdtRenkoBricks(string symbolPair, string interval, int indicatorParameterId);
         IDataResult<List<FuturesUsdtRenkoBricksWithSuperTrend>> GetFuturesUsdtRenkoBricksSuperTrend(string symbolPair, string interval, int indicatorParameterId);
+        IDataResult<List<BinanceFuturesUsdtHeikinAshiKlineEntity>> GetHeikinAshiKlineResult(string symbolPair, string interval, int indicatorParameterId);
 
         //Async Methods
         Task<IDataResult<List<IndicatorEntity>>> GetAllIndicatorsAsync();

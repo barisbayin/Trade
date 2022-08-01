@@ -35,25 +35,25 @@ namespace TestConsole
 
 
 
-            /*
-            IBinanceKlineApiService binanceKlineService = new BinanceKlineApiManager(new BinanceClient());
 
-            var data = binanceKlineService.GetSpecificKlineDataForFuturesUsdtAsync("BTCUSDT", new List<string> { "OneHour","ThirtyMinutes" } ,new DateTime(2021, 10, 25) );
+            //IBinanceApiService binanceKlineService = new BinanceApiManager(new BinanceClient());
 
-            if (data.Result.Success)
-            {
-                foreach (var kline in data.Result.Data)
-                {
+            //var data = binanceKlineService.GetSpecificKlineDataForFuturesUsdtAsync("ETHUSDT", new List<string> {"FiveMinutes" });
 
-                    Console.WriteLine("SymbolPair: {2}, Kline Interval: {3} Open Time: {0}, Open Price: {1}", kline.OpenTime, kline.Open,kline.SymbolPair,kline.KlineInterval);
-                    //Thread.Sleep(10);
-                }
-            }
-            else
-            {
-                Console.WriteLine(data.Result.Message);
-            }
-            */
+            //if (data.Result.Success)
+            //{
+            //    foreach (var kline in data.Result.Data)
+            //    {
+
+            //        Console.WriteLine("SymbolPair: {2}, Kline Interval: {3} Open Time: {0}, Open Price: {1}", kline.OpenTime, kline.Open,kline.SymbolPair,kline.KlineInterval);
+            //        //Thread.Sleep(10);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(data.Result.Message);
+            //}
+            
 
 
             /*
@@ -75,24 +75,24 @@ namespace TestConsole
             */
 
 
-            /*
-            IBinanceKlineService binanceKlineService = new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal(), new BinanceKlineApiManager(new BinanceClient()));
+            
+            IBinanceKlineService binanceKlineService = new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal(), new BinanceApiManager(new BinanceClient()));
 
             //var deleteAll = binanceKlineService.DeleteAllFuturesUsdtKlines();
             //Console.WriteLine(deleteAll.Message);
 
             Thread.Sleep(1000);
 
-            var result1 = binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("BTCUSDT", new List<string> { "FourHour" });
+            var result1 = binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("ETHUSDT", new List<string> { "FiveMinutes" });
 
             Console.WriteLine(result1.Result.Message);
 
             Thread.Sleep(1000);
 
-            var deleteResult = binanceKlineService.DeleteFuturesUsdtKlinesBySymbolPairAndMultiInterval("SOLUSDT", new List<string> { "OneDay", "ThirtyMinutes" });
+            //var deleteResult = binanceKlineService.DeleteFuturesUsdtKlinesBySymbolPairAndMultiInterval("SOLUSDT", new List<string> { "OneDay", "ThirtyMinutes" });
 
-            Console.WriteLine(deleteResult.Message);
-            */
+          
+            
 
             //Console.WriteLine(deleteResult.Message);
             //Console.ReadLine();
@@ -132,12 +132,21 @@ namespace TestConsole
             //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Close: {3}, SuperTrendValue: {4}, SuperTrendSide: {5}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Close, data.SuperTrendValue, data.SuperTrendSide);
             //}
 
-            var result = indicatorService.GetSuperTrendResult("CRVUSDT", "FourHour", 25).Data;
-            foreach (var data in result)
+            //var result = indicatorService.GetSuperTrendResult("CRVUSDT", "FourHour", 25).Data;
+            //foreach (var data in result)
+            //{
+
+
+            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, STValue: {7}, STSide: {6}, TrendId: {5}, SuperTrendBoth: {8}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open, data.Close, data.TrendId,  data.SuperTrendSide, data.SuperTrendValue,data.SuperTrendBoth);
+
+            //}
+
+            var result8 = indicatorService.GetHeikinAshiKlineResult("ETHUSDT", "FiveMinutes", 15).Data;
+            foreach (var data in result8)
             {
 
 
-                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, STValue: {7}, STSide: {6}, TrendId: {5}, SuperTrendBoth: {8}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open, data.Close, data.TrendId,  data.SuperTrendSide, data.SuperTrendValue,data.SuperTrendBoth);
+                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, High: {4}, Low:{5}, Close: {6}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open,data.High,data.Low, data.Close);
 
             }
 
