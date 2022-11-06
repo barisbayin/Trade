@@ -6,6 +6,7 @@ using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entity.Concrete.DTOs;
 using Entity.Concrete.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete
 {
@@ -17,7 +18,7 @@ namespace DataAccess.Concrete
             {
                 var result = from tl in context.TradeLogs
                              join tf in context.TradeFlows on tl.TradeFlowId equals tf.Id
-                             join tp in context.TradeParameters on tf.TradeParameterId equals tp.Id
+                             join tp in context.TradeParameters on tf.TradeParameterId equals tp.Id 
 
                              select new TradeLogsDto
                              {

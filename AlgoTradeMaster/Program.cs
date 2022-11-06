@@ -126,8 +126,7 @@ namespace AlgoTradeMasterRenko
             #region Objects2
 
             var symbolPairInformation = (await
-                binanceExchangeInformationService.GetFuturesUsdtSymbolInformationBySymbolPairAsync(tradeParameter
-                    .SymbolPair)).Data;
+                binanceExchangeInformationService.GetFuturesUsdtSymbolInformationBySymbolPairAsync(tradeParameter.SymbolPair)).Data;
 
             #endregion
 

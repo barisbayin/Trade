@@ -55,7 +55,7 @@ namespace RemoteData.Binance.WebSocket.Concrete
         {
             List<BinanceFuturesStreamMarginPosition> binanceFuturesStreamMarginPositions = new List<BinanceFuturesStreamMarginPosition>();
             List<BinanceFuturesStreamPosition> binanceFuturesStreamPositions = new List<BinanceFuturesStreamPosition>();
-
+            
             var streamUserData = await _binanceSocketClient.FuturesUsdt.SubscribeToUserDataUpdatesAsync(listenKey, data =>
             {
                

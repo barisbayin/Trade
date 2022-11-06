@@ -761,7 +761,7 @@ namespace DevExpressUI
             // 
             this.tpEntries.SetColumn(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.FormattingEnabled = true;
-            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 77);
+            this.cbxTradeParameterTitle.Location = new System.Drawing.Point(178, 78);
             this.cbxTradeParameterTitle.Name = "cbxTradeParameterTitle";
             this.tpEntries.SetRow(this.cbxTradeParameterTitle, 2);
             this.cbxTradeParameterTitle.Size = new System.Drawing.Size(209, 26);
@@ -1474,7 +1474,7 @@ namespace DevExpressUI
             // 
             this.tablePanel1.SetColumn(this.comboBox2, 2);
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(178, 78);
+            this.comboBox2.Location = new System.Drawing.Point(178, 77);
             this.comboBox2.Name = "comboBox2";
             this.tablePanel1.SetRow(this.comboBox2, 2);
             this.comboBox2.Size = new System.Drawing.Size(209, 26);

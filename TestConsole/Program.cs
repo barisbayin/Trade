@@ -14,281 +14,84 @@ using Entity.Concrete.Entities;
 using RemoteData.Binance.WebSocket.Abstract;
 using RemoteData.Binance.WebSocket.Concrete;
 using System.Configuration;
+using System.Threading.Tasks;
+using Binance.Net.Objects;
+using Skender.Stock.Indicators;
 using IBinanceWsService = RemoteData.Binance.WebSocket.Abstract.IBinanceWsService;
 
 namespace TestConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
-            string startupPath = System.IO.Directory.GetCurrentDirectory();
 
-            Console.WriteLine(startupPath + "\\apps\\");
+            BinanceClient binanceClient = new BinanceClient(new BinanceClientOptions());
 
-
-            //IBinanceExchangeInformationService binanceExchangeInformationService =
-            //    new BinanceExchangeInformationManager(new EfBinanceFuturesUsdtSymbolDal(),new BinanceApiManager(new BinanceClient()));
-            //var data = binanceExchangeInformationService.AddFuturesUsdtSymbolsAsync();
-            //Console.WriteLine(data.Result.Message);
-
-
-
-
-            //IBinanceApiService binanceKlineService = new BinanceApiManager(new BinanceClient());
-
-            //var data = binanceKlineService.GetSpecificKlineDataForFuturesUsdtAsync("ETHUSDT", new List<string> {"FiveMinutes" });
-
-            //if (data.Result.Success)
-            //{
-            //    foreach (var kline in data.Result.Data)
-            //    {
-
-            //        Console.WriteLine("SymbolPair: {2}, Kline Interval: {3} Open Time: {0}, Open Price: {1}", kline.OpenTime, kline.Open,kline.SymbolPair,kline.KlineInterval);
-            //        //Thread.Sleep(10);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(data.Result.Message);
-            //}
-            
-
-
+            #region BuySellRatio
             /*
-            IBinanceKlineWsService binanceKlineWsService = new BinanceKlineWsManager(new BinanceSocketClient());
+            var buySell = binanceClient.FuturesUsdt.Market.GetTakerBuySellVolumeRatioAsync("ETHUSDT", PeriodInterval.FifteenMinutes, 100).Result;
 
-            var streamData = binanceKlineWsService.GetCurrentFuturesUsdtKlineData("BTCUSDT", KlineInterval.OneMinute);
-
-            if (!streamData.Result.Success)
+            foreach (var item in buySell.Data)
             {
-                Console.WriteLine(streamData.Result.Message);
+                if (item.BuySellRatio < 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Buy Sell Ratio: {0}", item.BuySellRatio);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Buy Sell Ratio: {0}", item.BuySellRatio);
+                }
+
             }
-            while (streamData.Result.Success)
+
+            var longShort = binanceClient.FuturesUsdt.Market.GetTopLongShortAccountRatioAsync("ETHUSDT", PeriodInterval.FifteenMinutes, 100, DateTime.Now.AddDays(-3), DateTime.Now).Result;
+
+            foreach (var item in longShort.Data)
+            {
+                if (item.LongShortRatio < 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Date: {0}, Buy Sell Ratio: {1}, Longs: {2}, Shorts: {3}", item.Timestamp, item.LongShortRatio, item.LongAccount, item.ShortAccount);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Date: {0}, Buy Sell Ratio: {1}, Longs: {2}, Shorts: {3}", item.Timestamp, item.LongShortRatio, item.LongAccount, item.ShortAccount);
+                }
+            }
+            */
+            #endregion
+
+            IBinanceKlineService _binanceKlineService = new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal(),
+                new BinanceApiManager(binanceClient));
+
+            //await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("ETHUSDT", new List<string> { "FourHour" });
+            await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("BTCUSDT", new List<string> { "FourHour" });
+            await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("WAVESUSDT", new List<string> { "FourHour" });
+
+            var btcKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("BTCUSDT", "FourHour", 1000).Result.Data;
+            var ethKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("ETHUSDT", "FourHour", 1000).Result.Data;
+
+            var wavesKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("WAVESUSDT", "FourHour", 1000).Result.Data;
+
+
+            IEnumerable<CorrResult> results = btcKlines.GetCorrelation(wavesKlines, 20);
+
+            foreach (var result in results.RemoveWarmupPeriods(20))
+            {
+                Console.WriteLine($"Date: {result.Date} | Correlation: {result.Correlation} | Covariance: {result.Covariance} | Rsquared: {result.RSquared} | A: {result.VarianceA} | B: {result.VarianceB}");
+
+            }
+
+            for (int i = 0; i <= 10; i++)
             {
                 
-                Console.WriteLine("OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.Data.Open, streamData.Result.Data.High, streamData.Result.Data.Low, streamData.Result.Data.Close, streamData.Result.Data.OpenTime, streamData.Result.Data.BaseVolume, streamData.Result.Data.QuoteVolume);
-                Thread.Sleep(1000);
-            }
-            
-            */
-
-
-            
-            IBinanceKlineService binanceKlineService = new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal(), new BinanceApiManager(new BinanceClient()));
-
-            //var deleteAll = binanceKlineService.DeleteAllFuturesUsdtKlines();
-            //Console.WriteLine(deleteAll.Message);
-
-            Thread.Sleep(1000);
-
-            var result1 = binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("ETHUSDT", new List<string> { "FiveMinutes" });
-
-            Console.WriteLine(result1.Result.Message);
-
-            Thread.Sleep(1000);
-
-            //var deleteResult = binanceKlineService.DeleteFuturesUsdtKlinesBySymbolPairAndMultiInterval("SOLUSDT", new List<string> { "OneDay", "ThirtyMinutes" });
-
-          
-            
-
-            //Console.WriteLine(deleteResult.Message);
-            //Console.ReadLine();
-
-            //IBinanceExchangeInformationService binanceExchangeInformationService = new BinanceExchangeInformationManager(new EfBinanceFuturesUsdtSymbolDal(), new BinanceExchangeInformationApiManager(new BinanceClient()));
-
-            //var result = binanceExchangeInformationService.AddFuturesUsdtSymbolsAsync();
-            //Console.WriteLine(result.Result.Message);
-
-
-            //IBinanceCommonDatabaseParameterService binanceCommonDatabaseParameterService = new BinanceCommonDatabaseParameterManager(new EfBinanceCommonDatabaseParameterDal());
-
-            //var result = binanceCommonDatabaseParameterService.GetAllBinanceIntervalParametersAsync().Result.Data;
-
-            //foreach (var item in result)
-            //{
-            //    Console.WriteLine("Kline Interval: {0}, Day Parameter: {1}", item.Interval, item.DayParameter);
-
-            //}
-
-
-            IIndicatorService indicatorService = new IndicatorManager(
-                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal()), new EfIndicatorDal(),
-                new IndicatorParameterManager(new EfIndicatorParameterDal()));
-
-
-            //var result5 = indicatorService.GetAllIndicatorsAsync().Result.Data;
-
-            //foreach (var item in result5)
-            //{
-            //    Console.WriteLine(item.IndicatorName);
-            //}
-
-            //var result = indicatorService.GetSuperTrendResultAsync("SOLUSDT", "FourHour", 1).Data;
-            //foreach (var data in result)
-            //{
-            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Close: {3}, SuperTrendValue: {4}, SuperTrendSide: {5}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Close, data.SuperTrendValue, data.SuperTrendSide);
-            //}
-
-            //var result = indicatorService.GetSuperTrendResult("CRVUSDT", "FourHour", 25).Data;
-            //foreach (var data in result)
-            //{
-
-
-            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, STValue: {7}, STSide: {6}, TrendId: {5}, SuperTrendBoth: {8}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open, data.Close, data.TrendId,  data.SuperTrendSide, data.SuperTrendValue,data.SuperTrendBoth);
-
-            //}
-
-            var result8 = indicatorService.GetHeikinAshiKlineResult("ETHUSDT", "FiveMinutes", 15).Data;
-            foreach (var data in result8)
-            {
-
-
-                Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, High: {4}, Low:{5}, Close: {6}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open,data.High,data.Low, data.Close);
-
             }
 
-            //var result = indicatorService.GetFuturesUsdtRenkoBricks("CRVUSDT", "FourHour", 25).Data;
-            //foreach (var data in result)
-            //{
-            //    if (data.Date > DateTime.Now.AddDays(-1))
-            //    {
-            //        Console.WriteLine(data.Date);
-            //    }
-            //    Console.WriteLine(data.Date);
-            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}, TrendId: {6}, InIntervalTrendId: {7}", data.SymbolPair, data.KlineInterval, data.Date, data.Open, data.Close, data.IsUp,data.TrendId,data.InIntervalTrendId);
-
-            //}
-
-            //Calculators calculators = new Calculators();
-
-            //var result66 = calculators.CalculateFuturesUsdtRenkoCountFromRenkoBrickList(result, 500);
-
-            //foreach (var item in result66.Data)
-            //{
-            //    Console.WriteLine(item.RenkoSide, item.Count);
-            //}
-
-
-
-            //var result4 = indicatorService.GetFuturesUsdtRenkoBricksSuperTrend("BTCUSDT", "FourHour", 17).Data;
-            //foreach (var data in result4)
-            //{
-            //    Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, STValue: {7}, STSide: {6}, BrickSide: {5}", data.SymbolPair, data.KlineInterval, data.OpenTime, data.Open, data.Close, data.IsUp, data.SuperTrendSide, data.SuperTrendValue);
-
-            //}
-
-
-            //SubscribeKlineDataTrigger subscribeKlineDataTrigger = new SubscribeKlineDataTrigger();
-            //subscribeKlineDataTrigger.TriggerTheJob();
-
-            /*
-            var result = AesEncryption.EncryptString("xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy");
-            Console.WriteLine(result);
-            var result2 = AesEncryption.DecryptString(result);
-
-            Console.WriteLine(result2);
-
-            IApiInformationService apiInformationService = new ApiInformationManager(new EfApiInformationDal());
-
-            ApiInformationEntity apiInformationEntity = new ApiInformationEntity();
-
-            apiInformationEntity.Exchange = "Binance";
-            apiInformationEntity.ApiTitle = "Ezo-Key";
-            apiInformationEntity.ApiKey = "xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy";
-            apiInformationEntity.SecretKey = "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM";
-
-
-
-            apiInformationService.AddApiInformation(apiInformationEntity);
-            */
-
-
-            IBinanceApiService binanceAccountInformationApiService =
-                new BinanceApiManager(new BinanceClient(), "mJelRp3XwTEB2j5I5nEOmIn14hkb9wxkUGMY972U0i9alycBodgMDXnZq7EeDZvN", "nAd6XuJ4cvXtTNbiwKKRRrKc9FZ48lbEy5SbQBTtpa367DbZsBUHi7PHBXeCK85J");
-
-            //var orders = binanceAccountInformationApiService.GetFuturesUsdtPlacedOrdersBySymbolPairAsync("SOLUSDT").Result.Data;
-
-            //var listenKey = binanceAccountInformationApiService.StartUserDataStreamAsync().Result;
-
-            //IBinanceWsService binanceWsService = new BinanceWsManager(new BinanceSocketClient());
-
-            //var streamData = binanceWsService.GetCurrentUserDataUpdatesAsync(listenKey.Data);
-
-
-            //while (true)
-            //{
-            //    foreach (var item in streamData.Result)
-            //    {
-            //        Console.WriteLine(item.Symbol +" "+ item.PositionSide + " " + item.UnrealizedPnl);
-            //    }
-
-            //}
-
-            //var orders =
-            //    binanceAccountInformationApiService.PlaceFuturesUsdtMultipleLimitOrdersByPriceCalculationMethodAsync(
-            //        "SOLUSDT", "Buy", "Long", 400, 95, 3, 2, 90, "Random", 0.5M, 2, 2, 0);
-
-
-
-            //var position =
-            //    binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
-            //position.Wait();
-            //var stopOrder =
-            //var result44 = binanceAccountInformationApiService.GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync("CRVUSDT", 13542201759);
-            //result44.Wait();
-            //Console.WriteLine("111");
-
-            //var xxxx = binanceAccountInformationApiService.SetLeverageForFuturesUsdtSymbolPairAsync("SOLUSDT", 3).Result;
-
-            //var result7 = binanceAccountInformationApiService.PlaceFuturesUsdtLimitOrderAsync("SOLUSDT", "Buy", 1.0M, "Long", 99.80M);
-            //result7.Wait();
-            //var result = binanceAccountInformationApiService.GetFuturesUsdtAccountInformationAsync().Result.Data;
-            //var result8 = binanceAccountInformationApiService.GetFuturesUsdtPositionDetailsBySymbolPairAsync("SOLUSDT");
-            //result8.Wait();
-            //var result9 =
-            //    binanceAccountInformationApiService.CloseFuturesUsdtPositionByMarketOrderAsync("SOLUSDT", "Sell",1.0M,"Long");
-            //result7.Wait();
-            //result9.Wait();
-            //Console.WriteLine(result9.Result.Message);
-
-            //BinanceClient binanceClient = new BinanceClient();
-            //binanceClient.SetApiCredentials("xmdrndSHn9ECzKNaRdRAL61MVmIzLwZAGmqTu4dGyZ8Di0XypASZXCXV6ETYQPsy", "Stv62g9xdnO04Zz7ujhqqnOGroof9DKevUFyWsrbYT1X54DREKLpG1sLLxSWZoSM");
-
-            //var xxx = binanceClient.FuturesUsdt.ChangeInitialLeverageAsync("BTCUSDT", 3).Result;
-
-            //var result3 = binanceClient.Spot.Order.PlaceOrderAsync("BTCUSDT", OrderSide.Buy, OrderType.Limit, 0.0017M, null, null, 29000, TimeInForce.GoodTillCancel, null);
-
-            //result3.Wait();
-
-            //Console.WriteLine(result3.Result.Success);
-
-            /*
-            var result2 =  binanceClient.Spot.Order.CancelAllOpenOrdersAsync("BTCUSDT");
-            result2.Wait();
-            Console.WriteLine(result2.Result.ResponseHeaders);
-            Console.WriteLine(result2.Result.ResponseStatusCode);
-            Console.WriteLine(result2.Result.Success);
-            Console.WriteLine(result2.Result.OriginalData);
-            
-            
-
-
-            var result = binanceAccountInformationApiService.GetAccountInformation().Result.Data;
-            foreach (var item in result)
-            {
-                Console.WriteLine(item.OrderId + " | " + item.Symbol + " | " + item.Price + " | " + item.Quantity);
-            }
-
-            */
-            Console.WriteLine("test test alt \n satır testi");
-
-            Console.WriteLine(
-                "Placed Order- Control Result=> OrderId:  | Status:  | SymbolPair:  | Price/AvgPrice: / \n                               Quantity/QuantityFilled / | Side/PositionSide: /");
-            var sayi = Math.Round(1.2568336994M, 4, MidpointRounding.ToZero);
-            Console.WriteLine(sayi);
             Console.ReadLine();
         }
     }
