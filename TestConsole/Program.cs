@@ -70,16 +70,16 @@ namespace TestConsole
                 new BinanceApiManager(binanceClient));
 
             //await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("ETHUSDT", new List<string> { "FourHour" });
-            await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("BTCUSDT", new List<string> { "FourHour" });
-            await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("WAVESUSDT", new List<string> { "FourHour" });
+            await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("DOGEUSDT", new List<string> { "FifteenMinutes" });
+            await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync("1000SHIBUSDT", new List<string> { "FifteenMinutes" });
 
-            var btcKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("BTCUSDT", "FourHour", 1000).Result.Data;
-            var ethKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("ETHUSDT", "FourHour", 1000).Result.Data;
+            var btcKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("DOGEUSDT", "FifteenMinutes", 1000).Result.Data;
+            var ethKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("1000SHIBUSDT", "FifteenMinutes", 1000).Result.Data;
 
             var wavesKlines = _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync("WAVESUSDT", "FourHour", 1000).Result.Data;
 
 
-            IEnumerable<CorrResult> results = btcKlines.GetCorrelation(wavesKlines, 20);
+            IEnumerable<CorrResult> results = btcKlines.GetCorrelation(ethKlines, 20);
 
             foreach (var result in results.RemoveWarmupPeriods(20))
             {

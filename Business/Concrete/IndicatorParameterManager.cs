@@ -55,21 +55,18 @@ namespace Business.Concrete
             {
                 return new ErrorResult(CommonMessages.AlreadyInUse);
             }
-            else
+
+            try
             {
-                try
-                {
-                    willDeletedIndicatorParameter.Removed = true;
-                    willDeletedIndicatorParameter.RemovedDate=DateTime.Now;
+                willDeletedIndicatorParameter.Removed = true;
+                willDeletedIndicatorParameter.RemovedDate=DateTime.Now;
 
-                    await _indicatorParameterDal.DeleteAsync(willDeletedIndicatorParameter);
-                    return new SuccessResult(CommonMessages.Deleted);
-                }
-                catch (Exception e)
-                {
-                    return new ErrorResult(CommonMessages.Error);
-                }
-
+                await _indicatorParameterDal.DeleteAsync(willDeletedIndicatorParameter);
+                return new SuccessResult(CommonMessages.Deleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
             }
         }
         public async Task<IResult> AddIndicatorParameterAsync(IndicatorParameterEntity indicatorParameterEntity)

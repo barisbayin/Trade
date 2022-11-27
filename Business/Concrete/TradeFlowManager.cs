@@ -64,10 +64,8 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<TradeFlowEntity>(CommonMessages.Selected);
             }
-            else
-            {
-                return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemIsNotAlreadySelected);
-            }
+
+            return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemIsNotAlreadySelected);
         }
 
         public IDataResult<TradeFlowEntity> CheckIfTheTradeFlowIsEnded(int id)
@@ -77,10 +75,8 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<TradeFlowEntity>(CommonMessages.Finished);
             }
-            else
-            {
-                return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemDidNotFinished);
-            }
+
+            return new ErrorDataResult<TradeFlowEntity>(CommonMessages.ItemDidNotFinished);
         }
 
         public IDataResult<TradeFlowEntity> CheckIfTheTradeFlowIsInUse(int id)
@@ -90,10 +86,8 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<TradeFlowEntity>(CommonMessages.AlreadyInUse);
             }
-            else
-            {
-                return new ErrorDataResult<TradeFlowEntity>(CommonMessages.NotInUse);
-            }
+
+            return new ErrorDataResult<TradeFlowEntity>(CommonMessages.NotInUse);
         }
 
         public IDataResult<List<TradeFlowPartialDto>> GetEndedTradeFlowPartialDetails()
@@ -127,14 +121,12 @@ namespace Business.Concrete
             {
                 return new ErrorResult(result.Message);
             }
-            else
-            {
-                var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
-                tradeFlow.InUse = false;
-                tradeFlow.IsEnded = true;
-                UpdateTradeFlow(tradeFlow);
-                return new SuccessResult(CommonMessages.MarkedAsFinished);
-            }
+
+            var tradeFlow = _tradeFlowDal.Get(x => x.Id == id);
+            tradeFlow.InUse = false;
+            tradeFlow.IsEnded = true;
+            UpdateTradeFlow(tradeFlow);
+            return new SuccessResult(CommonMessages.MarkedAsFinished);
         }
 
         public IResult MarkAsNotInUseById(int id)
@@ -148,10 +140,8 @@ namespace Business.Concrete
                 return new SuccessResult(CommonMessages.MarkedAsNotInUse);
                 
             }
-            else
-            {
-                return new ErrorResult(result.Message);
-            }
+
+            return new ErrorResult(result.Message);
         }
 
         public IResult ResetTradeFlowById(int id)
@@ -213,24 +203,18 @@ namespace Business.Concrete
                 {
                     return new ErrorResult(CommonMessages.AlreadySelected);
                 }
-                else
-                {
-                    return new ErrorResult(CommonMessages.AlreadySelectedItemFound);
-                }
+
+                return new ErrorResult(CommonMessages.AlreadySelectedItemFound);
             }
-            else
+
+            if (tradeFlow.IsEnded==true || tradeFlow.InUse==true)
             {
-                if (tradeFlow.IsEnded==true || tradeFlow.InUse==true)
-                {
-                    return new ErrorResult(CommonMessages.CanNotSelectEndedOrInUseItem);
-                }
-                else
-                {
-                    tradeFlow.IsSelected = true;
-                    await UpdateTradeFlowAsync(tradeFlow);
-                    return new SuccessResult(CommonMessages.Selected);
-                }
+                return new ErrorResult(CommonMessages.CanNotSelectEndedOrInUseItem);
             }
+
+            tradeFlow.IsSelected = true;
+            await UpdateTradeFlowAsync(tradeFlow);
+            return new SuccessResult(CommonMessages.Selected);
         }
 
         public async Task<IResult> UnSelectTradeFlowAsync(int id)
@@ -240,12 +224,10 @@ namespace Business.Concrete
             {
                 return new ErrorResult(CommonMessages.ItemIsNotAlreadySelected);
             }
-            else
-            {
-                tradeFlow.IsSelected = false;
-                await UpdateTradeFlowAsync(tradeFlow);
-                return new SuccessResult(CommonMessages.UnSelected);
-            }
+
+            tradeFlow.IsSelected = false;
+            await UpdateTradeFlowAsync(tradeFlow);
+            return new SuccessResult(CommonMessages.UnSelected);
         }
 
         public IDataResult<List<TradeFlowEntity>> GetAllTradeFlows()

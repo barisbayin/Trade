@@ -255,11 +255,9 @@ namespace Business.Helpers
                 var selectedSuperTrendCountList = superTrendCountList.Skip(Math.Max(0, superTrendCountList.Count() - superTrendCountRange)).Take(superTrendCountRange).ToList();
                 return new SuccessDataResult<List<SuperTrendCount>>(selectedSuperTrendCountList);
             }
-            else
-            {
-                return new SuccessDataResult<List<SuperTrendCount>>(superTrendCountList);
-            }
-            
+
+            return new SuccessDataResult<List<SuperTrendCount>>(superTrendCountList);
+
         }
 
         public IDataResult<BinanceFuturesUsdtKlineWithSuperTrend> RoundDecimals(

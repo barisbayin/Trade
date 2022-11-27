@@ -51,23 +51,21 @@ namespace Business.Concrete
             {
                 return new ErrorResult(CommonMessages.StopLossPercentCanNotBeZero);
             }
-            else
+
+            tradeParameterEntity.InUse = false;
+            tradeParameterEntity.CreationDate = DateTime.Now;
+            tradeParameterEntity.Removed = false;
+            try
             {
-                tradeParameterEntity.InUse = false;
-                tradeParameterEntity.CreationDate = DateTime.Now;
-                tradeParameterEntity.Removed = false;
-                try
-                {
-                    await _tradeParameterDal.AddAsync(tradeParameterEntity);
-                    return new SuccessResult(CommonMessages.Added);
-                }
-                catch (Exception e)
-                {
-                    return new ErrorResult(CommonMessages.Error);
-                }
+                await _tradeParameterDal.AddAsync(tradeParameterEntity);
+                return new SuccessResult(CommonMessages.Added);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
             }
 
-            
+
         }
 
         public async Task<IResult> UpdateTradeParameterAsync(TradeParameterEntity tradeParameterEntity)
@@ -78,17 +76,15 @@ namespace Business.Concrete
             {
                 return new ErrorResult(CommonMessages.StopLossPercentCanNotBeZero);
             }
-            else
+
+            try
             {
-                try
-                {
-                    await _tradeParameterDal.UpdateAsync(tradeParameterEntity);
-                    return new SuccessResult(CommonMessages.Updated);
-                }
-                catch (Exception e)
-                {
-                    return new ErrorResult(CommonMessages.Error);
-                }
+                await _tradeParameterDal.UpdateAsync(tradeParameterEntity);
+                return new SuccessResult(CommonMessages.Updated);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
             }
 
         }
@@ -103,21 +99,18 @@ namespace Business.Concrete
             {
                 return new ErrorResult(CommonMessages.AlreadyInUse);
             }
-            else
+
+            try
             {
-                try
-                {
-                    willDeletedTradeParameter.Removed = true;
-                    willDeletedTradeParameter.RemovedDate=DateTime.Now;
+                willDeletedTradeParameter.Removed = true;
+                willDeletedTradeParameter.RemovedDate=DateTime.Now;
 
-                    await _tradeParameterDal.UpdateAsync(willDeletedTradeParameter);
-                    return new SuccessResult(CommonMessages.Deleted);
-                }
-                catch (Exception e)
-                {
-                    return new ErrorResult(CommonMessages.Error);
-                }
-
+                await _tradeParameterDal.UpdateAsync(willDeletedTradeParameter);
+                return new SuccessResult(CommonMessages.Deleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
             }
         }
     }

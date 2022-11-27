@@ -27,10 +27,8 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<List<ApiInformationEntity>>(result);
             }
-            else
-            {
-                return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
-            }
+
+            return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
         }
 
         public IDataResult<ApiInformationEntity> GetDecryptedApiInformationById(int id)
@@ -110,10 +108,8 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<List<ApiInformationEntity>>(result);
             }
-            else
-            {
-                return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
-            }
+
+            return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
         }
 
         public async Task<IDataResult<List<ApiInformationEntity>>> GetAllNotRemovedApiInformationAsync()
@@ -123,10 +119,8 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<List<ApiInformationEntity>>(result);
             }
-            else
-            {
-                return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
-            }
+
+            return new ErrorDataResult<List<ApiInformationEntity>>(CommonMessages.NoData);
         }
 
         public async Task<IResult> DeleteApiInformationByIdAsync(int id)
@@ -136,19 +130,17 @@ namespace Business.Concrete
             {
                 return new ErrorResult(CommonMessages.AlreadyInUse);
             }
-            else
+
+            willDeleteApi.IsRemoved = true;
+            willDeleteApi.RemovedDate = DateTime.Now;
+            try
             {
-                willDeleteApi.IsRemoved = true;
-                willDeleteApi.RemovedDate = DateTime.Now;
-                try
-                {
-                    await _apiInformationDal.UpdateAsync(willDeleteApi);
-                    return new SuccessResult(CommonMessages.Deleted);
-                }
-                catch (Exception e)
-                {
-                    return new ErrorResult(CommonMessages.Error);
-                }
+                await _apiInformationDal.UpdateAsync(willDeleteApi);
+                return new SuccessResult(CommonMessages.Deleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(CommonMessages.Error);
             }
         }
     }

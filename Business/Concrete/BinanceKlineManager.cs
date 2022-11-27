@@ -162,10 +162,8 @@ namespace Business.Concrete
             {
                 return new SuccessResult(symbolPair + " " + CommonMessages.FuturesUsdtKlineDataExistsInDatabase);
             }
-            else
-            {
-                return new ErrorResult(CommonMessages.NoFuturesUsdtDataInDatabaseFor + " " + symbolPair);
-            }
+
+            return new ErrorResult(CommonMessages.NoFuturesUsdtDataInDatabaseFor + " " + symbolPair);
         }
 
         public async Task<IDataResult<IEnumerable<CurrencyKlineToCalculateIndicatorDto>>> GetCurrencyKlinesToCalculateIndicatorAsync(string symbolPair, string interval, int? dataCount)
