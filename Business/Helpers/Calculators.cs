@@ -79,29 +79,33 @@ namespace Business.Helpers
             int j = 0;
             foreach (var futuresUsdtRenkoBrick in usingFuturesUsdtRenkoBrick)
             {
-                if (futuresUsdtRenkoBrick.IsUp == true)
+                switch (futuresUsdtRenkoBrick.IsUp)
                 {
-                    if (j > 0)
+                    case true:
                     {
-                        var renkoCount = new RenkoCount {RenkoSide = "False", Count = j};
-                        renkoCountList.Add(renkoCount);
-                        j = 0;
-                    }
+                        if (j > 0)
+                        {
+                            var renkoCount = new RenkoCount {RenkoSide = "False", Count = j};
+                            renkoCountList.Add(renkoCount);
+                            j = 0;
+                        }
 
-                    i++;
-                }
-                if (futuresUsdtRenkoBrick.IsUp == false)
-                {
-                    if (i > 0)
+                        i++;
+                        break;
+                    }
+                    case false:
                     {
-                        var renkoCount = new RenkoCount {RenkoSide = "True", Count = i};
-                        renkoCountList.Add(renkoCount);
-                        i = 0;
+                        if (i > 0)
+                        {
+                            var renkoCount = new RenkoCount {RenkoSide = "True", Count = i};
+                            renkoCountList.Add(renkoCount);
+                            i = 0;
+                        }
+
+                        j++;
+                        break;
                     }
-
-                    j++;
                 }
-
             }
 
             renkoCountList.Reverse();
@@ -136,29 +140,33 @@ namespace Business.Helpers
             int j = 0;
             foreach (var superTrendKline in usingSuperTrendKlineList)
             {
-                if (superTrendKline.SuperTrendSide == "BUY")
+                switch (superTrendKline.SuperTrendSide)
                 {
-                    if (j > 0)
+                    case "BUY":
                     {
-                        var superTrendCount = new SuperTrendCount() { SuperTrendSide = "SELL", Count = j };
-                        superTrendCountList.Add(superTrendCount);
-                        j = 0;
-                    }
+                        if (j > 0)
+                        {
+                            var superTrendCount = new SuperTrendCount() { SuperTrendSide = "SELL", Count = j };
+                            superTrendCountList.Add(superTrendCount);
+                            j = 0;
+                        }
 
-                    i++;
-                }
-                if (superTrendKline.SuperTrendSide == "SELL")
-                {
-                    if (i > 0)
+                        i++;
+                        break;
+                    }
+                    case "SELL":
                     {
-                        var superTrendCount = new SuperTrendCount { SuperTrendSide = "BUY", Count = i };
-                        superTrendCountList.Add(superTrendCount);
-                        i = 0;
+                        if (i > 0)
+                        {
+                            var superTrendCount = new SuperTrendCount { SuperTrendSide = "BUY", Count = i };
+                            superTrendCountList.Add(superTrendCount);
+                            i = 0;
+                        }
+
+                        j++;
+                        break;
                     }
-
-                    j++;
                 }
-
             }
 
             superTrendCountList.Reverse();
