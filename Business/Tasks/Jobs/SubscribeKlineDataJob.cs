@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Binance.Net;
+using Binance.Net.Clients;
 using Binance.Net.Enums;
 using Quartz;
 using RemoteData.Binance.WebSocket.Abstract;

@@ -1,6 +1,5 @@
 ﻿using Business.Abstract;
 using Core.Utilities.Results;
-using Entity.Concrete;
 using Entity.Concrete.Entities;
 using Skender.Stock.Indicators;
 using System;
@@ -54,11 +53,11 @@ namespace Business.Concrete
                         SymbolPair = symbolPair,
                         KlineInterval = interval,
                         OpenTime = data.Date,
-                        Open = data.Open,
-                        High = data.High,
-                        Low = data.Low,
-                        Close = data.Close,
-                        BaseVolume = data.Volume
+                        OpenPrice = data.Open,
+                        HighPrice = data.High,
+                        LowPrice = data.Low,
+                        ClosePrice = data.Close,
+                        Volume = data.Volume
                     };
 
                 j++;
@@ -110,11 +109,11 @@ namespace Business.Concrete
                     binanceFuturesUsdtKlineWithSuperTrend.SymbolPair = symbolPair;
                     binanceFuturesUsdtKlineWithSuperTrend.KlineInterval = interval;
                     binanceFuturesUsdtKlineWithSuperTrend.OpenTime = data.Date;
-                    binanceFuturesUsdtKlineWithSuperTrend.Open = data.Open;
-                    binanceFuturesUsdtKlineWithSuperTrend.High = data.High;
-                    binanceFuturesUsdtKlineWithSuperTrend.Low = data.Low;
-                    binanceFuturesUsdtKlineWithSuperTrend.Close = data.Close;
-                    binanceFuturesUsdtKlineWithSuperTrend.BaseVolume = data.Volume;
+                    binanceFuturesUsdtKlineWithSuperTrend.OpenPrice = data.Open;
+                    binanceFuturesUsdtKlineWithSuperTrend.HighPrice = data.High;
+                    binanceFuturesUsdtKlineWithSuperTrend.LowPrice = data.Low;
+                    binanceFuturesUsdtKlineWithSuperTrend.ClosePrice = data.Close;
+                    binanceFuturesUsdtKlineWithSuperTrend.Volume = data.Volume;
                     binanceFuturesUsdtKlineWithSuperTrend.SuperTrendSide = "NULL";
                     binanceFuturesUsdtKlineWithSuperTrend.SuperTrendValue = 0;
                     binanceFuturesUsdtKlineWithSuperTrend.SuperTrendBoth = 0;
@@ -129,11 +128,11 @@ namespace Business.Concrete
                     binanceFuturesUsdtKlineWithSuperTrend.SymbolPair = symbolPair;
                     binanceFuturesUsdtKlineWithSuperTrend.KlineInterval = interval;
                     binanceFuturesUsdtKlineWithSuperTrend.OpenTime = data.Date;
-                    binanceFuturesUsdtKlineWithSuperTrend.Open = data.Open;
-                    binanceFuturesUsdtKlineWithSuperTrend.High = data.High;
-                    binanceFuturesUsdtKlineWithSuperTrend.Low = data.Low;
-                    binanceFuturesUsdtKlineWithSuperTrend.Close = data.Close;
-                    binanceFuturesUsdtKlineWithSuperTrend.BaseVolume = data.Volume;
+                    binanceFuturesUsdtKlineWithSuperTrend.OpenPrice = data.Open;
+                    binanceFuturesUsdtKlineWithSuperTrend.HighPrice = data.High;
+                    binanceFuturesUsdtKlineWithSuperTrend.LowPrice = data.Low;
+                    binanceFuturesUsdtKlineWithSuperTrend.ClosePrice = data.Close;
+                    binanceFuturesUsdtKlineWithSuperTrend.Volume = data.Volume;
 
                     if (superTrendResults.ToArray()[i].UpperBand == null)
                     {
@@ -293,7 +292,7 @@ namespace Business.Concrete
             var renkoDataList = dataList.GetRenko(renkoSuperTrendParameters.Parameter1.Value,
                 (EndType)Enum.Parse(typeof(EndType), renkoSuperTrendParameters.KlineEndType));
 
-            IEnumerable<SuperTrendResult> renkoSuperTrendResults = dataList.GetRenko(renkoSuperTrendParameters.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), renkoSuperTrendParameters.KlineEndType)).ConvertToQuotes().GetSuperTrend(renkoSuperTrendParameters.Period, Convert.ToDouble(renkoSuperTrendParameters.Multiplier));
+            IEnumerable<SuperTrendResult> renkoSuperTrendResults = dataList.GetRenko(renkoSuperTrendParameters.Parameter1.Value, (EndType)Enum.Parse(typeof(EndType), renkoSuperTrendParameters.KlineEndType)).GetSuperTrend(renkoSuperTrendParameters.Period, Convert.ToDouble(renkoSuperTrendParameters.Multiplier));
 
 
             List<FuturesUsdtRenkoBricksWithSuperTrend> futuresUsdtRenkoBricksWithSuperTrends =
@@ -309,11 +308,11 @@ namespace Business.Concrete
                     futuresUsdtRenkoBricksWithSuperTrend.SymbolPair = symbolPair;
                     futuresUsdtRenkoBricksWithSuperTrend.KlineInterval = interval;
                     futuresUsdtRenkoBricksWithSuperTrend.OpenTime = data.Date;
-                    futuresUsdtRenkoBricksWithSuperTrend.Open = data.Open;
-                    futuresUsdtRenkoBricksWithSuperTrend.High = data.High;
-                    futuresUsdtRenkoBricksWithSuperTrend.Low = data.Low;
-                    futuresUsdtRenkoBricksWithSuperTrend.Close = data.Close;
-                    futuresUsdtRenkoBricksWithSuperTrend.BaseVolume = data.Volume;
+                    futuresUsdtRenkoBricksWithSuperTrend.OpenPrice = data.Open;
+                    futuresUsdtRenkoBricksWithSuperTrend.HighPrice = data.High;
+                    futuresUsdtRenkoBricksWithSuperTrend.LowPrice = data.Low;
+                    futuresUsdtRenkoBricksWithSuperTrend.ClosePrice = data.Close;
+                    futuresUsdtRenkoBricksWithSuperTrend.Volume = data.Volume;
                     futuresUsdtRenkoBricksWithSuperTrend.SuperTrendSide = "NULL";
                     futuresUsdtRenkoBricksWithSuperTrend.SuperTrendValue = 0;
 
@@ -334,11 +333,11 @@ namespace Business.Concrete
                     futuresUsdtRenkoBricksWithSuperTrend.SymbolPair = symbolPair;
                     futuresUsdtRenkoBricksWithSuperTrend.KlineInterval = interval;
                     futuresUsdtRenkoBricksWithSuperTrend.OpenTime = data.Date;
-                    futuresUsdtRenkoBricksWithSuperTrend.Open = data.Open;
-                    futuresUsdtRenkoBricksWithSuperTrend.High = data.High;
-                    futuresUsdtRenkoBricksWithSuperTrend.Low = data.Low;
-                    futuresUsdtRenkoBricksWithSuperTrend.Close = data.Close;
-                    futuresUsdtRenkoBricksWithSuperTrend.BaseVolume = data.Volume;
+                    futuresUsdtRenkoBricksWithSuperTrend.OpenPrice = data.Open;
+                    futuresUsdtRenkoBricksWithSuperTrend.HighPrice = data.High;
+                    futuresUsdtRenkoBricksWithSuperTrend.LowPrice = data.Low;
+                    futuresUsdtRenkoBricksWithSuperTrend.ClosePrice = data.Close;
+                    futuresUsdtRenkoBricksWithSuperTrend.Volume = data.Volume;
                     if (renkoSuperTrendResults.ToArray()[i].UpperBand == null)
                     {
                         futuresUsdtRenkoBricksWithSuperTrend.SuperTrendSide = "BUY";

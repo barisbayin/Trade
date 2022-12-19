@@ -21,11 +21,11 @@ namespace DataAccess.Concrete
                     select new CurrencyKlineToCalculateIndicatorDto
                     {
                         Date = c.OpenTime,
-                        Open = c.Open,
-                        High = c.High,
-                        Low = c.Low,
-                        Close = c.Close,
-                        Volume = c.BaseVolume
+                        Open = c.OpenPrice,
+                        High = c.HighPrice,
+                        Low = c.LowPrice,
+                        Close = c.ClosePrice,
+                        Volume = c.Volume
                     };
 
                 return dataCount == null || dataCount == 0 ? result.OrderBy(c => c.Date).ToList() : result.OrderBy(c => c.Date).Take(Convert.ToInt32(dataCount)).ToList();
@@ -42,11 +42,11 @@ namespace DataAccess.Concrete
                 select new CurrencyKlineToCalculateIndicatorDto
                 {
                     Date = c.OpenTime,
-                    Open = c.Open,
-                    High = c.High,
-                    Low = c.Low,
-                    Close = c.Close,
-                    Volume = c.BaseVolume
+                    Open = c.OpenPrice,
+                    High = c.HighPrice,
+                    Low = c.LowPrice,
+                    Close = c.ClosePrice,
+                    Volume = c.Volume
                 };
 
             return dataCount == null || dataCount == 0 ? result.OrderBy(c => c.Date).ToList() : result.OrderByDescending(c => c.Date).Take(Convert.ToInt32(dataCount)).ToList();

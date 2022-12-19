@@ -1,14 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
-using Binance.Net;
-using Binance.Net.Interfaces;
 using Business.Abstract;
 using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Binance.Net.Clients;
+using Binance.Net.Interfaces.Clients;
 using RemoteData.Binance.GeneralApi.Abstract;
 using RemoteData.Binance.GeneralApi.Concrete;
 

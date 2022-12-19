@@ -1,7 +1,6 @@
 ﻿using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Core.Utilities.Results;
-using Entity.Concrete;
 using RemoteData.Binance.GeneralApi.Abstract;
 using RemoteData.Binance.Helpers;
 using RemoteData.Constants;
@@ -9,13 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Binance.Net.Objects.Futures.FuturesData;
-using Binance.Net.Objects.Futures.MarketData;
-using Binance.Net.Objects.Spot.MarketData;
-using Binance.Net.Objects.Spot.SpotData;
+using Binance.Net.Interfaces.Clients;
+using Binance.Net.Objects.Models.Futures;
+using Binance.Net.Objects.Models.Spot;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 using Entity.Concrete.Entities;
 
@@ -36,14 +34,14 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         public BinanceApiManager(IBinanceClient binanceClient, string apiKey, string secretKey)
         {
             _binanceClient = binanceClient;
-            _binanceClient.SetApiCredentials(apiKey, secretKey);
+            _binanceClient.SetApiCredentials(new ApiCredentials(apiKey,secretKey));
         }
 
         #region Kline Codes
         public async Task<IDataResult<IEnumerable<IBinanceKline>>> GetBaseLimitedKlineDataForFuturesUsdtAsync(string symbolPair, KlineInterval interval, DateTime endTime, DateTime startTime)
         {
-
-            var data = await _binanceClient.FuturesUsdt.Market.GetKlinesAsync(symbolPair, interval, startTime, endTime, limit: 1000);
+           
+            var data = await _binanceClient.UsdFuturesApi.ExchangeData.GetKlinesAsync(symbolPair, interval, startTime, endTime, limit: 1000);
 
             return new SuccessDataResult<IEnumerable<IBinanceKline>>(data.Data);
         }
@@ -75,11 +73,11 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                                 SymbolPair = symbolPair,
                                 KlineInterval = interval.ToString(),
                                 OpenTime = data.OpenTime,
-                                Open = data.Open,
-                                High = data.High,
-                                Low = data.Low,
-                                Close = data.Close,
-                                BaseVolume = data.BaseVolume,
+                                OpenPrice = data.OpenPrice,
+                                HighPrice = data.HighPrice,
+                                LowPrice = data.LowPrice,
+                                ClosePrice = data.ClosePrice,
+                                Volume = data.Volume,
                                 CloseTime = data.CloseTime,
                                 QuoteVolume = data.QuoteVolume,
                                 TradeCount = data.TradeCount,
@@ -116,7 +114,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<BinanceFuturesAccountInfo>> GetFuturesUsdtAccountInformationAsync()
         {
-            var result = await _binanceClient.FuturesUsdt.Account.GetAccountInfoAsync();
+            var result = await _binanceClient.UsdFuturesApi.Account.GetAccountInfoAsync();
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -128,9 +126,9 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         public async Task<IDataResult<BinanceFuturesPlacedOrder>> PlaceFuturesUsdtLimitOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide, decimal price)
         {
 
-            var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
-                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.Limit, quantity,
-                (PositionSide)Enum.Parse(typeof(PositionSide), positionSide), TimeInForce.GoodTillCancel, null, price,
+            var result = await _binanceClient.UsdFuturesApi.Trading.PlaceOrderAsync(symbolPair,
+                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), FuturesOrderType.Limit, quantity, price,
+                (PositionSide)Enum.Parse(typeof(PositionSide), positionSide), TimeInForce.GoodTillCanceled, null, 
                 null, null, null, null, null, null, null, null, null, CancellationToken.None);
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
@@ -201,8 +199,8 @@ namespace RemoteData.Binance.GeneralApi.Concrete
                     Symbol = symbolPair,
                     Side = (OrderSide)Enum.Parse(typeof(OrderSide), orderSide),
                     PositionSide = (PositionSide)Enum.Parse(typeof(PositionSide), positionSide),
-                    Type = OrderType.Limit,
-                    TimeInForce = TimeInForce.GoodTillCancel,
+                    Type = FuturesOrderType.Limit,
+                    TimeInForce = TimeInForce.GoodTillCanceled,
                     Price = price,
                     Quantity = quantity
                 };
@@ -212,7 +210,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
             }
 
-            var result = await _binanceClient.FuturesUsdt.Order.PlaceMultipleOrdersAsync(binanceFuturesBatchOrderArray);
+            var result = await _binanceClient.UsdFuturesApi.Trading.PlaceMultipleOrdersAsync(binanceFuturesBatchOrderArray);
 
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
@@ -242,7 +240,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<BinanceFuturesCancelAllOrders>> CancelAllFuturesUsdtLimitOrdersBySymbolPairAsync(string symbolPair)
         {
-            var result = await _binanceClient.FuturesUsdt.Order.CancelAllOrdersAsync(symbolPair);
+            var result = await _binanceClient.UsdFuturesApi.Trading.CancelAllOrdersAsync(symbolPair);
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -256,15 +254,15 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<BinanceFuturesPlacedOrder>> CloseFuturesUsdtPositionByMarketOrderAsync(string symbolPair, string orderSide, decimal quantity, string positionSide)
         {
-            var result = await _binanceClient.FuturesUsdt.Order.PlaceOrderAsync(symbolPair,
-                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide), OrderType.Market, quantity, (PositionSide)Enum.Parse(typeof(PositionSide), positionSide), null, null, null, null, null, null, null, null, null, null, null, null, CancellationToken.None);
+            var result = await _binanceClient.UsdFuturesApi.Trading.PlaceOrderAsync(symbolPair,
+                (OrderSide)Enum.Parse(typeof(OrderSide), orderSide),FuturesOrderType.Market, quantity, null, (PositionSide)Enum.Parse(typeof(PositionSide), positionSide),  null, null, null, null, null, null, null, null, null, null, null, CancellationToken.None);
 
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<BinanceFuturesPlacedOrder>(result.Data,
-                    "Close Market Order Placed=> " +"Order Id: "+ result.Data.OrderId+ " | " + "Symbol:" + result.Data.Symbol + " | " + "Position Side: "+ result.Data.PositionSide + " | " + "Order Side: "+
-                    result.Data.PositionSide + " | " + "Avg. Price: "+ result.Data.AvgPrice + " | " +"Filled Quantity: " + result.Data.QuantityFilled);
+                    "Close Market Order Placed=> " +"Order Id: "+ result.Data.Id+ " | " + "Symbol:" + result.Data.Symbol + " | " + "Position Side: "+ result.Data.PositionSide + " | " + "Order Side: "+
+                    result.Data.PositionSide + " | " + "Avg. Price: "+ result.Data.AveragePrice + " | " +"Filled Quantity: " + result.Data.QuantityFilled);
 
             }
 
@@ -273,7 +271,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IResult> SetLeverageForFuturesUsdtSymbolPairAsync(string symbolPair, int leverage)
         {
-            var result = await _binanceClient.FuturesUsdt.ChangeInitialLeverageAsync(symbolPair, leverage);
+            var result = await _binanceClient.UsdFuturesApi.Account.ChangeInitialLeverageAsync(symbolPair, leverage);
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -285,7 +283,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IResult> SetMarginTypeForFuturesUsdtSymbolPairAsync(string symbolPair, string marginType)
         {
-            var result = await _binanceClient.FuturesUsdt.ChangeMarginTypeAsync(symbolPair, (FuturesMarginType)Enum.Parse(typeof(FuturesMarginType), marginType));
+            var result = await _binanceClient.UsdFuturesApi.Account.ChangeMarginTypeAsync(symbolPair, (FuturesMarginType)Enum.Parse(typeof(FuturesMarginType), marginType));
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -303,7 +301,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<IEnumerable<BinanceFuturesOrder>>> GetFuturesUsdtPlacedOrdersBySymbolPairAsync(string symbolPair)
         {
-            var result = await _binanceClient.FuturesUsdt.Order.GetOpenOrdersAsync(symbolPair);
+            var result = await _binanceClient.UsdFuturesApi.Trading.GetOpenOrdersAsync(symbolPair);
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
                 return new SuccessDataResult<IEnumerable<BinanceFuturesOrder>>(result.Data);
@@ -314,7 +312,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<BinanceFuturesOrder>> GetFuturesUsdtOrderBySymbolPairAndOrderIdAsync(string symbolPair, long orderId)
         {
-            var result = await _binanceClient.FuturesUsdt.Order.GetOrderAsync(symbolPair, orderId);
+            var result = await _binanceClient.UsdFuturesApi.Trading.GetOrderAsync(symbolPair, orderId);
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -326,7 +324,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<string>> StartUserDataStreamAsync()
         {
-            var result = await _binanceClient.FuturesUsdt.UserStream.StartUserStreamAsync();
+            var result = await _binanceClient.UsdFuturesApi.Account.StartUserStreamAsync();
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -340,7 +338,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<BinancePositionDetailsUsdt>> GetFuturesUsdtPositionDetailsBySymbolPairAsync(string symbolPair)
         {
-            var result = await _binanceClient.FuturesUsdt.GetPositionInformationAsync(symbolPair);
+            var result = await _binanceClient.UsdFuturesApi.Account.GetPositionInformationAsync(symbolPair);
 
             if (result.ResponseStatusCode == HttpStatusCode.OK && result.Success)
             {
@@ -371,7 +369,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         public async Task<IDataResult<IEnumerable<BinanceFuturesUsdtSymbol>>> GetBinanceFuturesUsdtSymbolInformationListAsync()
         {
 
-            var binanceFuturesUsdtSymbolInformationList = await _binanceClient.FuturesUsdt.System.GetExchangeInfoAsync();
+            var binanceFuturesUsdtSymbolInformationList = await _binanceClient.UsdFuturesApi.ExchangeData.GetExchangeInfoAsync();
 
             if (!binanceFuturesUsdtSymbolInformationList.Success)
             {
@@ -383,7 +381,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<List<string>>> GetBinanceFuturesUsdtSymbolPairsAsync()
         {
-            var binanceFuturesUsdtSymbolInformationList = await _binanceClient.FuturesUsdt.System.GetExchangeInfoAsync();
+            var binanceFuturesUsdtSymbolInformationList = await _binanceClient.UsdFuturesApi.ExchangeData.GetExchangeInfoAsync();
 
             if (!binanceFuturesUsdtSymbolInformationList.Success)
             {
@@ -404,7 +402,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<IEnumerable<BinanceSymbol>>> GetBinanceSpotSymbolInformationListAsync()
         {
-            var binanceSpotSymbolInformationList = await _binanceClient.Spot.System.GetExchangeInfoAsync();
+            var binanceSpotSymbolInformationList = await _binanceClient.SpotApi.ExchangeData.GetExchangeInfoAsync();
 
             if (!binanceSpotSymbolInformationList.Success)
             {
@@ -418,7 +416,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<List<string>>> GetBinanceSpotUsdtSymbolPairsAsync()
         {
-            var binanceSpotUsdtSymbolInformationList = await _binanceClient.Spot.System.GetExchangeInfoAsync();
+            var binanceSpotUsdtSymbolInformationList = await _binanceClient.SpotApi.ExchangeData.GetExchangeInfoAsync();
 
             if (!binanceSpotUsdtSymbolInformationList.Success)
             {
@@ -439,7 +437,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
         }
         public async Task<IDataResult<List<string>>> GetBinanceSpotBtcSymbolPairsAsync()
         {
-            var binanceSpotBtcSymbolInformationList = await _binanceClient.Spot.System.GetExchangeInfoAsync();
+            var binanceSpotBtcSymbolInformationList = await _binanceClient.SpotApi.ExchangeData.GetExchangeInfoAsync();
 
             if (!binanceSpotBtcSymbolInformationList.Success)
             {
@@ -463,7 +461,7 @@ namespace RemoteData.Binance.GeneralApi.Concrete
 
         public async Task<IDataResult<List<string>>> GetBinanceSpotEthSymbolPairsAsync()
         {
-            var binanceSpotEthSymbolInformationList = await _binanceClient.Spot.System.GetExchangeInfoAsync();
+            var binanceSpotEthSymbolInformationList = await _binanceClient.SpotApi.ExchangeData.GetExchangeInfoAsync();
 
             if (!binanceSpotEthSymbolInformationList.Success)
             {

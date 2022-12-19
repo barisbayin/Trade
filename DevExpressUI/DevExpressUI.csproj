@@ -50,14 +50,14 @@
     <Reference Include="Autofac.Extras.DynamicProxy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Extras.DynamicProxy.6.0.0\lib\netstandard2.0\Autofac.Extras.DynamicProxy.dll</HintPath>
     </Reference>
-    <Reference Include="Binance.Net, Version=7.2.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Binance.Net.7.2.6\lib\netstandard2.0\Binance.Net.dll</HintPath>
+    <Reference Include="Binance.Net, Version=8.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Binance.Net.8.3.0\lib\netstandard2.0\Binance.Net.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CryptoExchange.Net, Version=4.2.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CryptoExchange.Net.4.2.8\lib\netstandard2.0\CryptoExchange.Net.dll</HintPath>
+    <Reference Include="CryptoExchange.Net, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CryptoExchange.Net.5.3.0\lib\netstandard2.0\CryptoExchange.Net.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.BonusSkins.v20.1" />
     <Reference Include="DevExpress.Data.Desktop.v20.1" />
@@ -142,11 +142,11 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.5.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Skender.Stock.Indicators, Version=1.22.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Skender.Stock.Indicators.1.22.2\lib\netstandard2.0\Skender.Stock.Indicators.dll</HintPath>
+    <Reference Include="Skender.Stock.Indicators, Version=2.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Skender.Stock.Indicators.2.4.3\lib\netstandard2.0\Skender.Stock.Indicators.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -250,6 +250,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrom.resx">
       <DependentUpon>MainFrom.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="KlineParametersUC.resx">
       <DependentUpon>KlineParametersUC.cs</DependentUpon>

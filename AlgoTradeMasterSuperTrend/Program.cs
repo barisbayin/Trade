@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Binance.Net;
+using Binance.Net.Clients;
 using Binance.Net.Enums;
-using Binance.Net.Objects.Futures.FuturesData;
+using Binance.Net.Objects.Models.Futures;
 using Business.Abstract;
 using Business.Concrete;
 using Business.Helpers;
@@ -187,7 +187,7 @@ namespace AlgoTradeMasterSuperTrend
                 var updatedVariableObjects = await InformationUpdates(streamData, binanceFuturesUsdtKlineDal, tradeParameter, indicatorService,
                     calculators, variableObjects);
 
-                if (streamData.Open != 0)
+                if (streamData.OpenPrice != 0)
                 {
                     /*
                     #region LOOKING FOR FIRST POSITION
@@ -281,8 +281,8 @@ namespace AlgoTradeMasterSuperTrend
 
                 Console.WriteLine(
                     "Kline updated! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}",
-                    streamData.Open, streamData.High, streamData.Low,
-                    streamData.Close, streamData.OpenTime, streamData.BaseVolume,
+                    streamData.OpenPrice, streamData.HighPrice, streamData.LowPrice,
+                    streamData.ClosePrice, streamData.OpenTime, streamData.Volume,
                     streamData.QuoteVolume);
 
                 Console.ForegroundColor = ConsoleColor.White;
@@ -296,8 +296,8 @@ namespace AlgoTradeMasterSuperTrend
 
                 Console.WriteLine(
                     "Kline inserted! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}",
-                    streamData.Open, streamData.High, streamData.Low,
-                    streamData.Close, streamData.OpenTime, streamData.BaseVolume,
+                    streamData.OpenPrice, streamData.HighPrice, streamData.LowPrice,
+                    streamData.ClosePrice, streamData.OpenTime, streamData.Volume,
                     streamData.QuoteVolume);
 
                 Console.ForegroundColor = ConsoleColor.White;
@@ -310,7 +310,7 @@ namespace AlgoTradeMasterSuperTrend
         {
 
 
-            if (streamData.Open != 0)
+            if (streamData.OpenPrice != 0)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
@@ -388,21 +388,21 @@ namespace AlgoTradeMasterSuperTrend
                             variableObjects.BuySuperTrendCount = Convert.ToInt32(variableObjects.LastSuperTrendKline.Id) - Convert.ToInt32(variableObjects.LastSellSuperTrendKline.Id);
 
 
-                            var proximityPercent = Math.Round((variableObjects.LastSuperTrendKline.Close /
+                            var proximityPercent = Math.Round((variableObjects.LastSuperTrendKline.ClosePrice /
                                                        variableObjects.LastSuperTrendKline.SuperTrendValue) * 100 - 100, 2);
-                            var proximityPrice = Math.Round(variableObjects.LastSuperTrendKline.Close -
+                            var proximityPrice = Math.Round(variableObjects.LastSuperTrendKline.ClosePrice -
                                                                variableObjects.LastSuperTrendKline.SuperTrendValue, variableObjects.NormalizePricePrecision);
 
                             Console.ForegroundColor = ConsoleColor.Blue;
 
-                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4},\n                  STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.Open, variableObjects.LastSuperTrendKline.High, variableObjects.LastSuperTrendKline.Low, variableObjects.LastSuperTrendKline.Close, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
+                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4},\n                  STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.OpenPrice, variableObjects.LastSuperTrendKline.HighPrice, variableObjects.LastSuperTrendKline.LowPrice, variableObjects.LastSuperTrendKline.ClosePrice, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
 
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
 
-                            Console.WriteLine("First BUY ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.FirstBuyAfterTheLastSell.OpenTime, variableObjects.FirstBuyAfterTheLastSell.Open, variableObjects.FirstBuyAfterTheLastSell.High, variableObjects.FirstBuyAfterTheLastSell.Low, variableObjects.FirstBuyAfterTheLastSell.Close, variableObjects.FirstBuyAfterTheLastSell.SuperTrendSide, variableObjects.FirstBuyAfterTheLastSell.SuperTrendValue);
+                            Console.WriteLine("First BUY ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.FirstBuyAfterTheLastSell.OpenTime, variableObjects.FirstBuyAfterTheLastSell.OpenPrice, variableObjects.FirstBuyAfterTheLastSell.HighPrice, variableObjects.FirstBuyAfterTheLastSell.LowPrice, variableObjects.FirstBuyAfterTheLastSell.ClosePrice, variableObjects.FirstBuyAfterTheLastSell.SuperTrendSide, variableObjects.FirstBuyAfterTheLastSell.SuperTrendValue);
 
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Last SELL ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.LastSellSuperTrendKline.OpenTime, variableObjects.LastSellSuperTrendKline.Open, variableObjects.LastSellSuperTrendKline.High, variableObjects.LastSellSuperTrendKline.Low, variableObjects.LastSellSuperTrendKline.Close, variableObjects.LastSellSuperTrendKline.SuperTrendSide, variableObjects.LastSellSuperTrendKline.SuperTrendValue);
+                            Console.WriteLine("Last SELL ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.LastSellSuperTrendKline.OpenTime, variableObjects.LastSellSuperTrendKline.OpenPrice, variableObjects.LastSellSuperTrendKline.HighPrice, variableObjects.LastSellSuperTrendKline.LowPrice, variableObjects.LastSellSuperTrendKline.ClosePrice, variableObjects.LastSellSuperTrendKline.SuperTrendSide, variableObjects.LastSellSuperTrendKline.SuperTrendValue);
 
                             Console.ForegroundColor = ConsoleColor.White;
 
@@ -424,21 +424,21 @@ namespace AlgoTradeMasterSuperTrend
 
                             variableObjects.SellSuperTrendCount = Convert.ToInt32(variableObjects.LastSuperTrendKline.Id) - Convert.ToInt32(variableObjects.LastBuySuperTrendKline.Id);
 
-                            var proximityPercent = Math.Round((100 - variableObjects.LastSuperTrendKline.Close /
+                            var proximityPercent = Math.Round((100 - variableObjects.LastSuperTrendKline.ClosePrice /
                                                        variableObjects.LastSuperTrendKline.SuperTrendValue * 100), 2);
                             var proximityPrice = Math.Round(variableObjects.LastSuperTrendKline.SuperTrendValue -
-                                                               variableObjects.LastSuperTrendKline.Close, variableObjects.NormalizePricePrecision);
+                                                               variableObjects.LastSuperTrendKline.ClosePrice, variableObjects.NormalizePricePrecision);
 
                             Console.ForegroundColor = ConsoleColor.Blue;
 
-                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, \n                   STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.Open, variableObjects.LastSuperTrendKline.High, variableObjects.LastSuperTrendKline.Low, variableObjects.LastSuperTrendKline.Close, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
+                            Console.WriteLine("Current ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, \n                   STSide: {5}, STValue: {6}, Proximity%: {7}, Proximity$: {8} ", variableObjects.LastSuperTrendKline.OpenTime, variableObjects.LastSuperTrendKline.OpenPrice, variableObjects.LastSuperTrendKline.HighPrice, variableObjects.LastSuperTrendKline.LowPrice, variableObjects.LastSuperTrendKline.ClosePrice, variableObjects.LastSuperTrendKline.SuperTrendSide, variableObjects.LastSuperTrendKline.SuperTrendValue, proximityPercent, proximityPrice);
 
                             Console.ForegroundColor = ConsoleColor.Red;
 
-                            Console.WriteLine("First SELL ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.FirstSellAfterTheLastBuy.OpenTime, variableObjects.FirstSellAfterTheLastBuy.Open, variableObjects.FirstSellAfterTheLastBuy.High, variableObjects.FirstSellAfterTheLastBuy.Low, variableObjects.FirstSellAfterTheLastBuy.Close, variableObjects.FirstSellAfterTheLastBuy.SuperTrendSide, variableObjects.FirstSellAfterTheLastBuy.SuperTrendValue);
+                            Console.WriteLine("First SELL ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.FirstSellAfterTheLastBuy.OpenTime, variableObjects.FirstSellAfterTheLastBuy.OpenPrice, variableObjects.FirstSellAfterTheLastBuy.HighPrice, variableObjects.FirstSellAfterTheLastBuy.LowPrice, variableObjects.FirstSellAfterTheLastBuy.ClosePrice, variableObjects.FirstSellAfterTheLastBuy.SuperTrendSide, variableObjects.FirstSellAfterTheLastBuy.SuperTrendValue);
 
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.WriteLine("Last BUY ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.LastBuySuperTrendKline.OpenTime, variableObjects.LastBuySuperTrendKline.Open, variableObjects.LastBuySuperTrendKline.High, variableObjects.LastBuySuperTrendKline.Low, variableObjects.LastBuySuperTrendKline.Close, variableObjects.LastBuySuperTrendKline.SuperTrendSide, variableObjects.LastBuySuperTrendKline.SuperTrendValue);
+                            Console.WriteLine("Last BUY ST Kline: OpenTime: {0}, Open: {1}, High: {2}, Low: {3}, Close: {4}, STSide: {5}, STValue: {6}", variableObjects.LastBuySuperTrendKline.OpenTime, variableObjects.LastBuySuperTrendKline.OpenPrice, variableObjects.LastBuySuperTrendKline.HighPrice, variableObjects.LastBuySuperTrendKline.LowPrice, variableObjects.LastBuySuperTrendKline.ClosePrice, variableObjects.LastBuySuperTrendKline.SuperTrendSide, variableObjects.LastBuySuperTrendKline.SuperTrendValue);
 
                             Console.ForegroundColor = ConsoleColor.White;
 

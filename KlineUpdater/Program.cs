@@ -1,5 +1,4 @@
-﻿using Binance.Net;
-using Binance.Net.Enums;
+﻿using Binance.Net.Enums;
 using Binance.Net.Objects;
 using Business.Abstract;
 using Business.Concrete;
@@ -11,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Configuration;
+using Binance.Net.Clients;
 using BinanceWsManager = RemoteData.Binance.WebSocket.Concrete.BinanceWsManager;
 using IBinanceWsService = RemoteData.Binance.WebSocket.Abstract.IBinanceWsService;
 
@@ -77,7 +76,7 @@ namespace KlineUpdater
 
 
 
-                if (streamData.Result.Open != 0)
+                if (streamData.Result.OpenPrice != 0)
                 {
                     var lastKline = binanceFuturesUsdtKlineDal.GetAllAsync(x => x.SymbolPair == symbolPair && x.KlineInterval == interval).Result.LastOrDefault();
 
@@ -87,7 +86,7 @@ namespace KlineUpdater
                         Console.ForegroundColor = ConsoleColor.White;
 
                         binanceFuturesUsdtKlineDal.UpdateAsync(streamData.Result);
-                        Console.WriteLine("Kline updated! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.Open, streamData.Result.High, streamData.Result.Low, streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume, streamData.Result.QuoteVolume);
+                        Console.WriteLine("Kline updated! => OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.OpenPrice, streamData.Result.HighPrice, streamData.Result.LowPrice, streamData.Result.ClosePrice, streamData.Result.OpenTime, streamData.Result.Volume, streamData.Result.QuoteVolume);
 
                         var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(symbolPair, interval, indicatorParameterId).Data;
 
@@ -104,7 +103,7 @@ namespace KlineUpdater
                             Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstTrueRenkoAfterTheLastFalse.Date, firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Close, firstTrueRenkoAfterTheLastFalse.IsUp);
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
 
-                            currentProfit = Math.Round(streamData.Result.Close / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                            currentProfit = Math.Round(streamData.Result.ClosePrice / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
                         }
                         else if (renkoResult.IsUp == false)
                         {
@@ -116,7 +115,7 @@ namespace KlineUpdater
                             Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastFalse.Date, firstFalseRenkoAfterTheLastFalse.Open, firstFalseRenkoAfterTheLastFalse.Close, firstFalseRenkoAfterTheLastFalse.IsUp);
                             Console.ForegroundColor = ConsoleColor.Red;
 
-                            currentProfit = Math.Round(streamData.Result.Close / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                            currentProfit = Math.Round(streamData.Result.ClosePrice / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
                         }
 
                         Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", renkoResult.SymbolPair, renkoResult.KlineInterval, renkoResult.Date, renkoResult.Open, renkoResult.Close, renkoResult.IsUp);
@@ -130,7 +129,7 @@ namespace KlineUpdater
                         binanceFuturesUsdtKlineDal.AddAsync(streamData.Result);
                         Console.ForegroundColor = ConsoleColor.White;
 
-                        Console.WriteLine("Kline inserted! =>OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.Open, streamData.Result.High, streamData.Result.Low, streamData.Result.Close, streamData.Result.OpenTime, streamData.Result.BaseVolume, streamData.Result.QuoteVolume);
+                        Console.WriteLine("Kline inserted! =>OpenTime: {4}, Open= {0}, High= {1}, Low={2}, Close= {3}, Volume= {5}, QuoteVolume= {6}", streamData.Result.OpenPrice, streamData.Result.HighPrice, streamData.Result.LowPrice, streamData.Result.ClosePrice, streamData.Result.OpenTime, streamData.Result.Volume, streamData.Result.QuoteVolume);
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
 
                         var renkoResults = indicatorService.GetFuturesUsdtRenkoBricks(symbolPair, interval, indicatorParameterId).Data;
@@ -147,7 +146,7 @@ namespace KlineUpdater
                             Console.WriteLine("Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastFalseRenkoBrick.Date, lastFalseRenkoBrick.Open, lastFalseRenkoBrick.Close, lastFalseRenkoBrick.IsUp);
                             Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstTrueRenkoAfterTheLastFalse.Date, firstTrueRenkoAfterTheLastFalse.Open, firstTrueRenkoAfterTheLastFalse.Close, firstTrueRenkoAfterTheLastFalse.IsUp);
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            currentProfit = Math.Round(streamData.Result.Close / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                            currentProfit = Math.Round(streamData.Result.ClosePrice / firstTrueRenkoAfterTheLastFalse.Close * 100 - 100, 2);
 
                         }
                         else if (renkoResult.IsUp == false)
@@ -159,7 +158,7 @@ namespace KlineUpdater
                             Console.WriteLine("Last True Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", lastTrueRenkoBrick.Date, lastTrueRenkoBrick.Open, lastTrueRenkoBrick.Close, lastTrueRenkoBrick.IsUp);
                             Console.WriteLine("First True Brick After The Last False Brick Details:  OpenTime: {0}, Open: {1}, Close: {2}, BrickSide: {3}", firstFalseRenkoAfterTheLastFalse.Date, firstFalseRenkoAfterTheLastFalse.Open, firstFalseRenkoAfterTheLastFalse.Close, firstFalseRenkoAfterTheLastFalse.IsUp);
                             Console.ForegroundColor = ConsoleColor.Red;
-                            currentProfit = Math.Round(streamData.Result.Close / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
+                            currentProfit = Math.Round(streamData.Result.ClosePrice / firstFalseRenkoAfterTheLastFalse.Close * 100 - 100, 2);
                         }
 
                         Console.WriteLine("SymbolPair: {0}, Interval: {1}, OpenTime: {2}, Open: {3}, Close: {4}, BrickSide: {5}", renkoResult.SymbolPair, renkoResult.KlineInterval, renkoResult.Date, renkoResult.Open, renkoResult.Close, renkoResult.IsUp);

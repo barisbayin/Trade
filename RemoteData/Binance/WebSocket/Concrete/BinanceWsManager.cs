@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Binance.Net.Enums;
-using Binance.Net.Interfaces;
-using Core.Entities;
-using Core.Utilities.Results;
-using Entity.Concrete;
 using RemoteData.Binance.WebSocket.Abstract;
-using RemoteData.Constants;
 using System.Threading.Tasks;
-using Binance.Net.Objects.Futures.UserStream;
+using Binance.Net.Interfaces.Clients;
+using Binance.Net.Objects.Models.Futures.Socket;
 using Entity.Concrete.Entities;
 
 namespace RemoteData.Binance.WebSocket.Concrete
@@ -26,17 +21,17 @@ namespace RemoteData.Binance.WebSocket.Concrete
         {
             BinanceFuturesUsdtKlineEntity binanceFuturesUsdtKlineEntity = new BinanceFuturesUsdtKlineEntity();
 
-            var streamKlineData = await _binanceSocketClient.FuturesUsdt.SubscribeToKlineUpdatesAsync(symbol, interval, data =>
+            var streamKlineData = await _binanceSocketClient.UsdFuturesStreams.SubscribeToKlineUpdatesAsync(symbol, interval, data =>
             {
 
                 binanceFuturesUsdtKlineEntity.SymbolPair = symbol;
                 binanceFuturesUsdtKlineEntity.KlineInterval = interval.ToString();
                 binanceFuturesUsdtKlineEntity.OpenTime = data.Data.Data.OpenTime;
-                binanceFuturesUsdtKlineEntity.Open = data.Data.Data.Open;
-                binanceFuturesUsdtKlineEntity.High = data.Data.Data.High;
-                binanceFuturesUsdtKlineEntity.Low = data.Data.Data.Low;
-                binanceFuturesUsdtKlineEntity.Close = data.Data.Data.Close;
-                binanceFuturesUsdtKlineEntity.BaseVolume = data.Data.Data.BaseVolume;
+                binanceFuturesUsdtKlineEntity.OpenPrice = data.Data.Data.OpenPrice;
+                binanceFuturesUsdtKlineEntity.HighPrice = data.Data.Data.HighPrice;
+                binanceFuturesUsdtKlineEntity.LowPrice = data.Data.Data.LowPrice;
+                binanceFuturesUsdtKlineEntity.ClosePrice = data.Data.Data.ClosePrice;
+                binanceFuturesUsdtKlineEntity.Volume = data.Data.Data.Volume;
                 binanceFuturesUsdtKlineEntity.CloseTime = data.Data.Data.CloseTime;
                 binanceFuturesUsdtKlineEntity.QuoteVolume = data.Data.Data.QuoteVolume;
                 binanceFuturesUsdtKlineEntity.TradeCount = data.Data.Data.TradeCount;
@@ -56,7 +51,7 @@ namespace RemoteData.Binance.WebSocket.Concrete
             List<BinanceFuturesStreamMarginPosition> binanceFuturesStreamMarginPositions = new List<BinanceFuturesStreamMarginPosition>();
             List<BinanceFuturesStreamPosition> binanceFuturesStreamPositions = new List<BinanceFuturesStreamPosition>();
             
-            var streamUserData = await _binanceSocketClient.FuturesUsdt.SubscribeToUserDataUpdatesAsync(listenKey, data =>
+            var streamUserData = await _binanceSocketClient.UsdFuturesStreams.SubscribeToUserDataUpdatesAsync(listenKey, data =>
             {
                
 
@@ -74,7 +69,6 @@ namespace RemoteData.Binance.WebSocket.Concrete
                     binanceFuturesStreamMarginPosition.MarginType = position.MarginType;
                     binanceFuturesStreamMarginPosition.MaintMargin = position.MaintMargin;
                     binanceFuturesStreamMarginPosition.MarkPrice = position.MarkPrice;
-                    binanceFuturesStreamMarginPosition.PositionAmount = position.PositionAmount;
                     binanceFuturesStreamMarginPosition.PositionSide = position.PositionSide;
                     binanceFuturesStreamMarginPosition.UnrealizedPnl = position.UnrealizedPnl;
 

@@ -1,4 +1,4 @@
-﻿using Binance.Net.Objects.Futures.MarketData;
+﻿using Binance.Net.Objects.Models.Futures;
 using Core.Entities;
 
 namespace Entity.Concrete.Entities

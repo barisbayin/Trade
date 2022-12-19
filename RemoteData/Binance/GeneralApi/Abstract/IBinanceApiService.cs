@@ -1,15 +1,11 @@
 ﻿using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Core.Utilities.Results;
-using Entity.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Binance.Net.Objects.Futures.FuturesData;
-using Binance.Net.Objects.Futures.MarketData;
-using Binance.Net.Objects.Spot.MarketData;
-using Binance.Net.Objects.Spot.SpotData;
+using Binance.Net.Objects.Models.Futures;
+using Binance.Net.Objects.Models.Spot;
 using CryptoExchange.Net.Objects;
 using Entity.Concrete.Entities;
 
