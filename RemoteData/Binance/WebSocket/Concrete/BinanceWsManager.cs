@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Binance.Net.Interfaces.Clients;
 using Binance.Net.Objects.Models.Futures.Socket;
 using Entity.Concrete.Entities;
+using System.Collections;
+using CryptoExchange.Net.Logging;
+using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Sockets;
 
 namespace RemoteData.Binance.WebSocket.Concrete
 {
@@ -25,6 +29,34 @@ namespace RemoteData.Binance.WebSocket.Concrete
             {
 
                 binanceFuturesUsdtKlineEntity.SymbolPair = symbol;
+                binanceFuturesUsdtKlineEntity.KlineInterval = interval.ToString();
+                binanceFuturesUsdtKlineEntity.OpenTime = data.Data.Data.OpenTime;
+                binanceFuturesUsdtKlineEntity.OpenPrice = data.Data.Data.OpenPrice;
+                binanceFuturesUsdtKlineEntity.HighPrice = data.Data.Data.HighPrice;
+                binanceFuturesUsdtKlineEntity.LowPrice = data.Data.Data.LowPrice;
+                binanceFuturesUsdtKlineEntity.ClosePrice = data.Data.Data.ClosePrice;
+                binanceFuturesUsdtKlineEntity.Volume = data.Data.Data.Volume;
+                binanceFuturesUsdtKlineEntity.CloseTime = data.Data.Data.CloseTime;
+                binanceFuturesUsdtKlineEntity.QuoteVolume = data.Data.Data.QuoteVolume;
+                binanceFuturesUsdtKlineEntity.TradeCount = data.Data.Data.TradeCount;
+                binanceFuturesUsdtKlineEntity.TakerBuyBaseVolume = data.Data.Data.TakerBuyBaseVolume;
+                binanceFuturesUsdtKlineEntity.TakerBuyQuoteVolume = data.Data.Data.TakerBuyQuoteVolume;
+
+            });
+
+
+            return binanceFuturesUsdtKlineEntity;
+        }
+
+
+        public async Task<BinanceFuturesUsdtKlineEntity> GetCurrentFuturesUsdtKlineDataListAsync(IEnumerable<string> symbolList, KlineInterval interval)
+        {
+      
+            BinanceFuturesUsdtKlineEntity binanceFuturesUsdtKlineEntity = new BinanceFuturesUsdtKlineEntity();
+
+            var streamKlineData = await _binanceSocketClient.UsdFuturesStreams.SubscribeToKlineUpdatesAsync(symbolList, interval, data =>
+            {
+                binanceFuturesUsdtKlineEntity.SymbolPair=data.Data.Symbol;
                 binanceFuturesUsdtKlineEntity.KlineInterval = interval.ToString();
                 binanceFuturesUsdtKlineEntity.OpenTime = data.Data.Data.OpenTime;
                 binanceFuturesUsdtKlineEntity.OpenPrice = data.Data.Data.OpenPrice;

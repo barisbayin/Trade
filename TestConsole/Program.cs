@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Binance.Net.Clients;
 using Binance.Net.Objects;
 using CryptoExchange.Net.Authentication;
+using RemoteData.Binance.GeneralApi.Concrete;
 
 namespace TestConsole
 {
@@ -24,21 +25,17 @@ namespace TestConsole
             binanceClient.SetApiCredentials(new ApiCredentials(binanceApi.Data.ApiKey, binanceApi.Data.SecretKey));
 
 
+            IIndicatorService indicatorService = new IndicatorManager(
+                new BinanceKlineManager(new EfBinanceFuturesUsdtKlineDal(),new BinanceApiManager(new BinanceClient())), new EfIndicatorDal(),
+                new IndicatorParameterManager(new EfIndicatorParameterDal()));
 
-            var info = binanceClient.SpotApi.ExchangeData.GetExchangeInfoAsync(CancellationToken.None).Result.Data;
 
-            int maxSymbolLength = 15;
+            var result = indicatorService.GetPivots("BTCUSDT", "FifteenMinutes", 1025);
 
-            foreach (var item in info.Symbols)
+            foreach (var pivotsResult in result.Result.Data)
             {
-                if (item.QuoteAsset=="BUSD")
-                {
-                    Console.WriteLine(item.Name + "\t| " + item.BaseAsset + "\t| " + item.QuoteAsset);
-                }
-                
+                Console.WriteLine("BTCUSDT" + " -- " + pivotsResult.Date + " -- " + Math.Round(Convert.ToDecimal(pivotsResult.HighLine),2) + " | " + Math.Round(Convert.ToDecimal(pivotsResult.HighPoint),2) + " | " + pivotsResult.HighTrend + " | " + Math.Round(Convert.ToDecimal(pivotsResult.LowLine),2) + " | " + Math.Round(Convert.ToDecimal(pivotsResult.LowPoint),2) + " | " + pivotsResult.LowTrend);
             }
-
-
 
 
 

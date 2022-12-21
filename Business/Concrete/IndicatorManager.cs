@@ -48,22 +48,35 @@ namespace Business.Concrete
             foreach (var data in heikinAshiResults.OrderBy(x => x.Date))
             {
                 var binanceFuturesUsdtHeikinAshiKlineEntity = new BinanceFuturesUsdtHeikinAshiKlineEntity
-                    {
-                        Id = j,
-                        SymbolPair = symbolPair,
-                        KlineInterval = interval,
-                        OpenTime = data.Date,
-                        OpenPrice = data.Open,
-                        HighPrice = data.High,
-                        LowPrice = data.Low,
-                        ClosePrice = data.Close,
-                        Volume = data.Volume
-                    };
+                {
+                    Id = j,
+                    SymbolPair = symbolPair,
+                    KlineInterval = interval,
+                    OpenTime = data.Date,
+                    OpenPrice = data.Open,
+                    HighPrice = data.High,
+                    LowPrice = data.Low,
+                    ClosePrice = data.Close,
+                    Volume = data.Volume
+                };
 
                 j++;
                 binanceFuturesUsdtHeikinAshiKlineList.Add(binanceFuturesUsdtHeikinAshiKlineEntity);
             }
             return new SuccessDataResult<List<BinanceFuturesUsdtHeikinAshiKlineEntity>>(binanceFuturesUsdtHeikinAshiKlineList);
+        }
+
+        public async Task<IDataResult<IEnumerable<PivotsResult>>> GetPivots(string symbolPair, string interval, int indicatorParameterId)
+        {
+            var result = await _binanceKlineService.AddFuturesUsdtKlinesToDatabaseAsync(symbolPair, new List<string>() { interval });
+            var indicatorParameter =await 
+            _indicatorParameterService.GetIndicatorParameterEntityByIdAsync(indicatorParameterId);
+            var klineList =await _binanceKlineService.GetCurrencyKlinesToCalculateIndicatorAsync(symbolPair, interval,
+                Convert.ToInt32(indicatorParameter.Data.Parameter4));
+
+            IEnumerable<PivotsResult> pivotsResults = klineList.Data.GetPivots();
+
+            return new SuccessDataResult<IEnumerable<PivotsResult>>(pivotsResults);
         }
 
         public async Task<IDataResult<List<IndicatorEntity>>> GetAllIndicatorsAsync()
